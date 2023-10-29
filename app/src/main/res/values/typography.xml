@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Typography">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Typography.Black">
+        <item name="fontFamily">@font/pretendard_black</item>
+    </style>
+
+    <style name="Typography.Bold">
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Typography.ExtraBold">
+        <item name="fontFamily">@font/pretendard_extra_bold</item>
+    </style>
+
+    <style name="Typography.ExtraLight">
+        <item name="fontFamily">@font/pretendard_extra_light</item>
+    </style>
+
+    <style name="Typography.Light">
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="Typography.Medium">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Regular">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.SemiBold">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Thin">
+        <item name="fontFamily">@font/pretendard_thin</item>
+    </style>
+
+</resources>
