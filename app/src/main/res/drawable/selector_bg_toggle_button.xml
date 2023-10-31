@@ -3,17 +3,17 @@
     <!-- Selected state -->
     <item android:state_checked="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/selector_bg_toggle_button"/>
+            <solid android:color="@color/color_toggle_button"/>
             <corners android:radius="5dp"/>
-            <stroke android:color="@color/selector_stroke_toggle_button" android:width="2dp"/>
+            <stroke android:color="@color/color_stroke_toggle_button" android:width="2dp"/>
         </shape>
     </item>
     <!-- Default state -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/selector_bg_toggle_button"/>
+            <solid android:color="@color/color_toggle_button"/>
             <corners android:radius="5dp"/>
-            <stroke android:color="@color/selector_stroke_toggle_button" android:width="2dp"/>
+            <stroke android:color="@color/color_stroke_toggle_button" android:width="2dp"/>
         </shape>
     </item>
 </selector>
