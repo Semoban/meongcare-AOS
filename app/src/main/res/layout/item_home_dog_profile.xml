@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home_dog_image_bg" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewHomeDogProfileDogImage"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:maxWidth="51dp"
+        android:maxHeight="51dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageView1"
+        app:layout_constraintEnd_toEndOf="@id/imageView1"
+        app:layout_constraintStart_toStartOf="@id/imageView1"
+        app:layout_constraintTop_toTopOf="@id/imageView1" />
+
+    <TextView
+        android:id="@+id/textViewHomeDogProfileRowDogName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
