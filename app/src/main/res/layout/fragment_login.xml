@@ -8,11 +8,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="212dp"
-        android:layout_height="93dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="74dp"
+        android:layout_width="240dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="120dp"
         android:src="@drawable/meongcare_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
