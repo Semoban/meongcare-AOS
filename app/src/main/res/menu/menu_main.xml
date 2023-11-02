@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuMainBottomNavHome"
+        android:icon="@drawable/main_home"
+        android:title="홈" />
+    <item android:id="@+id/menuMainBottomNavPlaceHolder" />
+    <item
+        android:id="@+id/menuMainBottomNavMedicalRecord"
+        android:icon="@drawable/main_medical_record"
+        android:title="진료기록" />
+</menu>
