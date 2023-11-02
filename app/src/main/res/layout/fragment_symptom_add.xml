@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="@drawable/all_back_24dp" />
+        app:navigationIcon="@drawable/all_arrow_back_20dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="증상 시각"
                     android:textSize="18sp" />
 
@@ -72,7 +72,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="증상"
                     android:textSize="18sp" />
 
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/all_arrow_forward_24dp" />
+                        android:src="@drawable/all_arrow_forward" />
 
                 </LinearLayout>
 
@@ -138,8 +138,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="36dp"
-        android:backgroundTint="@color/all_button"
-        android:fontFamily="@font/pretendard_semibold"
+        android:backgroundTint="@color/main4"
+        android:fontFamily="@font/pretendard_semi_bold"
         android:text="완료"
         android:textSize="18sp"
         app:cornerRadius="5dp" />

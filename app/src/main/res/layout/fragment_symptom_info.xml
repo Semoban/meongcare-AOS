@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:menu="@menu/menu_info"
-        app:navigationIcon="@drawable/all_back_24dp" />
+        app:navigationIcon="@drawable/all_arrow_back_20dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
+                android:fontFamily="@font/pretendard_semi_bold"
                 android:text="증상 날짜"
                 android:textSize="18sp" />
 
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="증상 시각"
                     android:textSize="18sp" />
 
@@ -96,7 +96,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="증상"
                     android:textSize="18sp" />
 

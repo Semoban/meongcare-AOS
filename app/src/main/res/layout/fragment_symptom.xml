@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="@drawable/all_back_24dp"
+        app:navigationIcon="@drawable/all_arrow_back_20dp"
         app:title="10.04 목"
         app:titleCentered="true" />
 
@@ -24,7 +24,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background">
+        android:background="@color/gray2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                     android:id="@+id/textView_symptom_dog_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="TextView"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pretendard_semibold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="님의 이상증상"
                     android:textColor="@color/black"
                     android:textSize="20sp" />

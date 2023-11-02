@@ -10,13 +10,13 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/symptomadd_check_circle_grey_24" />
+        app:srcCompat="@drawable/all_un_check" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="9dp"
-        android:background="@color/symptom_list_item_main_box"
+        android:background="@color/gray2"
         android:orientation="horizontal"
         android:padding="15dp">
 
