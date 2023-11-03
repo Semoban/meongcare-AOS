@@ -96,7 +96,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/supplementRoutineEdit_btn_round_outline"
                 android:fontFamily="@font/pretendard_semi_bold"
                 android:gravity="center"
                 android:text="취소"
