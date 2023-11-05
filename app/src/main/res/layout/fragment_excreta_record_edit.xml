@@ -16,42 +16,30 @@
         app:navigationIcon="@drawable/all_arrow_back_20dp"
         app:title="초코님의 기록" />
 
-    <TextView
-        android:id="@+id/textview_excretarecordedit_deletechoice"
+    <ImageButton
+        android:id="@+id/imagebutton_excretarecordedit_selectall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="선택 삭제"
-        android:textAppearance="@style/Typography.Regular"
-        android:textColor="#949494"
-        android:focusable="true"
-        android:clickable="true"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/view_excretarecordedit_line"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/selector_checkbox_16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_excretarecordedit" />
 
-    <View
-        android:id="@+id/view_excretarecordedit_line"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="@drawable/all_line_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/textview_excretarecordedit_deletechoice"
-        app:layout_constraintEnd_toStartOf="@id/textview_excretarecordedit_deleteall"
-        app:layout_constraintTop_toTopOf="@id/textview_excretarecordedit_deletechoice" />
-
     <TextView
-        android:id="@+id/textview_excretarecordedit_deleteall"
+        android:id="@+id/textview_excretarecordedit_selectall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:focusable="true"
+        android:layout_marginStart="8dp"
         android:clickable="true"
-        android:layout_marginEnd="15dp"
-        android:text="전체 삭제"
-        android:textAppearance="@style/Typography.Regular"
+        android:focusable="true"
+        android:text="전체 선택"
+        android:textAppearance="@style/Typography.Medium"
         android:textColor="#949494"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/view_excretarecordedit_line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view_excretarecordedit_line" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imagebutton_excretarecordedit_selectall"
+        app:layout_constraintStart_toEndOf="@id/imagebutton_excretarecordedit_selectall"
+        app:layout_constraintTop_toTopOf="@id/imagebutton_excretarecordedit_selectall" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_excretarecordedit_record"
@@ -62,7 +50,7 @@
         app:layout_constraintBottom_toTopOf="@id/button_excretarecordedit_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_excretarecordedit_deletechoice" />
+        app:layout_constraintTop_toBottomOf="@id/imagebutton_excretarecordedit_selectall" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_excretarecordedit_cancel"
