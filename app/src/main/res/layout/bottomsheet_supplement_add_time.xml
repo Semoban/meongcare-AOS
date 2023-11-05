@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_supplement_add_time"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="37dp"
+    android:paddingRight="37dp">
+
+    <ImageView
+        android:id="@+id/imageView_bottomsheet_supplement_add_time_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:text="섭취 시간"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TimePicker
+        android:id="@+id/timepicker_bottomsheet_supplement_add_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner" />
+
+    <LinearLayout
+        android:id="@+id/button__bottomsheet_supplement_add_time_complete"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/all_rec_main4_r5"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>
