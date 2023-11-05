@@ -142,6 +142,7 @@
                 android:backgroundTint="#FF7A00"
                 android:text="완료"
                 android:textColor="@color/white"
+                android:paddingVertical="12dp"
                 android:textSize="18sp"
                 android:textAppearance="@style/Typography.SemiBold"
                 app:layout_constraintBottom_toBottomOf="parent"
