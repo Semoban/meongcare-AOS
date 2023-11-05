@@ -102,7 +102,7 @@
                 app:layout_constraintTop_toTopOf="@id/view_excreta_record" />
 
             <TextView
-                android:id="@+id/textview_excreta_number"
+                android:id="@+id/textview_excreta_numberurine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -128,7 +128,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/view_excreta_record"
                 app:layout_constraintEnd_toEndOf="@id/view_excreta_record"
                 app:layout_constraintStart_toStartOf="@id/view_excreta_record"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_number" />
+                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberurine" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
