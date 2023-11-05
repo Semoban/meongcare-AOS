@@ -1,175 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SymptomAddFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_symptomAdd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp"
-        app:title="이상증상" />
-
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomAdd">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_symptomAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="26dp">
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/all_arrow_back_20dp"
+            app:title="이상증상" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_symptomAdd_to_symptom"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomAdd">
 
             <LinearLayout
-                android:id="@+id/button_symptomAdd_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/symptomadd_btn_round"
-                android:paddingLeft="20dp"
-                android:paddingTop="14dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="14dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomAdd">
+                android:orientation="vertical"
+                android:padding="26dp">
 
-                <TextView
-                    android:id="@+id/textView_symptomAdd_date"
+                <LinearLayout
+                    android:id="@+id/button_symptomAdd_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:text="날짜를 선택해주세요"
-                    android:textColor="@color/symptomadd_input_text"
-                    android:textSize="16sp" />
+                    android:background="@drawable/symptomadd_btn_round"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="14dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomAdd">
 
-                <ImageView
-                    android:id="@+id/imageView_symptomAdd_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:src="@drawable/all_calendar_17dp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView_symptomAdd_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="날짜를 선택해주세요"
+                        android:textColor="@color/symptomadd_input_text"
+                        android:textSize="16sp" />
 
+                    <ImageView
+                        android:id="@+id/imageView_symptomAdd_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@drawable/all_calendar_17dp" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:fontFamily="@font/pretendard_semi_bold"
-                android:text="증상 시각"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_date" />
-
-            <TimePicker
-                android:id="@+id/timepicker_symptomAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:timePickerMode="spinner"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/pretendard_semi_bold"
-                android:text="증상"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timepicker_symptomAdd" />
-
-            <LinearLayout
-                android:id="@+id/button_symptomAdd_select_symptom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/symptomadd_btn_round_outline"
-                android:paddingLeft="18dp"
-                android:paddingTop="10dp"
-                android:paddingRight="18dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                 <TextView
-                    android:id="@+id/textView_symptomAdd_select_symptom"
+                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:text="증상을 선택해주세요"
-                    android:textColor="@color/symptomadd_input_text"
-                    android:textSize="16sp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="증상 시각"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_date" />
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/all_arrow_forward" />
+                <TimePicker
+                    android:id="@+id/timepicker_symptomAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="증상"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/timepicker_symptomAdd" />
+
+                <LinearLayout
+                    android:id="@+id/button_symptomAdd_select_symptom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/symptomadd_btn_round_outline"
+                    android:paddingLeft="18dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="18dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                    <TextView
+                        android:id="@+id/textView_symptomAdd_select_symptom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="증상을 선택해주세요"
+                        android:textColor="@color/symptomadd_input_text"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/all_arrow_forward" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/editText_symptomAdd_custom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/symptomadd_btn_round"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="항목에 없는 증상을 적어주세요"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColorHint="@color/symptomadd_edit_text"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_select_symptom" />
+
+                <LinearLayout
+                    android:id="@+id/layout_symptomAdd_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"></LinearLayout>
+
 
             </LinearLayout>
+        </ScrollView>
 
-            <EditText
-                android:id="@+id/editText_symptomAdd_custom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/symptomadd_btn_round"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="항목에 없는 증상을 적어주세요"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColorHint="@color/symptomadd_edit_text"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_select_symptom" />
+        <Button
+            android:id="@+id/button_symptomAdd_to_symptom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="36dp"
+            android:backgroundTint="@color/main4"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="완료"
+            android:textSize="18sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_symptomAdd_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"></LinearLayout>
-
-
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/button_symptomAdd_to_symptom"
+    <include
+        android:id="@+id/include_bottomsheet_symptom_add_date"
+        layout="@layout/bottomsheet_symptom_add_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="63dp"
-        android:backgroundTint="@color/main4"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:text="완료"
-        android:textSize="18sp"
-        app:cornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        style="@style/Widget.Material3.BottomSheet"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_peekHeight="0dp" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
