@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/all_rect_r10"
-    android:paddingStart="20dp"
+    android:paddingStart="24dp"
     android:paddingEnd="8dp">
 
     <TextView
@@ -23,6 +23,7 @@
         android:id="@+id/textview_excretarecord_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
         android:background="@drawable/all_rect_r5"
         android:backgroundTint="#F4F4F4"
         android:paddingHorizontal="8dp"
