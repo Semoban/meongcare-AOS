@@ -62,6 +62,7 @@
         android:background="@drawable/all_rect_r4"
         android:text="취소"
         android:textAppearance="@style/Typography.SemiBold"
+        android:textColor="#6A6A6A"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_excretarecordedit_delete"
