@@ -18,7 +18,7 @@
         app:titleCentered="false" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollView_supplementRoutineEdit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_supplementRoutineEdit">
@@ -67,6 +67,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_supplementRoutineEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="11dp" />
