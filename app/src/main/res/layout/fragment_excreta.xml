@@ -106,7 +106,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/all_rect_r5"
                 android:backgroundTint="#99ECF8FF"
                 android:gravity="center"
@@ -116,7 +115,7 @@
                 android:textColor="#5AC4FF"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/textview_excreta_numberfeces"
-                app:layout_constraintTop_toTopOf="@id/view_excreta_record" />
+                app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
@@ -128,7 +127,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/view_excreta_record"
                 app:layout_constraintEnd_toEndOf="@id/view_excreta_record"
                 app:layout_constraintStart_toStartOf="@id/view_excreta_record"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberurine" />
+                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberfeces" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
