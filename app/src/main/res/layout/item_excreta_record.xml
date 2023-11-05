@@ -30,8 +30,8 @@
         android:text="오전 00:00"
         android:textAppearance="@style/Typography.Regular"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/textview_excretarecord_type"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textview_excretarecord_type" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
