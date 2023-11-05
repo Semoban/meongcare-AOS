@@ -136,7 +136,7 @@
                 android:id="@+id/button_excretaadd_completion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="36dp"
+                android:layout_marginHorizontal="12dp"
                 android:layout_marginVertical="32dp"
                 android:background="@drawable/all_rect_r5"
                 android:backgroundTint="#FF7A00"
