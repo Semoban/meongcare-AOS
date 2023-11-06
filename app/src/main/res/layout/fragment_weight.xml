@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    tools:context=".WeightFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_weight">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textview_weight_editbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="17dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="편집"
+                android:textAppearance="@style/Typography.Medium"
+                android:textColor="#949494"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_weight_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                android:paddingHorizontal="24dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_weight_editbutton">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="24dp">
+
+                    <TextView
+                        android:id="@+id/textview_weight_recordtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="17dp"
+                        android:text="체중"
+                        android:textAppearance="@style/Typography.SemiBold"
+                        android:textColor="#222227"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_recordexplanation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="현재 설정되어 있는 체중입니다."
+                        android:textAppearance="@style/Typography.Regular"
+                        android:textColor="#949494"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_recordtitle"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_recordcontent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="27dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="0.0KG"
+                        android:textAppearance="@style/Typography.SemiBold"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_weight_weeklyrecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintStart_toStartOf="@id/cardview_weight_record"
+                app:layout_constraintTop_toBottomOf="@id/cardview_weight_record">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/textview_weight_weeklyrecordtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="김먼지님의 체중변화를 기록했어요!"
+                        android:textAppearance="@style/Typography.SemiBold"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_weeklyrecordexplanation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="김먼지님의 주 별 체중변화"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_weeklyrecordtitle"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordtitle" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/linechart_weight_weeklyrecord"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_weeklyrecordexplanation"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordexplanation" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_weight_monthlyrecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintStart_toStartOf="@id/cardview_weight_weeklyrecord"
+                app:layout_constraintTop_toBottomOf="@id/cardview_weight_weeklyrecord">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/textview_weight_monthlyrecordtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이번달은 지난달 대비 증가했어요!"
+                        android:textAppearance="@style/Typography.SemiBold"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_monthlyrecordcontent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="지난달 대비 0.23kg가 증가했어요!"
+                        android:textAppearance="@style/Typography.Regular"
+                        android:textColor="#6A6A6A"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_monthlyrecordtitle"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_monthlyrecordtitle" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barchart_weight_monthlyrecord"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_monthlyrecordcontent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_monthlyrecordcontent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
