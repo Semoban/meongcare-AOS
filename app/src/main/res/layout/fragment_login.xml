@@ -18,6 +18,7 @@
 
     <Button
         android:id="@+id/buttonKakaoLogin"
+        style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
@@ -36,6 +37,7 @@
 
     <Button
         android:id="@+id/buttonNaverLogin"
+        style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
@@ -55,6 +57,7 @@
 
     <Button
         android:id="@+id/buttonGoogleLogin"
+        style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
