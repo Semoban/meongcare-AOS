@@ -28,7 +28,7 @@ jobs:
   android-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
       - name: set up JDK
