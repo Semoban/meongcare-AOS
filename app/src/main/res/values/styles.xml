@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Fab_Bottom_App_Bar" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.Fab_Bottom_App_Bar" parent="Theme.MeongCareAos">
         <item name="colorPrimary">#FF7A00</item>
         <item name="colorPrimaryVariant">#FF7A00</item>
         <item name="colorOnPrimary">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.Round_Corner_Bottom_Sheet_Style" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/all_calendar_bottom_sheet</item>
     </style>
 </resources>
