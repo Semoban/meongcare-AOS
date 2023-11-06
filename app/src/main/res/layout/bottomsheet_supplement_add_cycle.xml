@@ -67,11 +67,7 @@
         android:layout_marginTop="41dp"
         android:layout_marginBottom="23dp"
         android:background="@drawable/all_rec_main4_r5"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollView3">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
