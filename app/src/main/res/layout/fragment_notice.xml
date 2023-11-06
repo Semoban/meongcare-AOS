@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewNoticeDeleteBack"
+            android:id="@+id/imageViewInformBack"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="16dp"
@@ -34,7 +34,7 @@
             android:textColor="#222227"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewNoticeDeleteBack"
+            app:layout_constraintStart_toEndOf="@+id/imageViewInformBack"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
