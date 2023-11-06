@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/all_rec_f8f8f8_r5"
+                    android:background="@drawable/all_rec_gray2_r5"
                     android:orientation="vertical">
 
                     <TextView
@@ -101,7 +101,7 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/pretendard_regular"
                     android:text="TextView"
-                    android:textColor="@color/supplementAdd_subText"
+                    android:textColor="@color/gray5"
                     android:textSize="16sp"
                     android:visibility="visible" />
             </LinearLayout>
@@ -133,7 +133,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/pretendard_regular"
                         android:text="0"
-                        android:textColor="@color/supplementAdd_subText"
+                        android:textColor="@color/gray5"
                         android:textSize="16sp"
                         android:visibility="visible" />
 
@@ -142,7 +142,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/pretendard_regular"
                         android:text="일마다"
-                        android:textColor="@color/supplementAdd_subText"
+                        android:textColor="@color/gray5"
                         android:textSize="16sp"
                         android:visibility="visible" />
 
@@ -178,7 +178,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/pretendard_regular"
                         android:text="0"
-                        android:textColor="@color/supplementAdd_subText"
+                        android:textColor="@color/gray5"
                         android:textSize="16sp"
                         android:visibility="visible" />
 
@@ -189,7 +189,7 @@
                         android:layout_marginLeft="2dp"
                         android:fontFamily="@font/pretendard_regular"
                         android:text="회"
-                        android:textColor="@color/supplementAdd_subText"
+                        android:textColor="@color/gray5"
                         android:textSize="16sp"
                         android:visibility="visible" />
 

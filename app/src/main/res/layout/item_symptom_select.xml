@@ -50,7 +50,7 @@
 
                 android:fontFamily="@font/pretendard_medium"
                 android:text="증상 타이틀"
-                android:textColor="@color/symptom_list_main_text"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <TextView
@@ -60,7 +60,7 @@
 
                 android:fontFamily="@font/pretendard_regular"
                 android:text="증상 내용"
-                android:textColor="@color/symptom_list_main_text"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
         </LinearLayout>

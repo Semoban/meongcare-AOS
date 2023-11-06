@@ -79,7 +79,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="체중이 감소한다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -89,7 +89,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="갑작스럽게 체중이 감소하는 증상이 나타난다."
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -149,7 +149,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="고열이 난다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -159,7 +159,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="체온이 41도 이상인 상태가 오랫동안 지속된다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -219,7 +219,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="기침을 한다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -229,7 +229,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="갑자기 켁켁거리며 기침이 많아진다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -289,7 +289,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="설사를 한다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -299,7 +299,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="갑자기 설사를 한다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -359,7 +359,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="식욕부진이 나타난다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -369,7 +369,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="사료를 먹지 않는 행동을 보인다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -429,7 +429,7 @@
 
                             android:fontFamily="@font/pretendard_medium"
                             android:text="활동량이 감소한다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
@@ -439,7 +439,7 @@
 
                             android:fontFamily="@font/pretendard_regular"
                             android:text="평소에 비해 활동량이 적어진다"
-                            android:textColor="@color/symptom_list_main_text"
+                            android:textColor="@color/black"
                             android:textSize="12sp" />
 
                     </LinearLayout>

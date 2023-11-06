@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="영양제 이름"
-                android:textColor="@color/symptom_list_main_text"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <TextView

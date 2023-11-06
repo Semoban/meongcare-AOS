@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="5dp" />
-            <solid android:color="@color/symptomadd_edit_text_box" />
+            <solid android:color="@color/gray2" />
         </shape>
     </item>
 

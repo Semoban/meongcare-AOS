@@ -44,7 +44,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:background="@drawable/symptomadd_btn_round"
+        android:background="@drawable/all_rec_gray1_r5"
         android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
             android:text="2023.10.27"
-            android:textColor="@color/symptomadd_input_text"
+            android:textColor="@color/gray4"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -87,7 +87,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:background="@drawable/symptomadd_btn_round"
+        android:background="@drawable/all_rec_gray1_r5"
         android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
             android:text="10:00 PM"
-            android:textColor="@color/symptomadd_input_text"
+            android:textColor="@color/gray4"
             android:textSize="16sp" />
     </LinearLayout>
 

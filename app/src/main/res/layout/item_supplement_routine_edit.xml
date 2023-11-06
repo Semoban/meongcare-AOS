@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
-        android:background="@drawable/all_rect_f8f8f8_r10"
+        android:background="@drawable/all_rect_gray3_r10_outline"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
         android:paddingTop="22dp"

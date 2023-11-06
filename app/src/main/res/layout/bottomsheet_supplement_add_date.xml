@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="11dp"
-                android:background="@drawable/all_rec_f8f8f8_r5"
+                android:background="@drawable/all_rec_gray2_r5"
                 android:orientation="vertical">
 
                 <TextView
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="11dp"
-                android:background="@drawable/all_rec_f8f8f8_r5"
+                android:background="@drawable/all_rec_gray2_r5"
                 android:orientation="vertical">
 
                 <TextView

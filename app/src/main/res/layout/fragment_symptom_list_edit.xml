@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_regular"
                     android:text="선택 삭제"
-                    android:textColor="@color/supplement_routine_delete" />
+                    android:textColor="@color/gray5" />
 
 
                 <ImageView
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_regular"
                     android:text="전체 삭제"
-                    android:textColor="@color/supplement_routine_delete" />
+                    android:textColor="@color/gray5" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -102,7 +102,7 @@
                 android:fontFamily="@font/pretendard_semi_bold"
                 android:gravity="center"
                 android:text="취소"
-                android:textColor="@color/supplement_routine_btn_cancel_text"
+                android:textColor="@color/gray5"
                 android:textSize="18sp" />
         </LinearLayout>
 

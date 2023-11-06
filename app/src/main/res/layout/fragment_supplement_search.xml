@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/all_rec_f8f8f8_r5"
+            android:background="@drawable/all_rec_gray2_r5"
             android:drawableRight="@drawable/pet_food_search"
             android:fontFamily="@font/pretendard_regular"
             android:gravity="center_vertical"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="18dp"
-            android:background="@drawable/all_rec_f8f8f8_r5"
+            android:background="@drawable/all_rec_gray2_r5"
             android:orientation="vertical">
 
             <TextView
@@ -77,7 +77,7 @@
                 android:fontFamily="@font/pretendard_semi_bold"
                 android:gravity="center"
                 android:text="직접 입력하기"
-                android:textColor="@color/supplementSearch_custom"
+                android:textColor="@color/gray2"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
