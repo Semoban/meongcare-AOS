@@ -11,9 +11,8 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) : View
-    {
+        savedInstanceState: Bundle?,
+    ): View {
         val fragmentCalendarBottomSheetBinding = FragmentCalendarBottomSheetBinding.inflate(inflater)
 
         return fragmentCalendarBottomSheetBinding.root

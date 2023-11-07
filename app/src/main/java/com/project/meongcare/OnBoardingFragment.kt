@@ -15,24 +15,24 @@ class OnBoardingFragment : Fragment() {
     private lateinit var viewPagerAdapter : ViewPagerAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View
-    {
-
+    ): View {
         val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
         viewPagerAdapter = ViewPagerAdapter(this)
 
         fragmentOnBoardingBinding.run {
             viewPagerOnBoarding.adapter = viewPagerAdapter
 
-            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding){ tab: Tab, i: Int ->
+            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding) { tab: Tab, i: Int ->
                 viewPagerOnBoarding.currentItem = tab.position
             }.attach()
 
-            tabLayoutOnBoarding.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            tabLayoutOnBoarding.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener
+            {
                 override fun onTabSelected(tab: Tab?) {
-                    buttonOnBoardingStart.visibility = when(tab!!.position){
+                    buttonOnBoardingStart.visibility = when (tab!!.position) {
                         2 -> View.VISIBLE
                         else -> View.INVISIBLE
                     }
@@ -47,14 +47,14 @@ class OnBoardingFragment : Fragment() {
     }
 }
 
-class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
+class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0-> FirstOnBoardingFragment()
-            1-> SecondOnBoardingFragment()
-            else-> ThirdOnBoardingFragment()
+            0 -> FirstOnBoardingFragment()
+            1 -> SecondOnBoardingFragment()
+            else -> ThirdOnBoardingFragment()
         }
     }
 }

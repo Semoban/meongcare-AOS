@@ -14,9 +14,8 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) : View
-    {
+        savedInstanceState: Bundle?,
+    ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
