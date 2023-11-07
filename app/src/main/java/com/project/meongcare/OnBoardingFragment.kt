@@ -25,21 +25,25 @@ class OnBoardingFragment : Fragment() {
         fragmentOnBoardingBinding.run {
             viewPagerOnBoarding.adapter = viewPagerAdapter
 
-            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding) { tab: Tab, i: Int ->
+            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding) { tab: Tab, _ ->
                 viewPagerOnBoarding.currentItem = tab.position
             }.attach()
 
-            tabLayoutOnBoarding.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: Tab?) {
-                    buttonOnBoardingStart.visibility = when (tab!!.position) {
-                        2 -> View.VISIBLE
-                        else -> View.INVISIBLE
+            tabLayoutOnBoarding.addOnTabSelectedListener(
+                object : TabLayout.OnTabSelectedListener
+                    {
+                    override fun onTabSelected(tab: Tab?) {
+                        buttonOnBoardingStart.visibility =
+                            when (tab!!.position) {
+                                2 -> View.VISIBLE
+                                else -> View.INVISIBLE
+                            }
                     }
-                }
 
-                override fun onTabUnselected(tab: Tab?) {}
-                override fun onTabReselected(tab: Tab?) {}
-            })
+                        override fun onTabUnselected(tab: Tab?) {}
+                        override fun onTabReselected(tab: Tab?) {}
+                    }
+            )
         }
 
         return fragmentOnBoardingBinding.root
