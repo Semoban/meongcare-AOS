@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="#F4F4F4">
+        app:strokeColor="@color/gray2">
 
         <ImageView
             android:id="@+id/imageview_oldfeed"
@@ -30,9 +30,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:text="브랜드명"
-        android:textAppearance="@style/Typography.Regular"
-        android:textColor="#949494"
-        android:textSize="14sp"
+        android:textAppearance="@style/Typography.Body2.Regular"
+        android:textColor="@color/gray4"
         app:layout_constraintStart_toEndOf="@id/cardview_searchfeed_image"
         app:layout_constraintTop_toTopOf="@id/cardview_searchfeed_image" />
 
@@ -43,8 +42,8 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="14dp"
         android:text="사료명"
-        android:textAppearance="@style/Typography.Medium"
-        android:textSize="16sp"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/cardview_searchfeed_image"
         app:layout_constraintStart_toStartOf="@id/textview_searchfeed_brand"
         app:layout_constraintTop_toBottomOf="@id/textview_searchfeed_brand" />
