@@ -12,13 +12,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.project.meongcare.databinding.FragmentOnBoardingBinding
 
 class OnBoardingFragment : Fragment() {
-
     private lateinit var viewPagerAdapter : ViewPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View
+    {
 
         val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
         viewPagerAdapter = ViewPagerAdapter(this)
@@ -26,13 +26,13 @@ class OnBoardingFragment : Fragment() {
         fragmentOnBoardingBinding.run {
             viewPagerOnBoarding.adapter = viewPagerAdapter
 
-            TabLayoutMediator(tabLayout, viewPagerOnBoarding){ tab: TabLayout.Tab, i: Int ->
-                viewPagerOnBoarding.setCurrentItem(tab.position)
+            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding){ tab: Tab, i: Int ->
+                viewPagerOnBoarding.currentItem = tab.position
             }.attach()
 
-            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            tabLayoutOnBoarding.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: Tab?) {
-                    button.visibility = when(tab!!.position){
+                    buttonOnBoardingStart.visibility = when(tab!!.position){
                         2 -> View.VISIBLE
                         else -> View.INVISIBLE
                     }

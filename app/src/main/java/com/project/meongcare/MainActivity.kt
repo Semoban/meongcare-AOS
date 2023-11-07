@@ -6,23 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.project.meongcare.databinding.ActivityMainBinding
-import java.lang.IllegalArgumentException
 
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var activityMainBinding : ActivityMainBinding
+    private lateinit var activityMainBinding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-
         activityMainBinding.run {
             bottomNavigationViewMain.background = null
             bottomNavigationViewMain.menu.getItem(1).isEnabled = false
@@ -62,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //fab menu 나타나는 애니메이션
-    private fun floatingButtonOutAnimation(binding: ActivityMainBinding){
+    private fun floatingButtonOutAnimation(binding: ActivityMainBinding) {
         //체중 fab
         val weightTxOut = PropertyValuesHolder.ofFloat("translationX", -330f)
         val weightTyOut = PropertyValuesHolder.ofFloat("translationY", -150f)
@@ -115,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //fab menu 없어지는 애니메이션
-    private fun floatingButtonInAnimation(binding: ActivityMainBinding){
+    private fun floatingButtonInAnimation(binding: ActivityMainBinding) {
         val txIn = PropertyValuesHolder.ofFloat("translationX", 0f)
         val tyIn = PropertyValuesHolder.ofFloat("translationY", 0f)
 

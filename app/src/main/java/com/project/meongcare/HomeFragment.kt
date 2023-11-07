@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import com.project.meongcare.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
-    lateinit var fragmentHomeBinding: FragmentHomeBinding
-    lateinit var mainActivity: MainActivity
+    private lateinit var fragmentHomeBinding : FragmentHomeBinding
+    private lateinit var mainActivity : MainActivity
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ) : View
+    {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
         fragmentHomeBinding.run {
-            imageViewCalendar.setOnClickListener {
+            imageViewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
