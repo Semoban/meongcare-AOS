@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <EditText
         android:id="@+id/edittext_searchfeed_search"
@@ -20,14 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="29dp"
         android:background="@drawable/all_rect_r10"
-        android:backgroundTint="#F4F4F4"
+        android:backgroundTint="@color/gray2"
+        android:drawableEnd="@drawable/all_search_18dp"
         android:hint="검색어를 입력해주세요"
         android:paddingHorizontal="16dp"
-        android:drawableEnd="@drawable/pet_food_search"
         android:paddingVertical="13dp"
-        android:textAppearance="@style/Typography.Medium"
-        android:textColorHint="#949494"
-        android:textSize="16sp"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColorHint="@color/gray4"
         app:layout_constraintBottom_toBottomOf="@id/toolbar_searchfeed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/toolbar_searchfeed"
@@ -48,16 +47,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="36dp"
-        android:paddingVertical="12dp"
-        android:background="@drawable/all_rect_r5"
         android:layout_marginTop="16dp"
+        android:background="@drawable/all_rect_r5"
+        android:backgroundTint="@color/gray3"
+        android:paddingVertical="12dp"
         android:text="직접 입력하기"
-        android:backgroundTint="#D9D9D9"
-        android:textAppearance="@style/Typography.SemiBold"
-        android:textSize="16sp"
-        android:textColor="#6A6A6A"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/Typography.Bottom2.SemiBold"
+        android:textColor="@color/gray5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerview_searchfeed_result" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
