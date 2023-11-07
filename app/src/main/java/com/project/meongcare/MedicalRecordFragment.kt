@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.project.meongcare.databinding.FragmentMedicalRecordBinding
 
 class MedicalRecordFragment : Fragment() {
-
     private lateinit var binding: FragmentMedicalRecordBinding
 
     override fun onCreateView(
