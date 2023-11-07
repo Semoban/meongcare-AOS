@@ -47,6 +47,7 @@ android {
     }
     buildFeatures {
         dataBinding true
+        viewBinding = true
     }
 }
 
@@ -100,4 +101,8 @@ dependencies {
     // CalendarView
     implementation 'com.kizitonwose.calendar:view:2.4.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
+    // Calendar
+    implementation 'io.github.architshah248.calendar:awesome-calendar:2.0.0'
+
 }
