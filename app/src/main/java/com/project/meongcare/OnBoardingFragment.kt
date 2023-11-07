@@ -31,17 +31,18 @@ class OnBoardingFragment : Fragment() {
 
             tabLayoutOnBoarding.addOnTabSelectedListener(
                 object : TabLayout.OnTabSelectedListener
-                {
-                    override fun onTabSelected(tab: Tab?) {
-                        buttonOnBoardingStart.visibility = when (tab!!.position) {
-                            2 -> View.VISIBLE
-                            else -> View.INVISIBLE
+                    {
+                        override fun onTabSelected(tab: Tab?) {
+                            buttonOnBoardingStart.visibility = when (tab!!.position)
+                                {
+                                    2 -> View.VISIBLE
+                                    else -> View.INVISIBLE
+                                }
                         }
-                    }
 
-                    override fun onTabUnselected(tab: Tab?) {}
-                    override fun onTabReselected(tab: Tab?) {}
-                }
+                        override fun onTabUnselected(tab: Tab?) {}
+                        override fun onTabReselected(tab: Tab?) {}
+                    }
             )
         }
 
