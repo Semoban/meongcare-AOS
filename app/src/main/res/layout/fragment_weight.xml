@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
+    android:background="@color/background"
     tools:context=".WeightFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:title="10.04 목"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Typography.Title2.SemiBold" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,9 +40,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="편집"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#949494"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,8 +71,8 @@
                         android:layout_marginStart="2dp"
                         android:layout_marginTop="17dp"
                         android:text="체중"
-                        android:textAppearance="@style/Typography.SemiBold"
-                        android:textColor="#222227"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -81,10 +83,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="14dp"
-                        android:text="현재 설정되어 있는 체중입니다."
-                        android:textAppearance="@style/Typography.Regular"
-                        android:textColor="#949494"
-                        android:textSize="12sp"
+                        android:text="현재 김먼지님의 체중입니다."
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/gray4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_recordtitle"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
@@ -96,8 +97,8 @@
                         android:layout_marginTop="27dp"
                         android:layout_marginBottom="20dp"
                         android:text="0.0KG"
-                        android:textAppearance="@style/Typography.SemiBold"
-                        android:textSize="24sp"
+                        android:textAppearance="@style/Typography.Title1.SemiBold"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -126,8 +127,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="김먼지님의 체중변화를 기록했어요!"
-                        android:textAppearance="@style/Typography.SemiBold"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,6 +138,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="김먼지님의 주 별 체중변화"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray5"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_weeklyrecordtitle"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordtitle" />
 
@@ -172,8 +175,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="이번달은 지난달 대비 증가했어요!"
-                        android:textAppearance="@style/Typography.SemiBold"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -183,9 +186,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="지난달 대비 0.23kg가 증가했어요!"
-                        android:textAppearance="@style/Typography.Regular"
-                        android:textColor="#6A6A6A"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray5"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_monthlyrecordtitle"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_monthlyrecordtitle" />
 
