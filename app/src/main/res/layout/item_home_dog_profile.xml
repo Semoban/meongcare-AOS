@@ -7,16 +7,16 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_dog_image_bg" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewHomeDogProfileDogImage"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
         android:maxWidth="51dp"
         android:maxHeight="51dp"
         app:layout_constraintBottom_toBottomOf="@id/imageView1"
@@ -28,9 +28,8 @@
         android:id="@+id/textViewHomeDogProfileRowDogName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_regular"
-        android:textColor="#000000"
-        android:textSize="13sp"
+        android:letterSpacing="-0.02"
+        android:textAppearance="@style/Typography.Body3.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView1" />

@@ -19,7 +19,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/all_arrow_back_20dp"
+            android:src="@drawable/all_arrow_back_18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/pretendard_semi_bold"
+            android:letterSpacing="-0.02"
             android:text="알림"
             android:textColor="#222227"
             android:textSize="20sp"
@@ -39,10 +40,10 @@
 
         <ImageView
             android:id="@+id/imageViewNoticeDelete"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="18dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/all_delete_22dp"
+            android:src="@drawable/all_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

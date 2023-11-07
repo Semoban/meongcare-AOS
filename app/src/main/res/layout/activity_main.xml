@@ -28,16 +28,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            app:fabAlignmentMode="center"
+            app:fabAnchorMode="cradle"
             app:fabCradleMargin="8dp"
             app:fabCradleRoundedCornerRadius="0dp"
             app:fabCradleVerticalOffset="0dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigationViewMain"
+                style="@style/Typography.Body3.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
+                app:itemIconSize="20dp"
+                app:itemIconTint="@color/color_bottom_nav_menu_item"
+                app:itemTextColor="@color/color_bottom_nav_menu_item"
+                app:labelVisibilityMode="labeled"
                 app:menu="@menu/menu_main" />
         </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -47,7 +54,7 @@
             android:layout_height="52dp"
             android:clickable="true"
             android:src="@drawable/main_fab_unclicked"
-            app:backgroundTint="#FF7A00"
+            app:backgroundTint="@color/main4"
             app:fabCustomSize="52dp"
             app:layout_anchor="@id/bottomAppBarMain"
             app:tint="@null" />
@@ -58,7 +65,7 @@
         android:id="@+id/overlayLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B3000000"
+        android:background="@color/black60"
         android:visibility="gone">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,10 +88,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:letterSpacing="-0.02"
             android:text="체중"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:textColor="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabNutrition"
@@ -106,10 +113,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:letterSpacing="-0.02"
             android:text="영양제"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:textColor="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabSymptom"
@@ -131,10 +138,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:letterSpacing="-0.02"
             android:text="이상증상"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:textColor="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabFeces"
@@ -156,10 +163,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:letterSpacing="-0.02"
             android:text="대소변"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:textColor="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabFood"
@@ -181,10 +188,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:letterSpacing="-0.02"
             android:text="사료"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:textColor="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabCancel"
