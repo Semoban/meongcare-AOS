@@ -2,10 +2,10 @@ package com.project.meongcare
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.project.meongcare.databinding.ActivityMainBinding
 
 
@@ -31,9 +31,11 @@ class MainActivity : AppCompatActivity() {
                         R.id.menuMainBottomNavHome -> {
                             Log.d("Test", "Home")
                         }
+
                         R.id.menuMainBottomNavMedicalRecord -> {
                             Log.d("Test", "Record")
                         }
+
                         else -> Log.d("Test", "else")
                     }
 
@@ -60,7 +62,8 @@ class MainActivity : AppCompatActivity() {
         // 체중 fab
         val weightTxOut = PropertyValuesHolder.ofFloat("translationX", -330f)
         val weightTyOut = PropertyValuesHolder.ofFloat("translationY", -150f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, weightTxOut, weightTyOut).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, weightTxOut, weightTyOut)
+            .setDuration(500).start()
 
         // 체중 txt
         ObjectAnimator.ofPropertyValuesHolder(
@@ -72,7 +75,8 @@ class MainActivity : AppCompatActivity() {
         // 사료 fab
         val foodTxOut = PropertyValuesHolder.ofFloat("translationX", 330f)
         val foodTyOut = PropertyValuesHolder.ofFloat("translationY", -150f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFood, foodTxOut, foodTyOut).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabFood, foodTxOut, foodTyOut)
+            .setDuration(500).start()
 
         // 사료 txt
         ObjectAnimator.ofPropertyValuesHolder(
@@ -85,12 +89,14 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofFloat(binding.fabSymptom, "translationY", -550f).setDuration(500).start()
 
         // 이상증상 txt
-        ObjectAnimator.ofFloat(binding.textViewSymptom, "translationY", -470f).setDuration(500).start()
+        ObjectAnimator.ofFloat(binding.textViewSymptom, "translationY", -470f).setDuration(500)
+            .start()
 
         // 영양제 fab
         val nutritionTxOut = PropertyValuesHolder.ofFloat("translationX", -250f)
         val nutritionTyOut = PropertyValuesHolder.ofFloat("translationY", -400f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, nutritionTxOut, nutritionTyOut).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, nutritionTxOut, nutritionTyOut)
+            .setDuration(500).start()
 
         // 영양제 txt
         ObjectAnimator.ofPropertyValuesHolder(
@@ -102,7 +108,8 @@ class MainActivity : AppCompatActivity() {
         // 대소변 fab
         val fecesTxOut = PropertyValuesHolder.ofFloat("translationX", 250f)
         val fecesTyOut = PropertyValuesHolder.ofFloat("translationY", -400f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFeces, fecesTxOut, fecesTyOut).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabFeces, fecesTxOut, fecesTyOut)
+            .setDuration(500).start()
 
         // 대소변 txt
         ObjectAnimator.ofPropertyValuesHolder(
@@ -118,16 +125,19 @@ class MainActivity : AppCompatActivity() {
         val tyIn = PropertyValuesHolder.ofFloat("translationY", 0f)
 
         // 체중 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, txIn, tyIn).setDuration(500)
+            .start()
 
         // 체중 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewWeight, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.textViewWeight, txIn, tyIn).setDuration(500)
+            .start()
 
         // 사료 fab
         ObjectAnimator.ofPropertyValuesHolder(binding.fabFood, txIn, tyIn).setDuration(500).start()
 
         // 사료 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFood, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFood, txIn, tyIn).setDuration(500)
+            .start()
 
         // 이상증상 fab
         ObjectAnimator.ofFloat(binding.fabSymptom, "translationY", 0f).setDuration(500).start()
@@ -136,15 +146,18 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofFloat(binding.textViewSymptom, "translationY", 0f).setDuration(500).start()
 
         // 영양제 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, txIn, tyIn).setDuration(500)
+            .start()
 
         // 영양제 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewNutrition, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.textViewNutrition, txIn, tyIn)
+            .setDuration(500).start()
 
         // 대소변 fab
         ObjectAnimator.ofPropertyValuesHolder(binding.fabFeces, txIn, tyIn).setDuration(500).start()
 
         // 대소변 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFeces, txIn, tyIn).setDuration(500).start()
+        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFeces, txIn, tyIn).setDuration(500)
+            .start()
     }
 }

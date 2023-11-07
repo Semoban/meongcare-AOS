@@ -13,7 +13,8 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val fragmentCalendarBottomSheetBinding = FragmentCalendarBottomSheetBinding.inflate(inflater)
+        val fragmentCalendarBottomSheetBinding =
+            FragmentCalendarBottomSheetBinding.inflate(inflater)
 
         return fragmentCalendarBottomSheetBinding.root
     }
