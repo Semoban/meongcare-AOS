@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recordshare_header">기록공유</string>
+    <string name="recordshare_input_email">계정을 입력해주세요</string>
+    <string name="recordshare_check_email">계정확인</string>
+    <string name="recordshare_select_pet">반려동물 선택</string>
+    <string name="recordshare_select_pet_description">반려동물 아이콘을 클릭하여 기록 공유를 할 반려동물을 선택하세요</string>
+    <string name="recordshare_share">기록 공유하기</string>
+</resources>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recordshare_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="12dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recordshare_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recordshare_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_recordshare_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/all_arrow_back_20dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
+            app:layout_constraintTop_toTopOf="@id/guideline_recordshare_top" />
+
+        <TextView
+            android:id="@+id/textview_recordshare_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:textAppearance="@style/Typography.Title2.SemiBold"
+            android:text="@string/recordshare_header"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_recordshare_back"
+            app:layout_constraintStart_toEndOf="@id/imagebutton_recordshare_back"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_recordshare_back" />
+
+        <View
+            android:id="@+id/view_recordshare_email"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="39dp"
+            android:background="#F8F8F8"
+            app:layout_constraintEnd_toEndOf="@id/guideline_recordshare_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
+            app:layout_constraintTop_toBottomOf="@id/imagebutton_recordshare_back" />
+
+        <EditText
+            android:id="@+id/eittext_recordshare_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/recordshare_input_email"
+            android:textColorHint="#909090"
+            android:background="@null"
+            android:textAppearance="@style/Typography.Body1.Regular"
+            android:textColor="#909090"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_recordshare_email"
+            app:layout_constraintStart_toStartOf="@id/view_recordshare_email"
+            app:layout_constraintTop_toTopOf="@id/view_recordshare_email"
+            app:layout_constraintEnd_toStartOf="@id/textview_recordshare_check_email" />
+
+        <TextView
+            android:id="@+id/textview_recordshare_check_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/all_rect_r12"
+            android:backgroundTint="#FF7A00"
+            android:textAppearance="@style/Typography.Body3.Medium"
+            android:paddingHorizontal="11dp"
+            android:paddingVertical="5dp"
+            android:text="@string/recordshare_check_email"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/view_recordshare_email"
+            app:layout_constraintEnd_toEndOf="@id/view_recordshare_email"
+            app:layout_constraintTop_toTopOf="@id/view_recordshare_email" />
+
+        <TextView
+            android:id="@+id/textview_recordshare_selection_pet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="35dp"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:text="@string/recordshare_select_pet"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_recordshare_email" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_recordshare_pet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/guideline_recordshare_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
+            app:layout_constraintTop_toBottomOf="@id/textview_recordshare_selection_pet"
+            tools:listitem="@layout/item_pet_share" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/Typography.Body3.Regular"
+            android:text="@string/recordshare_select_pet_description"
+            android:textColor="#8D8D8D"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
+            app:layout_constraintEnd_toEndOf="@id/guideline_recordshare_end"
+            app:layout_constraintTop_toBottomOf="@id/recyclerview_recordshare_pet" />
+
+        <include
+            android:id="@+id/layout_recordshare_share"
+            bind:buttonText="@{@string/recordshare_share}"
+            layout="@layout/layout_footer_one_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
