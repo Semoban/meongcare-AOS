@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
         android:id="@+id/scrollview_excretaadd"
@@ -43,14 +43,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/all_rect_r5"
-                android:drawableEnd="@drawable/all_calendar_17dp"
+                android:drawableEnd="@drawable/all_calendar"
                 android:hint="날짜를 선택해주세요"
                 android:paddingVertical="14dp"
                 android:paddingStart="17dp"
                 android:paddingEnd="16dp"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColorHint="#949494"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="@id/imageview_excretaadd_picture"
                 app:layout_constraintStart_toStartOf="@id/imageview_excretaadd_picture"
                 app:layout_constraintTop_toBottomOf="@id/imageview_excretaadd_picture" />
@@ -61,8 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="종류"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edittext_excretaadd_date" />
 
@@ -82,8 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="소변"
-                android:textAppearance="@style/Typography.Medium"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/imagebutton_excretaadd_urine"
                 app:layout_constraintStart_toEndOf="@id/imagebutton_excretaadd_urine"
                 app:layout_constraintTop_toTopOf="@id/imagebutton_excretaadd_urine" />
@@ -104,8 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="대변"
-                android:textAppearance="@style/Typography.Medium"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/imagebutton_excretaadd_feces"
                 app:layout_constraintStart_toEndOf="@id/imagebutton_excretaadd_feces"
                 app:layout_constraintTop_toTopOf="@id/imagebutton_excretaadd_feces" />
@@ -116,8 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="시각"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@id/textview_excretaadd_type"
                 app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_type" />
 
@@ -127,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="8dp"
+                android:numbersTextColor="@color/black"
                 android:timePickerMode="spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -139,12 +139,11 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginVertical="32dp"
                 android:background="@drawable/all_rect_r5"
-                android:backgroundTint="#FF7A00"
+                android:backgroundTint="@color/main4"
                 android:paddingVertical="12dp"
                 android:text="완료"
-                android:textAppearance="@style/Typography.SemiBold"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
                 android:textColor="@color/white"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
