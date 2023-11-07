@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_notification">알림 설정</string>
+    <string name="setting_urine_feces_image">대소변 사진 활성화</string>
+    <string name="setting_membership_withdrawal">회원탈퇴</string>
+</resources>
