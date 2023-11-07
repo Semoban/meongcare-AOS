@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="firstButtonText"
             type="String" />
@@ -23,16 +24,16 @@
             android:layout_marginStart="22dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="32dp"
+            android:background="@drawable/all_rect_r4"
+            android:stateListAnimator="@null"
             android:text="@{firstButtonText}"
+            android:textAppearance="@style/Typography.Bottom1.SemiBold"
             android:textColor="#7E7E7E"
             android:textSize="18sp"
-            android:stateListAnimator="@null"
-            android:background="@drawable/all_rect_r4"
-            android:textAppearance="@style/Typography.Bottom1.SemiBold"
-            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_footertwo_second"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/button_footertwo_second" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -40,16 +41,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="22dp"
-            android:text="@{secondButtonText}"
             android:background="@drawable/all_rect_r4"
             android:backgroundTint="#FF7A00"
-            android:textSize="18sp"
             android:stateListAnimator="@null"
-            android:textColor="@color/white"
+            android:text="@{secondButtonText}"
             android:textAppearance="@style/Typography.Bottom1.SemiBold"
-            app:layout_constraintStart_toEndOf="@id/button_footertwo_first"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/button_footertwo_first"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_footertwo_first" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

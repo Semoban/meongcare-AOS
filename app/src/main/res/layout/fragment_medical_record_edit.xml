@@ -59,8 +59,8 @@
             android:id="@+id/button_medicalcrecordedit_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/all_circle_border_gray"
             android:layout_marginTop="27dp"
+            android:background="@drawable/all_circle_border_gray"
             app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
             app:layout_constraintTop_toBottomOf="@id/imagebutton_medicalrecordedit_back" />
 
@@ -68,13 +68,13 @@
             android:id="@+id/textview_medicalrecordedit_delete_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@string/all_deleteall"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textColor="@color/gray4"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/btn_medicalcrecordedit_select"
-            app:layout_constraintTop_toTopOf="@id/btn_medicalcrecordedit_select"
-            app:layout_constraintBottom_toBottomOf="@id/btn_medicalcrecordedit_select"/>
+            app:layout_constraintBottom_toBottomOf="@id/button_medicalcrecordedit_select"
+            app:layout_constraintStart_toEndOf="@id/button_medicalcrecordedit_select"
+            app:layout_constraintTop_toTopOf="@id/button_medicalcrecordedit_select" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_medicalrecordedit"
@@ -91,11 +91,11 @@
 
         <include
             android:id="@+id/layout_medicalrecordedit_footer"
+            bind:firstButtonText="@{@string/all_cancel}"
+            bind:secondButtonText="@{@string/all_delete}"
             layout="@layout/layout_footer_two_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            bind:firstButtonText="@{@string/all_cancel}"
-            bind:secondButtonText="@{@string/all_delete}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
