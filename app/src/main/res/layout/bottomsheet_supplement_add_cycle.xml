@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_supplement_add_cycle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="37dp"
+    android:paddingRight="37dp">
+
+    <ImageView
+        android:id="@+id/imageView_bottomsheet_supplement_add_cycle_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:text="섭취 주기"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView__bottomsheet_supplement_add_cycle_number_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/nutrition_outline_minus" />
+
+        <TextView
+            android:id="@+id/textView__bottomsheet_supplement_add_cycle_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imageView__bottomsheet_supplement_add_cycle_number_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/supplement_add_btn_plus" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button__bottomsheet_supplement_add_cycle_complete"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/all_rec_main4_r5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>
