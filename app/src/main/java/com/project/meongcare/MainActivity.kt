@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofPropertyValuesHolder(
             binding.textViewWeight,
             weightTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -70f)
+            PropertyValuesHolder.ofFloat("translationY", -70f),
         ).setDuration(500).start()
 
         // 사료 fab
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofPropertyValuesHolder(
             binding.textViewFood,
             foodTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -70f)
+            PropertyValuesHolder.ofFloat("translationY", -70f),
         ).setDuration(500).start()
 
         // 이상증상 fab
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofPropertyValuesHolder(
             binding.textViewNutrition,
             nutritionTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -320f)
+            PropertyValuesHolder.ofFloat("translationY", -320f),
         ).setDuration(500).start()
 
         // 대소변 fab
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         ObjectAnimator.ofPropertyValuesHolder(
             binding.textViewFeces,
             fecesTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -320f)
+            PropertyValuesHolder.ofFloat("translationY", -320f),
         ).setDuration(500).start()
     }
 

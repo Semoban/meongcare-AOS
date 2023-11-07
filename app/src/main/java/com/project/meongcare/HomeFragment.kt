@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import com.project.meongcare.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    private lateinit var fragmentHomeBinding : FragmentHomeBinding
-    private lateinit var mainActivity : MainActivity
+    private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
