@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
+    android:background="@color/background"
     tools:context=".ExcretaFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -17,7 +17,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="10.04 목"
         app:titleCentered="true"
-        app:titleTextColor="#222227" />
+        app:titleTextAppearance="@style/Typography.Title2.SemiBold"
+        app:titleTextColor="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,9 +37,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="초코님의 기록"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textColor="#222227"
-                android:textSize="20sp"
+                android:textAppearance="@style/Typography.Title2.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,9 +50,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="추가"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#6A6A6A"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray5"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excreta_name"
                 app:layout_constraintEnd_toStartOf="@id/textview_excreta_editbutton"
                 app:layout_constraintTop_toTopOf="@id/textview_excreta_name" />
@@ -65,9 +64,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="편집"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#6A6A6A"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray5"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excreta_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/textview_excreta_name" />
@@ -91,13 +89,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/all_rect_r5"
-                android:backgroundTint="#99FFE8D3"
+                android:backgroundTint="@color/main1"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="대변 1회"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#FF7A00"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/main4"
                 app:layout_constraintStart_toStartOf="@id/view_excreta_record"
                 app:layout_constraintTop_toTopOf="@id/view_excreta_record" />
 
@@ -107,13 +104,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/all_rect_r5"
-                android:backgroundTint="#99ECF8FF"
+                android:backgroundTint="@color/sub2"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="소변 1회"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#5AC4FF"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/sub3"
                 app:layout_constraintStart_toEndOf="@id/textview_excreta_numberfeces"
                 app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
 
