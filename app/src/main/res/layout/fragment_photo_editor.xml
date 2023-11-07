@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".PhotoEditorFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_photoeditor_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="24dp" />
+        <TextView
+            android:id="@+id/imagebutton_photoeditor_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:background="@null"
+            android:text="@string/all_cancel"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_imageeditor_rotate_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_imageeditor_rotate_right" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_imageeditor_rotate_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/photo_editor_rotate_right"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_imageeditor_return"
+            app:layout_constraintEnd_toStartOf="@id/imagebutton_imageeditor_return"
+            app:layout_constraintStart_toEndOf="@id/imagebutton_photoeditor_cancel"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_imageeditor_return" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_imageeditor_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/photo_editor_rotate"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_photoeditor_bottom"
+            app:layout_constraintEnd_toStartOf="@id/imagebutton_imageeditor_rotate_left"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@id/imagebutton_imageeditor_rotate_right" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_imageeditor_rotate_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/photo_editor_rotate_left"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_imageeditor_return"
+            app:layout_constraintEnd_toStartOf="@id/textview_imageeditor_completion"
+            app:layout_constraintStart_toEndOf="@id/imagebutton_imageeditor_return"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_imageeditor_return" />
+
+        <TextView
+            android:id="@+id/textview_imageeditor_completion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="31dp"
+            android:background="@drawable/all_rect_r12"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="3dp"
+            android:text="@string/all_completion"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="#FF7A00"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_imageeditor_rotate_left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_imageeditor_rotate_left" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
