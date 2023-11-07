@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
         android:id="@+id/scrollview_feed"
@@ -34,9 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:text="하림"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textColor="#949494"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,8 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="더리얼 치킨 애견 사료"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
                 app:layout_constraintEnd_toEndOf="@id/textview_feed_brand"
                 app:layout_constraintStart_toStartOf="@id/textview_feed_brand"
                 app:layout_constraintTop_toBottomOf="@id/textview_feed_brand" />
@@ -70,7 +68,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/all_rect_r10"
-                android:backgroundTint="#F9F9F9"
+                android:backgroundTint="@color/gray1"
                 app:layout_constraintEnd_toStartOf="@id/view_feed_dailyintake"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,9 +81,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="섭취일수"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textColor="#222227"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@id/view_feed_intakeperiod"
                 app:layout_constraintTop_toTopOf="@id/view_feed_intakeperiod" />
 
@@ -97,9 +94,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
                 android:text="50일"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#222227"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/view_feed_intakeperiod"
                 app:layout_constraintEnd_toEndOf="@id/view_feed_intakeperiod"
                 app:layout_constraintTop_toBottomOf="@id/textview_feed_intakeperiodtitle" />
@@ -110,7 +106,7 @@
                 android:layout_height="87dp"
                 android:layout_marginEnd="29dp"
                 android:background="@drawable/all_rect_r10"
-                android:backgroundTint="#F9F9F9"
+                android:backgroundTint="@color/gray1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/view_feed_intakeperiod"
@@ -123,9 +119,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="하루 섭취량"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textColor="#222227"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@id/view_feed_dailyintake"
                 app:layout_constraintTop_toTopOf="@id/view_feed_dailyintake" />
 
@@ -137,9 +132,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
                 android:text="10g"
-                android:textAppearance="@style/Typography.Medium"
-                android:textColor="#222227"
-                android:textSize="16sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/view_feed_dailyintake"
                 app:layout_constraintEnd_toEndOf="@id/view_feed_dailyintake"
                 app:layout_constraintTop_toBottomOf="@id/textview_feed_dailyintaketitle" />
@@ -151,8 +145,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="늘 먹던 사료 어때요?"
-                android:textAppearance="@style/Typography.SemiBold"
-                android:textSize="20sp"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_feed_dailyintake" />
 
@@ -174,12 +168,11 @@
                 android:layout_marginHorizontal="36dp"
                 android:layout_marginVertical="32dp"
                 android:background="@drawable/all_rect_r5"
-                android:backgroundTint="#FF7A00"
+                android:backgroundTint="@color/main4"
                 android:paddingVertical="12dp"
                 android:text="다른 사료로 변경하기"
-                android:textAppearance="@style/Typography.SemiBold"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
                 android:textColor="@color/white"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
