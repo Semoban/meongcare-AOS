@@ -77,7 +77,7 @@
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
-    <style name="Typography.Body1.Light" parent="Typography.Body2">
+    <style name="Typography.Body2.Light" parent="Typography.Body2">
         <item name="fontFamily">@font/pretendard_light</item>
     </style>
 
