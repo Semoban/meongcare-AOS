@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import com.project.meongcare.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
-
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
         return binding.root
