@@ -13,8 +13,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp"
-        app:title="초코님의 기록" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp"
+        app:title="초코님의 기록"
+        app:titleTextAppearance="@style/Typography.Title3.SemiBold"
+        app:titleTextColor="@color/black" />
 
     <ImageButton
         android:id="@+id/imagebutton_excretarecordedit_selectall"
@@ -34,9 +36,8 @@
         android:clickable="true"
         android:focusable="true"
         android:text="전체 선택"
-        android:textAppearance="@style/Typography.Medium"
-        android:textColor="#949494"
-        android:textSize="16sp"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/gray4"
         app:layout_constraintBottom_toBottomOf="@id/imagebutton_excretarecordedit_selectall"
         app:layout_constraintStart_toEndOf="@id/imagebutton_excretarecordedit_selectall"
         app:layout_constraintTop_toTopOf="@id/imagebutton_excretarecordedit_selectall" />
@@ -62,9 +63,8 @@
         android:background="@drawable/all_rect_r4"
         android:paddingVertical="12dp"
         android:text="취소"
-        android:textAppearance="@style/Typography.SemiBold"
-        android:textColor="#6A6A6A"
-        android:textSize="18sp"
+        android:textAppearance="@style/Typography.Bottom1.SemiBold"
+        android:textColor="@color/gray5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_excretarecordedit_delete"
         app:layout_constraintStart_toStartOf="parent" />
@@ -75,12 +75,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="22dp"
         android:background="@drawable/all_rect_r4"
-        android:backgroundTint="#FF7A00"
+        android:backgroundTint="@color/main4"
         android:paddingVertical="12dp"
         android:text="삭제"
-        android:textAppearance="@style/Typography.SemiBold"
+        android:textAppearance="@style/Typography.Bottom1.SemiBold"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/button_excretarecordedit_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_excretarecordedit_cancel"
