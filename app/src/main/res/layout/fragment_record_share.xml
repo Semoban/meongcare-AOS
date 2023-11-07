@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/all_arrow_back_20dp"
+            android:src="@drawable/all_arrow_back_18dp"
             app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
             app:layout_constraintTop_toTopOf="@id/guideline_recordshare_top" />
 
@@ -46,8 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="27dp"
-            android:textAppearance="@style/Typography.Title2.SemiBold"
             android:text="@string/recordshare_header"
+            android:textAppearance="@style/Typography.Title2.SemiBold"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/imagebutton_recordshare_back"
             app:layout_constraintStart_toEndOf="@id/imagebutton_recordshare_back"
@@ -68,18 +68,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="@string/recordshare_input_email"
-            android:textColorHint="#909090"
+            android:layout_marginEnd="10dp"
             android:background="@null"
+            android:hint="@string/recordshare_input_email"
+            android:maxLines="1"
             android:textAppearance="@style/Typography.Body1.Regular"
             android:textColor="#909090"
+            android:textColorHint="#909090"
             android:textSize="16sp"
-            android:maxLines="1"
-            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="@id/view_recordshare_email"
+            app:layout_constraintEnd_toStartOf="@id/textview_recordshare_check_email"
             app:layout_constraintStart_toStartOf="@id/view_recordshare_email"
-            app:layout_constraintTop_toTopOf="@id/view_recordshare_email"
-            app:layout_constraintEnd_toStartOf="@id/textview_recordshare_check_email" />
+            app:layout_constraintTop_toTopOf="@id/view_recordshare_email" />
 
         <TextView
             android:id="@+id/textview_recordshare_check_email"
@@ -88,10 +88,10 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/all_rect_r12"
             android:backgroundTint="#FF7A00"
-            android:textAppearance="@style/Typography.Body3.Medium"
             android:paddingHorizontal="11dp"
             android:paddingVertical="5dp"
             android:text="@string/recordshare_check_email"
+            android:textAppearance="@style/Typography.Body3.Medium"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/view_recordshare_email"
@@ -104,8 +104,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="35dp"
-            android:textAppearance="@style/Typography.Body1.Medium"
             android:text="@string/recordshare_select_pet"
+            android:textAppearance="@style/Typography.Body1.Medium"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_recordshare_email" />
@@ -126,12 +126,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/Typography.Body3.Regular"
             android:text="@string/recordshare_select_pet_description"
+            android:textAppearance="@style/Typography.Body3.Regular"
             android:textColor="#8D8D8D"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_recordshare_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_recordshare_start"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_recordshare_pet" />
 
         <include
