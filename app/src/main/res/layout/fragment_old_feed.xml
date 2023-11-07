@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_oldfeed"
