@@ -13,8 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_all"
-        app:navigationIcon="@drawable/all_arrow_back_18dp" />
+        app:menu="@menu/menu_all" />
 
     <ScrollView
         android:id="@+id/scrollview_excretainfo"
