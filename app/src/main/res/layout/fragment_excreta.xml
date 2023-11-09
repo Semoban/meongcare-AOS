@@ -90,8 +90,8 @@
                         android:id="@+id/textview_excreta_numberfeces"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginStart="20dp"
                         android:background="@drawable/all_rect_r5"
                         android:backgroundTint="@color/main1"
                         android:gravity="center"
@@ -118,11 +118,12 @@
                         app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_excreta_record"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="24dp"
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
