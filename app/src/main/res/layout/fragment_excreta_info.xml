@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_all"
         app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
@@ -26,34 +27,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageview_excretainfo_picture"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginHorizontal="66dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/all_rect_gray2_30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edittext_excretainfo_date"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_excretainfo_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="31dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/excreta_image_visibility_off">
+
+                    <ImageView
+                        android:id="@+id/imageview_excretainfo_visibility_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="44dp"
+                        android:background="@drawable/excreta_visibility_off"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="33dp"
+                        android:text="본 사진은 대소변에 대한\n정보를 담고 있습니다"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/imageview_excretainfo_visibility_off"
+                        app:layout_constraintStart_toStartOf="@id/imageview_excretainfo_visibility_off"
+                        app:layout_constraintTop_toBottomOf="@+id/imageview_excretainfo_visibility_off" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textview_excretainfo_datetitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:text="날짜"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardview_excretainfo_image" />
+
+            <TextView
+                android:id="@+id/textview_excretainfo_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
-                android:drawableEnd="@drawable/all_calendar"
-                android:hint="날짜를 선택해주세요"
+                android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
-                android:paddingStart="17dp"
-                android:paddingEnd="16dp"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:text="0000년 00월 00일"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/black"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintEnd_toEndOf="@id/imageview_excretainfo_picture"
-                app:layout_constraintStart_toStartOf="@id/imageview_excretainfo_picture"
-                app:layout_constraintTop_toBottomOf="@id/imageview_excretainfo_picture" />
+                app:layout_constraintEnd_toEndOf="@id/cardview_excretainfo_image"
+                app:layout_constraintStart_toStartOf="@id/textview_excretainfo_date"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretainfo_datetitle" />
 
             <TextView
                 android:id="@+id/textview_excretainfo_type"
@@ -64,14 +104,15 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_excretainfo_date" />
+                app:layout_constraintTop_toBottomOf="@id/textview_excretainfo_date" />
 
             <ImageButton
                 android:id="@+id/imagebutton_excretainfo_urine"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/selector_checkbox"
+                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretainfo_type"
                 app:layout_constraintStart_toEndOf="@id/textview_excretainfo_type"
                 app:layout_constraintTop_toTopOf="@id/textview_excretainfo_type" />
@@ -92,8 +133,9 @@
                 android:id="@+id/imagebutton_excretainfo_feces"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/selector_checkbox"
+                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretainfo_urine"
                 app:layout_constraintStart_toEndOf="@id/textview_excretainfo_urine"
                 app:layout_constraintTop_toTopOf="@id/textview_excretainfo_urine" />
@@ -111,7 +153,7 @@
                 app:layout_constraintTop_toTopOf="@id/imagebutton_excretainfo_feces" />
 
             <TextView
-                android:id="@+id/textview_excretainfo_time"
+                android:id="@+id/textview_excretainfo_timetitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -121,14 +163,35 @@
                 app:layout_constraintStart_toStartOf="@id/textview_excretainfo_type"
                 app:layout_constraintTop_toBottomOf="@id/textview_excretainfo_type" />
 
-            <TimePicker
-                android:id="@+id/timepiker_excretainfo_time"
+            <TextView
+                android:id="@+id/textview_excretainfo_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="8dp"
-                android:numbersTextColor="@color/black"
-                android:timePickerMode="spinner"
+                android:background="@drawable/all_rect_r5"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp"
+                android:text="오전 00:00"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretainfo_timetitle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_excretaadd_completion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/all_rect_r5"
+                android:backgroundTint="@color/main4"
+                android:paddingVertical="12dp"
+                android:text="완료"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_excretainfo_time" />
