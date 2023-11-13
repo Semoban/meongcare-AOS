@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/all_horizontal_calendar_bg">
 
     <LinearLayout
         android:id="@+id/layout_toolbar_calendar_week_title_day"
@@ -26,15 +28,18 @@
     <LinearLayout
         android:id="@+id/layout_toolbar_calendar_week"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/all_horizontal_calendar_bg"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/layout_toolbar_calendar_week_title_day">
 
-        <com.kizitonwose.calendar.view.WeekCalendarView
-            android:id="@+id/weekCalendarView"
+        <com.tejpratapsingh.recyclercalendar.views.InfiniteRecyclerCalendarView
+            android:id="@+id/calendarRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cv_dayViewResource="@layout/calendar_day_layout" />
+            android:layout_marginTop="@dimen/margin_large"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

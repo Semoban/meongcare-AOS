@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">meongCare-Aos</string>
+    <string name="week_calendar">Week Calendar</string>
+    <string name="text_selected_date">Selected Date</string>
 </resources>
