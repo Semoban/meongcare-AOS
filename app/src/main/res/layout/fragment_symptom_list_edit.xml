@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/supplement_routine_edit_rec_gray3_r4"
+            android:background="@drawable/all_rect_gray3_r4_outline"
             android:orientation="vertical">
 
             <TextView
@@ -112,7 +112,7 @@
             android:layout_height="45dp"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:background="@drawable/supplement_routine_edit_rec_main4_r4"
+            android:background="@drawable/all_rect_main4_r4"
             android:orientation="vertical">
 
             <TextView
