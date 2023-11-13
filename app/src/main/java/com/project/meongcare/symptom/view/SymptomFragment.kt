@@ -82,6 +82,16 @@ class SymptomFragment : Fragment() {
         val snapHelper = PagerSnapHelper() // Or LinearSnapHelper
         snapHelper.attachToRecyclerView(calendarRecyclerView)
 
+        fragmentSymptomBinding.run {
+            textViewSymptomAdd.setOnClickListener{
+                tempActivity.replaceFragment(TempActivity.SYMPTOM_ADD_FRAGMENT,true,null)
+            }
+
+            textViewSymptomEdit.setOnClickListener{
+                tempActivity.replaceFragment(TempActivity.SYMPTOM_LIST_EDIT_FRAGMENT,true,null)
+            }
+        }
+
 
         return fragmentSymptomBinding.root
     }
