@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/all_rec_gray2_r5"
+            android:background="@drawable/all_rect_gray2_r5"
             android:drawableRight="@drawable/all_search_18dp"
             android:fontFamily="@font/pretendard_regular"
             android:gravity="center_vertical"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="18dp"
-            android:background="@drawable/all_rec_gray2_r5"
+            android:background="@drawable/all_rect_gray2_r5"
             android:orientation="vertical">
 
             <TextView
