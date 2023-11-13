@@ -1,4 +1,4 @@
-package com.project.meongcare.supplement
+package com.project.meongcare.supplement.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

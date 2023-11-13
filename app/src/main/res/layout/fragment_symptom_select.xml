@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".symptom.SymptomSelectFragment" >
+    tools:context=".symptom.view.SymptomSelectFragment" >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelect"
