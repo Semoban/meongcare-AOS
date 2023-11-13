@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomSelectFragment" >
+    tools:context=".symptom.SymptomSelectFragment" >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelect"
@@ -341,7 +341,7 @@
                             android:id="@+id/imageView_symptomSelect_lossOfAppetite"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:srcCompat="@drawable/symptom_loss_appetite_" />
+                            app:srcCompat="@drawable/symptom_loss_appetite" />
 
                     </androidx.cardview.widget.CardView>
 
