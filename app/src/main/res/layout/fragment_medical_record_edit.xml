@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MedicalRecordEditFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordedit_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="12dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordedit_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordedit_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_medicalrecordedit_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/all_arrow_back_18dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
+            app:layout_constraintTop_toTopOf="@id/guideline_medicalrecordedit_top" />
+
+        <TextView
+            android:id="@+id/textview_medicalrecordedit_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:text="@{@string/medicalrecord_pet(`김먼지`)}"
+            android:textAppearance="@style/Typography.Title2.SemiBold"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordedit_back"
+            app:layout_constraintStart_toEndOf="@id/imagebutton_medicalrecordedit_back"
+            app:layout_constraintTop_toTopOf="@id/imagebutton_medicalrecordedit_back"
+            tools:text="김먼지님의 진료기록" />>
+
+        <ImageButton
+            android:id="@+id/button_medicalcrecordedit_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/all_circle_border_gray"
+            app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
+            app:layout_constraintTop_toBottomOf="@id/imagebutton_medicalrecordedit_back" />
+
+        <TextView
+            android:id="@+id/textview_medicalrecordedit_delete_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/all_deleteall"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray4"
+            app:layout_constraintBottom_toBottomOf="@id/button_medicalcrecordedit_select"
+            app:layout_constraintStart_toEndOf="@id/button_medicalcrecordedit_select"
+            app:layout_constraintTop_toTopOf="@id/button_medicalcrecordedit_select" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_medicalrecordedit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/layout_medicalrecordedit_footer"
+            app:layout_constraintEnd_toEndOf="@id/guideline_medicalrecordedit_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
+            app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordedit_delete_all"
+            tools:listitem="@layout/item_medical_record_edit" />
+
+        <include
+            android:id="@+id/layout_medicalrecordedit_footer"
+            bind:firstButtonText="@{@string/all_cancel}"
+            bind:secondButtonText="@{@string/all_delete}"
+            layout="@layout/layout_footer_two_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
