@@ -6,42 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".ExcretaAddFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_excretaadd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_18dp" />
-
     <ScrollView
         android:id="@+id/scrollview_excretaadd"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="72dp"
         android:layout_marginHorizontal="24dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_excretaadd">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageview_excretaadd_picture"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginHorizontal="66dp"
-                android:layout_marginTop="24dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_excretaadd_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/all_rect_gray2_30dp"
+                app:cardBackgroundColor="@color/gray2"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageview_excreta_add_puppy_illustration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/all_puppy"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginHorizontal="101dp"
+                        android:layout_marginTop="42dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imageview_excreta_add_puppy_illustration"
+                        android:text="사진을 첨부해주세요"
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/gray5"
+                        android:layout_marginBottom="42dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="10dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textview_excretaadd_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="날짜"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardview_excretaadd_image" />
 
             <EditText
                 android:id="@+id/edittext_excretaadd_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:drawableEnd="@drawable/all_calendar"
                 android:hint="날짜를 선택해주세요"
@@ -49,10 +85,11 @@
                 android:paddingStart="17dp"
                 android:paddingEnd="16dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
-                app:layout_constraintEnd_toEndOf="@id/imageview_excretaadd_picture"
-                app:layout_constraintStart_toStartOf="@id/imageview_excretaadd_picture"
-                app:layout_constraintTop_toBottomOf="@id/imageview_excretaadd_picture" />
+                app:layout_constraintEnd_toEndOf="@id/cardview_excretaadd_image"
+                app:layout_constraintStart_toStartOf="@id/cardview_excretaadd_image"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_date" />
 
             <TextView
                 android:id="@+id/textview_excretaadd_type"
@@ -69,7 +106,7 @@
                 android:id="@+id/imagebutton_excretaadd_urine"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/selector_checkbox"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_type"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_type"
@@ -91,7 +128,7 @@
                 android:id="@+id/imagebutton_excretaadd_feces"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/selector_checkbox"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_urine"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_urine"
