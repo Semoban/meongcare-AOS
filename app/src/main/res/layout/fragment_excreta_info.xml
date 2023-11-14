@@ -45,8 +45,8 @@
                         android:id="@+id/imageview_excretainfo_visibility_off"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="44dp"
                         android:layout_marginHorizontal="115dp"
+                        android:layout_marginTop="44dp"
                         android:background="@drawable/excreta_visibility_off"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +69,19 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/imageview_excretainfo_image"
+                android:layout_width="match_parent"
+                android:layout_height="148dp"
+                android:layout_marginHorizontal="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/all_rect_gray2_30dp"
+                app:layout_constraintBottom_toTopOf="@id/textview_excretainfo_datetitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textview_excretainfo_datetitle"
