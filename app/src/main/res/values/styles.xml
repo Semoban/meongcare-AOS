@@ -31,14 +31,19 @@
         <item name="android:textColor">@color/color_text_button</item>
         <item name="chipCornerRadius">5dp</item>
         <item name="rippleColor">@android:color/transparent</item>
+    </style>
 
-    <style name="Theme.Fab_Bottom_App_Bar" parent="Theme.MeongCareAos">
+    <style name="Theme.Fab_Bottom_App_Bar" parent="">
         <item name="colorPrimary">#FF7A00</item>
         <item name="colorPrimaryVariant">#FF7A00</item>
         <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
-    <style name="Theme.Round_Corner_Bottom_Sheet_Style" parent="Widget.Design.BottomSheet.Modal">
+    <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
+    </style>
+
+    <style name="RoundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/all_calendar_bottom_sheet</item>
     </style>
 </resources>
