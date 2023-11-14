@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
                 floatingButtonInAnimation(activityMainBinding)
                 overlayLayout.visibility = View.GONE
             }
+
+            overlayLayout.setOnClickListener {
+                it.visibility = View.GONE
+            }
         }
     }
 
