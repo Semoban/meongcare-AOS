@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/all_arrow_back_20dp"
+            app:navigationIcon="@drawable/all_arrow_back_18dp"
             app:titleCentered="false" />
 
         <ScrollView

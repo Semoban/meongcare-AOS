@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_20dp"
+        app:navigationIcon="@drawable/all_arrow_back_18dp"
         app:title="증상" />
 
     <ScrollView
@@ -341,7 +341,7 @@
                             android:id="@+id/imageView_symptomSelect_lossOfAppetite"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:srcCompat="@drawable/symptom_loss_appetite_" />
+                            app:srcCompat="@drawable/symptom_loss_appetite" />
 
                     </androidx.cardview.widget.CardView>
 
