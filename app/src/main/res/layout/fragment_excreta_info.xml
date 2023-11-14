@@ -28,16 +28,16 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_excretainfo_image"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="31dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/excreta_image_visibility_off">
 
@@ -46,6 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="44dp"
+                        android:layout_marginHorizontal="115dp"
                         android:background="@drawable/excreta_visibility_off"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
