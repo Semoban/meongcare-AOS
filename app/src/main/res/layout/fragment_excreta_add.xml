@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imageview_excreta_add_puppy_illustration"
+                        android:id="@+id/imageview_excretaadd_puppy_illustration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/all_puppy"
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imageview_excreta_add_puppy_illustration"
+                        app:layout_constraintTop_toBottomOf="@id/imageview_excretaadd_puppy_illustration"
                         android:text="사진을 첨부해주세요"
                         android:textAppearance="@style/Typography.Body3.Regular"
                         android:textColor="@color/gray5"
