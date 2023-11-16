@@ -18,9 +18,9 @@
     <ScrollView
         android:id="@+id/scrollview_feed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_feed">
 
@@ -32,7 +32,7 @@
                 android:id="@+id/textview_feed_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
+                android:layout_marginTop="16dp"
                 android:text="하림"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/gray4"
@@ -60,83 +60,91 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feed_name" />
 
-            <View
-                android:id="@+id/view_feed_intakeperiod"
-                android:layout_width="0dp"
-                android:layout_height="87dp"
-                android:layout_marginStart="29dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_feed_intake_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/all_rect_r10"
                 android:backgroundTint="@color/gray1"
-                app:layout_constraintEnd_toStartOf="@id/view_feed_dailyintake"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/piechart_feed_nutrient" />
-
-            <TextView
-                android:id="@+id/textview_feed_intakeperiodtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="섭취일수"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@id/view_feed_intakeperiod"
-                app:layout_constraintTop_toTopOf="@id/view_feed_intakeperiod" />
-
-            <TextView
-                android:id="@+id/textview_feed_intakeperiodcontent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="12dp"
-                android:text="50일"
-                android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feed_intakeperiod"
-                app:layout_constraintEnd_toEndOf="@id/view_feed_intakeperiod"
-                app:layout_constraintTop_toBottomOf="@id/textview_feed_intakeperiodtitle" />
-
-            <View
-                android:id="@+id/view_feed_dailyintake"
-                android:layout_width="0dp"
-                android:layout_height="87dp"
-                android:layout_marginEnd="29dp"
-                android:background="@drawable/all_rect_r10"
-                android:backgroundTint="@color/gray1"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/view_feed_intakeperiod"
-                app:layout_constraintTop_toTopOf="@id/view_feed_intakeperiod" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/piechart_feed_nutrient">
 
-            <TextView
-                android:id="@+id/textview_feed_dailyintaketitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="하루 섭취량"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@id/view_feed_dailyintake"
-                app:layout_constraintTop_toTopOf="@id/view_feed_dailyintake" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textview_feed_dailyintakecontent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="12dp"
-                android:text="10g"
-                android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feed_dailyintake"
-                app:layout_constraintEnd_toEndOf="@id/view_feed_dailyintake"
-                app:layout_constraintTop_toBottomOf="@id/textview_feed_dailyintaketitle" />
+                    <TextView
+                        android:id="@+id/textview_feed_intake_period_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="0일"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/textview_feed_intake_period_title"
+                        app:layout_constraintStart_toStartOf="@id/textview_feed_intake_period_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_feed_intake_period_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="19dp"
+                        android:text="섭취일수"
+                        android:textAppearance="@style/Typography.Body1.Medium"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/view_feed_line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feed_intake_period_content" />
+
+                    <View
+                        android:id="@+id/view_feed_line"
+                        android:layout_width="22.5dp"
+                        android:layout_height="22.5dp"
+                        android:layout_marginVertical="32dp"
+                        android:background="@drawable/feed_line"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feed_daily_intake_title"
+                        app:layout_constraintStart_toEndOf="@id/textview_feed_intake_period_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_feed_daily_intake_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="0g"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/textview_feed_daily_intake_title"
+                        app:layout_constraintStart_toStartOf="@id/textview_feed_daily_intake_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_feed_daily_intake_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="19dp"
+                        android:text="하루 섭취량"
+                        android:textAppearance="@style/Typography.Body1.Medium"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/view_feed_line"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feed_daily_intake_content" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/textview_feed_oldfeedtitle"
@@ -144,11 +152,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
-                android:text="늘 먹던 사료 어때요?"
+                android:text="전에 먹던 사료 리스트"
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feed_dailyintake" />
+                app:layout_constraintTop_toBottomOf="@id/cardview_feed_intake_info" />
+
+            <TextView
+                android:id="@+id/textview_feed_old_feed_see_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="더보기"
+                android:textAppearance="@style/Typography.Body3.Medium"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/textview_feed_oldfeedtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textview_feed_oldfeedtitle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_feed_oldfeed"
@@ -168,11 +190,11 @@
                 android:layout_marginHorizontal="36dp"
                 android:layout_marginVertical="32dp"
                 android:background="@drawable/all_rect_r5"
-                android:backgroundTint="@color/main4"
+                android:backgroundTint="@color/gray2"
                 android:paddingVertical="12dp"
                 android:text="다른 사료로 변경하기"
-                android:textAppearance="@style/Typography.Bottom1.SemiBold"
-                android:textColor="@color/white"
+                android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                android:textColor="@color/gray5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
