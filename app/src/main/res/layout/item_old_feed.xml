@@ -3,25 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/all_rect_r10">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardview_oldfeed_image"
-        android:layout_width="53dp"
-        android:layout_height="77dp"
+    <ImageView
+        android:id="@+id/imageview_oldfeed"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginVertical="15dp"
         android:layout_marginStart="24dp"
+        android:src="@color/gray2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/gray2">
-
-        <ImageView
-            android:id="@+id/imageview_oldfeed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textview_oldfeed_brand"
@@ -32,8 +26,8 @@
         android:text="브랜드명"
         android:textAppearance="@style/Typography.Body2.Regular"
         android:textColor="@color/gray4"
-        app:layout_constraintStart_toEndOf="@id/cardview_oldfeed_image"
-        app:layout_constraintTop_toTopOf="@id/cardview_oldfeed_image" />
+        app:layout_constraintStart_toEndOf="@id/imageview_oldfeed"
+        app:layout_constraintTop_toTopOf="@id/imageview_oldfeed" />
 
     <TextView
         android:id="@+id/textview_oldfeed_name"
@@ -54,7 +48,7 @@
         android:text="0000년 00월 00일~ 00월 00일"
         android:textAppearance="@style/Typography.Body3.Regular"
         android:textColor="@color/gray5"
-        app:layout_constraintBottom_toBottomOf="@id/cardview_oldfeed_image"
+        app:layout_constraintBottom_toBottomOf="@id/imageview_oldfeed"
         app:layout_constraintStart_toStartOf="@id/textview_oldfeed_name"
         app:layout_constraintTop_toBottomOf="@id/textview_oldfeed_name" />
 
