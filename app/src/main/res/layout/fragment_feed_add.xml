@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_18dp"/>
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
         android:id="@+id/scrollview_feedadd"
@@ -28,50 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_feedadd_image"
+            <include
+                android:id="@+id/layout_feedadd_image"
+                layout="@layout/layout_all_attach_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/all_rect_gray2_30dp"
-                app:cardBackgroundColor="@color/gray2"
-                app:cardCornerRadius="30dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imageview_feedadd_puppy_illustration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="101dp"
-                        android:layout_marginTop="42dp"
-                        android:background="@drawable/all_puppy"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="42dp"
-                        android:text="사진을 첨부해주세요"
-                        android:textAppearance="@style/Typography.Body3.Regular"
-                        android:textColor="@color/gray5"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imageview_feedadd_puppy_illustration" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textview_feedadd_brand"
@@ -83,23 +48,22 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardview_feedadd_image" />
+                app:layout_constraintTop_toBottomOf="@id/layout_feedadd_image" />
 
             <EditText
                 android:id="@+id/edittext_feedadd_brand"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:hint="브랜드를 입력해주세요"
-                android:paddingHorizontal="13dp"
-                android:paddingVertical="13dp"
+                android:padding="13dp"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/textview_feedadd_brand"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feedadd_brand" />
 
             <TextView
@@ -116,7 +80,7 @@
 
             <EditText
                 android:id="@+id/edittext_feedadd_name"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="8dp"
@@ -128,7 +92,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/textview_feedadd_name"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feedadd_name" />
 
             <TextView
@@ -143,217 +107,238 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_name" />
 
-            <View
-                android:id="@+id/view_feedadd_crude_protein"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_feedadd_ingredient"
                 android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_marginVertical="8dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/all_rect_gray3_r5"
-                app:layout_constraintEnd_toStartOf="@id/view_feedadd_crude_fat"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_ingredient" />
-
-            <TextView
-                android:id="@+id/textview_feedadd_crude_protein_title"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="조단백질"
-                android:textAppearance="@style/Typography.Body2.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_crude_protein"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_crude_protein"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_crude_protein" />
-
-            <EditText
-                android:id="@+id/edittext_feedadd_crude_protein_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="0.00"
-                android:textColorHint="@color/gray4"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_protein_title"
-                app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_protein_percent"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_protein_title" />
-
-            <TextView
-                android:id="@+id/textview_feedadd_crude_protein_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="%"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_protein_percentage"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_crude_protein"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_protein_percentage" />
-
-            <View
-                android:id="@+id/view_feedadd_crude_fat"
-                android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/all_rect_gray3_r5"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="15dp"
+                android:padding="8dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/view_feedadd_crude_protein"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_crude_protein" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_ingredient">
 
-            <TextView
-                android:id="@+id/textview_feedadd_crude_fat_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="조지방"
-                android:textAppearance="@style/Typography.Body2.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_crude_fat"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_crude_fat"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_crude_fat" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/feed_rect_gray3_r5"
+                    android:paddingHorizontal="10dp">
 
-            <EditText
-                android:id="@+id/edittext_feedadd_crude_fat_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="0.00"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_fat_title"
-                app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_fat_percentage"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_fat_title" />
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_protein_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="22dp"
+                        android:text="조단백질"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textview_feedadd_crude_fat_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="%"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_fat_percent"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_crude_fat"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_fat_percent" />
+                    <EditText
+                        android:id="@+id/edittext_feedadd_crude_protein_percentage"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/all_rec_gray1_r5"
+                        android:gravity="end"
+                        android:hint="0.00"
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="6dp"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_protein_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_protein_percent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_protein_title" />
 
-            <View
-                android:id="@+id/view_feedadd_crude_ash"
-                android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/all_rect_gray3_r5"
-                app:layout_constraintEnd_toStartOf="@id/view_feedadd_moisture"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_crude_protein"
-                app:layout_constraintTop_toBottomOf="@id/view_feedadd_crude_protein" />
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_protein_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_protein_percentage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_protein_percentage" />
 
-            <TextView
-                android:id="@+id/textview_feedadd_crude_ash_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="조회분"
-                android:textAppearance="@style/Typography.Body2.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_crude_ash"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_crude_ash"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_crude_ash" />
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_feedadd_ingredient_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_protein_title" />
 
-            <EditText
-                android:id="@+id/edittext_feedadd_crude_ash_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="0.00"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_ash_title"
-                app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_ash_percentage"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_ash_title" />
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_fat_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="22dp"
+                        android:text="조지방"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_one" />
 
-            <TextView
-                android:id="@+id/textview_feedadd_crude_ash_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="%"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_ash_percent"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_crude_ash"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_ash_percent" />
+                    <EditText
+                        android:id="@+id/edittext_feedadd_crude_fat_percent"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/all_rec_gray1_r5"
+                        android:gravity="end"
+                        android:hint="0.00"
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="6dp"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_fat_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_fat_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_fat_title" />
 
-            <View
-                android:id="@+id/view_feedadd_moisture"
-                android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:background="@drawable/all_rect_gray3_r5"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_crude_fat"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/view_feedadd_crude_ash"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_crude_ash" />
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_fat_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_fat_percent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_fat_percent" />
 
-            <TextView
-                android:id="@+id/textview_feedadd_moisture_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="조회분"
-                android:textAppearance="@style/Typography.Body2.Medium"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_moisture"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_moisture"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_moisture" />
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_feedadd_ingredient_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_fat_title" />
 
-            <EditText
-                android:id="@+id/edittext_feedadd_moisture_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="0.00"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_moisture_title"
-                app:layout_constraintEnd_toStartOf="@id/textview_feedadd_moisture_percentage"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_moisture_title" />
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_ash_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="22dp"
+                        android:text="조회분"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_two" />
 
-            <TextView
-                android:id="@+id/textview_feedadd_moisture_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="%"
-                android:textAppearance="@style/Typography.Body2.Regular"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_moisture_percent"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_moisture"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_moisture_percent" />
+                    <EditText
+                        android:id="@+id/edittext_feedadd_crude_ash_percent"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/all_rec_gray1_r5"
+                        android:gravity="end"
+                        android:hint="0.00"
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="6dp"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_ash_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_ash_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_ash_title" />
+
+                    <TextView
+                        android:id="@+id/textview_feedadd_crude_ash_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_ash_percent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_ash_percent" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_feedadd_ingredient_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_ash_title" />
+
+                    <TextView
+                        android:id="@+id/textview_feedadd_moisture_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="22dp"
+                        android:layout_marginStart="32dp"
+                        android:text="수분"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_three" />
+
+                    <EditText
+                        android:id="@+id/edittext_feedadd_moisture_percent"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/all_rec_gray1_r5"
+                        android:gravity="end"
+                        android:hint="0.00"
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="6dp"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_moisture_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_moisture_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_moisture_title" />
+
+                    <TextView
+                        android:id="@+id/textview_feedadd_moisture_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_moisture_percent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_moisture_percent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <View
                 android:id="@+id/view_feedadd_kcal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
+                android:layout_height="54dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/feed_rect_gray3_r5"
+                android:background="@drawable/all_rec_gray1_r5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feedadd_crude_ash" />
+                app:layout_constraintTop_toBottomOf="@id/cardview_feedadd_ingredient" />
 
             <TextView
                 android:id="@+id/textview_feedadd_kcal_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="95dp"
-                android:layout_marginEnd="45dp"
                 android:text="칼로리"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/black"
@@ -366,8 +351,13 @@
                 android:id="@+id/edittext_feedadd_kcal_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="0"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/feed_rect_gray3_r5"
+                android:gravity="end"
+                android:hint="000.00"
+                android:inputType="text"
+                android:paddingHorizontal="7dp"
+                android:paddingVertical="6dp"
                 android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
@@ -386,6 +376,43 @@
                 app:layout_constraintEnd_toEndOf="@id/view_feedadd_kcal"
                 app:layout_constraintTop_toTopOf="@id/edittext_feedadd_kcal_content" />
 
+            <View
+                android:id="@+id/view_feedadd_daily_intake"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/all_rec_gray1_r5"
+                android:backgroundTint="@color/main1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_feedadd_kcal" />
+
+            <TextView
+                android:id="@+id/textview_feedadd_daily_intake_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="14dp"
+                android:layout_marginStart="24dp"
+                android:text="추천하는 하루 섭취량:"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/main4"
+                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_daily_intake"
+                app:layout_constraintStart_toStartOf="@id/view_feedadd_daily_intake"
+                app:layout_constraintTop_toTopOf="@id/view_feedadd_daily_intake" />
+
+            <TextView
+                android:id="@+id/textview_feedadd_daily_intake_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="0mg"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/main4"
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_daily_intake_title"
+                app:layout_constraintStart_toEndOf="@id/textview_feedadd_daily_intake_title"
+                app:layout_constraintTop_toTopOf="@id/textview_feedadd_daily_intake_title" />
+
             <TextView
                 android:id="@+id/textview_feedadd_intake_period_title"
                 android:layout_width="wrap_content"
@@ -396,32 +423,59 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feedadd_kcal" />
+                app:layout_constraintTop_toBottomOf="@id/view_feedadd_daily_intake" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_intake_period_content"
-                android:layout_width="match_parent"
+                android:id="@+id/edittext_feedadd_intake_period_start"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:drawableEnd="@drawable/all_calendar"
-                android:hint="날짜를 선택해주세요"
+                android:hint="시작 일자"
+                android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
-                android:paddingStart="17dp"
-                android:paddingEnd="16dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColorHint="@color/gray4"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edittext_feedadd_intake_period_end"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feedadd_intake_period_title" />
 
+            <EditText
+                android:id="@+id/edittext_feedadd_intake_period_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/all_rect_r5"
+                android:drawableEnd="@drawable/all_calendar"
+                android:hint="종료 일자"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColorHint="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_intake_period_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edittext_feedadd_intake_period_start"
+                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_intake_period_start" />
+
+            <CalendarView
+                android:id="@+id/calendarview_feedadd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_intake_period_start" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_feedadd_completion"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
-                android:layout_marginVertical="32dp"
+                android:layout_marginVertical="24dp"
                 android:background="@drawable/all_rect_r5"
                 android:backgroundTint="@color/main4"
                 android:paddingVertical="12dp"
@@ -431,7 +485,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_intake_period_content" />
+                app:layout_constraintTop_toBottomOf="@id/calendarview_feedadd" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
