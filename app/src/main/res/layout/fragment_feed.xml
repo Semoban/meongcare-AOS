@@ -17,20 +17,50 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="72dp">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageview_feed_bowl_illustration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="79dp"
+                android:src="@drawable/feed_bowl"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/button_feed_input_guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_feed_input_guide"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/all_rect_r5"
+                android:backgroundTint="@color/gray2"
+                android:paddingHorizontal="68dp"
+                android:paddingVertical="12dp"
+                android:text="사료를 입력해주세요"
+                android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                android:textColor="@color/gray5"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageview_feed_bowl_illustration" />
 
             <TextView
                 android:id="@+id/textview_feed_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="72dp"
                 android:text="브랜드명"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/button_feed_input_guide" />
 
             <TextView
                 android:id="@+id/textview_feed_name"
