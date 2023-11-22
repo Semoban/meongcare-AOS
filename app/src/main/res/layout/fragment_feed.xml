@@ -6,27 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".FeedFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_feed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_18dp" />
-
     <ScrollView
         android:id="@+id/scrollview_feed"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_feed">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="72dp">
 
             <TextView
                 android:id="@+id/textview_feed_brand"
@@ -53,16 +45,58 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart_feed_nutrient"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginHorizontal="52dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="112dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feed_name" />
 
+            <include
+                android:id="@+id/include_feed_nutrient_crude_protein"
+                layout="@layout/layout_feed_nutrient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/piechart_feed_nutrient" />
+
+            <include
+                android:id="@+id/include_feed_nutrient_crude_fat"
+                layout="@layout/layout_feed_nutrient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_crude_protein" />
+
+            <include
+                android:id="@+id/include_feed_nutrient_crude_ash"
+                layout="@layout/layout_feed_nutrient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_crude_fat" />
+
+            <include
+                android:id="@+id/include_feed_nutrient_moisture"
+                layout="@layout/layout_feed_nutrient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_crude_ash" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_feed_intake_info"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="32dp"
@@ -71,7 +105,7 @@
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/piechart_feed_nutrient">
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_moisture">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -83,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="19dp"
                         android:layout_marginBottom="10dp"
-                        android:text="0일"
+                        android:text="00일"
                         android:textAppearance="@style/Typography.Title3.SemiBold"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="@id/textview_feed_intake_period_title"
@@ -121,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="19dp"
                         android:layout_marginBottom="10dp"
-                        android:text="0g"
+                        android:text="00g"
                         android:textAppearance="@style/Typography.Title3.SemiBold"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="@id/textview_feed_daily_intake_title"
@@ -174,18 +208,21 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_feed_oldfeed"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="23dp"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feed_oldfeedtitle" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feed_oldfeedtitle"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_old_feed" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_feed_change"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
                 android:layout_marginVertical="32dp"
@@ -205,3 +242,5 @@
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
