@@ -12,6 +12,6 @@ class FeedAddFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_feed_add, container, false)
+        return inflater.inflate(R.layout.fragment_feed_add_edit, container, false)
     }
 }
