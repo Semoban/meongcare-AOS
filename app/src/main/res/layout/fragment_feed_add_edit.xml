@@ -7,7 +7,7 @@
     tools:context=".FeedAddFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_feedadd"
+        android:id="@+id/toolbar_feedaddedit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,14 +22,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_feedadd">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_feedaddedit">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <include
-                android:id="@+id/layout_feedadd_image"
+                android:id="@+id/layout_feedaddedit_image"
                 layout="@layout/layout_all_attach_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textview_feedadd_brand"
+                android:id="@+id/textview_feedaddedit_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -48,10 +48,10 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_feedadd_image" />
+                app:layout_constraintTop_toBottomOf="@id/layout_feedaddedit_image" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_brand"
+                android:id="@+id/edittext_feedaddedit_brand"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
@@ -64,10 +64,10 @@
                 android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_brand" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_brand" />
 
             <TextView
-                android:id="@+id/textview_feedadd_name"
+                android:id="@+id/textview_feedaddedit_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -76,10 +76,10 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_brand" />
+                app:layout_constraintTop_toBottomOf="@id/edittext_feedaddedit_brand" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_name"
+                android:id="@+id/edittext_feedaddedit_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
@@ -92,10 +92,10 @@
                 android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_name" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_name" />
 
             <TextView
-                android:id="@+id/textview_feedadd_ingredient"
+                android:id="@+id/textview_feedaddedit_ingredient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -104,10 +104,10 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_name" />
+                app:layout_constraintTop_toBottomOf="@id/edittext_feedaddedit_name" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_feedadd_ingredient"
+                android:id="@+id/cardview_feedaddedit_ingredient"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
@@ -117,7 +117,7 @@
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_ingredient">
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_ingredient">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     android:paddingHorizontal="10dp">
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_protein_title"
+                        android:id="@+id/textview_feedaddedit_crude_protein_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -138,7 +138,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/edittext_feedadd_crude_protein_percentage"
+                        android:id="@+id/edittext_feedaddedit_crude_protein_percentage"
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
@@ -151,32 +151,32 @@
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray4"
-                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_protein_title"
-                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_protein_percent"
-                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_protein_title" />
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_crude_protein_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_crude_protein_percent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_crude_protein_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_protein_percent"
+                        android:id="@+id/textview_feedaddedit_crude_protein_percent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:text="%"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_protein_percentage"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_crude_protein_percentage"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_protein_percentage" />
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_crude_protein_percentage" />
 
                     <com.google.android.material.divider.MaterialDivider
-                        android:id="@+id/divider_feedadd_ingredient_one"
+                        android:id="@+id/divider_feedaddedit_ingredient_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="22dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_protein_title" />
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_crude_protein_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_fat_title"
+                        android:id="@+id/textview_feedaddedit_crude_fat_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -185,10 +185,10 @@
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_one" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedaddedit_ingredient_one" />
 
                     <EditText
-                        android:id="@+id/edittext_feedadd_crude_fat_percent"
+                        android:id="@+id/edittext_feedaddedit_crude_fat_percent"
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
@@ -201,32 +201,32 @@
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray4"
-                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_fat_title"
-                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_fat_percentage"
-                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_fat_title" />
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_crude_fat_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_crude_fat_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_crude_fat_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_fat_percentage"
+                        android:id="@+id/textview_feedaddedit_crude_fat_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:text="%"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_fat_percent"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_crude_fat_percent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_fat_percent" />
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_crude_fat_percent" />
 
                     <com.google.android.material.divider.MaterialDivider
-                        android:id="@+id/divider_feedadd_ingredient_two"
+                        android:id="@+id/divider_feedaddedit_ingredient_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="22dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_fat_title" />
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_crude_fat_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_ash_title"
+                        android:id="@+id/textview_feedaddedit_crude_ash_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -235,10 +235,10 @@
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_two" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedaddedit_ingredient_two" />
 
                     <EditText
-                        android:id="@+id/edittext_feedadd_crude_ash_percent"
+                        android:id="@+id/edittext_feedaddedit_crude_ash_percent"
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
@@ -251,32 +251,32 @@
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray4"
-                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_crude_ash_title"
-                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_crude_ash_percentage"
-                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_crude_ash_title" />
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_crude_ash_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_crude_ash_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_crude_ash_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_crude_ash_percentage"
+                        android:id="@+id/textview_feedaddedit_crude_ash_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:text="%"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_crude_ash_percent"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_crude_ash_percent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_crude_ash_percent" />
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_crude_ash_percent" />
 
                     <com.google.android.material.divider.MaterialDivider
-                        android:id="@+id/divider_feedadd_ingredient_three"
+                        android:id="@+id/divider_feedaddedit_ingredient_three"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="22dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textview_feedadd_crude_ash_title" />
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_crude_ash_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_moisture_title"
+                        android:id="@+id/textview_feedaddedit_moisture_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="22dp"
@@ -286,10 +286,10 @@
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider_feedadd_ingredient_three" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedaddedit_ingredient_three" />
 
                     <EditText
-                        android:id="@+id/edittext_feedadd_moisture_percent"
+                        android:id="@+id/edittext_feedaddedit_moisture_percent"
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
@@ -302,28 +302,28 @@
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray4"
-                        app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_moisture_title"
-                        app:layout_constraintEnd_toStartOf="@id/textview_feedadd_moisture_percentage"
-                        app:layout_constraintTop_toTopOf="@id/textview_feedadd_moisture_title" />
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_moisture_title"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_moisture_percentage"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_moisture_title" />
 
                     <TextView
-                        android:id="@+id/textview_feedadd_moisture_percentage"
+                        android:id="@+id/textview_feedaddedit_moisture_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:text="%"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_moisture_percent"
+                        app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_moisture_percent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/edittext_feedadd_moisture_percent" />
+                        app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_moisture_percent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
             <View
-                android:id="@+id/view_feedadd_kcal"
+                android:id="@+id/view_feedaddedit_kcal"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="24dp"
@@ -331,23 +331,23 @@
                 android:background="@drawable/all_rec_gray1_r5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardview_feedadd_ingredient" />
+                app:layout_constraintTop_toBottomOf="@id/cardview_feedaddedit_ingredient" />
 
             <TextView
-                android:id="@+id/textview_feedadd_kcal_title"
+                android:id="@+id/textview_feedaddedit_kcal_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="95dp"
                 android:text="칼로리"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_kcal"
-                app:layout_constraintEnd_toStartOf="@id/edittext_feedadd_kcal_content"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_kcal"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_kcal" />
+                app:layout_constraintBottom_toBottomOf="@id/view_feedaddedit_kcal"
+                app:layout_constraintEnd_toStartOf="@id/edittext_feedaddedit_kcal_content"
+                app:layout_constraintStart_toStartOf="@id/view_feedaddedit_kcal"
+                app:layout_constraintTop_toTopOf="@id/view_feedaddedit_kcal" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_kcal_content"
+                android:id="@+id/edittext_feedaddedit_kcal_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -360,23 +360,23 @@
                 android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_kcal_title"
-                app:layout_constraintEnd_toStartOf="@id/textview_feedadd_kcal"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_kcal_title" />
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_kcal_title"
+                app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_kcal"
+                app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_kcal_title" />
 
             <TextView
-                android:id="@+id/textview_feedadd_kcal"
+                android:id="@+id/textview_feedaddedit_kcal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="95dp"
                 android:text="Kcal"
                 android:textAppearance="@style/Typography.Body2.Regular"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_kcal_content"
-                app:layout_constraintEnd_toEndOf="@id/view_feedadd_kcal"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_kcal_content" />
+                app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_kcal_content"
+                app:layout_constraintEnd_toEndOf="@id/view_feedaddedit_kcal"
+                app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_kcal_content" />
 
             <View
-                android:id="@+id/view_feedadd_daily_intake"
+                android:id="@+id/view_feedaddedit_daily_intake"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="24dp"
@@ -385,10 +385,10 @@
                 android:backgroundTint="@color/main1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feedadd_kcal" />
+                app:layout_constraintTop_toBottomOf="@id/view_feedaddedit_kcal" />
 
             <TextView
-                android:id="@+id/textview_feedadd_daily_intake_title"
+                android:id="@+id/textview_feedaddedit_daily_intake_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="14dp"
@@ -396,24 +396,24 @@
                 android:text="추천하는 하루 섭취량:"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/main4"
-                app:layout_constraintBottom_toBottomOf="@id/view_feedadd_daily_intake"
-                app:layout_constraintStart_toStartOf="@id/view_feedadd_daily_intake"
-                app:layout_constraintTop_toTopOf="@id/view_feedadd_daily_intake" />
+                app:layout_constraintBottom_toBottomOf="@id/view_feedaddedit_daily_intake"
+                app:layout_constraintStart_toStartOf="@id/view_feedaddedit_daily_intake"
+                app:layout_constraintTop_toTopOf="@id/view_feedaddedit_daily_intake" />
 
             <TextView
-                android:id="@+id/textview_feedadd_daily_intake_content"
+                android:id="@+id/textview_feedaddedit_daily_intake_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="0mg"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/main4"
-                app:layout_constraintBottom_toBottomOf="@id/textview_feedadd_daily_intake_title"
-                app:layout_constraintStart_toEndOf="@id/textview_feedadd_daily_intake_title"
-                app:layout_constraintTop_toTopOf="@id/textview_feedadd_daily_intake_title" />
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_daily_intake_title"
+                app:layout_constraintStart_toEndOf="@id/textview_feedaddedit_daily_intake_title"
+                app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_daily_intake_title" />
 
             <TextView
-                android:id="@+id/textview_feedadd_intake_period_title"
+                android:id="@+id/textview_feedaddedit_intake_period_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -422,10 +422,10 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feedadd_daily_intake" />
+                app:layout_constraintTop_toBottomOf="@id/view_feedaddedit_daily_intake" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_intake_period_start"
+                android:id="@+id/edittext_feedaddedit_intake_period_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -438,12 +438,12 @@
                 android:paddingVertical="14dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColorHint="@color/gray4"
-                app:layout_constraintEnd_toStartOf="@id/edittext_feedadd_intake_period_end"
+                app:layout_constraintEnd_toStartOf="@id/edittext_feedaddedit_intake_period_end"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_feedadd_intake_period_title" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_intake_period_title" />
 
             <EditText
-                android:id="@+id/edittext_feedadd_intake_period_end"
+                android:id="@+id/edittext_feedaddedit_intake_period_end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
@@ -454,23 +454,23 @@
                 android:paddingVertical="14dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedadd_intake_period_start"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_intake_period_start"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edittext_feedadd_intake_period_start"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedadd_intake_period_start" />
+                app:layout_constraintStart_toEndOf="@id/edittext_feedaddedit_intake_period_start"
+                app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_intake_period_start" />
 
             <CalendarView
-                android:id="@+id/calendarview_feedadd"
+                android:id="@+id/calendarview_feedaddedit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_feedadd_intake_period_start" />
+                app:layout_constraintTop_toBottomOf="@id/edittext_feedaddedit_intake_period_start" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_feedadd_completion"
+                android:id="@+id/button_feedaddedit_completion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
@@ -484,7 +484,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendarview_feedadd" />
+                app:layout_constraintTop_toBottomOf="@id/calendarview_feedaddedit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
