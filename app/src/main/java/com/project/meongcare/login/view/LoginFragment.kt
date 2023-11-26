@@ -11,6 +11,11 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentLoginBinding
 import com.project.meongcare.login.model.entities.LoginRequest
@@ -35,12 +40,15 @@ class LoginFragment : Fragment() {
         mainActivity.detachBottomNav()
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner){
-            Log.d("Login-kakao", "${it.accessToken}")
+            Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${it.accessToken}")
         }
 
         fragmentLoginBinding.run {
             buttonKakaoLogin.setOnClickListener {
                 kakaoLogin()
+            }
+            buttonNaverLogin.setOnClickListener {
+                naverLogin()
             }
         }
 
@@ -95,6 +103,49 @@ class LoginFragment : Fragment() {
                 loginViewModel.postLoginInfo(loginRequest)
             }
         }
+    }
+
+    private fun naverLogin(){
+        val nidProfileCallback = object: NidProfileCallback<NidProfileResponse> {
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.d("Login-naver", "errorCode:${errorCode}, errorDescription:${errorDescription}")
+            }
+
+            override fun onSuccess(result: NidProfileResponse) {
+                if(result.profile != null){
+                    Log.d("Login-naver", "프로필 가져오기 성공")
+                    val loginRequest = LoginRequest("${result.profile?.id}", "naver",
+                    "김멍멍", "${result.profile?.email}", "${result.profile?.profileImage}")
+                    loginViewModel.postLoginInfo(loginRequest)
+                }
+            }
+        }
+
+        val oauthLoginCallback = object: OAuthLoginCallback {
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.e("Login-naver", "errorCode:${errorCode}, errorDescription:${errorDescription}")
+            }
+
+            override fun onSuccess() {
+                Log.d("Login-naver", "로그인 성공")
+                val accessToken = NaverIdLoginSDK.getAccessToken()
+                val refreshToken = NaverIdLoginSDK.getRefreshToken()
+                NidOAuthLogin().callProfileApi(nidProfileCallback)
+            }
+        }
+        NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
     }
 
     override fun onDestroy() {
