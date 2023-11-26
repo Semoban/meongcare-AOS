@@ -1,22 +1,28 @@
 package com.project.meongcare.login.view
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentLoginBinding
+import com.project.meongcare.login.model.entities.LoginRequest
+import com.project.meongcare.login.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
+
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +33,10 @@ class LoginFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         mainActivity.detachBottomNav()
+
+        loginViewModel.loginResponse.observe(viewLifecycleOwner){
+            Log.d("Login-kakao", "${it.accessToken}")
+        }
 
         fragmentLoginBinding.run {
             buttonKakaoLogin.setOnClickListener {
@@ -45,6 +55,7 @@ class LoginFragment : Fragment() {
                 Log.e("Login-kakao", "카카오계정으로 로그인 실패", error)
             } else if (token != null){
                 Log.d("Login-kakao", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                getKakaoLoginInfo()
             }
         }
 
@@ -64,10 +75,25 @@ class LoginFragment : Fragment() {
                     UserApiClient.instance.loginWithKakaoAccount(mainActivity, callback = callback)
                 } else if (token != null) {
                     Log.i("Login-kakao", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    getKakaoLoginInfo()
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(mainActivity, callback = callback)
+        }
+    }
+
+    fun getKakaoLoginInfo(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("Login-kakao", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.d("Login-kakao", "사용자 정보 요청 성공" )
+                val loginRequest = LoginRequest( "${user.id}", "kakao",
+                    "김멍멍", "${user.kakaoAccount?.email}", "${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+                loginViewModel.postLoginInfo(loginRequest)
+            }
         }
     }
 
