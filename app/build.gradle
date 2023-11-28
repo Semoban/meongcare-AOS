@@ -25,6 +25,7 @@ android {
         buildConfigField "String", "NAVER_OAUTH_CLIENT_ID", properties['naver_oauth_client_id']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_SECRET", properties['naver_oauth_client_secret']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_NAME", properties['naver_oauth_client_name']
+        buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
         manifestPlaceholders = [kakaoNativeAppKey:"kakao_native_app_key"]
     }
 
@@ -122,4 +123,7 @@ dependencies {
 
     //Naver Login
     implementation 'com.navercorp.nid:oauth:5.8.0'
+
+    //Google Login
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
 }
