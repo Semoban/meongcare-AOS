@@ -1,12 +1,20 @@
 package com.project.meongcare.login.view
 
+import android.app.Instrumentation.ActivityResult
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -16,6 +24,7 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentLoginBinding
 import com.project.meongcare.login.model.entities.LoginRequest
@@ -27,6 +36,11 @@ class LoginFragment : Fragment() {
     lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
 
+    private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
+    val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        getGoogleResult(task)
+    }
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
@@ -49,6 +63,9 @@ class LoginFragment : Fragment() {
             }
             buttonNaverLogin.setOnClickListener {
                 naverLogin()
+            }
+            buttonGoogleLogin.setOnClickListener {
+                googleLogin()
             }
         }
 
@@ -146,6 +163,33 @@ class LoginFragment : Fragment() {
             }
         }
         NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
+    }
+
+    private fun googleLogin(){
+        val signInIntent = googleSignInClient.signInIntent
+        googleAuthLauncher.launch(signInIntent)
+    }
+
+    private fun getGoogleClient(): GoogleSignInClient{
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestProfile()
+            .requestServerAuthCode(BuildConfig.GOOGLE_CLIENT_ID)
+            .build()
+
+        return GoogleSignIn.getClient(mainActivity, googleSignInOptions)
+    }
+
+    private fun getGoogleResult(task: Task<GoogleSignInAccount>){
+        try {
+            val account = task.getResult(ApiException::class.java)
+
+            val loginRequest = LoginRequest( "${account.serverAuthCode}", "google",
+                "김멍멍", "${account.email}", "${account.photoUrl}")
+            loginViewModel.postLoginInfo(loginRequest)
+        } catch (e: ApiException){
+            Log.e("Login-google", e.stackTraceToString())
+        }
     }
 
     override fun onDestroy() {
