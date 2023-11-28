@@ -118,6 +118,7 @@ class LoginFragment : Fragment() {
                 val loginRequest = LoginRequest( "${user.id}", "kakao",
                     "김멍멍", "${user.kakaoAccount?.email}", "${user.kakaoAccount?.profile?.thumbnailImageUrl}")
                 loginViewModel.postLoginInfo(loginRequest)
+                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null)
             }
         }
     }
@@ -136,7 +137,7 @@ class LoginFragment : Fragment() {
 
             override fun onSuccess(result: NidProfileResponse) {
                 if(result.profile != null){
-                    Log.d("Login-naver", "프로필 가져오기 성공")
+                    Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
                     val loginRequest = LoginRequest("${result.profile?.id}", "naver",
                     "김멍멍", "${result.profile?.email}", "${result.profile?.profileImage}")
                     loginViewModel.postLoginInfo(loginRequest)
@@ -174,7 +175,7 @@ class LoginFragment : Fragment() {
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestProfile()
-            .requestServerAuthCode(BuildConfig.GOOGLE_CLIENT_ID)
+            .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)
             .build()
 
         return GoogleSignIn.getClient(mainActivity, googleSignInOptions)
@@ -184,7 +185,7 @@ class LoginFragment : Fragment() {
         try {
             val account = task.getResult(ApiException::class.java)
 
-            val loginRequest = LoginRequest( "${account.serverAuthCode}", "google",
+            val loginRequest = LoginRequest( "${account.idToken}", "google",
                 "김멍멍", "${account.email}", "${account.photoUrl}")
             loginViewModel.postLoginInfo(loginRequest)
         } catch (e: ApiException){
