@@ -15,13 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
-    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+    <CalendarView
+        android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/calendar"
+        android:layout_gravity="center"
         custom:disable_date_color="#ABABAB"
         custom:range_color="#66FF7A00"
         custom:selected_date_circle_color="#FF7A00"
-        custom:title_color="@color/black"/>
+        custom:title_color="@color/black" />
 
 </LinearLayout>

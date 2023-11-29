@@ -16,7 +16,7 @@
         android:layout_marginBottom="22dp"
         app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
 
-    <com.tejpratapsingh.recyclercalendar.views.SimpleRecyclerCalendarView
+    <CalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     />
