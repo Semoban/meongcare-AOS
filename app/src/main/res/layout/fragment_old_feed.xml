@@ -22,7 +22,7 @@
         android:id="@+id/imageview_oldfeed_bowl_illustration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/feed_bowl"
+        android:src="@drawable/feed_bowl_light"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
