@@ -18,9 +18,9 @@
             android:id="@+id/imageview_feedattachphoto_illustration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="101dp"
-            android:layout_marginTop="42dp"
-            android:background="@drawable/all_puppy"
+            android:layout_marginHorizontal="94dp"
+            android:layout_marginTop="46dp"
+            android:src="@drawable/feed_bowl_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,8 +28,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="42dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="46dp"
             android:text="사진을 첨부해주세요"
             android:textAppearance="@style/Typography.Body3.Regular"
             android:textColor="@color/gray5"
