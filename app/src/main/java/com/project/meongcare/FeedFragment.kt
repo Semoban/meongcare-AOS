@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.project.meongcare.databinding.FragmentFeedBinding
+import com.project.meongcare.databinding.LayoutFeedNutrientBinding
 
 class FeedFragment : Fragment() {
 
@@ -29,6 +30,7 @@ class FeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initNutrientPieChart()
+        initNutrientTable()
     }
 
     private fun initNutrientPieChart() {
@@ -59,6 +61,48 @@ class FeedFragment : Fragment() {
             setTouchEnabled(false)
             animateY(1200, Easing.EaseInOutCubic)
             animate()
+        }
+    }
+
+    private fun initNutrientTable() {
+        binding.run {
+            initNutrientRow(
+                includeFeedNutrientCrudeProtein,
+                R.drawable.feed_rect_crude_protein_r5,
+                "조단백",
+                "25%",
+            )
+            initNutrientRow(
+                includeFeedNutrientCrudeFat,
+                R.drawable.feed_rect_crude_fat_r5,
+                "조지방",
+                "15%",
+            )
+            initNutrientRow(
+                includeFeedNutrientCrudeAsh,
+                R.drawable.feed_rect_crude_ash_r5,
+                "조회분",
+                "35%",
+            )
+            initNutrientRow(
+                includeFeedNutrientMoisture,
+                R.drawable.feed_rect_moisture_r5,
+                "수분",
+                "25%",
+            )
+        }
+    }
+
+    private fun initNutrientRow(
+        nutrientRow: LayoutFeedNutrientBinding,
+        nutrientColorLabel: Int,
+        nutrientType: String,
+        nutrientPercentage: String,
+    ) {
+        nutrientRow.apply {
+            viewFeedNutrientColorLabel.setBackgroundResource(nutrientColorLabel)
+            textviewFeedNutrientType.text = nutrientType
+            textviewFeedNutrientPercentage.text = nutrientPercentage
         }
     }
 
