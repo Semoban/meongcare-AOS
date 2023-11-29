@@ -12,6 +12,7 @@
         android:layout_height="70dp"
         android:layout_marginVertical="15dp"
         android:layout_marginStart="24dp"
+        android:src="@drawable/feed_item_default_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
