@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardview_allattachphoto_image"
+    android:id="@+id/cardview_feedattachphoto_image"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -15,11 +15,12 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageview_allattachphoto_illustration"
+            android:id="@+id/imageview_feedattachphoto_illustration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="101dp"
             android:layout_marginTop="42dp"
+            android:background="@drawable/all_puppy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +36,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageview_allattachphoto_illustration" />
+            app:layout_constraintTop_toBottomOf="@id/imageview_feedattachphoto_illustration" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
