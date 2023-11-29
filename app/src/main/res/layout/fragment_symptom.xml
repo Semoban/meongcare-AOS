@@ -87,7 +87,8 @@
             <LinearLayout
                 android:id="@+id/layout_symptom_list"
                 android:layout_width="match_parent"
-                android:layout_height="423dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="22dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -96,7 +97,12 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
-                    android:text="등록된 이상증상이 없습니다." />
+                    android:text="아직 이상증상을 발견하지 못했어요!" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_symptom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
