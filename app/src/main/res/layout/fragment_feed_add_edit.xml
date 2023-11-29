@@ -30,7 +30,7 @@
 
             <include
                 android:id="@+id/layout_feedaddedit_image"
-                layout="@layout/layout_all_attach_photo"
+                layout="@layout/layout_feed_attach_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
