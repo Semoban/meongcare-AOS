@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
-    private val _loginResponse = MutableLiveData<LoginResponse>()
-    val loginResponse : LiveData<LoginResponse>
+    private val _loginResponse = MutableLiveData<LoginResponse?>()
+    val loginResponse : LiveData<LoginResponse?>
         get() = _loginResponse
 
     fun postLoginInfo(loginRequest: LoginRequest) {

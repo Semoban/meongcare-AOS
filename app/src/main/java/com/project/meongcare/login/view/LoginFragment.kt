@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -27,9 +28,13 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentLoginBinding
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -43,6 +48,9 @@ class LoginFragment : Fragment() {
     }
     private val loginViewModel: LoginViewModel by viewModels()
 
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,8 +61,17 @@ class LoginFragment : Fragment() {
 
         mainActivity.detachBottomNav()
 
-        loginViewModel.loginResponse.observe(viewLifecycleOwner){
-            Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${it.accessToken}")
+        loginViewModel.loginResponse.observe(viewLifecycleOwner){ loginResponse ->
+            if(loginResponse != null){
+                Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${loginResponse.accessToken}")
+                userPreferences.setAccessToken(loginResponse.accessToken)
+                userPreferences.setRefreshToken(loginResponse.refreshToken)
+                // 강아지 등록 화면으로 이동
+                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null)
+            }
+            else{
+                Log.d("Login-viewmodel", "통신 실패")
+            }
         }
 
         fragmentLoginBinding.run {
@@ -115,10 +132,13 @@ class LoginFragment : Fragment() {
             }
             else if (user != null) {
                 Log.d("Login-kakao", "사용자 정보 요청 성공" )
+
+                // data store에 저장
+                userPreferences.setEmail(user.kakaoAccount?.email!!)
+
                 val loginRequest = LoginRequest( "${user.id}", "kakao",
                     "김멍멍", "${user.kakaoAccount?.email}", "${user.kakaoAccount?.profile?.thumbnailImageUrl}")
                 loginViewModel.postLoginInfo(loginRequest)
-                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null)
             }
         }
     }
@@ -138,6 +158,11 @@ class LoginFragment : Fragment() {
             override fun onSuccess(result: NidProfileResponse) {
                 if(result.profile != null){
                     Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
+
+                    // data store에 저장
+                    userPreferences.setEmail(result.profile?.email!!)
+
+                    // 서버에 로그인 정보 전송
                     val loginRequest = LoginRequest("${result.profile?.id}", "naver",
                     "김멍멍", "${result.profile?.email}", "${result.profile?.profileImage}")
                     loginViewModel.postLoginInfo(loginRequest)
@@ -184,6 +209,9 @@ class LoginFragment : Fragment() {
     private fun getGoogleResult(task: Task<GoogleSignInAccount>){
         try {
             val account = task.getResult(ApiException::class.java)
+
+            // data store에 저장
+            userPreferences.setEmail(account.email!!)
 
             val loginRequest = LoginRequest( "${account.idToken}", "google",
                 "김멍멍", "${account.email}", "${account.photoUrl}")
