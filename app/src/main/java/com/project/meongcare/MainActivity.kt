@@ -1,5 +1,7 @@
 package com.project.meongcare
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.os.Bundle
@@ -14,6 +16,9 @@ import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.view.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     companion object{
         val LOGIN_FRAGMENT = "LoginFragment"
         val HOME_FRAGMENT = "HomeFragment"
+        val DOG_ADD_ON_BOARDING_FRAGMENT = "DogAddOnBoardingFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +72,16 @@ class MainActivity : AppCompatActivity() {
             fabMain.setOnClickListener {
                 if (overlayLayout.visibility == View.GONE) {
                     overlayLayout.visibility = View.VISIBLE
-                    floatingButtonOutAnimation(activityMainBinding)
+                    floatingButtonMenuOut(activityMainBinding)
                 }
             }
 
             fabCancel.setOnClickListener {
-                floatingButtonInAnimation(activityMainBinding)
-                overlayLayout.visibility = View.GONE
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                }
             }
 
             overlayLayout.setOnClickListener {
@@ -89,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         var newFragment = when(name){
             LOGIN_FRAGMENT -> LoginFragment()
             HOME_FRAGMENT -> HomeFragment()
+            DOG_ADD_ON_BOARDING_FRAGMENT -> DogAddOnBoardingFragment()
             else -> Fragment()
         }
 
@@ -118,108 +128,52 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
-    // fab menu 나타나는 애니메이션
-    private fun floatingButtonOutAnimation(binding: ActivityMainBinding) {
-        // 체중 fab
-        val weightTxOut = PropertyValuesHolder.ofFloat("translationX", -330f)
-        val weightTyOut = PropertyValuesHolder.ofFloat("translationY", -150f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, weightTxOut, weightTyOut)
-            .setDuration(500).start()
+    //fab menu 생기는 애니메이션
+    fun floatingButtonMenuOut(binding: ActivityMainBinding){
+        val animationOut1 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_dog_food_animator).apply {
+            setTarget(binding.menuDogFoodAdd)
+        }
+        val animationOut2 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_feces_animator).apply {
+            setTarget(binding.menuFecesAdd)
+        }
+        val animationOut3 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_symptom_animator).apply {
+            setTarget(binding.menuSymptomAdd)
+        }
+        val animationOut4 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_nutrition_animator).apply {
+            setTarget(binding.menuNutritionAdd)
+        }
+        val animationOut5 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_weight_animator).apply {
+            setTarget(binding.menuWeightEdit)
+        }
+        val animationOutSet = AnimatorSet().apply {
+            play(animationOut1).with(animationOut2).with(animationOut3).with(animationOut4).with(animationOut5)
+        }
 
-        // 체중 txt
-        ObjectAnimator.ofPropertyValuesHolder(
-            binding.textViewWeight,
-            weightTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -70f),
-        ).setDuration(500).start()
-
-        // 사료 fab
-        val foodTxOut = PropertyValuesHolder.ofFloat("translationX", 330f)
-        val foodTyOut = PropertyValuesHolder.ofFloat("translationY", -150f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFood, foodTxOut, foodTyOut)
-            .setDuration(500).start()
-
-        // 사료 txt
-        ObjectAnimator.ofPropertyValuesHolder(
-            binding.textViewFood,
-            foodTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -70f),
-        ).setDuration(500).start()
-
-        // 이상증상 fab
-        ObjectAnimator.ofFloat(binding.fabSymptom, "translationY", -550f).setDuration(500).start()
-
-        // 이상증상 txt
-        ObjectAnimator.ofFloat(binding.textViewSymptom, "translationY", -470f).setDuration(500)
-            .start()
-
-        // 영양제 fab
-        val nutritionTxOut = PropertyValuesHolder.ofFloat("translationX", -250f)
-        val nutritionTyOut = PropertyValuesHolder.ofFloat("translationY", -400f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, nutritionTxOut, nutritionTyOut)
-            .setDuration(500).start()
-
-        // 영양제 txt
-        ObjectAnimator.ofPropertyValuesHolder(
-            binding.textViewNutrition,
-            nutritionTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -320f),
-        ).setDuration(500).start()
-
-        // 대소변 fab
-        val fecesTxOut = PropertyValuesHolder.ofFloat("translationX", 250f)
-        val fecesTyOut = PropertyValuesHolder.ofFloat("translationY", -400f)
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFeces, fecesTxOut, fecesTyOut)
-            .setDuration(500).start()
-
-        // 대소변 txt
-        ObjectAnimator.ofPropertyValuesHolder(
-            binding.textViewFeces,
-            fecesTxOut,
-            PropertyValuesHolder.ofFloat("translationY", -320f),
-        ).setDuration(500).start()
+        animationOutSet.start()
     }
 
-    // fab menu 없어지는 애니메이션
-    private fun floatingButtonInAnimation(binding: ActivityMainBinding) {
-        val txIn = PropertyValuesHolder.ofFloat("translationX", 0f)
-        val tyIn = PropertyValuesHolder.ofFloat("translationY", 0f)
+    //fab menu 없어지는 애니메이션
+    fun floatingButtonMenuIn(binding: ActivityMainBinding){
+        val animationIn1 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+            setTarget(binding.menuDogFoodAdd)
+        }
+        val animationIn2 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+            setTarget(binding.menuFecesAdd)
+        }
+        val animationIn3 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+            setTarget(binding.menuSymptomAdd)
+        }
+        val animationIn4 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+            setTarget(binding.menuNutritionAdd)
+        }
+        val animationIn5 = AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+            setTarget(binding.menuWeightEdit)
+        }
+        val animationInSet = AnimatorSet().apply {
+            play(animationIn1).with(animationIn2).with(animationIn3).with(animationIn4).with(animationIn5)
+        }
 
-        // 체중 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabWeight, txIn, tyIn).setDuration(500)
-            .start()
-
-        // 체중 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewWeight, txIn, tyIn).setDuration(500)
-            .start()
-
-        // 사료 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFood, txIn, tyIn).setDuration(500).start()
-
-        // 사료 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFood, txIn, tyIn).setDuration(500)
-            .start()
-
-        // 이상증상 fab
-        ObjectAnimator.ofFloat(binding.fabSymptom, "translationY", 0f).setDuration(500).start()
-
-        // 이상증상 txt
-        ObjectAnimator.ofFloat(binding.textViewSymptom, "translationY", 0f).setDuration(500).start()
-
-        // 영양제 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabNutrition, txIn, tyIn).setDuration(500)
-            .start()
-
-        // 영양제 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewNutrition, txIn, tyIn)
-            .setDuration(500).start()
-
-        // 대소변 fab
-        ObjectAnimator.ofPropertyValuesHolder(binding.fabFeces, txIn, tyIn).setDuration(500).start()
-
-        // 대소변 txt
-        ObjectAnimator.ofPropertyValuesHolder(binding.textViewFeces, txIn, tyIn).setDuration(500)
-            .start()
+        animationInSet.start()
     }
 
     fun detachBottomNav(){
