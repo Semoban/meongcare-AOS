@@ -6,7 +6,7 @@ import retrofit2.create
 import javax.inject.Inject
 
 class LoginRetrofitClient @Inject constructor(){
-    private val BASE_URL = "http://dev.meongcare.com"
+    private val BASE_URL = "https://dev.meongcare.com"
 
     val loginApi : LoginApi by lazy {
         Retrofit.Builder()

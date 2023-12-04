@@ -16,6 +16,7 @@ class LoginRepositoryImpl @Inject constructor(private val loginRetrofitClient: L
             }
             else{
                 Log.d("LoginRepository", "통신 실패")
+                Log.d("LoginRepository-fail", response.code().toString())
                 return null
             }
         }catch (e:Exception){

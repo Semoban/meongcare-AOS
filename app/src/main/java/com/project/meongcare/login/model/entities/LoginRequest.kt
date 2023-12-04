@@ -7,5 +7,6 @@ data class LoginRequest(
     val provider: String,
     val name: String,
     val email: String,
-    val profileImageUrl: String
+    val profileImageUrl: String,
+    val fcmToken: String
 )

@@ -1,6 +1,5 @@
 package com.project.meongcare.login.view
 
-import android.app.Instrumentation.ActivityResult
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,11 +27,11 @@ import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentLoginBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingService
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -47,6 +45,7 @@ class LoginFragment : Fragment() {
         getGoogleResult(task)
     }
     private val loginViewModel: LoginViewModel by viewModels()
+    private val myFirebaseMessagingService = FirebaseCloudMessagingService()
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -133,11 +132,14 @@ class LoginFragment : Fragment() {
             else if (user != null) {
                 Log.d("Login-kakao", "사용자 정보 요청 성공" )
 
+                val deviceToken = getDeviceToken()
+
                 // data store에 저장
                 userPreferences.setEmail(user.kakaoAccount?.email!!)
 
                 val loginRequest = LoginRequest( "${user.id}", "kakao",
-                    "김멍멍", "${user.kakaoAccount?.email}", "${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+                    "김멍멍", "${user.kakaoAccount?.email}",
+                    "${user.kakaoAccount?.profile?.thumbnailImageUrl}", deviceToken)
                 loginViewModel.postLoginInfo(loginRequest)
             }
         }
@@ -159,12 +161,15 @@ class LoginFragment : Fragment() {
                 if(result.profile != null){
                     Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
 
+                    val deviceToken = getDeviceToken()
+
                     // data store에 저장
                     userPreferences.setEmail(result.profile?.email!!)
 
                     // 서버에 로그인 정보 전송
                     val loginRequest = LoginRequest("${result.profile?.id}", "naver",
-                    "김멍멍", "${result.profile?.email}", "${result.profile?.profileImage}")
+                    "김멍멍", "${result.profile?.email}",
+                        "${result.profile?.profileImage}", deviceToken)
                     loginViewModel.postLoginInfo(loginRequest)
                 }
             }
@@ -209,12 +214,13 @@ class LoginFragment : Fragment() {
     private fun getGoogleResult(task: Task<GoogleSignInAccount>){
         try {
             val account = task.getResult(ApiException::class.java)
+            val deviceToken = getDeviceToken()
 
             // data store에 저장
             userPreferences.setEmail(account.email!!)
 
             val loginRequest = LoginRequest( "${account.idToken}", "google",
-                "김멍멍", "${account.email}", "${account.photoUrl}")
+                "김멍멍", "${account.email}", "${account.photoUrl}", deviceToken)
             loginViewModel.postLoginInfo(loginRequest)
         } catch (e: ApiException){
             Log.e("Login-google", e.stackTraceToString())
@@ -224,5 +230,13 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mainActivity.attachBottomNav()
+    }
+
+    fun getDeviceToken(): String {
+        val deviceToken = runBlocking {
+            myFirebaseMessagingService.getToken()
+        }
+        Log.d("in-getDeviceToken-method", deviceToken)
+        return deviceToken
     }
 }
