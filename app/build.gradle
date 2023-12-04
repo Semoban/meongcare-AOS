@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
 }
 
 Properties properties = new Properties()
@@ -69,6 +70,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.3.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -118,12 +120,16 @@ dependencies {
     // Calendar
     implementation 'io.github.architshah248.calendar:awesome-calendar:2.0.0'
 
-    //Kakao Login
+    // Kakao Login
     implementation 'com.kakao.sdk:v2-user:2.17.0'
 
-    //Naver Login
+    // Naver Login
     implementation 'com.navercorp.nid:oauth:5.8.0'
 
-    //Google Login
+    // Google Login
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
+
+    // Firebase - Cloud Messaging
+    implementation platform('com.google.firebase:firebase-bom:32.6.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }
