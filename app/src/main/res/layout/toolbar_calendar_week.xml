@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/all_horizontal_calendar_bg">
 
     <LinearLayout
@@ -23,23 +23,44 @@
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="20dp" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_toolbar_calendar_week"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar_calendar_week_title_day">
 
-        <com.tejpratapsingh.recyclercalendar.views.InfiniteRecyclerCalendarView
-            android:id="@+id/calendarRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/imageView_toolbar_calendar_week_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                app:srcCompat="@drawable/all_arrow_navigate_previous" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_toolbar_calendar_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ImageView
+                android:id="@+id/imageView_toolbar_calendar_week_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                app:srcCompat="@drawable/all_arrow_navigate_next" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

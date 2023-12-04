@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".symptom.view.SymptomSelectCustomFragment">
-    
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelectCustom"
         android:layout_width="match_parent"
