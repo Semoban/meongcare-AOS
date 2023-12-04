@@ -17,6 +17,7 @@
         android:id="@+id/textView_toolbar_calendar_week_title_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
         android:fontFamily="@font/pretendard_semi_bold"
         android:text="TextView"
         android:textColor="@color/black"
