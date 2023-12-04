@@ -31,7 +31,16 @@ class WeightFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showWeightEditDialog()
         initWeeklyRecordChart()
+    }
+
+    private fun showWeightEditDialog() {
+        binding.run {
+            textviewWeightEditbutton.setOnClickListener {
+                layoutWeightEdit.root.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun initWeeklyRecordChart() {
