@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.onboarding.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.Tab
 import com.google.android.material.tabs.TabLayoutMediator
+import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentOnBoardingBinding
 
 class OnBoardingFragment : Fragment() {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,19 +22,24 @@ class OnBoardingFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
+
+        //바텀 네비 안 보이게
+        mainActivity.detachBottomNav()
+
         viewPagerAdapter = ViewPagerAdapter(this)
 
         fragmentOnBoardingBinding.run {
-            viewPagerOnBoarding.adapter = viewPagerAdapter
+            viewpagerOnboarding.adapter = viewPagerAdapter
 
-            TabLayoutMediator(tabLayoutOnBoarding, viewPagerOnBoarding) { tab: Tab, _ ->
-                viewPagerOnBoarding.currentItem = tab.position
+            TabLayoutMediator(tablayoutOnboarding, viewpagerOnboarding) { tab: Tab, _ ->
+                viewpagerOnboarding.currentItem = tab.position
             }.attach()
 
-            tabLayoutOnBoarding.addOnTabSelectedListener(
+            tablayoutOnboarding.addOnTabSelectedListener(
                 object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: Tab?) {
-                        buttonOnBoardingStart.visibility =
+                        buttonOnboardingStart.visibility =
                             when (tab!!.position) {
                                 2 -> View.VISIBLE
                                 else -> View.INVISIBLE
@@ -44,9 +51,26 @@ class OnBoardingFragment : Fragment() {
                     override fun onTabReselected(tab: Tab?) {}
                 },
             )
+
+            textviewOnboardingSkip.setOnClickListener {
+                moveToLogin()
+            }
+
+            buttonOnboardingStart.setOnClickListener {
+                moveToLogin()
+            }
         }
 
         return fragmentOnBoardingBinding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.attachBottomNav()
+    }
+
+    private fun moveToLogin(){
+        mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, true, null)
     }
 }
 

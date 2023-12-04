@@ -2,8 +2,6 @@ package com.project.meongcare
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.view.LoginFragment
+import com.project.meongcare.onboarding.view.DogAddOnBoardingFragment
+import com.project.meongcare.onboarding.view.OnBoardingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var activityMainBinding: ActivityMainBinding
+    lateinit var activityMainBinding: ActivityMainBinding
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         val LOGIN_FRAGMENT = "LoginFragment"
         val HOME_FRAGMENT = "HomeFragment"
         val DOG_ADD_ON_BOARDING_FRAGMENT = "DogAddOnBoardingFragment"
+        val ON_BOARDING_FRAGMENT = "OnBoardingFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         activityMainBinding.run {
-            replaceFragment(LOGIN_FRAGMENT, false, true, null)
+            replaceFragment(ON_BOARDING_FRAGMENT, false, true, null)
 //            autoLogin()
 
             bottomNavigationViewMain.background = null
@@ -99,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             LOGIN_FRAGMENT -> LoginFragment()
             HOME_FRAGMENT -> HomeFragment()
             DOG_ADD_ON_BOARDING_FRAGMENT -> DogAddOnBoardingFragment()
+            ON_BOARDING_FRAGMENT -> OnBoardingFragment()
             else -> Fragment()
         }
 
@@ -187,7 +189,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             userPreferences.email.collect { email ->
                 if(email == null){
-                    replaceFragment(LOGIN_FRAGMENT, false, true, null)
+                    replaceFragment(ON_BOARDING_FRAGMENT, false, true, null)
                 }
                 else{
                     replaceFragment(HOME_FRAGMENT, false, true, null)
