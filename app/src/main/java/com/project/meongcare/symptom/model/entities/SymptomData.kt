@@ -13,8 +13,8 @@ data class AddResponse(
 
 data class ToAddSymptom(
     val dogId: Int,
-    val symptomString:
-    String, val note: String,
+    val symptomString: String,
+    val note: String,
     val dateTime: LocalDateTime,
 )
 
