@@ -24,7 +24,7 @@ class OnBoardingFragment : Fragment() {
         val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        //바텀 네비 안 보이게
+        // 바텀 네비 안 보이게
         mainActivity.detachBottomNav()
 
         viewPagerAdapter = ViewPagerAdapter(this)
@@ -69,7 +69,7 @@ class OnBoardingFragment : Fragment() {
         mainActivity.attachBottomNav()
     }
 
-    private fun moveToLogin(){
+    private fun moveToLogin() {
         mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, true, null)
     }
 }

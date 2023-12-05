@@ -5,12 +5,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import javax.inject.Inject
 
-class LoginRetrofitClient @Inject constructor(){
-    private val BASE_URL = "https://dev.meongcare.com"
-
-    val loginApi : LoginApi by lazy {
+class LoginRetrofitClient
+@Inject
+constructor() {
+    val loginApi: LoginApi by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl("https://dev.meongcare.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(LoginApi::class.java)

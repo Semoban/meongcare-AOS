@@ -1,7 +1,6 @@
 package com.project.meongcare
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,12 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     lateinit var fragmentPhotoSelectBottomSheetBinding: FragmentPhotoSelectBottomSheetBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        fragmentPhotoSelectBottomSheetBinding = FragmentPhotoSelectBottomSheetBinding.inflate(inflater)
+    ): View {
+        fragmentPhotoSelectBottomSheetBinding =
+            FragmentPhotoSelectBottomSheetBinding.inflate(inflater)
         return fragmentPhotoSelectBottomSheetBinding.root
     }
 }

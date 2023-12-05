@@ -40,10 +40,11 @@ class LoginFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
-    val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        getGoogleResult(task)
-    }
+    val googleAuthLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            getGoogleResult(task)
+        }
     private val loginViewModel: LoginViewModel by viewModels()
     private val myFirebaseMessagingService = FirebaseCloudMessagingService()
 
@@ -60,15 +61,14 @@ class LoginFragment : Fragment() {
 
         mainActivity.detachBottomNav()
 
-        loginViewModel.loginResponse.observe(viewLifecycleOwner){ loginResponse ->
-            if(loginResponse != null){
+        loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
+            if (loginResponse != null) {
                 Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${loginResponse.accessToken}")
                 userPreferences.setAccessToken(loginResponse.accessToken)
                 userPreferences.setRefreshToken(loginResponse.refreshToken)
                 // 강아지 등록 화면으로 이동
-                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null)
-            }
-            else{
+                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null,)
+            } else {
                 Log.d("Login-viewmodel", "통신 실패")
             }
         }
@@ -88,13 +88,13 @@ class LoginFragment : Fragment() {
         return fragmentLoginBinding.root
     }
 
-    private fun kakaoLogin(){
+    private fun kakaoLogin() {
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null){
+            if (error != null) {
                 Log.e("Login-kakao", "카카오계정으로 로그인 실패", error)
-            } else if (token != null){
+            } else if (token != null) {
                 Log.d("Login-kakao", "카카오계정으로 로그인 성공 ${token.accessToken}")
                 getKakaoLoginInfo()
             }
@@ -124,94 +124,121 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun getKakaoLoginInfo(){
+    fun getKakaoLoginInfo() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("Login-kakao", "사용자 정보 요청 실패", error)
             }
             else if (user != null) {
-                Log.d("Login-kakao", "사용자 정보 요청 성공" )
+                Log.d("Login-kakao", "사용자 정보 요청 성공")
 
                 val deviceToken = getDeviceToken()
 
                 // data store에 저장
                 userPreferences.setEmail(user.kakaoAccount?.email!!)
 
-                val loginRequest = LoginRequest( "${user.id}", "kakao",
-                    "김멍멍", "${user.kakaoAccount?.email}",
-                    "${user.kakaoAccount?.profile?.thumbnailImageUrl}", deviceToken)
+                val loginRequest =
+                    LoginRequest(
+                        "${user.id}",
+                        "kakao",
+                        "김멍멍",
+                        "${user.kakaoAccount?.email}",
+                        "${user.kakaoAccount?.profile?.thumbnailImageUrl}",
+                        deviceToken,
+                    )
                 loginViewModel.postLoginInfo(loginRequest)
             }
         }
     }
 
-    private fun naverLogin(){
-        val nidProfileCallback = object: NidProfileCallback<NidProfileResponse> {
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
+    private fun naverLogin() {
+        val nidProfileCallback =
+            object: NidProfileCallback<NidProfileResponse> {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
 
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Log.d("Login-naver", "errorCode:${errorCode}, errorDescription:${errorDescription}")
-            }
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                    val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                    Log.d("Login-naver", "errorCode:$errorCode errorDescription:$errorDescription")
+                }
 
-            override fun onSuccess(result: NidProfileResponse) {
-                if(result.profile != null){
-                    Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
+                override fun onSuccess(result: NidProfileResponse) {
+                    if (result.profile != null) {
+                        Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
 
-                    val deviceToken = getDeviceToken()
+                        val deviceToken = getDeviceToken()
 
-                    // data store에 저장
-                    userPreferences.setEmail(result.profile?.email!!)
+                        // data store에 저장
+                        userPreferences.setEmail(result.profile?.email!!)
 
-                    // 서버에 로그인 정보 전송
-                    val loginRequest = LoginRequest("${result.profile?.id}", "naver",
-                    "김멍멍", "${result.profile?.email}",
-                        "${result.profile?.profileImage}", deviceToken)
-                    loginViewModel.postLoginInfo(loginRequest)
+                        // 서버에 로그인 정보 전송
+                        val loginRequest =
+                            LoginRequest(
+                                "${result.profile?.id}",
+                                "naver",
+                                "김멍멍",
+                                "${result.profile?.email}",
+                                "${result.profile?.profileImage}",
+                                deviceToken,
+                            )
+                        loginViewModel.postLoginInfo(loginRequest)
+                    }
                 }
             }
-        }
 
-        val oauthLoginCallback = object: OAuthLoginCallback {
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
+        val oauthLoginCallback =
+            object : OAuthLoginCallback {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
 
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Log.e("Login-naver", "errorCode:${errorCode}, errorDescription:${errorDescription}")
-            }
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                    val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                    Log.e("Login-naver", "errorCode:$errorCode errorDescription:$errorDescription")
+                }
 
-            override fun onSuccess() {
-                Log.d("Login-naver", "로그인 성공")
-                val accessToken = NaverIdLoginSDK.getAccessToken()
-                val refreshToken = NaverIdLoginSDK.getRefreshToken()
-                NidOAuthLogin().callProfileApi(nidProfileCallback)
+                override fun onSuccess() {
+                    Log.d("Login-naver", "로그인 성공")
+                    val accessToken = NaverIdLoginSDK.getAccessToken()
+                    val refreshToken = NaverIdLoginSDK.getRefreshToken()
+                    NidOAuthLogin().callProfileApi(nidProfileCallback)
+                }
             }
-        }
         NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
     }
 
-    private fun googleLogin(){
+    private fun googleLogin() {
         val signInIntent = googleSignInClient.signInIntent
         googleAuthLauncher.launch(signInIntent)
     }
 
-    private fun getGoogleClient(): GoogleSignInClient{
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestProfile()
-            .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)
-            .build()
+    private fun getGoogleClient(): GoogleSignInClient {
+        val googleSignInOptions =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)
+                .build()
 
         return GoogleSignIn.getClient(mainActivity, googleSignInOptions)
     }
 
-    private fun getGoogleResult(task: Task<GoogleSignInAccount>){
+    private fun getGoogleResult(task: Task<GoogleSignInAccount>) {
         try {
             val account = task.getResult(ApiException::class.java)
             val deviceToken = getDeviceToken()
@@ -219,10 +246,17 @@ class LoginFragment : Fragment() {
             // data store에 저장
             userPreferences.setEmail(account.email!!)
 
-            val loginRequest = LoginRequest( "${account.idToken}", "google",
-                "김멍멍", "${account.email}", "${account.photoUrl}", deviceToken)
+            val loginRequest =
+                LoginRequest(
+                    "${account.idToken}",
+                    "google",
+                    "김멍멍",
+                    "${account.email}",
+                    "${account.photoUrl}",
+                    deviceToken,
+                )
             loginViewModel.postLoginInfo(loginRequest)
-        } catch (e: ApiException){
+        } catch (e: ApiException) {
             Log.e("Login-google", e.stackTraceToString())
         }
     }
@@ -233,9 +267,10 @@ class LoginFragment : Fragment() {
     }
 
     fun getDeviceToken(): String {
-        val deviceToken = runBlocking {
-            myFirebaseMessagingService.getToken()
-        }
+        val deviceToken =
+            runBlocking {
+                myFirebaseMessagingService.getToken()
+            }
         Log.d("in-getDeviceToken-method", deviceToken)
         return deviceToken
     }

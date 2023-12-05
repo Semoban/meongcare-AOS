@@ -12,9 +12,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel
+@Inject
+constructor(private val loginRepository: LoginRepository) : ViewModel() {
     private val _loginResponse = MutableLiveData<LoginResponse?>()
-    val loginResponse : LiveData<LoginResponse?>
+    val loginResponse: LiveData<LoginResponse?>
         get() = _loginResponse
 
     fun postLoginInfo(loginRequest: LoginRequest) {
