@@ -30,7 +30,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
 class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
     lateinit var tempActivity: TempActivity
@@ -38,6 +37,7 @@ class SymptomFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     var selectDatePosition = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,10 +66,8 @@ class SymptomFragment : Fragment() {
                     recyclerViewSymptom.run {
                         adapter = SymptomRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
-
                     }
                 }
-
             }
             symptomDateList.observe(viewLifecycleOwner) { dateList ->
                 fragmentSymptomBinding.toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
@@ -80,10 +78,9 @@ class SymptomFragment : Fragment() {
                 }
             }
 
-
             selectedDate.observe(viewLifecycleOwner) {
-                //date 갱신
-//                symptomList.value =
+                // date 갱신
+                // symptomList.value =
                 val localDateTime = changeDateToLocale(it)
                 Log.d("클릭4", localDateTime.toString())
                 fragmentSymptomBinding.toolbarSymptom.textViewToolbarCalendarWeekTitleDay.text =
@@ -95,7 +92,6 @@ class SymptomFragment : Fragment() {
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
-
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
@@ -125,28 +121,25 @@ class SymptomFragment : Fragment() {
 //                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 layoutManager = GridLayoutManager(requireContext(), 7)
             }
-
         }
         return fragmentSymptomBinding.root
     }
-
 
     // 이상증상 타임라인
     inner class SymptomRecyclerViewAdapter :
         RecyclerView.Adapter<SymptomRecyclerViewAdapter.SymptomViewHolder>() {
         inner class SymptomViewHolder(itemSymptomBinding: ItemSymptomBinding) :
             RecyclerView.ViewHolder(itemSymptomBinding.root) {
+                val itemSymptomName: TextView
+                val itemSymptomTime: TextView
+                val itemSymptomImg: ImageView
 
-            val itemSymptomName: TextView
-            val itemSymptomTime: TextView
-            val itemSymptomImg: ImageView
-
-            init {
-                itemSymptomName = itemSymptomBinding.textViewItemSymptom
-                itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
-                itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
+                init {
+                    itemSymptomName = itemSymptomBinding.textViewItemSymptom
+                    itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
+                    itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
+                }
             }
-        }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -155,14 +148,14 @@ class SymptomFragment : Fragment() {
             val itemSymptomBinding = ItemSymptomBinding.inflate(layoutInflater)
             val allViewHolder = SymptomViewHolder(itemSymptomBinding)
 
-            itemSymptomBinding.root.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+            itemSymptomBinding.root.layoutParams =
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                )
 
             itemSymptomBinding.root.setOnClickListener {
                 tempActivity.replaceFragment(TempActivity.SYMPTOM_INFO_FRAGMENT, true, null)
-
             }
 
             return allViewHolder
@@ -216,7 +209,7 @@ class SymptomFragment : Fragment() {
             itemSymptomDateBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
 
             return symptomDateHolder
@@ -241,13 +234,13 @@ class SymptomFragment : Fragment() {
                         ContextCompat.getColor(
                             tempActivity,
                             R.color.main4,
-                        )
+                        ),
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
                             R.color.main4,
-                        )
+                        ),
                     )
                 } else {
                     // 클릭하지 않은 아이템에 대한 레이아웃을 적용
@@ -256,13 +249,13 @@ class SymptomFragment : Fragment() {
                         ContextCompat.getColor(
                             tempActivity,
                             R.color.black,
-                        )
+                        ),
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
                             R.color.black,
-                        )
+                        ),
                     )
                 }
             }
@@ -321,7 +314,7 @@ class SymptomFragment : Fragment() {
             symptomViewModel.symptomDateList.value?.let {
                 val updatedList = mutableListOf<Date>()
                 updatedList.addAll(weekDates)
-    //            updatedList.addAll(it)
+                // updatedList.addAll(it)
                 updatedList
             }
 
@@ -349,7 +342,7 @@ class SymptomFragment : Fragment() {
         symptomViewModel.symptomDateList.value =
             symptomViewModel.symptomDateList.value?.let {
                 val updatedList = mutableListOf<Date>()
-    //            updatedList.addAll(it)
+                // updatedList.addAll(it)
                 updatedList.addAll(weekDates)
                 updatedList
             }
