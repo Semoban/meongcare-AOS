@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -33,6 +36,7 @@ class WeightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         showWeightEditDialog()
         initWeeklyRecordChart()
+        initMonthlyRecordChart()
     }
 
     private fun showWeightEditDialog() {
@@ -110,8 +114,83 @@ class WeightFragment : Fragment() {
         }
     }
 
+    private fun initMonthlyRecordChart() {
+        val weightMonthlyData = listOf(
+            BarEntry(10F, 4.23F),
+            BarEntry(11F, 4.46F),
+        )
+
+        val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
+
+        val barColors = listOf(
+            resources.getColor(R.color.gray3, null),
+            resources.getColor(R.color.main4, null),
+        )
+
+        val weightLabelColors = listOf(
+            resources.getColor(R.color.gray5, null),
+            resources.getColor(R.color.main4, null),
+        )
+
+        val typo = Typeface.createFromAsset(requireContext().assets, "pretendard_medium.otf")
+
+        weightMonthlyDataSet.colors = barColors
+
+        binding.barchartWeightMonthlyrecord.apply {
+            data = BarData(weightMonthlyDataSet)
+
+            data.apply {
+                barWidth = 0.5F
+                setValueTextSize(14F)
+                setValueTypeface(typo)
+                setValueTextColors(weightLabelColors)
+                setValueFormatter(WeightDataFormatter())
+            }
+
+            xAxis.apply {
+                granularity = 1F
+
+                position = XAxis.XAxisPosition.BOTTOM
+                textSize = 14F
+                typeface = typo
+                valueFormatter = MonthFormatter()
+                setDrawGridLines(false)
+            }
+
+            axisLeft.apply {
+                axisMinimum = 0F
+                granularity = 1F
+                setDrawLabels(false)
+                setDrawAxisLine(false)
+                gridColor = resources.getColor(R.color.gray2, null)
+                gridLineWidth = 1F
+            }
+
+            axisRight.apply {
+                setDrawLabels(false)
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+            }
+
+            description.isEnabled = false
+            legend.xOffset = -50f
+            setTouchEnabled(false)
+            setScaleEnabled(false)
+            setPinchZoom(false)
+            animateY(1000)
+        }
+    }
+
     class WeekFormatter : ValueFormatter() {
         private val format = DecimalFormat("#주")
+
+        override fun getFormattedValue(value: Float): String {
+            return format.format(value)
+        }
+    }
+
+    class MonthFormatter : ValueFormatter() {
+        private val format = DecimalFormat("#월")
 
         override fun getFormattedValue(value: Float): String {
             return format.format(value)
