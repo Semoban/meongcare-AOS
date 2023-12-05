@@ -17,13 +17,13 @@ interface SymptomAPI {
     fun getResultSymptom(
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Int,
-        @Query("dateTime") dateTime: LocalDateTime
+        @Query("dateTime") dateTime: LocalDateTime,
     ): Call<ResultSymptom>
 
     @POST("/symptom")
     fun addSymptom(
         @Header("AccessToken") accessToken: String,
-        @Body requestBody: ToAddSymptom
+        @Body requestBody: ToAddSymptom,
     ): Call<AddResponse>
 }
 
