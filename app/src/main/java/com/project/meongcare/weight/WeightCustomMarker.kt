@@ -14,11 +14,17 @@ class WeightCustomMarker(context: Context, layoutResource: Int) :
     private val binding: WeightMarkerBinding =
         WeightMarkerBinding.inflate(LayoutInflater.from(context))
 
-    override fun refreshContent(e: Entry, highlight: Highlight) {
+    override fun refreshContent(
+        e: Entry,
+        highlight: Highlight,
+    ) {
         binding.textviewWeightMarker.text = "${e.y}"
     }
 
-    override fun getOffsetForDrawingAtPoint(xpos: Float, ypos: Float): MPPointF {
+    override fun getOffsetForDrawingAtPoint(
+        xpos: Float,
+        ypos: Float,
+    ): MPPointF {
         return MPPointF(-width / 2f, -height - 10f)
     }
 }
