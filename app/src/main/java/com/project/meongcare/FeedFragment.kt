@@ -14,7 +14,6 @@ import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
 
 class FeedFragment : Fragment() {
-
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
 
@@ -34,19 +33,21 @@ class FeedFragment : Fragment() {
     }
 
     private fun initNutrientPieChart() {
-        val nutrientRatio = listOf(
-            PieEntry(25f),
-            PieEntry(15f),
-            PieEntry(35f),
-            PieEntry(25f),
-        )
+        val nutrientRatio =
+            listOf(
+                PieEntry(25f),
+                PieEntry(15f),
+                PieEntry(35f),
+                PieEntry(25f),
+            )
 
-        val pieColors = listOf(
-            ContextCompat.getColor(requireContext(), R.color.main3),
-            ContextCompat.getColor(requireContext(), R.color.sub7),
-            ContextCompat.getColor(requireContext(), R.color.sub6),
-            ContextCompat.getColor(requireContext(), R.color.sub8),
-        )
+        val pieColors =
+            listOf(
+                ContextCompat.getColor(requireContext(), R.color.main3),
+                ContextCompat.getColor(requireContext(), R.color.sub7),
+                ContextCompat.getColor(requireContext(), R.color.sub6),
+                ContextCompat.getColor(requireContext(), R.color.sub8),
+            )
 
         val dataSet = PieDataSet(nutrientRatio, "")
         dataSet.colors = pieColors
@@ -110,5 +111,4 @@ class FeedFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
