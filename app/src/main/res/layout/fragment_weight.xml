@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".WeightFragment">
+    tools:context=".weight.WeightFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_weight"
@@ -21,14 +21,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_weight">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp">
 
             <TextView
                 android:id="@+id/textview_weight_editbutton"
@@ -145,8 +145,8 @@
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/linechart_weight_weeklyrecord"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="164dp"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_weeklyrecordexplanation"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordexplanation" />
 
@@ -158,9 +158,11 @@
                 android:id="@+id/cardview_weight_monthlyrecord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="150dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/cardview_weight_weeklyrecord"
                 app:layout_constraintTop_toBottomOf="@id/cardview_weight_weeklyrecord">
 
@@ -193,7 +195,8 @@
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/barchart_weight_monthlyrecord"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="164dp"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_monthlyrecordcontent"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_monthlyrecordcontent" />
 
@@ -204,5 +207,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <include
+        android:id="@+id/layout_weight_edit"
+        layout="@layout/layout_weight_edit_dialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
