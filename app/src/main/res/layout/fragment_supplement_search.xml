@@ -20,7 +20,7 @@
             android:id="@+id/button_supplementSearch_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/all_arrow_back_20dp" />
+            android:src="@drawable/all_arrow_back_18dp" />
 
         <EditText
             android:id="@+id/editText_supplementSearch_search"

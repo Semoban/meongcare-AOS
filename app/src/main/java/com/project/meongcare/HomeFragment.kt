@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.project.meongcare.databinding.FragmentHomeBinding
 
@@ -22,6 +23,7 @@ class HomeFragment : Fragment() {
         fragmentHomeBinding.run {
             imageViewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
+                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
         }

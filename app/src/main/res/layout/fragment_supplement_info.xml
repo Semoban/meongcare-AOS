@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_info"
-        app:navigationIcon="@drawable/all_arrow_back_20dp" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
         android:id="@+id/scrollView_supplementInfo"
