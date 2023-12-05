@@ -7,5 +7,5 @@ enum class SymptomType(val symptomName: String) {
     DIARRHEA("diarrhea"),
     LOSS_OF_APPETITE("lossOfAppetite"),
     ACTIVITY_DECREASE("activityDecrease"),
-    ETC("etc")
+    ETC("etc"),
 }
