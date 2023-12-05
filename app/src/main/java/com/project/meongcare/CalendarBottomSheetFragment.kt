@@ -9,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.FragmentCalendarBottomSheetBinding
 
 class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
-    lateinit var fragmentCalendarBottomSheetBinding : FragmentCalendarBottomSheetBinding
+    lateinit var fragmentCalendarBottomSheetBinding: FragmentCalendarBottomSheetBinding
     lateinit var mainActivity: MainActivity
     override fun onCreateView(
         inflater: LayoutInflater,
