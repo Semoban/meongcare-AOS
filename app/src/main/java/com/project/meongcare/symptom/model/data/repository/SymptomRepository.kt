@@ -53,7 +53,7 @@ class SymptomRepository {
                         Log.w("Symptom API", "통신 실패: ${t.message}")
                         callback(null)
                     }
-                }
+                },
             )
         }
 
@@ -85,7 +85,7 @@ class SymptomRepository {
                     ) {
                         Log.w("Symptom API", "통신 실패: ${t.message}")
                     }
-                }
+                },
             )
         }
     }
