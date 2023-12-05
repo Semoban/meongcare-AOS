@@ -127,15 +127,17 @@ class WeightFragment : Fragment() {
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
 
-        val barColors = listOf(
-            resources.getColor(R.color.gray3, null),
-            resources.getColor(R.color.main4, null),
-        )
+        val barColors =
+            listOf(
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.main4, null),
+            )
 
-        val weightLabelColors = listOf(
-            resources.getColor(R.color.gray5, null),
-            resources.getColor(R.color.main4, null),
-        )
+        val weightLabelColors =
+            listOf(
+                resources.getColor(R.color.gray5, null),
+                resources.getColor(R.color.main4, null),
+            )
 
         val typo = Typeface.createFromAsset(requireContext().assets, "pretendard_medium.otf")
 
