@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cdrp_mon">월</string>
+    <string name="cdrp_tue">화</string>
+    <string name="cdrp_wed">수</string>
+    <string name="cdrp_thu">목</string>
+    <string name="cdrp_fri">금</string>
+    <string name="cdrp_sat">토</string>
+    <string name="cdrp_sun">일</string>
+</resources>

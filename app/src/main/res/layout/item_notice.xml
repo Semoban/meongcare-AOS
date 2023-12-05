@@ -5,54 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <CheckBox
-        android:id="@+id/checkBoxNoticeItem"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/notice_check_button_selector"
-        android:button="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textViewNoticeItemTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="13dp"
         android:letterSpacing="-0.02"
-        android:maxWidth="250dp"
+        android:maxWidth="180dp"
         android:text="제목"
         android:textAppearance="@style/Typography.Body1.Medium"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxNoticeItem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewNoticeItemContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="19dp"
-        android:letterSpacing="-0.02"
-        android:maxWidth="250dp"
-        android:text="내용"
-        android:textAppearance="@style/Typography.Body2.Regular"
-        android:textColor="@color/gray5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxNoticeItem"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNoticeItemTitle"
-        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutNoticeItemBadge"
         android:layout_width="54dp"
         android:layout_height="20dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
         android:background="@drawable/notice_badge_rect_r3"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewNoticeItemTitle"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -73,12 +46,27 @@
         android:id="@+id/textViewNoticeItemTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="19dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="13dp"
         android:letterSpacing="-0.02"
         android:text="오후 20:00"
         android:textAppearance="@style/Typography.Body2.Light"
         android:textColor="@color/gray4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNoticeItemTitle" />
+
+    <ImageView
+        android:id="@+id/imageViewNoticeContentToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayoutNoticeItemBadge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/notice_toggle_unchecked" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

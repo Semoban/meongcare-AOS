@@ -8,20 +8,47 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_oldfeed"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:title="전에 먹던 사료 리스트"
+        app:titleTextColor="@color/black"
+        app:titleTextAppearance="@style/Typography.Title3.SemiBold"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_oldfeed"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageview_oldfeed_bowl_illustration"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
+        android:src="@drawable/feed_bowl_light"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textview_oldfeed_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="아직 사료가 기록되지 않았습니다"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/imageview_oldfeed_bowl_illustration"
+        app:layout_constraintStart_toStartOf="@id/imageview_oldfeed_bowl_illustration"
+        app:layout_constraintTop_toBottomOf="@id/imageview_oldfeed_bowl_illustration" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_oldfeed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_old_feed"
         app:layout_constraintTop_toBottomOf="@id/toolbar_oldfeed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

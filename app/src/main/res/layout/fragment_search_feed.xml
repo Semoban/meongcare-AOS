@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginEnd="16dp"
     tools:context=".SearchFeedFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_searchfeed"
-        android:layout_width="wrap_content"
+        android:layout_width="44dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,7 +19,7 @@
         android:id="@+id/edittext_searchfeed_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="29dp"
+        android:layout_marginTop="7dp"
         android:background="@drawable/all_rect_r10"
         android:backgroundTint="@color/gray2"
         android:drawableEnd="@drawable/all_search_18dp"
@@ -36,26 +37,31 @@
         android:id="@+id/recyclerview_searchfeed_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="35dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edittext_searchfeed_search" />
+        app:layout_constraintTop_toBottomOf="@id/edittext_searchfeed_search"
+        tools:listitem="@layout/item_search_feed" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_searchfeed_directinput"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extendedfloatingbutton_searchfeed_direct_input"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="36dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/all_rect_r5"
-        android:backgroundTint="@color/gray3"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/white"
         android:paddingVertical="12dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:text="직접 입력하기"
-        android:textAppearance="@style/Typography.Bottom2.SemiBold"
-        android:textColor="@color/gray5"
+        android:textAppearance="@style/Typography.Title3.SemiBold"
+        android:textColor="@color/black"
+        app:icon="@drawable/all_edit"
+        app:iconSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerview_searchfeed_result" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
