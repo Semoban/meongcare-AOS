@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".OnBoardingFragment">
+    tools:context=".onboarding.view.OnBoardingFragment">
 
     <TextView
-        android:id="@+id/textViewOnBoardingSkip"
+        android:id="@+id/textview_onboarding_skip"
         style="@style/Typography.Body2.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,21 +22,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerOnBoarding"
+        android:id="@+id/viewpager_onboarding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayoutOnBoarding"
+        app:layout_constraintBottom_toTopOf="@+id/tablayout_onboarding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOnBoardingSkip"
+        app:layout_constraintTop_toBottomOf="@+id/textview_onboarding_skip"
         app:layout_constraintVertical_bias="0.0">
 
     </androidx.viewpager2.widget.ViewPager2>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutOnBoarding"
+        android:id="@+id/tablayout_onboarding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
@@ -51,7 +51,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <Button
-        android:id="@+id/buttonOnBoardingStart"
+        android:id="@+id/button_onboarding_start"
         style="@style/Widget.Material3.Button"
         android:layout_width="288dp"
         android:layout_height="44dp"

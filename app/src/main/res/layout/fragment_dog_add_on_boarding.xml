@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/layout_petadd_completion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="42dp"
+                android:letterSpacing="-0.02"
+                android:text="반려견에 대해 알려주세요"
+                android:textAppearance="@style/Typography.Title1.SemiBold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_petadd_image"
+                android:layout_width="178dp"
+                android:layout_height="125dp"
+                android:layout_marginTop="32dp"
+                android:elevation="0dp"
+                android:outlineSpotShadowColor="@color/gray2"
+                app:cardCornerRadius="30dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageview_petadd_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray2"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/imageview_petadd_dog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/pet_add_dog"
+                        app:layout_constraintBottom_toTopOf="@+id/textview_petadd_image_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_petadd_image_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/medicalrecord_image_description"
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintEnd_toEndOf="@id/imageview_petadd_dog"
+                        app:layout_constraintStart_toStartOf="@id/imageview_petadd_dog"
+                        app:layout_constraintTop_toBottomOf="@id/imageview_petadd_dog" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textvoew_petadd_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/petadd_name"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardview_petadd_image" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_name"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/all_rect_r5"
+                android:hint="@string/petadd_input_name"
+                android:paddingHorizontal="20dp"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColorHint="#909090"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textvoew_petadd_name" />
+
+            <TextView
+                android:id="@+id/textview_petadd_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_breed"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_petadd_name" />
+
+            <View
+                android:id="@+id/view_petadd_type"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/all_rect_r5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_type" />
+
+            <TextView
+                android:id="@+id/edittext_petadd_select_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/all_rect_r5"
+                android:text="@string/petadd_select_breed"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="#909090"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_type"
+                app:layout_constraintStart_toStartOf="@id/view_petadd_type"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_type" />
+
+            <TextView
+                android:id="@+id/textview_petadd_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_gender"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_petadd_type" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipgroup_petadd_group_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_gender"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_petadd_female"
+                    style="@style/CustomChip"
+                    android:text="@string/petadd_female"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/Typography.Body1.Medium" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_petadd_male"
+                    style="@style/CustomChip"
+                    android:text="@string/petadd_male"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/Typography.Body1.Medium" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <CheckBox
+                android:id="@+id/checkbox_petadd_neuter_status"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                app:layout_constraintStart_toEndOf="@id/chipgroup_petadd_group_gender"
+                app:layout_constraintTop_toTopOf="@id/chipgroup_petadd_group_gender" />
+
+            <TextView
+                android:id="@+id/textview_petadd_neuter_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:includeFontPadding="false"
+                android:text="@string/petadd_neuter_status"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray4"
+                app:layout_constraintStart_toEndOf="@id/checkbox_petadd_neuter_status"
+                app:layout_constraintTop_toTopOf="@id/checkbox_petadd_neuter_status" />
+
+            <TextView
+                android:id="@+id/textview_petadd_birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_birthday"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chipgroup_petadd_group_gender" />
+
+            <TextView
+                android:id="@+id/textview_patadd_select_birthday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/all_rect_r5"
+                android:paddingVertical="11dp"
+                android:paddingStart="16dp"
+                android:text="@string/all_select_date"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="#909090"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_petadd_birthday" />
+
+            <ImageView
+                android:id="@+id/imageview_petadd_birthday_calender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/all_calendar"
+                app:layout_constraintBottom_toBottomOf="@id/textview_patadd_select_birthday"
+                app:layout_constraintEnd_toEndOf="@id/textview_patadd_select_birthday"
+                app:layout_constraintTop_toTopOf="@id/textview_patadd_select_birthday"
+                app:tint="@color/gray4" />
+
+            <TextView
+                android:id="@+id/textview_petadd_birthday_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/petadd_input_first_day"
+                android:textAppearance="@style/Typography.Body3.Light"
+                android:textColor="#B5B3B3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_patadd_select_birthday" />
+
+            <TextView
+                android:id="@+id/textview_petadd_first_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_first_day"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_birthday_description" />
+
+            <TextView
+                android:id="@+id/textview_petadd_select_first_day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/all_rect_r5"
+                android:paddingVertical="11dp"
+                android:paddingStart="16dp"
+                android:text="@string/all_select_date"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="#909090"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_first_day" />
+
+            <ImageView
+                android:id="@+id/imageview_petadd_first_day_calender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/all_calendar"
+                app:layout_constraintBottom_toBottomOf="@id/textview_petadd_select_first_day"
+                app:layout_constraintEnd_toEndOf="@id/textview_petadd_select_first_day"
+                app:layout_constraintTop_toTopOf="@id/textview_petadd_select_first_day"
+                app:tint="@color/gray4" />
+
+            <TextView
+                android:id="@+id/textview_petadd_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_weight"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_petadd_select_first_day" />
+
+            <View
+                android:id="@+id/view_petadd_weight"
+                android:layout_width="148dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/all_rect_r5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_weight" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingVertical="13dp"
+                android:paddingStart="11dp"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="#909090"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_weight"
+                app:layout_constraintEnd_toStartOf="@id/textview_petadd_weight_unit"
+                app:layout_constraintStart_toStartOf="@id/view_petadd_weight"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_weight" />
+
+            <TextView
+                android:id="@+id/textview_petadd_weight_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16sp"
+                android:includeFontPadding="false"
+                android:text="@string/petadd_kg"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="#909090"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_weight"
+                app:layout_constraintEnd_toEndOf="@id/view_petadd_weight"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_weight" />
+
+            <TextView
+                android:id="@+id/textview_petadd_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/petadd_size"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_petadd_weight" />
+
+
+            <View
+                android:id="@+id/view_petadd_back_length"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/all_rect_r5"
+                android:minHeight="46dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_size" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_back_length"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                android:hint="@string/petadd_back_length"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textAlignment="viewEnd"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_back_length"
+                app:layout_constraintEnd_toStartOf="@id/textview_petadd_back_length_unit"
+                app:layout_constraintStart_toStartOf="@id/view_petadd_back_length"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_back_length" />
+
+            <TextView
+                android:id="@+id/textview_petadd_back_length_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="@string/petadd_cm"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_back_length"
+                app:layout_constraintEnd_toEndOf="@id/view_petadd_back_length"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_back_length" />
+
+            <View
+                android:id="@+id/view_petadd_chest_circumference"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/all_rect_r5"
+                android:minHeight="46dp"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/view_petadd_back_length"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_size" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_chest_circumference"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                android:hint="@string/petadd_chest_circumference"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textAlignment="viewEnd"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_chest_circumference"
+                app:layout_constraintEnd_toStartOf="@id/textview_petadd_chest_circumference_unit"
+                app:layout_constraintStart_toStartOf="@id/view_petadd_chest_circumference"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_chest_circumference" />
+
+            <TextView
+                android:id="@+id/textview_petadd_chest_circumference_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="@string/petadd_cm"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_chest_circumference"
+                app:layout_constraintEnd_toEndOf="@id/view_petadd_chest_circumference"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_chest_circumference" />
+
+
+            <View
+                android:id="@+id/view_petadd_neck_circumference"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/all_rect_r5"
+                android:minHeight="46dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/view_petadd_chest_circumference"
+                app:layout_constraintTop_toBottomOf="@+id/textview_petadd_size" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_neck_circumference"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="@string/petadd_neck_circumference"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textAlignment="viewEnd"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_neck_circumference"
+                app:layout_constraintEnd_toStartOf="@id/textview_petadd_neck_circumference_unit"
+                app:layout_constraintStart_toStartOf="@id/view_petadd_neck_circumference"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_neck_circumference" />
+
+            <TextView
+                android:id="@+id/textview_petadd_neck_circumference_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="@string/petadd_cm"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/view_petadd_neck_circumference"
+                app:layout_constraintEnd_toEndOf="@id/view_petadd_neck_circumference"
+                app:layout_constraintTop_toTopOf="@id/view_petadd_neck_circumference" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_petadd_chest_circumference" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/layout_petadd_completion"
+        bind:buttonText="@{@string/all_completion}"
+        layout="@layout/layout_footer_one_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

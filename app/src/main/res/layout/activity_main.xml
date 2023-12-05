@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+        android:id="@+id/bottomNavLayout"
         android:layout_width="match_parent"
         android:layout_height="83dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,132 +66,177 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black60"
-        android:visibility="gone">
+        android:clickable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabWeight"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu_weight_edit"
+            android:layout_width="146dp"
+            android:layout_height="52dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@drawable/main_weighing_machine"
-            app:backgroundTint="#FFFFFF"
-            app:fabCustomSize="53dp"
-            app:tint="@null" />
+            android:background="@drawable/home_rect_r10">
 
-        <TextView
-            android:id="@+id/textViewWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:letterSpacing="-0.02"
-            android:text="체중"
-            android:textAppearance="@style/Typography.Body3.Medium"
-            android:textColor="#FFFFFF" />
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/main_weighing_machine" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabNutrition"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@drawable/main_medicine_container"
-            app:backgroundTint="#FFFFFF"
-            app:fabCustomSize="53dp"
-            app:tint="@null" />
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:letterSpacing="-0.02"
+                android:text="체중"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView11"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textViewNutrition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:letterSpacing="-0.02"
-            android:text="영양제"
-            android:textAppearance="@style/Typography.Body3.Medium"
-            android:textColor="#FFFFFF" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabSymptom"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu_nutrition_add"
+            android:layout_width="146dp"
+            android:layout_height="52dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@drawable/main_syringe"
-            app:backgroundTint="#FFFFFF"
-            app:fabCustomSize="53dp"
-            app:tint="@null" />
+            android:background="@drawable/home_rect_r10">
 
-        <TextView
-            android:id="@+id/textViewSymptom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:letterSpacing="-0.02"
-            android:text="이상증상"
-            android:textAppearance="@style/Typography.Body3.Medium"
-            android:textColor="#FFFFFF" />
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/main_medicine_container" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabFeces"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@drawable/main_feces"
-            app:backgroundTint="#FFFFFF"
-            app:fabCustomSize="53dp"
-            app:tint="@null" />
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:letterSpacing="-0.02"
+                android:text="영양제"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView10"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textViewFeces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:letterSpacing="-0.02"
-            android:text="대소변"
-            android:textAppearance="@style/Typography.Body3.Medium"
-            android:textColor="#FFFFFF" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabFood"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu_symptom_add"
+            android:layout_width="146dp"
+            android:layout_height="52dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:src="@drawable/main_dog_food_bowl"
-            app:backgroundTint="#FFFFFF"
-            app:fabCustomSize="53dp"
-            app:tint="@null" />
+            android:background="@drawable/home_rect_r10">
 
-        <TextView
-            android:id="@+id/textViewFood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/main_syringe" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:letterSpacing="-0.02"
+                android:text="이상증상"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView9"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu_feces_add"
+            android:layout_width="146dp"
+            android:layout_height="52dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:letterSpacing="-0.02"
-            android:text="사료"
-            android:textAppearance="@style/Typography.Body3.Medium"
-            android:textColor="#FFFFFF" />
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/home_rect_r10">
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/main_feces" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:letterSpacing="-0.02"
+                android:text="대소변"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/menu_dog_food_add"
+            android:layout_width="146dp"
+            android:layout_height="52dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/home_rect_r10">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="24dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/main_dog_food_bowl" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:letterSpacing="-0.02"
+                android:text="사료"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabCancel"
