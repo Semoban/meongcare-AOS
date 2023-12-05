@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".Weight.WeightFragment">
+    tools:context=".weight.WeightFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_weight"

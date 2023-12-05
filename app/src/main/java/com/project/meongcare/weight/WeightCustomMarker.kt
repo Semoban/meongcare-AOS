@@ -1,4 +1,4 @@
-package com.project.meongcare.Weight
+package com.project.meongcare.weight
 
 import android.content.Context
 import android.view.LayoutInflater
