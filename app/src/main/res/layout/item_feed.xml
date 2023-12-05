@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/all_rect_r10">
 
     <ImageView
-        android:id="@+id/imageview_oldfeed"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:id="@+id/imageview_feed"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginVertical="15dp"
         android:layout_marginStart="24dp"
         android:src="@drawable/feed_item_default_image"
@@ -18,28 +18,38 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textview_searchfeed_brand"
+        android:id="@+id/textview_feed_brand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:text="브랜드명"
         android:textAppearance="@style/Typography.Body2.Regular"
         android:textColor="@color/gray4"
-        app:layout_constraintStart_toEndOf="@id/imageview_oldfeed"
-        app:layout_constraintTop_toTopOf="@id/imageview_oldfeed" />
+        app:layout_constraintStart_toEndOf="@id/imageview_feed"
+        app:layout_constraintTop_toTopOf="@id/imageview_feed" />
 
     <TextView
-        android:id="@+id/textview_searchfeed_name"
+        android:id="@+id/textview_feed_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="1dp"
         android:text="사료명"
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@id/imageview_oldfeed"
-        app:layout_constraintStart_toStartOf="@id/textview_searchfeed_brand"
-        app:layout_constraintTop_toBottomOf="@id/textview_searchfeed_brand" />
+        app:layout_constraintStart_toStartOf="@id/textview_feed_brand"
+        app:layout_constraintTop_toBottomOf="@id/textview_feed_brand" />
+
+    <TextView
+        android:id="@+id/textview_feed_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="0000년 00월 00일~ 00월 00일"
+        android:textAppearance="@style/Typography.Body3.Regular"
+        android:textColor="@color/gray5"
+        app:layout_constraintBottom_toBottomOf="@id/imageview_feed"
+        app:layout_constraintStart_toStartOf="@id/textview_feed_name"
+        app:layout_constraintTop_toBottomOf="@id/textview_feed_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
