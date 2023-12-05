@@ -91,11 +91,8 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        // 캘린더 관련
-
         // 현재 로그인한 유저의 현재 강아지 이름
         val dogName = "김대박"
-
 
         fragmentSymptomBinding.run {
 
@@ -115,6 +112,7 @@ class SymptomFragment : Fragment() {
                 symptomViewModel.selectedDate.value =
                     symptomViewModel.symptomDateList.value!![symptomViewModel.selectDatePosition.value!!]
             }
+
             toolbarSymptom.imageViewToolbarCalendarWeekNext.setOnClickListener {
                 Log.d("클릭", "클릭")
                 generateNextNewData()
@@ -127,7 +125,6 @@ class SymptomFragment : Fragment() {
 //                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 layoutManager = GridLayoutManager(requireContext(), 7)
             }
-
 
         }
         return fragmentSymptomBinding.root
@@ -151,7 +148,10 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): SymptomViewHolder {
             val itemSymptomBinding = ItemSymptomBinding.inflate(layoutInflater)
             val allViewHolder = SymptomViewHolder(itemSymptomBinding)
 
@@ -159,8 +159,6 @@ class SymptomFragment : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-
-
 
             itemSymptomBinding.root.setOnClickListener {
                 tempActivity.replaceFragment(TempActivity.SYMPTOM_INFO_FRAGMENT, true, null)
@@ -174,20 +172,20 @@ class SymptomFragment : Fragment() {
             return symptomViewModel.symptomList.value!!.size
         }
 
-        override fun onBindViewHolder(holder: SymptomViewHolder, position: Int) {
+        override fun onBindViewHolder(
+            holder: SymptomViewHolder,
+            position: Int,
+        ) {
             holder.itemSymptomName.text = symptomViewModel.symptomList.value!![position].note
             holder.itemSymptomTime.text = symptomViewModel.symptomList.value!![position].dateTime
             holder.itemSymptomImg.setImageResource(getSymptomImg(symptomViewModel.symptomList.value!![position]))
         }
     }
 
-
     inner class SymptomDateRecyclerViewAdapter :
         RecyclerView.Adapter<SymptomDateRecyclerViewAdapter.SymptomDateViewHolder>() {
-
         inner class SymptomDateViewHolder(itemSymptomDateBinding: ItemToolbarCalendarWeekBinding) :
             RecyclerView.ViewHolder(itemSymptomDateBinding.root) {
-
             val itemSymptomDate: TextView
             val itemSymptomDay: TextView
             val itemLayout: LinearLayout
@@ -199,7 +197,10 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomDateViewHolder {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): SymptomDateViewHolder {
             val itemSymptomDateBinding = ItemToolbarCalendarWeekBinding.inflate(layoutInflater)
             val symptomDateHolder = SymptomDateViewHolder(itemSymptomDateBinding)
 
@@ -212,12 +213,11 @@ class SymptomFragment : Fragment() {
 //                ViewGroup.LayoutParams.WRAP_CONTENT
 //            )
 
-            itemSymptomDateBinding.root.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-
+            itemSymptomDateBinding.root.layoutParams =
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
 
             return symptomDateHolder
         }
@@ -226,10 +226,12 @@ class SymptomFragment : Fragment() {
             return symptomViewModel.symptomDateList.value!!.size
         }
 
-        override fun onBindViewHolder(holder: SymptomDateViewHolder, position: Int) {
+        override fun onBindViewHolder(
+            holder: SymptomDateViewHolder,
+            position: Int,
+        ) {
             holder.itemSymptomDate.text = getDate(getItem(position))
             holder.itemSymptomDay.text = getDay(getItem(position))
-
 
             symptomViewModel.selectDatePosition.observe(viewLifecycleOwner) {
                 // 클릭한 아이템에 대한 레이아웃을 적용
@@ -238,13 +240,13 @@ class SymptomFragment : Fragment() {
                     holder.itemSymptomDate.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
-                            R.color.main4
+                            R.color.main4,
                         )
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
-                            R.color.main4
+                            R.color.main4,
                         )
                     )
                 } else {
@@ -253,35 +255,29 @@ class SymptomFragment : Fragment() {
                     holder.itemSymptomDate.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
-                            R.color.black
+                            R.color.black,
                         )
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
                             tempActivity,
-                            R.color.black
+                            R.color.black,
                         )
                     )
                 }
             }
 
-
-
             holder.itemLayout.setOnClickListener {
                 symptomViewModel.selectDatePosition.value = position
                 symptomViewModel.selectedDate.value = getItem(position)
             }
-
-
         }
 
         // getItem 함수는 데이터 리스트에서 특정 위치(position)의 아이템을 가져옵니다.
         private fun getItem(position: Int): Date {
             selectDatePosition = position
             return symptomViewModel.symptomDateList.value!![position]
-
         }
-
     }
 
     fun getSymptomImg(symptomData: Symptom): Int {
@@ -296,14 +292,11 @@ class SymptomFragment : Fragment() {
         }
     }
 
-    fun getDay(date: Date): String =
-        SimpleDateFormat("EE", Locale.getDefault()).format(date)
+    fun getDay(date: Date): String = SimpleDateFormat("EE", Locale.getDefault()).format(date)
 
-    fun getMonthDateDay(date: Date): String =
-        SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
+    fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
 
-    fun getDate(date: Date): String =
-        SimpleDateFormat("d", Locale.getDefault()).format(date)
+    fun getDate(date: Date): String = SimpleDateFormat("d", Locale.getDefault()).format(date)
 
     private fun generatePrevNewData() {
         val calendar = Calendar.getInstance()
@@ -324,16 +317,15 @@ class SymptomFragment : Fragment() {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
 
-        symptomViewModel.symptomDateList.value = symptomViewModel.symptomDateList.value?.let {
-            val updatedList = mutableListOf<Date>()
-            updatedList.addAll(weekDates)
-//            updatedList.addAll(it)
-            updatedList
-        }
+        symptomViewModel.symptomDateList.value =
+            symptomViewModel.symptomDateList.value?.let {
+                val updatedList = mutableListOf<Date>()
+                updatedList.addAll(weekDates)
+    //            updatedList.addAll(it)
+                updatedList
+            }
 
         Log.d("클릭", symptomViewModel.symptomDateList.value.toString())
-
-
     }
 
     private fun generateNextNewData() {
@@ -354,16 +346,15 @@ class SymptomFragment : Fragment() {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
 
-        symptomViewModel.symptomDateList.value = symptomViewModel.symptomDateList.value?.let {
-            val updatedList = mutableListOf<Date>()
-//            updatedList.addAll(it)
-            updatedList.addAll(weekDates)
-            updatedList
-        }
+        symptomViewModel.symptomDateList.value =
+            symptomViewModel.symptomDateList.value?.let {
+                val updatedList = mutableListOf<Date>()
+    //            updatedList.addAll(it)
+                updatedList.addAll(weekDates)
+                updatedList
+            }
 
         Log.d("클릭", symptomViewModel.symptomDateList.value.toString())
-
-
     }
 
     fun changeDateToLocale(date: Date): LocalDateTime {
