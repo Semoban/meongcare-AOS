@@ -10,7 +10,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/all_un_check" />
+        app:srcCompat="@drawable/all_un_check_16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

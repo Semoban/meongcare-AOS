@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="10dp"
-        android:src="@drawable/all_un_check"
+        android:src="@drawable/all_un_check_16dp"
         app:layout_constraintEnd_toEndOf="@id/circleimageview_petshare_image"
         app:layout_constraintTop_toTopOf="@id/circleimageview_petshare_image" />
 

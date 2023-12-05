@@ -17,7 +17,7 @@
         android:layout_height="43dp"
         android:layout_marginLeft="6dp"
         android:layout_weight="1"
-        android:background="@drawable/all_rec_gray2_r5"
+        android:background="@drawable/all_rect_gray2_r5"
         android:orientation="vertical">
 
         <TextView

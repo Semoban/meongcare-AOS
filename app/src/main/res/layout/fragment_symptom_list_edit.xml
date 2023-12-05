@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomListEditFragment" >
+    tools:context=".symptom.view.SymptomListEditFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomListEdit"
@@ -36,36 +36,22 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/textView_symptomListEdit_delete_select"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_regular"
-                    android:text="선택 삭제"
-                    android:textColor="@color/gray5" />
-
 
                 <ImageView
+                    android:id="@+id/imageView_symptomListEdit_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/all_seperate_bar_6f6e6e" />
+                    android:src="@drawable/all_un_check_20dp" />
 
                 <TextView
                     android:id="@+id/textView_symptomListEdit_delete_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_regular"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/pretendard_medium"
                     android:text="전체 삭제"
-                    android:textColor="@color/gray5" />
+                    android:textColor="@color/gray5"
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -93,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/supplement_routine_edit_rec_gray3_r4"
+            android:background="@drawable/all_rect_gray3_r4_outline"
             android:orientation="vertical">
 
             <TextView
@@ -112,7 +98,7 @@
             android:layout_height="45dp"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:background="@drawable/supplement_routine_edit_rec_main4_r4"
+            android:background="@drawable/all_rect_main4_r4"
             android:orientation="vertical">
 
             <TextView

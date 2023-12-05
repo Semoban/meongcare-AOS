@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomSelectFragment" >
+    tools:context=".symptom.view.SymptomSelectFragment" >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/all_arrow_back_18dp"
-        app:title="증상" />
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="35dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar_symptomSelect">
 
         <LinearLayout
@@ -39,7 +40,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +110,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -179,7 +180,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -249,7 +250,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -319,7 +320,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -389,7 +390,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check" />
+                    app:srcCompat="@drawable/all_un_check_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -449,5 +450,54 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/button_symptomSelectCustom_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_gray3_r4_outline"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="center"
+                android:text="취소"
+                android:textColor="@color/gray5"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_symptomSelectCustom_complete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_main4_r4"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="center"
+                android:text="완료"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

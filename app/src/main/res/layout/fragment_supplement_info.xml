@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    tools:context=".SupplementInfoFragment">
+    tools:context=".supplement.view.SupplementInfoFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_supplementInfo"
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/all_rec_gray2_r5"
+                    android:background="@drawable/all_rect_gray2_r5"
                     android:orientation="vertical">
 
                     <TextView
@@ -263,7 +263,7 @@
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="36dp"
         android:layout_weight="1"
-        android:background="@drawable/all_rec_main4_r5"
+        android:background="@drawable/all_rect_main4_r5"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

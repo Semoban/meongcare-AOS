@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomAddFragment">
+    tools:context=".symptom.view.SymptomAddFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,9 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ToolbarTheme"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/all_arrow_back_18dp"
-            app:title="이상증상" />
+            app:navigationIcon="@drawable/all_arrow_back_18dp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -32,18 +32,31 @@
                 android:orientation="vertical"
                 android:padding="26dp">
 
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="증상 시각"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_date" />
+
                 <LinearLayout
                     android:id="@+id/button_symptomAdd_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/all_rec_gray1_r5"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_gray1_r5"
                     android:paddingLeft="20dp"
                     android:paddingTop="14dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomAdd">
+                    app:layout_constraintTop_toBottomOf="@id/textView9">
 
                     <TextView
                         android:id="@+id/textView_symptomAdd_date"
@@ -60,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:src="@drawable/all_calendar" />
+                        android:src="@drawable/all_calendar_gray4" />
                 </LinearLayout>
 
 
@@ -71,6 +84,7 @@
                     android:layout_marginTop="22dp"
                     android:fontFamily="@font/pretendard_semi_bold"
                     android:text="증상 시각"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,14 +110,15 @@
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/timepicker_symptomAdd" />
+                    app:layout_constraintTop_toBottomOf="@+id/timepicker_symptomAdd"
+                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:id="@+id/button_symptomAdd_select_symptom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/all_rec_gray2_r5_outline"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_gray2_r5_outline"
                     android:paddingLeft="18dp"
                     android:paddingTop="10dp"
                     android:paddingRight="18dp"
@@ -135,8 +150,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/all_rec_gray1_r5"
+                    android:background="@drawable/all_rect_gray1_r5"
                     android:ems="10"
+                    android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
                     android:hint="항목에 없는 증상을 적어주세요"
                     android:inputType="text"
@@ -158,21 +174,28 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
+        <LinearLayout
             android:id="@+id/button_symptomAdd_to_symptom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:layout_marginBottom="36dp"
-            android:backgroundTint="@color/main4"
-            android:fontFamily="@font/pretendard_semi_bold"
-            android:text="완료"
-            android:textSize="18sp"
-            app:cornerRadius="5dp"
+            android:background="@drawable/all_rect_main4_r5"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:text="완료"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SupplementSearchFragment" >
+    tools:context=".supplement.view.SupplementSearchFragment" >
 
     <LinearLayout
         android:id="@+id/toolbar_supplementSearch"
@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/all_rec_gray2_r5"
-            android:drawableRight="@drawable/pet_food_search"
+            android:background="@drawable/all_rect_gray2_r5"
+            android:drawableRight="@drawable/all_search_18dp"
             android:fontFamily="@font/pretendard_regular"
             android:gravity="center_vertical"
             android:hint="영양제 이름 또는 브랜드를 입력하세요."
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="18dp"
-            android:background="@drawable/all_rec_gray2_r5"
+            android:background="@drawable/all_rect_gray2_r5"
             android:orientation="vertical">
 
             <TextView
