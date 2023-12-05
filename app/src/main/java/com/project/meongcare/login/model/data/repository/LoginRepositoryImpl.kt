@@ -20,8 +20,7 @@ class LoginRepositoryImpl
                     Log.d("LoginRepository-fail", response.code().toString())
                     return null
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 return null
             }

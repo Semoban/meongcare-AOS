@@ -15,7 +15,7 @@ import javax.inject.Inject
 class UserPreferences
     @Inject
     constructor(
-        @ApplicationContext private val context: Context
+        @ApplicationContext private val context: Context,
     ) {
         // 키 정의
         private val preferenceKeyEmail = stringPreferencesKey("email")
