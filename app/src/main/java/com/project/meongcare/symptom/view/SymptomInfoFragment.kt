@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 class SymptomInfoFragment : Fragment() {
@@ -18,8 +17,9 @@ class SymptomInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         SymptomRepository.searchByDogId(1, LocalDateTime.now()) { symptoms ->
-            Log.d("증상",symptoms.toString())
+            Log.d("증상", symptoms.toString())
         }
         return inflater.inflate(R.layout.fragment_symptom_info, container, false)
     }
 }
+

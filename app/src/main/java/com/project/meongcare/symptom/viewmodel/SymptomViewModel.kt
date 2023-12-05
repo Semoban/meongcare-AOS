@@ -4,11 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class SymptomViewModel : ViewModel() {
     var checkedStatusList = MutableLiveData<MutableList<Boolean>>()
@@ -16,8 +13,9 @@ class SymptomViewModel : ViewModel() {
     var symptomDateList = MutableLiveData<MutableList<Date>>()
     var selectedDate = MutableLiveData<Date>()
     var selectDatePosition = MutableLiveData<Int>()
+
     init {
-        checkedStatusList.value = MutableList<Boolean>(6){false}
+        checkedStatusList.value = MutableList<Boolean>(6) { false }
         symptomList.value = mutableListOf(
             Symptom(1, "오전 00:30", SymptomType.WEIGHT_LOSS.symptomName, "많이 아파보임"),
             Symptom(2, "오전 01:30", SymptomType.HIGH_FEVER.symptomName, "열이 높음"),
@@ -54,5 +52,4 @@ class SymptomViewModel : ViewModel() {
         // 날짜 목록은 현재 날짜부터 일주일 전까지의 7일간의 데이터를 포함
         symptomDateList.value = weekDates
     }
-
 }

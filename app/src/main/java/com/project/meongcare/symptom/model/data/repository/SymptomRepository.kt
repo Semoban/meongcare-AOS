@@ -2,19 +2,17 @@ package com.project.meongcare.symptom.model.data.repository
 
 import android.util.Log
 import com.project.meongcare.TempActivity
-import com.project.meongcare.symptom.model.entities.ResultSymptom
-import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.data.remote.SymptomAPI
 import com.project.meongcare.symptom.model.entities.AddResponse
+import com.project.meongcare.symptom.model.entities.ResultSymptom
+import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.Date
 
 class SymptomRepository {
     companion object {
@@ -52,7 +50,7 @@ class SymptomRepository {
 
         }
 
-        fun addSymptom(toAddSymptom : ToAddSymptom) {
+        fun addSymptom(toAddSymptom: ToAddSymptom) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(TempActivity.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,7 +66,7 @@ class SymptomRepository {
                     call: Call<AddResponse>,
                     response: Response<AddResponse>
                 ) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         Log.d("Symptom API", "통신 성공: ${response.body()}, ${toAddSymptom}")
                     }
 

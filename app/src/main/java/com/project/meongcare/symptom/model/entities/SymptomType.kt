@@ -1,6 +1,6 @@
 package com.project.meongcare.symptom.model.entities
 
-enum class SymptomType(val symptomName:String){
+enum class SymptomType(val symptomName: String) {
     WEIGHT_LOSS("weightLoss"),
     HIGH_FEVER("highFever"),
     COUGH("cough"),
