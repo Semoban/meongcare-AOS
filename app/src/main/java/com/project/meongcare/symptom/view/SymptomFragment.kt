@@ -130,16 +130,16 @@ class SymptomFragment : Fragment() {
         RecyclerView.Adapter<SymptomRecyclerViewAdapter.SymptomViewHolder>() {
         inner class SymptomViewHolder(itemSymptomBinding: ItemSymptomBinding) :
             RecyclerView.ViewHolder(itemSymptomBinding.root) {
-                val itemSymptomName: TextView
-                val itemSymptomTime: TextView
-                val itemSymptomImg: ImageView
+            val itemSymptomName: TextView
+            val itemSymptomTime: TextView
+            val itemSymptomImg: ImageView
 
-                init {
-                    itemSymptomName = itemSymptomBinding.textViewItemSymptom
-                    itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
-                    itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
-                }
+            init {
+                itemSymptomName = itemSymptomBinding.textViewItemSymptom
+                itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
+                itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
             }
+        }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
