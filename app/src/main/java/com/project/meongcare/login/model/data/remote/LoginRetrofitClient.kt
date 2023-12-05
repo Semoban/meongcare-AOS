@@ -6,13 +6,13 @@ import retrofit2.create
 import javax.inject.Inject
 
 class LoginRetrofitClient
-@Inject
-constructor() {
-    val loginApi: LoginApi by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://dev.meongcare.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(LoginApi::class.java)
+    @Inject
+    constructor() {
+        val loginApi: LoginApi by lazy {
+            Retrofit.Builder()
+                .baseUrl("https://dev.meongcare.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(LoginApi::class.java)
+        }
     }
-}

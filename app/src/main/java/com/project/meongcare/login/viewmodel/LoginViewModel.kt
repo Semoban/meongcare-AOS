@@ -13,15 +13,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
-@Inject
-constructor(private val loginRepository: LoginRepository) : ViewModel() {
-    private val _loginResponse = MutableLiveData<LoginResponse?>()
-    val loginResponse: LiveData<LoginResponse?>
-        get() = _loginResponse
+    @Inject
+    constructor(private val loginRepository: LoginRepository) : ViewModel() {
+        private val _loginResponse = MutableLiveData<LoginResponse?>()
+        val loginResponse: LiveData<LoginResponse?>
+            get() = _loginResponse
 
-    fun postLoginInfo(loginRequest: LoginRequest) {
-        viewModelScope.launch {
-            _loginResponse.value = loginRepository.postLoginInfo(loginRequest)
+        fun postLoginInfo(loginRequest: LoginRequest) {
+            viewModelScope.launch {
+                _loginResponse.value = loginRepository.postLoginInfo(loginRequest)
+            }
         }
     }
-}

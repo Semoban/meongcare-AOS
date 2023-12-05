@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         name: String,
         addToBackStack: Boolean,
         animate: Boolean,
-        bundle:Bundle?,
+        bundle: Bundle?,
     ) {
         // Fragment 교체 상태로 설정한다.
         val fragmentTransaction = supportFragmentManager.beginTransaction()

@@ -67,7 +67,12 @@ class LoginFragment : Fragment() {
                 userPreferences.setAccessToken(loginResponse.accessToken)
                 userPreferences.setRefreshToken(loginResponse.refreshToken)
                 // 강아지 등록 화면으로 이동
-                mainActivity.replaceFragment(MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT, true,true, null,)
+                mainActivity.replaceFragment(
+                    MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT,
+                    true,
+                    true,
+                    null,
+                )
             } else {
                 Log.d("Login-viewmodel", "통신 실패")
             }
@@ -128,8 +133,7 @@ class LoginFragment : Fragment() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("Login-kakao", "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
+            } else if (user != null) {
                 Log.d("Login-kakao", "사용자 정보 요청 성공")
 
                 val deviceToken = getDeviceToken()
@@ -153,7 +157,7 @@ class LoginFragment : Fragment() {
 
     private fun naverLogin() {
         val nidProfileCallback =
-            object: NidProfileCallback<NidProfileResponse> {
+            object : NidProfileCallback<NidProfileResponse> {
                 override fun onError(
                     errorCode: Int,
                     message: String,
