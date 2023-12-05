@@ -10,7 +10,6 @@ import com.project.meongcare.databinding.WeightMarkerBinding
 
 class WeightCustomMarker(context: Context, layoutResource: Int) :
     MarkerView(context, layoutResource) {
-
     private val binding: WeightMarkerBinding =
         WeightMarkerBinding.inflate(LayoutInflater.from(context))
 
