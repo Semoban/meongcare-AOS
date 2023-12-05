@@ -16,31 +16,33 @@ import java.time.LocalDateTime
 
 class SymptomRepository {
     companion object {
-        fun searchByDogId(dogId: Int, dateTime: LocalDateTime, callback: (List<Symptom>?) -> Unit) {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(TempActivity.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+        fun searchByDogId(
+            dogId: Int,
+            dateTime: LocalDateTime,
+            callback: (List<Symptom>?) -> Unit
+        ) {
+            val retrofit =
+                Retrofit
+                    .Builder()
+                    .baseUrl(TempActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
-            val call = api.getResultSymptom(
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
-                dogId,
-                dateTime
+            val call =
+                api.getResultSymptom(
+                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
+                    dogId,
+                    dateTime,
             )
-
 
             call.enqueue(object : Callback<ResultSymptom> {
                 override fun onResponse(
-                    call: Call<ResultSymptom>,
-                    response: Response<ResultSymptom>
+                    call: Call<ResultSymptom>, response: Response<ResultSymptom>
                 ) {
                     Log.d("Symptom API response body", "통신 성공: ${response.body()}")
                     Log.d("Symptom API response", "통신 성공: ${response.body()}")
                     val result = response.body()?.records
                     callback(result)
-
                 }
-
 
                 override fun onFailure(call: Call<ResultSymptom>, t: Throwable) {
                     Log.w("Symptom API", "통신 실패: ${t.message}")
@@ -51,20 +53,19 @@ class SymptomRepository {
         }
 
         fun addSymptom(toAddSymptom: ToAddSymptom) {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(TempActivity.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            val retrofit =
+                Retrofit.Builder().baseUrl(TempActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
-            val call = api.addSymptom(
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
-                toAddSymptom
-            )
+            val call =
+                api.addSymptom(
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
+                        toAddSymptom,
+                    )
 
             call.enqueue(object : Callback<AddResponse> {
                 override fun onResponse(
-                    call: Call<AddResponse>,
-                    response: Response<AddResponse>
+                    call: Call<AddResponse>, response: Response<AddResponse>
                 ) {
                     if (response.isSuccessful) {
                         Log.d("Symptom API", "통신 성공: ${response.body()}, ${toAddSymptom}")
@@ -72,13 +73,11 @@ class SymptomRepository {
 
                 }
 
-
                 override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     Log.w("Symptom API", "통신 실패: ${t.message}")
                 }
             })
-
         }
-
     }
 }
+
