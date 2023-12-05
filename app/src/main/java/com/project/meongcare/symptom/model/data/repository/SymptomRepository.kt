@@ -53,8 +53,8 @@ class SymptomRepository {
                         Log.w("Symptom API", "통신 실패: ${t.message}")
                         callback(null)
                     }
-                })
-
+                }
+            )
         }
 
         fun addSymptom(toAddSymptom: ToAddSymptom) {
@@ -68,20 +68,25 @@ class SymptomRepository {
                     toAddSymptom,
                 )
 
-            call.enqueue(object : Callback<AddResponse> {
-                override fun onResponse(
-                    call: Call<AddResponse>,
-                    response: Response<AddResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d("Symptom API", "통신 성공: ${response.body()}, ${toAddSymptom}")
+            call.enqueue(
+                object : Callback<AddResponse> {
+                    override fun onResponse(
+                        call: Call<AddResponse>,
+                        response: Response<AddResponse>,
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("Symptom API", "통신 성공: ${response.body()}, $toAddSymptom")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<AddResponse>,
+                        t: Throwable,
+                    ) {
+                        Log.w("Symptom API", "통신 실패: ${t.message}")
                     }
                 }
-
-                override fun onFailure(call: Call<AddResponse>, t: Throwable) {
-                    Log.w("Symptom API", "통신 실패: ${t.message}")
-                }
-            })
+            )
         }
     }
 }
