@@ -32,7 +32,10 @@ class WeightFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         showWeightEditDialog()
         initWeeklyRecordChart()
@@ -48,12 +51,13 @@ class WeightFragment : Fragment() {
     }
 
     private fun initWeeklyRecordChart() {
-        val weightWeeklyData = listOf(
-            Entry(1f, 4.67f),
-            Entry(2f, 5f),
-            Entry(3f, 4.8f),
-            Entry(4f, 4.7f),
-        )
+        val weightWeeklyData =
+            listOf(
+                Entry(1f, 4.67f),
+                Entry(2f, 5f),
+                Entry(3f, 4.8f),
+                Entry(4f, 4.7f),
+            )
 
         val weightWeeklyDataSet = LineDataSet(weightWeeklyData, "")
 
@@ -115,10 +119,11 @@ class WeightFragment : Fragment() {
     }
 
     private fun initMonthlyRecordChart() {
-        val weightMonthlyData = listOf(
-            BarEntry(10F, 4.23F),
-            BarEntry(11F, 4.46F),
-        )
+        val weightMonthlyData =
+            listOf(
+                BarEntry(10F, 4.23F),
+                BarEntry(11F, 4.46F),
+            )
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
 
