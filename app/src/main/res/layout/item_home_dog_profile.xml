@@ -5,33 +5,41 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_dog_image_bg" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewHomeDogProfileDogImage"
+    <view
+        android:id="@+id/imageview_dog_profile_bg"
+        class="de.hdodenhof.circleimageview.CircleImageView"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:maxWidth="45dp"
+        android:maxHeight="45dp"
+        android:src="@drawable/home_dog_profile_bg_unselect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <view
+        android:id="@+id/imageview_dog_profile"
+        class="de.hdodenhof.circleimageview.CircleImageView"
         android:layout_width="41dp"
         android:layout_height="41dp"
-        android:maxWidth="51dp"
-        android:maxHeight="51dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageView1"
-        app:layout_constraintEnd_toEndOf="@id/imageView1"
-        app:layout_constraintStart_toStartOf="@id/imageView1"
-        app:layout_constraintTop_toTopOf="@id/imageView1" />
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="2dp"
+        android:maxWidth="41dp"
+        android:maxHeight="41dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageview_dog_profile_bg"
+        app:layout_constraintEnd_toEndOf="@+id/imageview_dog_profile_bg"
+        app:layout_constraintStart_toStartOf="@+id/imageview_dog_profile_bg"
+        app:layout_constraintTop_toTopOf="@+id/imageview_dog_profile_bg" />
 
     <TextView
-        android:id="@+id/textViewHomeDogProfileRowDogName"
+        android:id="@+id/textview_dog_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:letterSpacing="-0.02"
+        android:layout_marginTop="4dp"
         android:textAppearance="@style/Typography.Body3.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
-
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageview_dog_profile"
+        app:layout_constraintStart_toStartOf="@+id/imageview_dog_profile"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_dog_profile_bg" />
 </androidx.constraintlayout.widget.ConstraintLayout>
