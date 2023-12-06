@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
         fragmentHomeBinding.run {
             imageViewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
-                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
         }
