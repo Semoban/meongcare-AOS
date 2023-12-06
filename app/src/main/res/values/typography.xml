@@ -72,10 +72,6 @@
         <item name="fontFamily">@font/pretendard_semi_bold</item>
     </style>
 
-    <style name="Typography.Body1.SemiBold" parent="Typography.Body1">
-        <item name="fontFamily">@font/pretendard_semi_bold</item>
-    </style>
-
     <style name="Typography.Body1.Medium" parent="Typography.Body1">
        <item name="fontFamily">@font/pretendard_medium</item>
     </style>
