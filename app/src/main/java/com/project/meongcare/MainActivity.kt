@@ -29,20 +29,12 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
-    companion object {
-        val LOGIN_FRAGMENT = "LoginFragment"
-        val HOME_FRAGMENT = "HomeFragment"
-        val DOG_ADD_ON_BOARDING_FRAGMENT = "DogAddOnBoardingFragment"
-        val ON_BOARDING_FRAGMENT = "OnBoardingFragment"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         activityMainBinding.run {
-            replaceFragment(ON_BOARDING_FRAGMENT, false, true, null)
 //            autoLogin()
 
             bottomNavigationViewMain.background = null
@@ -89,51 +81,6 @@ class MainActivity : AppCompatActivity() {
                 it.visibility = View.GONE
             }
         }
-    }
-
-    // 지정한 Fragment를 보여주는 메서드
-    fun replaceFragment(
-        name: String,
-        addToBackStack: Boolean,
-        animate: Boolean,
-        bundle: Bundle?,
-    ) {
-        // Fragment 교체 상태로 설정한다.
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        // 새로운 Fragment를 담을 변수
-        var newFragment =
-            when (name) {
-                LOGIN_FRAGMENT -> LoginFragment()
-                HOME_FRAGMENT -> HomeFragment()
-                DOG_ADD_ON_BOARDING_FRAGMENT -> DogAddOnBoardingFragment()
-                ON_BOARDING_FRAGMENT -> OnBoardingFragment()
-                else -> Fragment()
-            }
-
-        newFragment.arguments = bundle
-
-        if (newFragment != null) {
-            // Fragment를 교채한다.
-            fragmentTransaction.replace(R.id.fragmentContainerView, newFragment)
-
-            if (animate == true) {
-                // 애니메이션을 설정한다.
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-            if (addToBackStack == true) {
-                // Fragment를 Backstack에 넣어 이전으로 돌아가는 기능이 동작할 수 있도록 한다.
-                fragmentTransaction.addToBackStack(name)
-            }
-
-            // 교체 명령이 동작하도록 한다.
-            fragmentTransaction.commit()
-        }
-    }
-
-    // Fragment를 BackStack에서 제거한다.
-    fun removeFragment(name: String) {
-        supportFragmentManager.popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     // fab menu 생기는 애니메이션
@@ -208,9 +155,9 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             userPreferences.email.collect { email ->
                 if (email == null) {
-                    replaceFragment(ON_BOARDING_FRAGMENT, false, true, null)
+                    // OnBoardingFragment로 교체
                 } else {
-                    replaceFragment(HOME_FRAGMENT, false, true, null)
+                    // HomeFragment로 교체
                 }
             }
         }

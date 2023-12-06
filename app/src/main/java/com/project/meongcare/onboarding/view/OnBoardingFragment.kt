@@ -1,5 +1,6 @@
 package com.project.meongcare.onboarding.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +23,6 @@ class OnBoardingFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
-
-        // 바텀 네비 안 보이게
-        mainActivity.detachBottomNav()
 
         viewPagerAdapter = ViewPagerAdapter(this)
 
@@ -64,13 +61,14 @@ class OnBoardingFragment : Fragment() {
         return fragmentOnBoardingBinding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mainActivity.attachBottomNav()
+    private fun moveToLogin(){
+        // LoginFragment로 이동
     }
 
-    private fun moveToLogin() {
-        mainActivity.replaceFragment(MainActivity.LOGIN_FRAGMENT, false, true, null)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = activity as MainActivity
+        mainActivity.detachBottomNav()
     }
 }
 
