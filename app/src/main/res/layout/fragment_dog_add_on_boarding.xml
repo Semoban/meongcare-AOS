@@ -2,15 +2,14 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:bind="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/layout_petadd_completion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -90,9 +89,19 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/petadd_name"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardview_petadd_image" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textvoew_petadd_name"
+                app:layout_constraintStart_toEndOf="@+id/textvoew_petadd_name"
+                app:layout_constraintTop_toTopOf="@+id/textvoew_petadd_name"
+                app:srcCompat="@drawable/essential_input_element_icon" />
 
             <EditText
                 android:id="@+id/edittext_petadd_name"
@@ -105,7 +114,8 @@
                 android:hint="@string/petadd_input_name"
                 android:paddingHorizontal="20dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColorHint="#909090"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textvoew_petadd_name" />
@@ -117,9 +127,19 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_breed"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edittext_petadd_name" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_petadd_type"
+                app:layout_constraintStart_toEndOf="@+id/textview_petadd_type"
+                app:layout_constraintTop_toTopOf="@+id/textview_petadd_type"
+                app:srcCompat="@drawable/essential_input_element_icon" />
 
             <View
                 android:id="@+id/view_petadd_type"
@@ -138,11 +158,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
                 android:background="@drawable/all_rect_r5"
                 android:text="@string/petadd_select_breed"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="#909090"
+                android:textColor="@color/gray4"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_type"
                 app:layout_constraintStart_toStartOf="@id/view_petadd_type"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_type" />
@@ -154,9 +173,19 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_gender"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_petadd_type" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_petadd_gender"
+                app:layout_constraintStart_toEndOf="@+id/textview_petadd_gender"
+                app:layout_constraintTop_toTopOf="@+id/textview_petadd_gender"
+                app:srcCompat="@drawable/essential_input_element_icon" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipgroup_petadd_group_gender"
@@ -174,14 +203,16 @@
                     style="@style/CustomChip"
                     android:text="@string/petadd_female"
                     android:textAlignment="center"
-                    android:textAppearance="@style/Typography.Body1.Medium" />
+                    android:textAppearance="@style/Typography.Body2.Medium"
+                    android:textSize="16sp" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_petadd_male"
                     style="@style/CustomChip"
                     android:text="@string/petadd_male"
                     android:textAlignment="center"
-                    android:textAppearance="@style/Typography.Body1.Medium" />
+                    android:textAppearance="@style/Typography.Body2.Medium"
+                    android:textSize="16sp" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -215,24 +246,35 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_birthday"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/chipgroup_petadd_group_gender" />
+
+            <ImageView
+                android:id="@+id/imageView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_petadd_birthday"
+                app:layout_constraintStart_toEndOf="@+id/textview_petadd_birthday"
+                app:layout_constraintTop_toTopOf="@+id/textview_petadd_birthday"
+                app:srcCompat="@drawable/essential_input_element_icon" />
 
             <TextView
                 android:id="@+id/textview_patadd_select_birthday"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/all_rect_r5"
                 android:paddingVertical="11dp"
                 android:paddingStart="16dp"
                 android:text="@string/all_select_date"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="#909090"
+                android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_petadd_birthday" />
 
@@ -255,7 +297,7 @@
                 android:layout_marginTop="4dp"
                 android:text="@string/petadd_input_first_day"
                 android:textAppearance="@style/Typography.Body3.Light"
-                android:textColor="#B5B3B3"
+                android:textColor="@color/gray4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_patadd_select_birthday" />
 
@@ -266,8 +308,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_first_day"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_petadd_birthday_description" />
 
@@ -283,7 +324,7 @@
                 android:paddingStart="16dp"
                 android:text="@string/all_select_date"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="#909090"
+                android:textColor="@color/gray4"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -307,10 +348,20 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_weight"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textAppearance="@style/Typography.Body1.Medium"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_petadd_select_first_day" />
+
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textview_petadd_weight"
+                app:layout_constraintStart_toEndOf="@+id/textview_petadd_weight"
+                app:layout_constraintTop_toTopOf="@+id/textview_petadd_weight"
+                app:srcCompat="@drawable/essential_input_element_icon" />
 
             <View
                 android:id="@+id/view_petadd_weight"
@@ -326,14 +377,16 @@
                 android:id="@+id/edittext_petadd_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginEnd="4dp"
                 android:background="@null"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:paddingVertical="13dp"
                 android:paddingStart="11dp"
-                android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="#909090"
+                android:textAlignment="viewEnd"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_weight"
                 app:layout_constraintEnd_toStartOf="@id/textview_petadd_weight_unit"
@@ -348,8 +401,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/petadd_kg"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="#909090"
-                android:textSize="18sp"
+                android:textColor="@color/gray4"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_weight"
                 app:layout_constraintEnd_toEndOf="@id/view_petadd_weight"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_weight" />
@@ -361,8 +413,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/petadd_size"
-                android:textAppearance="@style/Typography.Title3.SemiBold"
-                android:textSize="18sp"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edittext_petadd_weight" />
 
@@ -388,8 +440,9 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_back_length"
                 app:layout_constraintEnd_toStartOf="@id/textview_petadd_back_length_unit"
                 app:layout_constraintStart_toStartOf="@id/view_petadd_back_length"
@@ -401,7 +454,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="@string/petadd_cm"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_back_length"
@@ -430,8 +483,9 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_chest_circumference"
                 app:layout_constraintEnd_toStartOf="@id/textview_petadd_chest_circumference_unit"
                 app:layout_constraintStart_toStartOf="@id/view_petadd_chest_circumference"
@@ -443,8 +497,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="@string/petadd_cm"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_chest_circumference"
                 app:layout_constraintEnd_toEndOf="@id/view_petadd_chest_circumference"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_chest_circumference" />
@@ -474,8 +529,9 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_neck_circumference"
                 app:layout_constraintEnd_toStartOf="@id/textview_petadd_neck_circumference_unit"
                 app:layout_constraintStart_toStartOf="@id/view_petadd_neck_circumference"
@@ -487,30 +543,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="@string/petadd_cm"
-                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/view_petadd_neck_circumference"
                 app:layout_constraintEnd_toEndOf="@id/view_petadd_neck_circumference"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_neck_circumference" />
 
             <View
+                android:id="@+id/view1"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_petadd_chest_circumference" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="288dp"
+                android:layout_height="44dp"
+                android:layout_marginBottom="42dp"
+                android:letterSpacing="-0.02"
+                android:text="완료"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <include
-        android:id="@+id/layout_petadd_completion"
-        bind:buttonText="@{@string/all_completion}"
-        layout="@layout/layout_footer_one_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

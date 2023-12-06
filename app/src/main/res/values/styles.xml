@@ -39,11 +39,19 @@
         <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
-    <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
+    <style name="RoundCornerCalendarDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundCornerCalendarModalStyle</item>
     </style>
 
-    <style name="RoundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="RoundCornerCalendarModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/all_calendar_bottom_sheet</item>
+    </style>
+
+    <style name="RoundCornerPhotoDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundCornerPhotoModalStyle</item>
+    </style>
+
+    <style name="RoundCornerPhotoModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/all_photo_bottom_sheet</item>
     </style>
 </resources>

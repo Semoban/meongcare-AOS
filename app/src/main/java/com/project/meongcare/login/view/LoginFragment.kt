@@ -1,5 +1,6 @@
 package com.project.meongcare.login.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,22 +58,13 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
-
-        mainActivity.detachBottomNav()
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
                 Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${loginResponse.accessToken}")
                 userPreferences.setAccessToken(loginResponse.accessToken)
                 userPreferences.setRefreshToken(loginResponse.refreshToken)
-                // 강아지 등록 화면으로 이동
-                mainActivity.replaceFragment(
-                    MainActivity.DOG_ADD_ON_BOARDING_FRAGMENT,
-                    true,
-                    true,
-                    null,
-                )
+                // DogAddOnBoardingFragment로 이동
             } else {
                 Log.d("Login-viewmodel", "통신 실패")
             }
@@ -265,11 +257,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mainActivity.attachBottomNav()
-    }
-
     fun getDeviceToken(): String {
         val deviceToken =
             runBlocking {
@@ -277,5 +264,11 @@ class LoginFragment : Fragment() {
             }
         Log.d("in-getDeviceToken-method", deviceToken)
         return deviceToken
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = activity as MainActivity
+        mainActivity.detachBottomNav()
     }
 }
