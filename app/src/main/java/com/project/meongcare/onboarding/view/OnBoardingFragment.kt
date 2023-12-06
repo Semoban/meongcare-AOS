@@ -61,7 +61,7 @@ class OnBoardingFragment : Fragment() {
         return fragmentOnBoardingBinding.root
     }
 
-    private fun moveToLogin(){
+    private fun moveToLogin() {
         // LoginFragment로 이동
     }
 
