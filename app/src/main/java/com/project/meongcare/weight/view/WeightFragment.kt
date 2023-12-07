@@ -40,6 +40,7 @@ class WeightFragment : Fragment() {
         showWeightEditDialog()
         initWeeklyRecordChart()
         initMonthlyRecordChart()
+        initWeightEditDialog()
     }
 
     private fun showWeightEditDialog() {
@@ -48,6 +49,21 @@ class WeightFragment : Fragment() {
                 layoutWeightEdit.root.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun initWeightEditDialog() {
+        binding.layoutWeightEdit.run {
+            buttonWeighteditdialogCancel.setOnClickListener { onCancelClicked() }
+            buttonWeighteditdialogCheck.setOnClickListener { onCheckClicked() }
+        }
+    }
+
+    private fun onCancelClicked() {
+        binding.layoutWeightEdit.root.visibility = View.GONE
+    }
+
+    private fun onCheckClicked() {
+        binding.layoutWeightEdit.root.visibility = View.GONE
     }
 
     private fun initWeeklyRecordChart() {
