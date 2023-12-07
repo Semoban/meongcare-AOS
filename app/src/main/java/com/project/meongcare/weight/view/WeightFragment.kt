@@ -1,4 +1,4 @@
-package com.project.meongcare.weight
+package com.project.meongcare.weight.view
 
 import android.graphics.Typeface
 import android.os.Bundle
