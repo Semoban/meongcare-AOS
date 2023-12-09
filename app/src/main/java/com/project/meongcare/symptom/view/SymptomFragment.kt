@@ -102,20 +102,6 @@ class SymptomFragment : Fragment() {
 //                mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
             }
 
-            toolbarSymptom.imageViewToolbarCalendarWeekPrevious.setOnClickListener {
-                Log.d("클릭", "클릭")
-                generatePrevNewData()
-                symptomViewModel.selectedDate.value =
-                    symptomViewModel.symptomDateList.value!![symptomViewModel.selectDatePosition.value!!]
-            }
-
-            toolbarSymptom.imageViewToolbarCalendarWeekNext.setOnClickListener {
-                Log.d("클릭", "클릭")
-                generateNextNewData()
-                symptomViewModel.selectedDate.value =
-                    symptomViewModel.symptomDateList.value!![symptomViewModel.selectDatePosition.value!!]
-            }
-
             toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
                 adapter = SymptomDateRecyclerViewAdapter()
 //                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -196,15 +182,6 @@ class SymptomFragment : Fragment() {
         ): SymptomDateViewHolder {
             val itemSymptomDateBinding = ItemToolbarCalendarWeekBinding.inflate(layoutInflater)
             val symptomDateHolder = SymptomDateViewHolder(itemSymptomDateBinding)
-
-//            val screenWidthDp = 328
-//            val density = parent.resources.displayMetrics.density
-//            val itemWidth = (screenWidthDp * density).toInt() / 7
-//
-//            itemSymptomDateBinding.root.layoutParams = ViewGroup.LayoutParams(
-//                itemWidth,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//            )
 
             itemSymptomDateBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
@@ -290,65 +267,6 @@ class SymptomFragment : Fragment() {
     fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
 
     fun getDate(date: Date): String = SimpleDateFormat("d", Locale.getDefault()).format(date)
-
-    private fun generatePrevNewData() {
-        val calendar = Calendar.getInstance()
-        calendar.time = symptomViewModel.symptomDateList.value!![0]
-
-        calendar.add(Calendar.DAY_OF_YEAR, -7)
-
-        // 현재 날짜의 요일을 가져옵니다. (일요일: 1, 월요일: 2, ..., 토요일: 7)
-        val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
-        // 현재 날짜를 기준으로 주의 시작일로 이동합니다.
-        calendar.add(Calendar.DAY_OF_YEAR, 1 - currentDayOfWeek)
-
-        // 주의 시작일부터 7일 동안의 날짜 리스트를 만듭니다.
-        val weekDates = mutableListOf<Date>()
-        repeat(7) {
-            weekDates.add(calendar.time)
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-        }
-
-        symptomViewModel.symptomDateList.value =
-            symptomViewModel.symptomDateList.value?.let {
-                val updatedList = mutableListOf<Date>()
-                updatedList.addAll(weekDates)
-                // updatedList.addAll(it)
-                updatedList
-            }
-
-        Log.d("클릭", symptomViewModel.symptomDateList.value.toString())
-    }
-
-    private fun generateNextNewData() {
-        val calendar = Calendar.getInstance()
-        calendar.time = symptomViewModel.symptomDateList.value!!.last()
-        calendar.add(Calendar.DAY_OF_YEAR, +7)
-
-        // 현재 날짜의 요일을 가져옵니다. (일요일: 1, 월요일: 2, ..., 토요일: 7)
-        val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
-        // 현재 날짜를 기준으로 주의 시작일로 이동합니다.
-        calendar.add(Calendar.DAY_OF_YEAR, 1 - currentDayOfWeek)
-
-        // 주의 시작일부터 7일 동안의 날짜 리스트를 만듭니다.
-        val weekDates = mutableListOf<Date>()
-        repeat(7) {
-            weekDates.add(calendar.time)
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-        }
-
-        symptomViewModel.symptomDateList.value =
-            symptomViewModel.symptomDateList.value?.let {
-                val updatedList = mutableListOf<Date>()
-                // updatedList.addAll(it)
-                updatedList.addAll(weekDates)
-                updatedList
-            }
-
-        Log.d("클릭", symptomViewModel.symptomDateList.value.toString())
-    }
 
     fun changeDateToLocale(date: Date): LocalDateTime {
         // Date를 Instant로 변환
