@@ -1,4 +1,4 @@
-package com.project.meongcare.symptom.viewmodel
+package com.project.meongcare.toolbar.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
