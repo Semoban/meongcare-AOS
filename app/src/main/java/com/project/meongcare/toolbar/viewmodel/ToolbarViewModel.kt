@@ -1,5 +1,6 @@
 package com.project.meongcare.toolbar.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.text.SimpleDateFormat
@@ -20,6 +21,7 @@ class ToolbarViewModel : ViewModel() {
     fun updateDateList(baseDate: Date) {
         val calendar = Calendar.getInstance()
         calendar.time = baseDate
+        Log.d("날짜 확인1", baseDate.toString())
 
         // 현재 날짜의 요일을 가져옵니다. (일요일: 1, 월요일: 2, ..., 토요일: 7)
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -38,8 +40,12 @@ class ToolbarViewModel : ViewModel() {
         selectedDate.value = baseDate
 
         // 날짜 목록은 현재 날짜부터 일주일 전까지의 7일간의 데이터를 포함
-        dateList.value = weekDates
+        dateList.value = ArrayList(weekDates)
+
+        Log.d("날짜 확인2", dateList.value.toString())
     }
 
-    fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
+    fun getMonthDateDay(date: Date): String =
+        SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
 }
+
