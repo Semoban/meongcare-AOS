@@ -33,14 +33,6 @@
         android:paddingRight="16dp"
         android:paddingBottom="16dp">
 
-        <ImageView
-            android:id="@+id/imageView_toolbar_calendar_week_previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"
-            app:srcCompat="@drawable/all_arrow_navigate_previous" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_toolbar_calendar_week"
             android:layout_width="match_parent"
@@ -52,14 +44,6 @@
             android:overScrollMode="never">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-        <ImageView
-            android:id="@+id/imageView_toolbar_calendar_week_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"
-            app:srcCompat="@drawable/all_arrow_navigate_next" />
 
     </LinearLayout>
 
