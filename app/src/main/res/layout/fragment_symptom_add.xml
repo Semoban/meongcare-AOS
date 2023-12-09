@@ -199,7 +199,7 @@
 
     <include
         android:id="@+id/include_bottomsheet_symptom_add_date"
-        layout="@layout/bottomsheet_symptom_add_date"
+        layout="@layout/bottomsheet_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.Material3.BottomSheet"
