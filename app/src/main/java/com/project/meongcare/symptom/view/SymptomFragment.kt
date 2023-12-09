@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.mainActivity
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
 import com.project.meongcare.databinding.ItemToolbarCalendarWeekBinding
