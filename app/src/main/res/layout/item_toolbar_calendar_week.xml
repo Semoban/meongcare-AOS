@@ -12,19 +12,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tv_date_calendar_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/pretendard_medium"
+        android:textAppearance="@style/Typography.Body1.Medium"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textColor="@color/black"/>
 
 
 </LinearLayout>
