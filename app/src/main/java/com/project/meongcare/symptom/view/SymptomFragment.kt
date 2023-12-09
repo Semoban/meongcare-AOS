@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,10 +16,11 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
-import com.project.meongcare.databinding.ItemToolbarCalendarWeekBinding
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.symptom.viewmodel.ToolbarViewModel
+import com.project.meongcare.toolbar.view.ToolbarDateRecyclerViewAdapter
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -34,9 +33,9 @@ class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
+    lateinit var toolbarViewModel: ToolbarViewModel
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
-    var selectDatePosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +49,7 @@ class SymptomFragment : Fragment() {
         currentMonth = calendar[Calendar.MONTH]
 
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
+        toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
 
         symptomViewModel.run {
             symptomList.observe(viewLifecycleOwner) {
@@ -69,24 +69,29 @@ class SymptomFragment : Fragment() {
                     }
                 }
             }
-            symptomDateList.observe(viewLifecycleOwner) { dateList ->
+        }
+
+        toolbarViewModel.run {
+            selectedDate.observe(viewLifecycleOwner) {
+                val localDateTime = changeDateToLocale(it)
+                Log.d("클릭4", localDateTime.toString())
+
+                // fragment바인딩이름.include시 설정한 toolbar이름.textViewToolbarCalendarWeekTitleDay.text
+                fragmentSymptomBinding.toolbarSymptom.textViewToolbarCalendarWeekTitleDay.text =
+                    getMonthDateDay(it)
+            }
+
+            dateList.observe(viewLifecycleOwner) { dateList ->
+                // fragment바인딩이름.include시 설정한 toolbar이름.recyclerViewToolbarCalendarWeek.run {
                 fragmentSymptomBinding.toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
                     mainActivity.runOnUiThread {
                         adapter?.notifyDataSetChanged()
                     }
-                    Log.d("클릭2", "$dateList")
                 }
             }
-
-            selectedDate.observe(viewLifecycleOwner) {
-                // date 갱신
-                // symptomList.value =
-                val localDateTime = changeDateToLocale(it)
-                Log.d("클릭4", localDateTime.toString())
-                fragmentSymptomBinding.toolbarSymptom.textViewToolbarCalendarWeekTitleDay.text =
-                    getMonthDateDay(it)
-            }
         }
+
+
 
         // 현재 로그인한 유저의 현재 강아지 이름
         val dogName = "김대박"
@@ -103,8 +108,7 @@ class SymptomFragment : Fragment() {
             }
 
             toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
-                adapter = SymptomDateRecyclerViewAdapter()
-//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = ToolbarDateRecyclerViewAdapter(this@SymptomFragment,mainActivity)
                 layoutManager = GridLayoutManager(requireContext(), 7)
             }
         }
@@ -161,95 +165,6 @@ class SymptomFragment : Fragment() {
         }
     }
 
-    inner class SymptomDateRecyclerViewAdapter :
-        RecyclerView.Adapter<SymptomDateRecyclerViewAdapter.SymptomDateViewHolder>() {
-        inner class SymptomDateViewHolder(itemSymptomDateBinding: ItemToolbarCalendarWeekBinding) :
-            RecyclerView.ViewHolder(itemSymptomDateBinding.root) {
-            val itemSymptomDate: TextView
-            val itemSymptomDay: TextView
-            val itemLayout: LinearLayout
-
-            init {
-                itemSymptomDate = itemSymptomDateBinding.tvDateCalendarItem
-                itemSymptomDay = itemSymptomDateBinding.tvDayCalendarItem
-                itemLayout = itemSymptomDateBinding.clCalendarItem
-            }
-        }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): SymptomDateViewHolder {
-            val itemSymptomDateBinding = ItemToolbarCalendarWeekBinding.inflate(layoutInflater)
-            val symptomDateHolder = SymptomDateViewHolder(itemSymptomDateBinding)
-
-            itemSymptomDateBinding.root.layoutParams =
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                )
-
-            return symptomDateHolder
-        }
-
-        override fun getItemCount(): Int {
-            return symptomViewModel.symptomDateList.value!!.size
-        }
-
-        override fun onBindViewHolder(
-            holder: SymptomDateViewHolder,
-            position: Int,
-        ) {
-            holder.itemSymptomDate.text = getDate(getItem(position))
-            holder.itemSymptomDay.text = getDay(getItem(position))
-
-            symptomViewModel.selectDatePosition.observe(viewLifecycleOwner) {
-                // 클릭한 아이템에 대한 레이아웃을 적용
-                if (position == it) {
-                    holder.itemLayout.setBackgroundResource(R.drawable.toolbar_rect_main1_r10)
-                    holder.itemSymptomDate.setTextColor(
-                        ContextCompat.getColor(
-                            mainActivity,
-                            R.color.main4,
-                        ),
-                    )
-                    holder.itemSymptomDay.setTextColor(
-                        ContextCompat.getColor(
-                            mainActivity,
-                            R.color.main4,
-                        ),
-                    )
-                } else {
-                    // 클릭하지 않은 아이템에 대한 레이아웃을 적용
-                    holder.itemLayout.setBackgroundResource(R.drawable.toolbar_rect_white_r10)
-                    holder.itemSymptomDate.setTextColor(
-                        ContextCompat.getColor(
-                            mainActivity,
-                            R.color.black,
-                        ),
-                    )
-                    holder.itemSymptomDay.setTextColor(
-                        ContextCompat.getColor(
-                            mainActivity,
-                            R.color.black,
-                        ),
-                    )
-                }
-            }
-
-            holder.itemLayout.setOnClickListener {
-                symptomViewModel.selectDatePosition.value = position
-                symptomViewModel.selectedDate.value = getItem(position)
-            }
-        }
-
-        // getItem 함수는 데이터 리스트에서 특정 위치(position)의 아이템을 가져옵니다.
-        private fun getItem(position: Int): Date {
-            selectDatePosition = position
-            return symptomViewModel.symptomDateList.value!![position]
-        }
-    }
-
     fun getSymptomImg(symptomData: Symptom): Int {
         return when (symptomData.symptomString) {
             SymptomType.WEIGHT_LOSS.symptomName -> R.drawable.all_weighing_machine
@@ -261,12 +176,6 @@ class SymptomFragment : Fragment() {
             else -> R.drawable.symptom_stethoscope
         }
     }
-
-    fun getDay(date: Date): String = SimpleDateFormat("EE", Locale.getDefault()).format(date)
-
-    fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
-
-    fun getDate(date: Date): String = SimpleDateFormat("d", Locale.getDefault()).format(date)
 
     fun changeDateToLocale(date: Date): LocalDateTime {
         // Date를 Instant로 변환
