@@ -4,21 +4,20 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemToolbarCalendarWeekBinding
-import com.project.meongcare.symptom.viewmodel.ToolbarViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
-class ToolbarDateRecyclerViewAdapter(val fragment: Fragment, val mainActivity: MainActivity) :
+class ToolbarDateRecyclerViewAdapter(val mainActivity: MainActivity) :
     RecyclerView.Adapter<ToolbarDateRecyclerViewAdapter.SymptomDateViewHolder>() {
-    private val toolbarViewModel = ViewModelProvider(fragment)[ToolbarViewModel::class.java]
+    private val toolbarViewModel = ViewModelProvider(mainActivity)[ToolbarViewModel::class.java]
     inner class SymptomDateViewHolder(itemSymptomDateBinding: ItemToolbarCalendarWeekBinding) :
         RecyclerView.ViewHolder(itemSymptomDateBinding.root) {
         val itemSymptomDate: TextView
@@ -36,7 +35,7 @@ class ToolbarDateRecyclerViewAdapter(val fragment: Fragment, val mainActivity: M
         parent: ViewGroup,
         viewType: Int,
     ): SymptomDateViewHolder {
-        val itemSymptomDateBinding = ItemToolbarCalendarWeekBinding.inflate(fragment.layoutInflater)
+        val itemSymptomDateBinding = ItemToolbarCalendarWeekBinding.inflate(mainActivity.layoutInflater)
         val symptomDateHolder = SymptomDateViewHolder(itemSymptomDateBinding)
 
         itemSymptomDateBinding.root.layoutParams =
@@ -59,7 +58,7 @@ class ToolbarDateRecyclerViewAdapter(val fragment: Fragment, val mainActivity: M
         holder.itemSymptomDate.text = getDate(getItem(position))
         holder.itemSymptomDay.text = getDay(getItem(position))
 
-        toolbarViewModel.selectDatePosition.observe(fragment) {
+        toolbarViewModel.selectDatePosition.observe(mainActivity) {
             // 클릭한 아이템에 대한 레이아웃을 적용
             if (position == it) {
                 holder.itemLayout.setBackgroundResource(R.drawable.toolbar_rect_main1_r10)

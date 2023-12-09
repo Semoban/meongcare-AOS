@@ -1,7 +1,6 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
@@ -19,21 +17,13 @@ import com.project.meongcare.databinding.ItemSymptomBinding
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
-import com.project.meongcare.symptom.viewmodel.ToolbarViewModel
-import com.project.meongcare.toolbar.view.ToolbarDateRecyclerViewAdapter
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
-    lateinit var toolbarViewModel: ToolbarViewModel
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
 
@@ -49,7 +39,7 @@ class SymptomFragment : Fragment() {
         currentMonth = calendar[Calendar.MONTH]
 
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
-        toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
+
 
         symptomViewModel.run {
             symptomList.observe(viewLifecycleOwner) {
@@ -71,28 +61,6 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        toolbarViewModel.run {
-            selectedDate.observe(viewLifecycleOwner) {
-                val localDateTime = changeDateToLocale(it)
-                Log.d("클릭4", localDateTime.toString())
-
-                // fragment바인딩이름.include시 설정한 toolbar이름.textViewToolbarCalendarWeekTitleDay.text
-                fragmentSymptomBinding.toolbarSymptom.textViewToolbarCalendarWeekTitleDay.text =
-                    getMonthDateDay(it)
-            }
-
-            dateList.observe(viewLifecycleOwner) { dateList ->
-                // fragment바인딩이름.include시 설정한 toolbar이름.recyclerViewToolbarCalendarWeek.run {
-                fragmentSymptomBinding.toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
-                    mainActivity.runOnUiThread {
-                        adapter?.notifyDataSetChanged()
-                    }
-                }
-            }
-        }
-
-
-
         // 현재 로그인한 유저의 현재 강아지 이름
         val dogName = "김대박"
 
@@ -107,10 +75,6 @@ class SymptomFragment : Fragment() {
 //                mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
             }
 
-            toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
-                adapter = ToolbarDateRecyclerViewAdapter(this@SymptomFragment,mainActivity)
-                layoutManager = GridLayoutManager(requireContext(), 7)
-            }
         }
         return fragmentSymptomBinding.root
     }
@@ -175,14 +139,5 @@ class SymptomFragment : Fragment() {
             SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
             else -> R.drawable.symptom_stethoscope
         }
-    }
-
-    fun changeDateToLocale(date: Date): LocalDateTime {
-        // Date를 Instant로 변환
-        val instant: Instant = date.toInstant()
-
-        // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
-        val localDateTime: LocalDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
-        return localDateTime
     }
 }
