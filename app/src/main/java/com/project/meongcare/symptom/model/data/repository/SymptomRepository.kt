@@ -1,7 +1,7 @@
 package com.project.meongcare.symptom.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.TempActivity
+import com.project.meongcare.MainActivity
 import com.project.meongcare.symptom.model.data.remote.SymptomAPI
 import com.project.meongcare.symptom.model.entities.AddResponse
 import com.project.meongcare.symptom.model.entities.ResultSymptom
@@ -24,7 +24,7 @@ class SymptomRepository {
             val retrofit =
                 Retrofit
                     .Builder()
-                    .baseUrl(TempActivity.BASE_URL)
+                    .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
@@ -59,7 +59,7 @@ class SymptomRepository {
 
         fun addSymptom(toAddSymptom: ToAddSymptom) {
             val retrofit =
-                Retrofit.Builder().baseUrl(TempActivity.BASE_URL)
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
             val call =

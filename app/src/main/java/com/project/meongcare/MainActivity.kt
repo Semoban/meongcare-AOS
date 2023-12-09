@@ -26,6 +26,10 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
 
+    companion object{
+        const val BASE_URL = "http://dev.meongcare.com/"
+    }
+
     @Inject
     lateinit var userPreferences: UserPreferences
 
