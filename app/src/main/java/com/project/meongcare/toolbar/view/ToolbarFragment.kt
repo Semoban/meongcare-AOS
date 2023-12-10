@@ -85,7 +85,7 @@ class ToolbarFragment : Fragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(
                     bottomSheet: View,
-                    newState: Int
+                    newState: Int,
                 ) {
                     // BottomSheetBehavior state에 따른 이벤트
                     when (newState) {
@@ -117,11 +117,9 @@ class ToolbarFragment : Fragment() {
 
                 override fun onSlide(
                     bottomSheet: View,
-                    slideOffset: Float
-                ) {
-
-                }
-            }
+                    slideOffset: Float,
+                ) {}
+            },
         )
     }
 
