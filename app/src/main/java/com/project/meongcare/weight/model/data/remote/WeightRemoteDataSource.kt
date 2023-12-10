@@ -4,7 +4,7 @@ import android.util.Log
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import org.json.JSONObject
 
-class WeightDataSource {
+class WeightRemoteDataSource {
     suspend fun postWeight(
         weightPostRequest: WeightPostRequest,
     ): Int? {
