@@ -28,6 +28,7 @@ class SymptomRepository {
                 Retrofit
                     .Builder()
                     .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
                     .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
