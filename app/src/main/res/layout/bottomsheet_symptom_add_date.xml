@@ -16,7 +16,8 @@
         android:layout_marginBottom="22dp"
         app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
 
-    <CalendarView
+    <DatePicker
+        android:id="@+id/datepicker_bottomsheet_symptom_add_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     />
