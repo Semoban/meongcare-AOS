@@ -37,16 +37,10 @@ class SymptomAddFragment : Fragment() {
         fragmentSymptomAddBinding.run {
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
-
+                bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
                 val datePickerHeaderId = datepickerBottomsheetSymptomAddDate.getChildAt(0)
                     .resources.getIdentifier("date_picker_header","id","android")
                 datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility = View.GONE
-                
-                textViewSymptomAddDate.run {
-                    text = bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete).toString()
-                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
             }
 
             buttonSymptomAddDate.setOnClickListener {
@@ -110,6 +104,12 @@ class SymptomAddFragment : Fragment() {
                 mainActivity.findViewById<DatePicker>(R.id.datepicker_bottomsheet_symptom_add_date)
             customDate = LocalDate.of(datePicker.year, datePicker.month + 1, datePicker.dayOfMonth)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+            fragmentSymptomAddBinding.textViewSymptomAddDate.run {
+                text = customDate.toString()
+                setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                setTextAppearance(R.style.Typography_Body1_Medium)
+            }
         }
         return customDate
     }
