@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.TempActivity
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
 import com.project.meongcare.databinding.ItemToolbarCalendarWeekBinding
@@ -32,7 +32,7 @@ import java.util.Locale
 
 class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
-    lateinit var tempActivity: TempActivity
+    lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -44,7 +44,7 @@ class SymptomFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         fragmentSymptomBinding = FragmentSymptomBinding.inflate(layoutInflater)
-        tempActivity = activity as TempActivity
+        mainActivity = activity as MainActivity
 
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
@@ -71,7 +71,7 @@ class SymptomFragment : Fragment() {
             }
             symptomDateList.observe(viewLifecycleOwner) { dateList ->
                 fragmentSymptomBinding.toolbarSymptom.recyclerViewToolbarCalendarWeek.run {
-                    tempActivity.runOnUiThread {
+                    mainActivity.runOnUiThread {
                         adapter?.notifyDataSetChanged()
                     }
                     Log.d("클릭2", "$dateList")
@@ -95,11 +95,11 @@ class SymptomFragment : Fragment() {
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
-                tempActivity.replaceFragment(TempActivity.SYMPTOM_ADD_FRAGMENT, true, null)
+//                mainActivity.replaceFragment(mainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
             }
 
             textViewSymptomEdit.setOnClickListener {
-                tempActivity.replaceFragment(TempActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
+//                mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
             }
 
             toolbarSymptom.imageViewToolbarCalendarWeekPrevious.setOnClickListener {
@@ -155,7 +155,7 @@ class SymptomFragment : Fragment() {
                 )
 
             itemSymptomBinding.root.setOnClickListener {
-                tempActivity.replaceFragment(TempActivity.SYMPTOM_INFO_FRAGMENT, true, null)
+//                mainActivity.replaceFragment(mainActivity.SYMPTOM_INFO_FRAGMENT, true, null)
             }
 
             return allViewHolder
@@ -232,13 +232,13 @@ class SymptomFragment : Fragment() {
                     holder.itemLayout.setBackgroundResource(R.drawable.toolbar_rect_main1_r10)
                     holder.itemSymptomDate.setTextColor(
                         ContextCompat.getColor(
-                            tempActivity,
+                            mainActivity,
                             R.color.main4,
                         ),
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
-                            tempActivity,
+                            mainActivity,
                             R.color.main4,
                         ),
                     )
@@ -247,13 +247,13 @@ class SymptomFragment : Fragment() {
                     holder.itemLayout.setBackgroundResource(R.drawable.toolbar_rect_white_r10)
                     holder.itemSymptomDate.setTextColor(
                         ContextCompat.getColor(
-                            tempActivity,
+                            mainActivity,
                             R.color.black,
                         ),
                     )
                     holder.itemSymptomDay.setTextColor(
                         ContextCompat.getColor(
-                            tempActivity,
+                            mainActivity,
                             R.color.black,
                         ),
                     )
