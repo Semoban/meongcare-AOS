@@ -82,46 +82,47 @@ class ToolbarFragment : Fragment() {
 
         bottomSheetBehavior.addBottomSheetCallback(
             object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(
-                bottomSheet: View,
-                newState: Int
-            ) {
-                // BottomSheetBehavior state에 따른 이벤트
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        Log.d("MainActivity", "state: hidden")
-                    }
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(
+                    bottomSheet: View,
+                    newState: Int
+                ) {
+                    // BottomSheetBehavior state에 따른 이벤트
+                    when (newState) {
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            Log.d("MainActivity", "state: hidden")
+                        }
 
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        Log.d("MainActivity", "state: expanded")
-                    }
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            Log.d("MainActivity", "state: expanded")
+                        }
 
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        Log.d("MainActivity", "state: collapsed")
-                    }
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            Log.d("MainActivity", "state: collapsed")
+                        }
 
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                        Log.d("MainActivity", "state: dragging")
-                    }
+                        BottomSheetBehavior.STATE_DRAGGING -> {
+                            Log.d("MainActivity", "state: dragging")
+                        }
 
-                    BottomSheetBehavior.STATE_SETTLING -> {
-                        Log.d("MainActivity", "state: settling")
-                    }
+                        BottomSheetBehavior.STATE_SETTLING -> {
+                            Log.d("MainActivity", "state: settling")
+                        }
 
-                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                        Log.d("MainActivity", "state: half expanded")
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                            Log.d("MainActivity", "state: half expanded")
+                        }
                     }
                 }
-            }
 
-            override fun onSlide(
-                bottomSheet: View,
-                slideOffset: Float
-            ) {
+                override fun onSlide(
+                    bottomSheet: View,
+                    slideOffset: Float
+                ) {
 
+                }
             }
-        })
+        )
     }
 
     private fun bottomSheetEvent() {
