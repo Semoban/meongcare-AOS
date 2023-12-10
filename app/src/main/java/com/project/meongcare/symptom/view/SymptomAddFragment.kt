@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -36,7 +37,16 @@ class SymptomAddFragment : Fragment() {
         fragmentSymptomAddBinding.run {
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
-                bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
+
+                val datePickerHeaderId = datepickerBottomsheetSymptomAddDate.getChildAt(0)
+                    .resources.getIdentifier("date_picker_header","id","android")
+                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility = View.GONE
+                
+                textViewSymptomAddDate.run {
+                    text = bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete).toString()
+                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
             }
 
             buttonSymptomAddDate.setOnClickListener {
