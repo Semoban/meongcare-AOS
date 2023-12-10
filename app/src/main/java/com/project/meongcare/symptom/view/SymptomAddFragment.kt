@@ -1,7 +1,6 @@
 package com.project.meongcare.symptom.view
 
 import android.content.Context
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -19,7 +18,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomAddBinding
+import com.project.meongcare.symptom.model.data.repository.SymptomRepository
+import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class SymptomAddFragment : Fragment() {
@@ -148,6 +151,17 @@ class SymptomAddFragment : Fragment() {
                 }
                 false
             }
+
+            buttonSymptomAddToSymptom.setOnClickListener {
+
+                // 날짜와 시간을 합치는 예시 코드
+                val dateTimeString = "${textViewSymptomAddDate.text}T${String.format("%02d:%02d", timepickerSymptomAdd.hour, timepickerSymptomAdd.minute)}:00"
+                Log.d("Symptom문제",dateTimeString)
+
+                val toAddSymptom = ToAddSymptom(1,getSymptomName(symptomViewModel.addSymptomItemImgId.value!!),symptomViewModel.addSymptomItemTitle.value!!,dateTimeString)
+
+                SymptomRepository.addSymptom(toAddSymptom)
+            }
         }
         return fragmentSymptomAddBinding.root
     }
@@ -216,6 +230,18 @@ class SymptomAddFragment : Fragment() {
         val inputMethodManager =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getSymptomName(symptomImg: Int): String {
+        return when (symptomImg) {
+            R.drawable.all_weighing_machine -> SymptomType.WEIGHT_LOSS.symptomName
+            R.drawable.all_temperature_measurement -> SymptomType.HIGH_FEVER.symptomName
+            R.drawable.symptom_cough -> SymptomType.COUGH.symptomName
+            R.drawable.symptom_diarrhea -> SymptomType.DIARRHEA.symptomName
+            R.drawable.symptom_loss_appetite -> SymptomType.LOSS_OF_APPETITE.symptomName
+            R.drawable.symptom_amount_activity -> SymptomType.ACTIVITY_DECREASE.symptomName
+            else -> SymptomType.ETC.symptomName
+        }
     }
 }
 
