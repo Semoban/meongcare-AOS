@@ -1,10 +1,15 @@
 package com.project.meongcare.symptom.view
 
+import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -34,6 +39,27 @@ class SymptomAddFragment : Fragment() {
 
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
+        symptomViewModel.run {
+            addSymptomItemTitle.observe(viewLifecycleOwner){ title ->
+                fragmentSymptomAddBinding.run {
+                    includeItemSymptomAdd.run {
+                        imageViewItemSymptomAdd.setImageResource(addSymptomItemImgId.value!!)
+                        textViewItemSymptomAdd.text = title.trim()
+                    }
+                }
+            }
+
+            addSymptomDateText.observe(viewLifecycleOwner){
+                fragmentSymptomAddBinding.run {
+                    textViewSymptomAddDate.run {
+                        text = symptomViewModel.addSymptomDateText.value
+                        setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                        setTextAppearance(R.style.Typography_Body1_Medium)
+                    }
+                }
+            }
+        }
+
         fragmentSymptomAddBinding.run {
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
@@ -45,6 +71,82 @@ class SymptomAddFragment : Fragment() {
 
             buttonSymptomAddDate.setOnClickListener {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+
+            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
+                textViewSymptomAddDate.run {
+                    text = symptomViewModel.addSymptomDateText.value
+                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
+            }
+
+            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
+                textViewSymptomAddDate.run {
+                    text = symptomViewModel.addSymptomDateText.value
+                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
+            }
+
+
+            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
+                textViewSymptomAddDate.run {
+                    text = symptomViewModel.addSymptomDateText.value
+                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
+            }
+
+            timepickerSymptomAdd.run {
+                setOnTimeChangedListener { timePicker, hour, minute ->
+                    symptomViewModel.addSymptomTimeHour = hour
+                    symptomViewModel.addSymptomTimeMinute = minute
+                }
+            }
+
+            if(symptomViewModel.addSymptomTimeHour!=null&&symptomViewModel.addSymptomTimeMinute!=null){
+                timepickerSymptomAdd.run {
+                    hour = symptomViewModel.addSymptomTimeHour!!
+                    minute = symptomViewModel.addSymptomTimeMinute!!
+                }
+            }
+
+            buttonSymptomAddSelectSymptom.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT,true,null)
+            }
+
+            if (!symptomViewModel.addSymptomItemTitle.value.isNullOrEmpty()){
+                layoutSymptomAddList.visibility = View.VISIBLE
+                includeItemSymptomAdd.run {
+                    imageViewItemSymptomAdd.setImageResource(symptomViewModel.addSymptomItemImgId.value!!)
+                    textViewItemSymptomAdd.text = symptomViewModel.addSymptomItemTitle.value!!.trim()
+                }
+            }else{
+                layoutSymptomAddList.visibility = View.GONE
+            }
+
+
+            editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
+                if ((actionId == EditorInfo.IME_ACTION_DONE ||
+                            (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) &&
+                    editTextSymptomAddCustom.text.trim().isNotEmpty()
+                ) {
+                    layoutSymptomAddList.visibility = View.VISIBLE
+                    includeItemSymptomAdd.run {
+                        symptomViewModel.run {
+                            addSymptomItemImgId.value = R.drawable.symptom_stethoscope
+                            addSymptomItemTitle.value =
+                                editTextSymptomAddCustom.text.toString().trim()
+                        }
+                    }
+                    editTextSymptomAddCustom.text.clear()
+                    editTextSymptomAddCustom.clearFocus()
+                    hideKeyboard(editTextSymptomAddCustom)
+                    return@setOnEditorActionListener true
+                }
+                false
             }
         }
         return fragmentSymptomAddBinding.root
@@ -104,14 +206,16 @@ class SymptomAddFragment : Fragment() {
                 mainActivity.findViewById<DatePicker>(R.id.datepicker_bottomsheet_symptom_add_date)
             customDate = LocalDate.of(datePicker.year, datePicker.month + 1, datePicker.dayOfMonth)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-            fragmentSymptomAddBinding.textViewSymptomAddDate.run {
-                text = customDate.toString()
-                setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                setTextAppearance(R.style.Typography_Body1_Medium)
-            }
+            symptomViewModel.addSymptomDateText.value = customDate.toString()
+            Log.d("뷰모델",symptomViewModel.addSymptomDateText.value.toString())
         }
         return customDate
+    }
+
+    fun hideKeyboard(view: View) {
+        val inputMethodManager =
+            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 

@@ -2,6 +2,7 @@ package com.project.meongcare.symptom.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import java.util.Calendar
@@ -13,8 +14,14 @@ class SymptomViewModel : ViewModel() {
     var symptomDateList = MutableLiveData<MutableList<Date>>()
     var selectedDate = MutableLiveData<Date>()
     var selectDatePosition = MutableLiveData<Int>()
+    var addSymptomDateText = MutableLiveData<String>()
+    var addSymptomTimeHour: Int? = null
+    var addSymptomTimeMinute: Int? = null
+    var addSymptomItemImgId = MutableLiveData<Int>()
+    var addSymptomItemTitle = MutableLiveData<String>()
 
     init {
+        addSymptomItemImgId.value = R.drawable.symptom_stethoscope
         checkedStatusList.value = MutableList<Boolean>(6) { false }
         symptomList.value =
             mutableListOf(
