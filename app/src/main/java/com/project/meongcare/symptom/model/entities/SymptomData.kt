@@ -6,7 +6,7 @@ data class ResultSymptom(
     val records: List<Symptom>,
 )
 
-data class AddResponse(
+data class ResponseSymptom(
     val success: Boolean,
     val message: String,
 )

@@ -3,7 +3,7 @@ package com.project.meongcare.symptom.model.data.repository
 import android.util.Log
 import com.project.meongcare.MainActivity
 import com.project.meongcare.symptom.model.data.remote.SymptomAPI
-import com.project.meongcare.symptom.model.entities.AddResponse
+import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
@@ -69,10 +69,10 @@ class SymptomRepository {
                 )
 
             call.enqueue(
-                object : Callback<AddResponse> {
+                object : Callback<ResponseSymptom> {
                     override fun onResponse(
-                        call: Call<AddResponse>,
-                        response: Response<AddResponse>,
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
                     ) {
                         if (response.isSuccessful) {
                             Log.d("Symptom API", "통신 성공: ${response.body()}, $toAddSymptom")
@@ -80,7 +80,7 @@ class SymptomRepository {
                     }
 
                     override fun onFailure(
-                        call: Call<AddResponse>,
+                        call: Call<ResponseSymptom>,
                         t: Throwable,
                     ) {
                         Log.w("Symptom API", "통신 실패: ${t.message}")
