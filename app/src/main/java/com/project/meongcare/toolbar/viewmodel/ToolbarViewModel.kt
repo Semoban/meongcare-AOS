@@ -45,7 +45,6 @@ class ToolbarViewModel : ViewModel() {
         Log.d("날짜 확인2", dateList.value.toString())
     }
 
-    fun getMonthDateDay(date: Date): String =
-        SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
+    fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
 }
 

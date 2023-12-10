@@ -30,8 +30,9 @@ class ToolbarFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         fragmentToolbarBinding = ToolbarCalendarWeekBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -79,10 +80,13 @@ class ToolbarFragment : Fragment() {
         // BottomSheetBehavior에 layout 설정
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
+        bottomSheetBehavior.addBottomSheetCallback(
+            object :
             BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
+            override fun onStateChanged(
+                bottomSheet: View,
+                newState: Int
+            ) {
                 // BottomSheetBehavior state에 따른 이벤트
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -109,10 +113,13 @@ class ToolbarFragment : Fragment() {
                         Log.d("MainActivity", "state: half expanded")
                     }
                 }
-
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            override fun onSlide(
+                bottomSheet: View,
+                slideOffset: Float
+            ) {
+
             }
         })
     }

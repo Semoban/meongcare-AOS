@@ -40,7 +40,6 @@ class SymptomFragment : Fragment() {
 
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
-
         symptomViewModel.run {
             symptomList.observe(viewLifecycleOwner) {
                 if (it.isNullOrEmpty()) {

@@ -14,10 +14,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 class ToolbarDateRecyclerViewAdapter(val mainActivity: MainActivity) :
     RecyclerView.Adapter<ToolbarDateRecyclerViewAdapter.SymptomDateViewHolder>() {
     private val toolbarViewModel = ViewModelProvider(mainActivity)[ToolbarViewModel::class.java]
+
     inner class SymptomDateViewHolder(itemSymptomDateBinding: ItemToolbarCalendarWeekBinding) :
         RecyclerView.ViewHolder(itemSymptomDateBinding.root) {
         val itemSymptomDate: TextView
