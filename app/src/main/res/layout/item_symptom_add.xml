@@ -9,17 +9,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="64dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/symptom_item_main"
-        android:paddingLeft="12dp"
+        android:paddingLeft="22dp"
         android:paddingTop="10dp"
         android:paddingRight="12dp"
         android:paddingBottom="10dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
             android:elevation="0dp"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp">
@@ -37,10 +38,10 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="13dp"
             android:layout_weight="1"
-            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center_vertical"
             android:text="증상 타이틀"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textAppearance="@style/Typography.Body2.Medium"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 </LinearLayout>
