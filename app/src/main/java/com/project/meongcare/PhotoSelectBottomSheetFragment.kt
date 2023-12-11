@@ -1,5 +1,6 @@
 package com.project.meongcare
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -34,6 +35,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var requestCameraLauncher: ActivityResultLauncher<Intent>
+    lateinit var requestAlbumLauncher: ActivityResultLauncher<Intent>
     lateinit var file: File
 
     private var photoMenuListener: PhotoMenuListener? = null
@@ -44,6 +46,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
         file = makeFile(mainActivity)
         createBitmap()
+        createAlbumBitmap()
     }
 
 
@@ -59,7 +62,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
                 executeCamera(mainActivity)
             }
             textviewSelectAlbum.setOnClickListener {
-                Log.d("바텀 시트 메뉴 클릭", "album")
+                executeAlbum()
             }
         }
 
@@ -99,13 +102,46 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
                 ActivityResultContracts.StartActivityForResult(),
             ) {
                 val option = BitmapFactory.Options()
-                option.inSampleSize = 10
+                option.inSampleSize = 5
                 val bitmap = BitmapFactory.decodeFile(file.absolutePath, option)
                 bitmap?.let { bitmapFile ->
                     if (bitmapFile != null) {
                         sendBitmap(bitmapFile)
                     }
                     dismiss()
+                }
+            }
+
+    }
+
+    fun executeAlbum() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.setType("image/*")
+        requestAlbumLauncher.launch(intent)
+    }
+
+    fun createAlbumBitmap() {
+        requestAlbumLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) {
+                val option = BitmapFactory.Options()
+                option.inSampleSize = 5
+
+                if (it.resultCode == Activity.RESULT_OK) {
+                    it.data?.data?.let { uri ->
+                        if (uri != null) {
+                            val inputStream = mainActivity.contentResolver.openInputStream(uri)
+                            val bitmap = BitmapFactory.decodeStream(inputStream, null, option)
+                            inputStream?.close()
+                            bitmap?.let { bitmapFile ->
+                                if (bitmapFile != null){
+                                    sendBitmap(bitmapFile)
+                                }
+                                dismiss()
+                            }
+                        }
+                    }
                 }
             }
     }
