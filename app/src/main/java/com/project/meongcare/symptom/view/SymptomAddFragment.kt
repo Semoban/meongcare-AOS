@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -23,7 +22,6 @@ import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class SymptomAddFragment : Fragment() {
@@ -35,7 +33,7 @@ class SymptomAddFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         fragmentSymptomAddBinding = FragmentSymptomAddBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
@@ -44,7 +42,7 @@ class SymptomAddFragment : Fragment() {
         symptomViewModel = mainActivity.symptomViewModel
 
         symptomViewModel.run {
-            addSymptomItemTitle.observe(viewLifecycleOwner){ title ->
+            addSymptomItemTitle.observe(viewLifecycleOwner) { title ->
                 fragmentSymptomAddBinding.run {
                     includeItemSymptomAdd.run {
                         imageViewItemSymptomAdd.setImageResource(addSymptomItemImgId.value!!)
@@ -54,7 +52,7 @@ class SymptomAddFragment : Fragment() {
                 symptomViewModel.addSymptomItemVisibility.value = View.VISIBLE
             }
 
-            addSymptomDateText.observe(viewLifecycleOwner){
+            addSymptomDateText.observe(viewLifecycleOwner) {
                 fragmentSymptomAddBinding.run {
                     textViewSymptomAddDate.run {
                         text = symptomViewModel.addSymptomDateText.value
@@ -65,8 +63,8 @@ class SymptomAddFragment : Fragment() {
                 }
             }
 
-            addSymptomItemVisibility.observe(viewLifecycleOwner){
-                if(it == View.VISIBLE){
+            addSymptomItemVisibility.observe(viewLifecycleOwner) {
+                if (it == View.VISIBLE) {
                     fragmentSymptomAddBinding.run {
                         textViewSymptomAddSelectSymptom.run {
                             text = "증상을 선택해주세요"
@@ -84,8 +82,9 @@ class SymptomAddFragment : Fragment() {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
                 bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
                 val datePickerHeaderId = datepickerBottomsheetSymptomAddDate.getChildAt(0)
-                    .resources.getIdentifier("date_picker_header","id","android")
-                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility = View.GONE
+                    .resources.getIdentifier("date_picker_header", "id", "android")
+                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
+                    View.GONE
             }
 
             buttonSymptomAddDate.setOnClickListener {
@@ -104,7 +103,7 @@ class SymptomAddFragment : Fragment() {
             isNullTimePickerValue()
 
             buttonSymptomAddSelectSymptom.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT,true,null)
+                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT, true, null)
             }
 
             isNullAddItem()
@@ -132,12 +131,19 @@ class SymptomAddFragment : Fragment() {
             }
 
             buttonSymptomAddToSymptom.setOnClickListener {
-                val dateTimeString = if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
-                    "${textViewSymptomAddDate.text}T${String.format("%02d:%02d", timepickerSymptomAdd.hour, timepickerSymptomAdd.minute)}:00"
-                } else {
-                    isNullInput(textViewSymptomAddDate, buttonSymptomAddDate)
-                    null
-                }
+                val dateTimeString =
+                    if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
+                        "${textViewSymptomAddDate.text}T${
+                            String.format(
+                                "%02d:%02d",
+                                timepickerSymptomAdd.hour,
+                                timepickerSymptomAdd.minute
+                            )
+                        }:00"
+                    } else {
+                        isNullInput(textViewSymptomAddDate, buttonSymptomAddDate)
+                        null
+                    }
 
                 val addItemName = if (layoutSymptomAddList.visibility == View.VISIBLE) {
                     getSymptomName(symptomViewModel.addSymptomItemImgId.value!!)
@@ -233,7 +239,8 @@ class SymptomAddFragment : Fragment() {
                 override fun onSlide(
                     bottomSheet: View,
                     slideOffset: Float,
-                ) {}
+                ) {
+                }
             },
         )
     }
@@ -246,7 +253,7 @@ class SymptomAddFragment : Fragment() {
             customDate = LocalDate.of(datePicker.year, datePicker.month + 1, datePicker.dayOfMonth)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             symptomViewModel.addSymptomDateText.value = customDate.toString()
-            Log.d("뷰모델",symptomViewModel.addSymptomDateText.value.toString())
+            Log.d("뷰모델", symptomViewModel.addSymptomDateText.value.toString())
         }
         return customDate
     }
@@ -269,7 +276,7 @@ class SymptomAddFragment : Fragment() {
         }
     }
 
-    private fun isNullInput(textView: TextView, layout: LinearLayout){
+    private fun isNullInput(textView: TextView, layout: LinearLayout) {
         textView.run {
             text = "필수 입력 값입니다."
             setTextAppearance(R.style.Typography_Body1_Regular)
