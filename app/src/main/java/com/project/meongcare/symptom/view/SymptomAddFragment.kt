@@ -111,7 +111,7 @@ class SymptomAddFragment : Fragment() {
 
             editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
                 if ((actionId == EditorInfo.IME_ACTION_DONE ||
-                            (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) && editTextSymptomAddCustom.text.trim()
+                        (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) && editTextSymptomAddCustom.text.trim()
                         .isNotEmpty()
                 ) {
                     layoutSymptomAddList.visibility = View.VISIBLE
