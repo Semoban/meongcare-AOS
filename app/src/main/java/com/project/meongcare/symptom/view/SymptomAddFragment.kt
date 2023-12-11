@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -50,6 +51,7 @@ class SymptomAddFragment : Fragment() {
                         textViewItemSymptomAdd.text = title.trim()
                     }
                 }
+                symptomViewModel.addSymptomItemVisibility.value = View.VISIBLE
             }
 
             addSymptomDateText.observe(viewLifecycleOwner){
@@ -58,6 +60,20 @@ class SymptomAddFragment : Fragment() {
                         text = symptomViewModel.addSymptomDateText.value
                         setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
                         setTextAppearance(R.style.Typography_Body1_Medium)
+                    }
+                    buttonSymptomAddDate.setBackgroundResource(R.drawable.all_rect_gray1_r5)
+                }
+            }
+
+            addSymptomItemVisibility.observe(viewLifecycleOwner){
+                if(it == View.VISIBLE){
+                    fragmentSymptomAddBinding.run {
+                        textViewSymptomAddSelectSymptom.run {
+                            text = "증상을 선택해주세요"
+                            setTextColor(ContextCompat.getColor(mainActivity, R.color.gray4))
+                        }
+
+                        buttonSymptomAddSelectSymptom.setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     }
                 }
             }
@@ -76,30 +92,7 @@ class SymptomAddFragment : Fragment() {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
-            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
-                textViewSymptomAddDate.run {
-                    text = symptomViewModel.addSymptomDateText.value
-                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
-            }
-
-            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
-                textViewSymptomAddDate.run {
-                    text = symptomViewModel.addSymptomDateText.value
-                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
-            }
-
-
-            if(!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()){
-                textViewSymptomAddDate.run {
-                    text = symptomViewModel.addSymptomDateText.value
-                    setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
-            }
+            isNullDate()
 
             timepickerSymptomAdd.run {
                 setOnTimeChangedListener { timePicker, hour, minute ->
@@ -108,27 +101,13 @@ class SymptomAddFragment : Fragment() {
                 }
             }
 
-            if(symptomViewModel.addSymptomTimeHour!=null&&symptomViewModel.addSymptomTimeMinute!=null){
-                timepickerSymptomAdd.run {
-                    hour = symptomViewModel.addSymptomTimeHour!!
-                    minute = symptomViewModel.addSymptomTimeMinute!!
-                }
-            }
+            isNullTimePickerValue()
 
             buttonSymptomAddSelectSymptom.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT,true,null)
             }
 
-            if (!symptomViewModel.addSymptomItemTitle.value.isNullOrEmpty()){
-                layoutSymptomAddList.visibility = View.VISIBLE
-                includeItemSymptomAdd.run {
-                    imageViewItemSymptomAdd.setImageResource(symptomViewModel.addSymptomItemImgId.value!!)
-                    textViewItemSymptomAdd.text = symptomViewModel.addSymptomItemTitle.value!!.trim()
-                }
-            }else{
-                layoutSymptomAddList.visibility = View.GONE
-            }
-
+            isNullAddItem()
 
             editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
                 if ((actionId == EditorInfo.IME_ACTION_DONE ||
@@ -153,17 +132,63 @@ class SymptomAddFragment : Fragment() {
             }
 
             buttonSymptomAddToSymptom.setOnClickListener {
+                val dateTimeString = if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
+                    "${textViewSymptomAddDate.text}T${String.format("%02d:%02d", timepickerSymptomAdd.hour, timepickerSymptomAdd.minute)}:00"
+                } else {
+                    isNullInput(textViewSymptomAddDate, buttonSymptomAddDate)
+                    null
+                }
 
-                // 날짜와 시간을 합치는 예시 코드
-                val dateTimeString = "${textViewSymptomAddDate.text}T${String.format("%02d:%02d", timepickerSymptomAdd.hour, timepickerSymptomAdd.minute)}:00"
-                Log.d("Symptom문제",dateTimeString)
+                val addItemName = if (layoutSymptomAddList.visibility == View.VISIBLE) {
+                    getSymptomName(symptomViewModel.addSymptomItemImgId.value!!)
+                } else {
+                    isNullInput(textViewSymptomAddSelectSymptom, buttonSymptomAddSelectSymptom)
+                    null
+                }
 
-                val toAddSymptom = ToAddSymptom(1,getSymptomName(symptomViewModel.addSymptomItemImgId.value!!),symptomViewModel.addSymptomItemTitle.value!!,dateTimeString)
+                val addItemTitle = symptomViewModel.addSymptomItemTitle.value
 
-                SymptomRepository.addSymptom(toAddSymptom)
+                if (dateTimeString != null && addItemName != null && addItemTitle != null) {
+                    Log.d("Symptom문제", dateTimeString)
+                    val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
+                    SymptomRepository.addSymptom(toAddSymptom)
+                    mainActivity.removeFragment(MainActivity.SYMPTOM_ADD_FRAGMENT)
+                }
             }
+
         }
         return fragmentSymptomAddBinding.root
+    }
+
+    private fun FragmentSymptomAddBinding.isNullAddItem() {
+        if (!symptomViewModel.addSymptomItemTitle.value.isNullOrEmpty()) {
+            layoutSymptomAddList.visibility = View.VISIBLE
+            includeItemSymptomAdd.run {
+                imageViewItemSymptomAdd.setImageResource(symptomViewModel.addSymptomItemImgId.value!!)
+                textViewItemSymptomAdd.text = symptomViewModel.addSymptomItemTitle.value!!.trim()
+            }
+        } else {
+            layoutSymptomAddList.visibility = View.GONE
+        }
+    }
+
+    private fun FragmentSymptomAddBinding.isNullTimePickerValue() {
+        if (symptomViewModel.addSymptomTimeHour != null && symptomViewModel.addSymptomTimeMinute != null) {
+            timepickerSymptomAdd.run {
+                hour = symptomViewModel.addSymptomTimeHour!!
+                minute = symptomViewModel.addSymptomTimeMinute!!
+            }
+        }
+    }
+
+    private fun FragmentSymptomAddBinding.isNullDate() {
+        if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
+            textViewSymptomAddDate.run {
+                text = symptomViewModel.addSymptomDateText.value
+                setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                setTextAppearance(R.style.Typography_Body1_Medium)
+            }
+        }
     }
 
     private fun initializeBottomSheet(symptomBottomSheet: LinearLayout) {
@@ -241,6 +266,17 @@ class SymptomAddFragment : Fragment() {
             R.drawable.symptom_loss_appetite -> SymptomType.LOSS_OF_APPETITE.symptomName
             R.drawable.symptom_amount_activity -> SymptomType.ACTIVITY_DECREASE.symptomName
             else -> SymptomType.ETC.symptomName
+        }
+    }
+
+    private fun isNullInput(textView: TextView, layout: LinearLayout){
+        textView.run {
+            text = "필수 입력 값입니다."
+            setTextAppearance(R.style.Typography_Body1_Regular)
+            setTextColor(ContextCompat.getColor(mainActivity, R.color.sub1))
+        }
+        layout.run {
+            setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         }
     }
 }
