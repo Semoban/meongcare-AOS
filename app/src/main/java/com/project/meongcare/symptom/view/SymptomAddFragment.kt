@@ -112,15 +112,14 @@ class SymptomAddFragment : Fragment() {
             editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
                 if ((actionId == EditorInfo.IME_ACTION_DONE ||
                             (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER))
-                    && editTextSymptomAddCustom.text.trim().isNotEmpty()
+                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) &&
+                    editTextSymptomAddCustom.text.trim().isNotEmpty()
                 ) {
                     layoutSymptomAddList.visibility = View.VISIBLE
                     includeItemSymptomAdd.run {
                         symptomViewModel.run {
                             addSymptomItemImgId.value = R.drawable.symptom_stethoscope
-                            addSymptomItemTitle.value =
-                                editTextSymptomAddCustom.text.toString().trim()
+                            addSymptomItemTitle.value = editTextSymptomAddCustom.text.toString().trim()
                         }
                     }
                     editTextSymptomAddCustom.text.clear()
