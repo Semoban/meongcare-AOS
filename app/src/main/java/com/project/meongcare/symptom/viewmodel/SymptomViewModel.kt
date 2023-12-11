@@ -1,5 +1,8 @@
 package com.project.meongcare.symptom.viewmodel
 
+import android.opengl.Visibility
+import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.meongcare.R
@@ -19,6 +22,8 @@ class SymptomViewModel : ViewModel() {
     var addSymptomTimeMinute: Int? = null
     var addSymptomItemImgId = MutableLiveData<Int>()
     var addSymptomItemTitle = MutableLiveData<String>()
+    var addSymptomItemVisibility = MutableLiveData<Int>()
+    var selectCheckedImg = MutableLiveData<ImageView>()
 
     init {
         addSymptomItemImgId.value = R.drawable.symptom_stethoscope

@@ -41,7 +41,7 @@ class SymptomAddFragment : Fragment() {
 
         mainActivity.detachBottomNav()
 
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
+        symptomViewModel = mainActivity.symptomViewModel
 
         symptomViewModel.run {
             addSymptomItemTitle.observe(viewLifecycleOwner){ title ->
