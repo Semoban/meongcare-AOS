@@ -21,7 +21,6 @@ class SymptomViewModel : ViewModel() {
     var addSymptomItemTitle = MutableLiveData<String>()
     var addSymptomItemVisibility = MutableLiveData<Int>()
     var selectCheckedImg = MutableLiveData<ImageView>()
-    
     init {
         addSymptomItemImgId.value = R.drawable.symptom_stethoscope
         checkedStatusList.value = MutableList<Boolean>(6) { false }
