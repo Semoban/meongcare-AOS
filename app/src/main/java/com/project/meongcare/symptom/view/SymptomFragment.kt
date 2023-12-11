@@ -95,7 +95,7 @@ class SymptomFragment : Fragment() {
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
-//                mainActivity.replaceFragment(mainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
+//                mainActivity.replaceFragment(MainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
             }
 
             textViewSymptomEdit.setOnClickListener {
