@@ -49,12 +49,9 @@ class SymptomSelectFragment : Fragment() {
             buttonSymptomSelectCustomComplete.setOnClickListener {
                 setAddItemToSymptomAdd()
             }
-
-
         }
         return fragmentSymptomSelectBinding.root
     }
-
 
     private fun handleSymptomCheckClick(clickedImageView: ImageView) {
         clickedImageView.setImageResource(R.drawable.all_check_20dp)
@@ -109,5 +106,4 @@ class SymptomSelectFragment : Fragment() {
             }
         }
     }
-
 }

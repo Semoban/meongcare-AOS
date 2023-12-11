@@ -1,14 +1,11 @@
 package com.project.meongcare.symptom.viewmodel
 
-import android.opengl.Visibility
-import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
-import java.util.Calendar
 import java.util.Date
 
 class SymptomViewModel : ViewModel() {

@@ -107,7 +107,7 @@ class SymptomRepository {
                         retrofit.nextResponseBodyConverter<Any?>(
                             converterFactory(),
                             type,
-                            annotations
+                            annotations,
                         )
 
                     override fun convert(value: ResponseBody) =

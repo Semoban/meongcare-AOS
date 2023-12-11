@@ -81,10 +81,10 @@ class SymptomAddFragment : Fragment() {
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
                 bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
-                val datePickerHeaderId = datepickerBottomsheetSymptomAddDate.getChildAt(0)
-                    .resources.getIdentifier("date_picker_header", "id", "android")
-                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
-                    View.GONE
+                val datePickerHeaderId =
+                    datepickerBottomsheetSymptomAddDate.getChildAt(0)
+                        .resources.getIdentifier("date_picker_header", "id", "android")
+                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility = View.GONE
             }
 
             buttonSymptomAddDate.setOnClickListener {
@@ -109,10 +109,7 @@ class SymptomAddFragment : Fragment() {
             isNullAddItem()
 
             editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
-                if ((actionId == EditorInfo.IME_ACTION_DONE ||
-                            (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) &&
-                    editTextSymptomAddCustom.text.trim().isNotEmpty()
+                if ((actionId == EditorInfo.IME_ACTION_DONE || (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)) && editTextSymptomAddCustom.text.trim().isNotEmpty()
                 ) {
                     layoutSymptomAddList.visibility = View.VISIBLE
                     includeItemSymptomAdd.run {
@@ -137,7 +134,7 @@ class SymptomAddFragment : Fragment() {
                             String.format(
                                 "%02d:%02d",
                                 timepickerSymptomAdd.hour,
-                                timepickerSymptomAdd.minute
+                                timepickerSymptomAdd.minute,
                             )
                         }:00"
                     } else {
@@ -145,12 +142,13 @@ class SymptomAddFragment : Fragment() {
                         null
                     }
 
-                val addItemName = if (layoutSymptomAddList.visibility == View.VISIBLE) {
-                    getSymptomName(symptomViewModel.addSymptomItemImgId.value!!)
-                } else {
-                    isNullInput(textViewSymptomAddSelectSymptom, buttonSymptomAddSelectSymptom)
-                    null
-                }
+                val addItemName =
+                    if (layoutSymptomAddList.visibility == View.VISIBLE) {
+                        getSymptomName(symptomViewModel.addSymptomItemImgId.value!!)
+                    } else {
+                        isNullInput(textViewSymptomAddSelectSymptom, buttonSymptomAddSelectSymptom)
+                        null
+                    }
 
                 val addItemTitle = symptomViewModel.addSymptomItemTitle.value
 
@@ -161,7 +159,6 @@ class SymptomAddFragment : Fragment() {
                     mainActivity.removeFragment(MainActivity.SYMPTOM_ADD_FRAGMENT)
                 }
             }
-
         }
         return fragmentSymptomAddBinding.root
     }
@@ -276,7 +273,10 @@ class SymptomAddFragment : Fragment() {
         }
     }
 
-    private fun isNullInput(textView: TextView, layout: LinearLayout) {
+    private fun isNullInput(
+        textView: TextView,
+        layout: LinearLayout
+    ) {
         textView.run {
             text = "필수 입력 값입니다."
             setTextAppearance(R.style.Typography_Body1_Regular)
