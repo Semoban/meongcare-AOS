@@ -1,12 +1,16 @@
 package com.project.meongcare.weight.view
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -17,11 +21,20 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
+import com.project.meongcare.weight.model.entities.WeightMonthResponse
+import com.project.meongcare.weight.viewmodel.WeightViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
+import java.time.LocalDate
+import kotlin.concurrent.thread
 
+@AndroidEntryPoint
 class WeightFragment : Fragment() {
     private var _binding: FragmentWeightBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var inputMethodManager: InputMethodManager
+    private val weightViewModel: WeightViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +50,7 @@ class WeightFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initInputMethodManager()
         showWeightEditDialog()
         initWeeklyRecordChart()
         initMonthlyRecordChart()
@@ -59,11 +73,25 @@ class WeightFragment : Fragment() {
     }
 
     private fun onCancelClicked() {
-        binding.layoutWeightEdit.root.visibility = View.GONE
+        hideSoftKeyboard()
+        binding.layoutWeightEdit.run {
+            edittextWeighteditdialog.text.clear()
+            root.visibility = View.GONE
+        }
     }
 
     private fun onCheckClicked() {
-        binding.layoutWeightEdit.root.visibility = View.GONE
+        val date = LocalDate.now().toString()
+        val weightText = binding.layoutWeightEdit.edittextWeighteditdialog.text.toString()
+        val weight = weightText.toDoubleOrNull() ?: return
+
+        weightViewModel.patchWeight(weight, date)
+        hideSoftKeyboard()
+        binding.layoutWeightEdit.run {
+            edittextWeighteditdialog.text.clear()
+            root.visibility = View.GONE
+        }
+
     }
 
     private fun initWeeklyRecordChart() {
@@ -225,6 +253,21 @@ class WeightFragment : Fragment() {
 
         override fun getFormattedValue(value: Float): String {
             return format.format(value)
+        }
+    }
+
+    private fun initInputMethodManager() {
+        thread {
+            SystemClock.sleep(1000)
+            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideSoftKeyboard()
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            requireActivity().currentFocus!!.clearFocus()
         }
     }
 
