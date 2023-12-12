@@ -44,12 +44,18 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner){ date ->
             if (date != null) {
                 fragmentDogAddOnBoardingBinding.textviewPetaddSelectBirthday.run {
+                    fragmentDogAddOnBoardingBinding.edittextPetaddSelectBirthdayError.visibility = View.INVISIBLE
                     text = dateFormat(date)
                     setTextAppearance(R.style.Typography_Body1_Medium)
                 }
             }
         }
+        // 품종 뷰모델 옵저버 내에서 에러뷰 visibility 설정 필
+
         fragmentDogAddOnBoardingBinding.run {
+            // 품종 검색 화면 연결 전 임시 값 설정
+            edittextPetaddSelectType.text = "말티즈"
+
             // 사진 등록
             cardviewPetaddImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
@@ -79,6 +85,43 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             // 중성화 여부 텍스트 클릭 시 체크박스 반전
             textviewPetaddNeuterStatus.setOnClickListener {
                 checkboxPetaddNeuterStatus.isChecked = !isCbxChecked
+            }
+
+            edittextPetaddNameError.setOnClickListener {
+                it.visibility = View.INVISIBLE
+                edittextPetaddName.requestFocus()
+            }
+            edittextPetaddWeightError.setOnClickListener {
+                it.visibility = View.INVISIBLE
+                edittextPetaddWeight.requestFocus()
+            }
+            edittextPetaddSelectTypeError.setOnClickListener {
+                // 품종 검색 화면으로 이동
+            }
+
+            // 완료
+            buttonComplete.setOnClickListener {
+                // 입력 검사
+                if (edittextPetaddName.text.isEmpty()) {
+                    edittextPetaddNameError.visibility = View.VISIBLE
+                    return@setOnClickListener
+                }
+
+                if (edittextPetaddSelectType.text.isEmpty()) {
+                    edittextPetaddSelectTypeError.visibility = View.VISIBLE
+                    return@setOnClickListener
+                }
+
+                if (textviewPetaddSelectBirthday.text.isEmpty()) {
+                    edittextPetaddSelectBirthdayError.visibility = View.VISIBLE
+                    return@setOnClickListener
+                }
+
+                if (edittextPetaddWeight.text.isEmpty()) {
+                    edittextPetaddWeightError.visibility = View.VISIBLE
+                    return@setOnClickListener
+                }
+
             }
         }
 

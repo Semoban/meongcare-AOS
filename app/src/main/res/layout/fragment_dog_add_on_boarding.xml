@@ -120,6 +120,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textvoew_petadd_name" />
 
+            <EditText
+                android:id="@+id/edittext_petadd_name_error"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/dog_add_error_rect_r5"
+                android:editable="false"
+                android:paddingHorizontal="16dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/sub1"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textvoew_petadd_name" />
+
             <TextView
                 android:id="@+id/textview_petadd_type"
                 android:layout_width="wrap_content"
@@ -167,6 +185,24 @@
                 app:layout_constraintStart_toStartOf="@id/view_petadd_type"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_type" />
 
+            <EditText
+                android:id="@+id/edittext_petadd_select_type_error"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/dog_add_error_rect_r5"
+                android:editable="false"
+                android:paddingHorizontal="16dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/sub1"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_type" />
+
             <TextView
                 android:id="@+id/textview_petadd_gender"
                 android:layout_width="wrap_content"
@@ -195,6 +231,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
+                app:checkedChip="@id/chip_petadd_female"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_petadd_gender"
                 app:singleSelection="true">
@@ -263,18 +300,38 @@
                 app:srcCompat="@drawable/essential_input_element_icon" />
 
             <TextView
-                android:id="@+id/textview_patadd_select_birthday"
+                android:id="@+id/textview_petadd_select_birthday"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/all_rect_r5"
+                android:hint="@string/all_select_date"
                 android:paddingVertical="11dp"
                 android:paddingStart="16dp"
-                android:text="@string/all_select_date"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColor="@color/gray4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_petadd_birthday" />
+
+            <EditText
+                android:id="@+id/edittext_petadd_select_birthday_error"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/dog_add_error_rect_r5"
+                android:editable="false"
+                android:paddingHorizontal="16dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/sub1"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -286,9 +343,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="17dp"
                 android:src="@drawable/all_calendar"
-                app:layout_constraintBottom_toBottomOf="@id/textview_patadd_select_birthday"
-                app:layout_constraintEnd_toEndOf="@id/textview_patadd_select_birthday"
-                app:layout_constraintTop_toTopOf="@id/textview_patadd_select_birthday"
+                app:layout_constraintBottom_toBottomOf="@id/textview_petadd_select_birthday"
+                app:layout_constraintEnd_toEndOf="@id/textview_petadd_select_birthday"
+                app:layout_constraintTop_toTopOf="@id/textview_petadd_select_birthday"
                 app:tint="@color/gray4" />
 
             <TextView
@@ -301,7 +358,7 @@
                 android:textAppearance="@style/Typography.Body3.Regular"
                 android:textColor="@color/gray5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_patadd_select_birthday" />
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_select_birthday" />
 
             <TextView
                 android:id="@+id/textview_petadd_weight"
@@ -326,7 +383,7 @@
 
             <View
                 android:id="@+id/view_petadd_weight"
-                android:layout_width="148dp"
+                android:layout_width="160dp"
                 android:layout_height="46dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
@@ -367,6 +424,22 @@
                 app:layout_constraintEnd_toEndOf="@id/view_petadd_weight"
                 app:layout_constraintTop_toTopOf="@id/view_petadd_weight" />
 
+            <EditText
+                android:id="@+id/edittext_petadd_weight_error"
+                android:layout_width="160dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/dog_add_error_rect_r5"
+                android:editable="false"
+                android:paddingHorizontal="16dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/sub1"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_petadd_weight" />
+
             <TextView
                 android:id="@+id/textview_petadd_size"
                 android:layout_width="wrap_content"
@@ -401,7 +474,7 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
                 android:textSize="16sp"
@@ -445,7 +518,7 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
                 android:textSize="16sp"
@@ -492,7 +565,7 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textAlignment="viewEnd"
-                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textAppearance="@style/Typography.Body1.Regular"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray4"
                 android:textSize="16sp"
