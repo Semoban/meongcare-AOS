@@ -3,8 +3,9 @@ package com.project.meongcare.weight.model.data.remote
 import android.util.Log
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import org.json.JSONObject
+import javax.inject.Inject
 
-class WeightRemoteDataSource {
+class WeightRemoteDataSource @Inject constructor(){
     suspend fun postWeight(
         weightPostRequest: WeightPostRequest,
     ): Int? {
