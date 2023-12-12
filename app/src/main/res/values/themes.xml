@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/main4</item>
         <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="colorAccent">@color/main4</item>
     </style>
 
     <style name="Theme.MeongCareAos" parent="Base.Theme.MeongCareAos" />

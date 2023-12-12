@@ -1,16 +1,28 @@
 package com.project.meongcare.symptom.viewmodel
 
+import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
-import java.util.Calendar
 import java.util.Date
 
 class SymptomViewModel : ViewModel() {
     var checkedStatusList = MutableLiveData<MutableList<Boolean>>()
     var symptomList = MutableLiveData<MutableList<Symptom>>()
+    var symptomDateList = MutableLiveData<MutableList<Date>>()
+    var selectedDate = MutableLiveData<Date>()
+    var selectDatePosition = MutableLiveData<Int>()
+    var addSymptomDateText = MutableLiveData<String>()
+    var addSymptomTimeHour: Int? = null
+    var addSymptomTimeMinute: Int? = null
+    var addSymptomItemImgId = MutableLiveData<Int>()
+    var addSymptomItemTitle = MutableLiveData<String>()
+    var addSymptomItemVisibility = MutableLiveData<Int>()
+    var selectCheckedImg = MutableLiveData<ImageView>()
     init {
+        addSymptomItemImgId.value = R.drawable.symptom_stethoscope
         checkedStatusList.value = MutableList<Boolean>(6) { false }
         symptomList.value =
             mutableListOf(

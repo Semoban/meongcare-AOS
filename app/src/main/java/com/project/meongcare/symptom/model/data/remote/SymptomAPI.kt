@@ -1,6 +1,6 @@
 package com.project.meongcare.symptom.model.data.remote
 
-import com.project.meongcare.symptom.model.entities.AddResponse
+import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import retrofit2.Call
@@ -24,6 +24,6 @@ interface SymptomAPI {
     fun addSymptom(
         @Header("AccessToken") accessToken: String,
         @Body requestBody: ToAddSymptom,
-    ): Call<AddResponse>
+    ): Call<ResponseSymptom>
 }
 
