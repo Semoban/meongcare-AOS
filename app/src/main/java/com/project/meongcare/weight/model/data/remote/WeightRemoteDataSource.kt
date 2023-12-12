@@ -1,15 +1,18 @@
 package com.project.meongcare.weight.model.data.remote
 
 import android.util.Log
+import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
+import com.project.meongcare.weight.model.entities.WeightWeekResponse
 import org.json.JSONObject
 import javax.inject.Inject
 
-class WeightRemoteDataSource @Inject constructor(){
-    private val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAxODg2MjY3fQ.d8YtnaopY7HogGe82ExXTZ87TT7b344ZqY21Z0T49hg"
+class WeightRemoteDataSource @Inject constructor() {
+    private val accessToken =
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAyMzY3NDAzfQ.5GM7dR3jwmUE1MDAOt9m-h4E0n9l5_g7ONvtGFlgNV4"
     private val weightApiService = WeightClient.weightService
-    
+
     suspend fun postWeight(
         weightPostRequest: WeightPostRequest,
     ): Int? {
@@ -56,6 +59,31 @@ class WeightRemoteDataSource @Inject constructor(){
             }
         } catch (e: Exception) {
             Log.e("WeightPatchException", e.toString())
+            return null
+        }
+    }
+
+    suspend fun getWeeklyWeight(
+        weightGetRequest: WeightGetRequest
+    ): WeightWeekResponse? {
+        try {
+            val getWeeklyResponse = weightApiService.getWeeklyWeight(
+                accessToken,
+                weightGetRequest.dogId,
+                weightGetRequest.date,
+            )
+
+            return if (getWeeklyResponse.code() == 200) {
+                Log.d("WeeklyWeightGetSuccess", getWeeklyResponse.code().toString())
+                getWeeklyResponse.body()
+            } else {
+                val stringToJson = JSONObject(getWeeklyResponse.errorBody()?.string()!!)
+                Log.d("WeeklyWeightGetFailure", getWeeklyResponse.code().toString())
+                Log.d("WeeklyWeightGetFailure", "$stringToJson")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("WeeklyWeightGetException", e.toString())
             return null
         }
     }
