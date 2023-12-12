@@ -1,13 +1,16 @@
 package com.project.meongcare.onboarding.view
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
@@ -27,6 +30,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var mainActivity: MainActivity
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
+
+    private var isCbxChecked = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +72,14 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
             }
 
+            checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+                isCbxChecked = isChecked
+            }
+
+            // 중성화 여부 텍스트 클릭 시 체크박스 반전
+            textviewPetaddNeuterStatus.setOnClickListener {
+                checkboxPetaddNeuterStatus.isChecked = !isCbxChecked
+            }
         }
 
         return fragmentDogAddOnBoardingBinding.root
