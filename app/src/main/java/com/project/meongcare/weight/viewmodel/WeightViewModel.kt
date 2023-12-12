@@ -28,6 +28,10 @@ class WeightViewModel @Inject constructor(
     private val _weeklyWeightGet
         get() = weeklyWeightGet
 
+    private var monthlyWeightGet = MutableLiveData<Boolean>()
+    private val _monthlyWeightGet
+        get() = monthlyWeightGet
+
     fun postWeight(
         dateTime: String,
         weight: Double,
@@ -75,6 +79,22 @@ class WeightViewModel @Inject constructor(
 
             weightRepositoryImpl.getWeeklyWeight(weightGetRequest)
             _weeklyWeightGet.value = true
+
+            Log.d("hye", weightGetRequest.toString())
+        }
+    }
+
+    fun getMonthlyWeight(
+        date: String,
+    ) {
+        viewModelScope.launch {
+            val weightGetRequest = WeightGetRequest(
+                2L,
+                date,
+            )
+
+            weightRepositoryImpl.getMonthlyWeight(weightGetRequest)
+            _monthlyWeightGet.value = true
 
             Log.d("hye", weightGetRequest.toString())
         }
