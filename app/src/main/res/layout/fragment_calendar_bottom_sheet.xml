@@ -8,7 +8,7 @@
     tools:context=".CalendarBottomSheetFragment">
 
     <ImageView
-        android:id="@+id/imageViewCalendarBottomSheetDragHandler"
+        android:id="@+id/imageview_calendar_bottom_sheet_drag_handler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -18,14 +18,14 @@
         custom:layout_constraintTop_toTopOf="parent" />
 
     <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
-        android:id="@+id/calendarCalendarBottomSheet"
+        android:id="@+id/calendar_bottom_sheet"
         android:layout_width="322dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         custom:disable_date_color="@color/gray4"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/imageViewCalendarBottomSheetDragHandler"
+        custom:layout_constraintTop_toBottomOf="@+id/imageview_calendar_bottom_sheet_drag_handler"
         custom:range_color="@color/main1"
         custom:range_date_color="@color/main4"
         custom:selected_date_circle_color="@color/main4"
@@ -37,7 +37,7 @@
         custom:week_color="@color/black" />
 
     <Button
-        android:id="@+id/buttonCalendarBottomSheetSubmit"
+        android:id="@+id/button_submit"
         style="@style/Widget.Material3.Button"
         android:layout_width="288dp"
         android:layout_height="44dp"
@@ -52,6 +52,6 @@
         custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/calendarCalendarBottomSheet" />
+        custom:layout_constraintTop_toBottomOf="@+id/calendar_bottom_sheet" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
