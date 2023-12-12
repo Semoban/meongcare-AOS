@@ -40,6 +40,7 @@ class WeightRemoteDataSource @Inject constructor(){
         try {
             val patchResponse = weightApiService.patchWeight(
                 accessToken,
+                weightPatchRequest.dogId,
                 weightPatchRequest.kg,
                 weightPatchRequest.date,
             )

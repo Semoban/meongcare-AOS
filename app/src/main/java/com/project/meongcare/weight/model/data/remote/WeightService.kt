@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WeightService {
@@ -18,6 +19,7 @@ interface WeightService {
     @PATCH("weight/{dogId}")
     suspend fun patchWeight(
         @Header("AccessToken") accessToken: String,
+        @Path("dogId") dogId: Long,
         @Query("kg") kg: Double,
         @Query("date") date: String,
     ): Response<Int>
