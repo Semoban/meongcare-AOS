@@ -7,12 +7,15 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class WeightRemoteDataSource @Inject constructor(){
+    private val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAxODg2MjY3fQ.d8YtnaopY7HogGe82ExXTZ87TT7b344ZqY21Z0T49hg"
+    private val weightApiService = WeightClient.weightService
+    
     suspend fun postWeight(
         weightPostRequest: WeightPostRequest,
     ): Int? {
         try {
-            val response = WeightClient.weightService.postWeight(
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAxODg2MjY3fQ.d8YtnaopY7HogGe82ExXTZ87TT7b344ZqY21Z0T49hg",
+            val response = weightApiService.postWeight(
+                accessToken,
                 weightPostRequest,
             )
 
@@ -35,8 +38,8 @@ class WeightRemoteDataSource @Inject constructor(){
         weightPatchRequest: WeightPatchRequest
     ): Int? {
         try {
-            val response = WeightClient.weightService.patchWeight(
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAxODg2MjY3fQ.d8YtnaopY7HogGe82ExXTZ87TT7b344ZqY21Z0T49hg",
+            val response = weightApiService.patchWeight(
+                accessToken,
                 weightPatchRequest.kg,
                 weightPatchRequest.date,
             )
