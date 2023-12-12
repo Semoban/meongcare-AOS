@@ -2,6 +2,7 @@ package com.project.meongcare.weight.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.weight.model.entities.WeightGetRequest
+import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeekResponse
@@ -84,6 +85,31 @@ class WeightRemoteDataSource @Inject constructor() {
             }
         } catch (e: Exception) {
             Log.e("WeeklyWeightGetException", e.toString())
+            return null
+        }
+    }
+
+    suspend fun getMonthlyWeight(
+        weightGetRequest: WeightGetRequest
+    ): WeightMonthResponse? {
+        try {
+            val getMonthlyResponse = weightApiService.getMonthlyWeight(
+                accessToken,
+                weightGetRequest.dogId,
+                weightGetRequest.date,
+            )
+
+            return if (getMonthlyResponse.code() == 200) {
+                Log.d("MonthlyWeightGetSuccess", getMonthlyResponse.code().toString())
+                getMonthlyResponse.body()
+            } else {
+                val stringToJson = JSONObject(getMonthlyResponse.errorBody()?.string()!!)
+                Log.d("MonthlyWeightGetFailure", getMonthlyResponse.code().toString())
+                Log.d("MonthlyWeightGetFailure", "$stringToJson")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("MonthlyWeightGetException", e.toString())
             return null
         }
     }
