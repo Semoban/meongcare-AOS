@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.weight.model.data.repository.WeightRepositoryImpl
 import com.project.meongcare.weight.model.entities.WeightGetRequest
+import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +19,10 @@ class WeightViewModel @Inject constructor(
     private var weightPosted = MutableLiveData<Boolean>()
     private val _weightPosted
         get() = weightPosted
+
+    private var weightPatched = MutableLiveData<Boolean>()
+    private val _weightPatched
+        get() = weightPatched
 
     private var weeklyWeightGet = MutableLiveData<Boolean>()
     private val _weeklyWeightGet
@@ -38,6 +43,24 @@ class WeightViewModel @Inject constructor(
             _weightPosted.value = true
 
             Log.d("hye", weightPostRequest.toString())
+        }
+    }
+
+    fun patchWeight(
+        kg: Double,
+        date: String,
+    ) {
+        viewModelScope.launch {
+            val weightPatchRequest = WeightPatchRequest(
+                2L,
+                kg,
+                date,
+            )
+
+            weightRepositoryImpl.patchWeight(weightPatchRequest)
+            _weightPatched.value = true
+
+            Log.d("hye", weightPatchRequest.toString())
         }
     }
 
