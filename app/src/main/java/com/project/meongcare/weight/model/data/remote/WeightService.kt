@@ -1,5 +1,6 @@
 package com.project.meongcare.weight.model.data.remote
 
+import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeekResponse
 import retrofit2.Response
@@ -32,4 +33,11 @@ interface WeightService {
         @Path("dogId") dogId: Long,
         @Query("date") date: String,
     ): Response<WeightWeekResponse>
+
+    @GET("weight/month/{dogId}")
+    suspend fun getMonthlyWeight(
+        @Header("AccessToken") accessToken: String,
+        @Path("dogId") dogId: Long,
+        @Query("date") date: String,
+    ): Response<WeightMonthResponse>
 }
