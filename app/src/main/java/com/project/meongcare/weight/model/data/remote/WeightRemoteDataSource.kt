@@ -23,7 +23,7 @@ class WeightRemoteDataSource @Inject constructor() {
                 weightPostRequest,
             )
 
-            return if (postResponse.code() == 200) {
+            return if (postResponse.code() == SUCCESS) {
                 Log.d("WeightSuccess", postResponse.code().toString())
                 postResponse.body()
             } else {
@@ -49,7 +49,7 @@ class WeightRemoteDataSource @Inject constructor() {
                 weightPatchRequest.date,
             )
 
-            return if (patchResponse.code() == 200) {
+            return if (patchResponse.code() == SUCCESS) {
                 Log.d("WeightPatchSuccess", patchResponse.code().toString())
                 patchResponse.body()
             } else {
@@ -74,7 +74,7 @@ class WeightRemoteDataSource @Inject constructor() {
                 weightGetRequest.date,
             )
 
-            return if (getWeeklyResponse.code() == 200) {
+            return if (getWeeklyResponse.code() == SUCCESS) {
                 Log.d("WeeklyWeightGetSuccess", getWeeklyResponse.code().toString())
                 getWeeklyResponse.body()
             } else {
@@ -99,7 +99,7 @@ class WeightRemoteDataSource @Inject constructor() {
                 weightGetRequest.date,
             )
 
-            return if (getMonthlyResponse.code() == 200) {
+            return if (getMonthlyResponse.code() == SUCCESS) {
                 Log.d("MonthlyWeightGetSuccess", getMonthlyResponse.code().toString())
                 getMonthlyResponse.body()
             } else {
@@ -112,5 +112,9 @@ class WeightRemoteDataSource @Inject constructor() {
             Log.e("MonthlyWeightGetException", e.toString())
             return null
         }
+    }
+
+    companion object {
+        const val SUCCESS = 200
     }
 }
