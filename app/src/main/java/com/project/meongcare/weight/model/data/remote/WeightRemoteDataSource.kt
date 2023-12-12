@@ -14,17 +14,17 @@ class WeightRemoteDataSource @Inject constructor(){
         weightPostRequest: WeightPostRequest,
     ): Int? {
         try {
-            val response = weightApiService.postWeight(
+            val postResponse = weightApiService.postWeight(
                 accessToken,
                 weightPostRequest,
             )
 
-            return if (response.code() == 200) {
-                Log.d("WeightSuccess", response.code().toString())
-                response.body()
+            return if (postResponse.code() == 200) {
+                Log.d("WeightSuccess", postResponse.code().toString())
+                postResponse.body()
             } else {
-                Log.d("WeightFailure", response.code().toString())
-                val stringToJson = JSONObject(response.errorBody()?.string()!!)
+                Log.d("WeightFailure", postResponse.code().toString())
+                val stringToJson = JSONObject(postResponse.errorBody()?.string()!!)
                 Log.d("WeightFailure", "$stringToJson")
                 null
             }
@@ -38,18 +38,18 @@ class WeightRemoteDataSource @Inject constructor(){
         weightPatchRequest: WeightPatchRequest
     ): Int? {
         try {
-            val response = weightApiService.patchWeight(
+            val patchResponse = weightApiService.patchWeight(
                 accessToken,
                 weightPatchRequest.kg,
                 weightPatchRequest.date,
             )
 
-            return if (response.code() == 200) {
-                Log.d("WeightPatchSuccess", response.code().toString())
-                response.body()
+            return if (patchResponse.code() == 200) {
+                Log.d("WeightPatchSuccess", patchResponse.code().toString())
+                patchResponse.body()
             } else {
-                val stringToJson = JSONObject(response.errorBody()?.string()!!)
-                Log.d("WeightPatchFailure", response.code().toString())
+                val stringToJson = JSONObject(patchResponse.errorBody()?.string()!!)
+                Log.d("WeightPatchFailure", patchResponse.code().toString())
                 Log.d("WeightPatchFailure", "$stringToJson")
                 null
             }
