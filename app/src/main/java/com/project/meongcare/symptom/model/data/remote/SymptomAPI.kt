@@ -10,14 +10,13 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.time.LocalDateTime
 
 interface SymptomAPI {
     @GET("/symptom/{dogId}")
     fun getResultSymptom(
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Int,
-        @Query("dateTime") dateTime: LocalDateTime,
+        @Query("dateTime") dateTime: String,
     ): Call<ResultSymptom>
 
     @POST("/symptom")

@@ -15,13 +15,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
-import java.time.LocalDateTime
 
 class SymptomRepository {
     companion object {
         fun searchByDogId(
             dogId: Int,
-            dateTime: LocalDateTime,
+            dateTime: String,
             callback: (List<Symptom>?) -> Unit,
         ) {
             val retrofit =
@@ -33,7 +32,7 @@ class SymptomRepository {
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
                 api.getResultSymptom(
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
+                    MainActivity.ACCESS_TOKEN,
                     dogId,
                     dateTime,
                 )

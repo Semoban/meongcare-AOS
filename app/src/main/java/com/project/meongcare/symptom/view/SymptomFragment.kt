@@ -1,13 +1,13 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
@@ -17,13 +17,18 @@ import com.project.meongcare.databinding.ItemSymptomBinding
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
+    lateinit var toolbarViewModel: ToolbarViewModel
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
 
@@ -38,14 +43,22 @@ class SymptomFragment : Fragment() {
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
 
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
+        symptomViewModel = mainActivity.symptomViewModel
+        toolbarViewModel = mainActivity.toolbarViewModel
 
         symptomViewModel.run {
             symptomList.observe(viewLifecycleOwner) {
+                Log.d("뷰모델확인", it.toString())
+                Log.d("뷰모델확인2", it.isNullOrEmpty().toString())
                 if (it.isNullOrEmpty()) {
                     fragmentSymptomBinding.run {
-                        textViewSymptomNoData.visibility = View.VISIBLE
                         recyclerViewSymptom.visibility = View.GONE
+                        symptomViewModel.textViewNoDataVisibility.value = true
+//                        textViewSymptomNoData.visibility = View.VISIBLE
+
+                        Log.d("뷰모델확인3", textViewSymptomNoData.visibility.toString())
+                        Log.d("뷰모델확인4", recyclerViewSymptom.visibility.toString())
+
                     }
                 }
 
@@ -67,11 +80,11 @@ class SymptomFragment : Fragment() {
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
-//                mainActivity.replaceFragment(MainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
+                mainActivity.replaceFragment(MainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
             }
 
             textViewSymptomEdit.setOnClickListener {
-//                mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
+                // mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
             }
 
         }
@@ -108,7 +121,7 @@ class SymptomFragment : Fragment() {
                 )
 
             itemSymptomBinding.root.setOnClickListener {
-//                mainActivity.replaceFragment(mainActivity.SYMPTOM_INFO_FRAGMENT, true, null)
+                // mainActivity.replaceFragment(mainActivity.SYMPTOM_INFO_FRAGMENT, true, null)
             }
 
             return allViewHolder
@@ -123,7 +136,8 @@ class SymptomFragment : Fragment() {
             position: Int,
         ) {
             holder.itemSymptomName.text = symptomViewModel.symptomList.value!![position].note
-            holder.itemSymptomTime.text = symptomViewModel.symptomList.value!![position].dateTime
+            holder.itemSymptomTime.text =
+                converToDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
             holder.itemSymptomImg.setImageResource(getSymptomImg(symptomViewModel.symptomList.value!![position]))
         }
     }
@@ -138,5 +152,14 @@ class SymptomFragment : Fragment() {
             SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
             else -> R.drawable.symptom_stethoscope
         }
+    }
+
+    fun converToDateToTime(localMili: String): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        val dateTime = LocalDateTime.parse(localMili, inputFormatter)
+
+        // LocalDateTime을 오전/오후 시간 형식으로 포맷
+        val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
+        return dateTime.format(outputFormatter)
     }
 }

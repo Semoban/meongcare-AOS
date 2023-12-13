@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ToolbarCalendarWeekBinding
+import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.time.Instant
 import java.time.LocalDate
@@ -28,6 +28,7 @@ class ToolbarFragment : Fragment() {
     private lateinit var bottomSheet: LinearLayout
     lateinit var bottomSheetCloseButton: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    lateinit var symptomViewModel: SymptomViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +41,8 @@ class ToolbarFragment : Fragment() {
         bottomSheetCloseButton =
             mainActivity.findViewById(R.id.button_bottomsheet_calendar_complete)
 
-        toolbarViewModel = ViewModelProvider(mainActivity)[ToolbarViewModel::class.java]
+        toolbarViewModel = mainActivity.toolbarViewModel
+        symptomViewModel = mainActivity.symptomViewModel
 
         initializeBottomSheet()
         bottomSheetEvent()
@@ -51,6 +53,7 @@ class ToolbarFragment : Fragment() {
                 Log.d("클릭4", localDateTime.toString())
                 fragmentToolbarBinding.textViewToolbarCalendarWeekTitleDay.text =
                     getMonthDateDay(it)
+                symptomViewModel.updateSymptomList(1, it)
             }
 
             dateList.observe(viewLifecycleOwner) { dateList ->
@@ -118,7 +121,8 @@ class ToolbarFragment : Fragment() {
                 override fun onSlide(
                     bottomSheet: View,
                     slideOffset: Float,
-                ) {}
+                ) {
+                }
             },
         )
     }
