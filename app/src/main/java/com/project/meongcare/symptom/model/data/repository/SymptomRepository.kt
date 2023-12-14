@@ -1,17 +1,20 @@
 package com.project.meongcare.symptom.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.TempActivity
+import com.project.meongcare.MainActivity
 import com.project.meongcare.symptom.model.data.remote.SymptomAPI
-import com.project.meongcare.symptom.model.entities.AddResponse
+import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
 import java.time.LocalDateTime
 
 class SymptomRepository {
@@ -24,7 +27,8 @@ class SymptomRepository {
             val retrofit =
                 Retrofit
                     .Builder()
-                    .baseUrl(TempActivity.BASE_URL)
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
                     .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
@@ -59,20 +63,21 @@ class SymptomRepository {
 
         fun addSymptom(toAddSymptom: ToAddSymptom) {
             val retrofit =
-                Retrofit.Builder().baseUrl(TempActivity.BASE_URL)
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
                     .addConverterFactory(GsonConverterFactory.create()).build()
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
                 api.addSymptom(
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
+                    MainActivity.ACCESS_TOKEN,
                     toAddSymptom,
                 )
 
             call.enqueue(
-                object : Callback<AddResponse> {
+                object : Callback<ResponseSymptom> {
                     override fun onResponse(
-                        call: Call<AddResponse>,
-                        response: Response<AddResponse>,
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
                     ) {
                         if (response.isSuccessful) {
                             Log.d("Symptom API", "통신 성공: ${response.body()}, $toAddSymptom")
@@ -80,7 +85,7 @@ class SymptomRepository {
                     }
 
                     override fun onFailure(
-                        call: Call<AddResponse>,
+                        call: Call<ResponseSymptom>,
                         t: Throwable,
                     ) {
                         Log.w("Symptom API", "통신 실패: ${t.message}")
@@ -88,6 +93,27 @@ class SymptomRepository {
                 },
             )
         }
+
+        private val nullOnEmptyConverterFactory =
+            object : Converter.Factory() {
+                fun converterFactory() = this
+
+                override fun responseBodyConverter(
+                    type: Type,
+                    annotations: Array<out Annotation>,
+                    retrofit: Retrofit,
+                ) = object : Converter<ResponseBody, Any?> {
+                    val nextResponseBodyConverter =
+                        retrofit.nextResponseBodyConverter<Any?>(
+                            converterFactory(),
+                            type,
+                            annotations,
+                        )
+
+                    override fun convert(value: ResponseBody) =
+                        if (value.contentLength() != 0L) nextResponseBodyConverter.convert(value) else null
+                }
+            }
     }
 }
 

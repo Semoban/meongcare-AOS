@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".symptom.view.SymptomFragment">
 
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolbar_symptom"
-        layout="@layout/toolbar_calendar_week"
+        android:name="com.project.meongcare.toolbar.view.ToolbarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
