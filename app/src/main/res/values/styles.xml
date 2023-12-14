@@ -54,4 +54,10 @@
     <style name="RoundCornerPhotoModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/all_photo_bottom_sheet</item>
     </style>
+
+    <style name="DefaultTimePicker" parent="ThemeOverlay.Material3">
+        <item name="colorControlNormal">@color/gray2</item>
+        <item name ="android:textAppearance">@style/Typography.Body1.Medium</item>
+        <item name="android:colorAccent">@color/main4</item>
+    </style>
 </resources>
