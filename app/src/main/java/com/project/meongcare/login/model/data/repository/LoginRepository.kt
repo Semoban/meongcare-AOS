@@ -6,5 +6,6 @@ import com.project.meongcare.login.model.entities.ReissueResponse
 
 interface LoginRepository {
     suspend fun postLoginInfo(loginRequest: LoginRequest): LoginResponse?
+
     suspend fun getNewAccessToken(refreshToken: String): ReissueResponse?
 }
