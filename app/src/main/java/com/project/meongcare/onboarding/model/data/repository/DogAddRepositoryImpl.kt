@@ -12,7 +12,7 @@ class DogAddRepositoryImpl
         override suspend fun postDogInfo(
             accessToken: String,
             file: MultipartBody.Part,
-            dto: RequestBody
+            dto: RequestBody,
         ): Int {
             try {
                 val response = dogAddRetrofitClient.dogAddApi.postDogInfo(accessToken, file, dto)
