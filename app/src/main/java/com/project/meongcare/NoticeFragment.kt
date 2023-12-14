@@ -1,6 +1,5 @@
 package com.project.meongcare
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,19 +35,12 @@ class NoticeFragment : Fragment() {
 
             tablayoutNotice.addOnTabSelectedListener(
                 object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                    override fun onTabSelected(tab: TabLayout.Tab?) { }
 
-                    }
+                    override fun onTabUnselected(tab: TabLayout.Tab?) { }
 
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-                    }
-
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-
-                    }
-
-                }
+                    override fun onTabReselected(tab: TabLayout.Tab?) { }
+                },
             )
         }
 
@@ -66,7 +58,7 @@ class NoticeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return when(position) {
+        return when (position) {
             0 -> NoticeTabNoticeFragment()
             else -> NoticeTabEventFragment()
         }

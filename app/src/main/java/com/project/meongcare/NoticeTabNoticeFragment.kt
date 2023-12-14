@@ -41,21 +41,24 @@ class NoticeTabNoticeFragment : Fragment() {
         return fragmentNoticeTabNoticeBinding.root
     }
 
-    inner class RecyclerAdapterClass: RecyclerView.Adapter<RecyclerAdapterClass.ViewHolderClass>(){
-        inner class ViewHolderClass (itemNoticeBinding: ItemNoticeBinding) : RecyclerView.ViewHolder(itemNoticeBinding.root){
-            var expandableLayout : FrameLayout
+    inner class RecyclerAdapterClass : RecyclerView.Adapter<RecyclerAdapterClass.ViewHolderClass>() {
+        inner class ViewHolderClass (itemNoticeBinding: ItemNoticeBinding): RecyclerView.ViewHolder(itemNoticeBinding.root) {
+            var expandableLayout: FrameLayout
 
             init {
                 expandableLayout = itemNoticeBinding.noticeItem
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): ViewHolderClass {
             val itemNoticeBinding = ItemNoticeBinding.inflate(layoutInflater)
             itemNoticeBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
 
             var isExpanded = false
@@ -63,12 +66,20 @@ class NoticeTabNoticeFragment : Fragment() {
             itemNoticeBinding.noticeItem.parentLayout.setOnClickListener { noticeHeader ->
                 val expandableLayout = itemNoticeBinding.noticeItem
                 if (isExpanded) {
-                    noticeHeader.findViewById<ImageView>(R.id.imageViewNoticeContentToggle).setImageResource(R.drawable.notice_toggle_unchecked)
+                    noticeHeader.findViewById<ImageView>(
+                        R.id.imageViewNoticeContentToggle
+                    ).setImageResource(
+                        R.drawable.notice_toggle_unchecked
+                    )
                     noticeHeader.findViewById<TextView>(R.id.textViewNoticeItemTitle).setTextAppearance(R.style.Typography_Body1_Medium)
                     expandableLayout.collapse()
                     isExpanded = !isExpanded
                 } else {
-                    noticeHeader.findViewById<ImageView>(R.id.imageViewNoticeContentToggle).setImageResource(R.drawable.notice_toggle_checked)
+                    noticeHeader.findViewById<ImageView>(
+                        R.id.imageViewNoticeContentToggle
+                    ).setImageResource(
+                        R.drawable.notice_toggle_checked
+                    )
                     noticeHeader.findViewById<TextView>(R.id.textViewNoticeItemTitle).setTextAppearance(R.style.Typography_Title3_SemiBold)
                     expandableLayout.expand()
                     isExpanded = !isExpanded
@@ -82,7 +93,10 @@ class NoticeTabNoticeFragment : Fragment() {
             return 3
         }
 
-        override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
+        override fun onBindViewHolder(
+            holder: ViewHolderClass,
+            position: Int,
+        ) {
             Log.d("position", position.toString())
         }
     }
