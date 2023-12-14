@@ -42,7 +42,7 @@ class NoticeTabEventFragment : Fragment() {
     }
 
     inner class RecyclerAdapterClass : RecyclerView.Adapter<RecyclerAdapterClass.ViewHolderClass>() {
-        inner class ViewHolderClass (itemNoticeBinding: ItemNoticeBinding): RecyclerView.ViewHolder(itemNoticeBinding.root) {
+        inner class ViewHolderClass(itemNoticeBinding: ItemNoticeBinding) : RecyclerView.ViewHolder(itemNoticeBinding.root) {
             var expandableLayout: FrameLayout
 
             init {
@@ -67,18 +67,18 @@ class NoticeTabEventFragment : Fragment() {
                 val expandableLayout = itemNoticeBinding.noticeItem
                 if (isExpanded) {
                     noticeHeader.findViewById<ImageView>(
-                        R.id.imageViewNoticeContentToggle
+                        R.id.imageViewNoticeContentToggle,
                     ).setImageResource(
-                        R.drawable.notice_toggle_unchecked
+                        R.drawable.notice_toggle_unchecked,
                     )
                     noticeHeader.findViewById<TextView>(R.id.textViewNoticeItemTitle).setTextAppearance(R.style.Typography_Body1_Medium)
                     expandableLayout.collapse()
                     isExpanded = !isExpanded
                 } else {
                     noticeHeader.findViewById<ImageView>(
-                        R.id.imageViewNoticeContentToggle
+                        R.id.imageViewNoticeContentToggle,
                     ).setImageResource(
-                        R.drawable.notice_toggle_checked
+                        R.drawable.notice_toggle_checked,
                     )
                     noticeHeader.findViewById<TextView>(R.id.textViewNoticeItemTitle).setTextAppearance(R.style.Typography_Title3_SemiBold)
                     expandableLayout.expand()
