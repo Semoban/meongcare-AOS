@@ -29,7 +29,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/meongcare_logo" />
+            android:resource="@drawable/meongcare_logo_login" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/main4" />
