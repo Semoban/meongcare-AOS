@@ -145,15 +145,9 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val dogGender = getCheckedGender(chipgroupPetaddGroupGender.checkedChipId)
                 val dogBirth = dogAddViewModel.dogBirthDate.value!!
                 val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
-                val dogBack: Double? =
-                    if (edittextPetaddBackLength.text.toString().isEmpty()) null
-                    else edittextPetaddBackLength.text.toString().toDouble()
-                val dogNeck: Double? =
-                    if (edittextPetaddNeckCircumference.text.toString().isEmpty()) null
-                    else edittextPetaddNeckCircumference.text.toString().toDouble()
-                val dogChest: Double? =
-                    if (edittextPetaddChestCircumference.text.toString().isEmpty()) null
-                    else edittextPetaddChestCircumference.text.toString().toDouble()
+                val dogBack: Double? = bodySizeCheck(edittextPetaddBackLength.text.toString())
+                val dogNeck: Double? = bodySizeCheck(edittextPetaddNeckCircumference.text.toString())
+                val dogChest: Double? = bodySizeCheck(edittextPetaddChestCircumference.text.toString())
                 val dog =
                     Dog(
                         dogName,
@@ -231,6 +225,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     fun getCheckedGender(checkedChipId: Int): String {
         val checkedChip = fragmentDogAddOnBoardingBinding.root.findViewById<Chip>(checkedChipId)
         return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
+    }
+
+    fun bodySizeCheck(str: String): Double? {
+        return if (str.isEmpty()) null else str.toDouble()
     }
 }
 
