@@ -2,7 +2,6 @@ package com.project.meongcare
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +63,7 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
 
     fun dateFormat(date: Date): String {
         val inputDateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
-        val outputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val outputDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         inputDateFormat.timeZone = TimeZone.getTimeZone("GMT")
         outputDateFormat.timeZone = TimeZone.getTimeZone("GMT")
