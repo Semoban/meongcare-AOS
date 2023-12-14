@@ -1,12 +1,10 @@
 package com.project.meongcare.symptom.model.entities
 
-import java.time.LocalDateTime
-
 data class ResultSymptom(
     val records: List<Symptom>,
 )
 
-data class AddResponse(
+data class ResponseSymptom(
     val success: Boolean,
     val message: String,
 )
@@ -15,7 +13,7 @@ data class ToAddSymptom(
     val dogId: Int,
     val symptomString: String,
     val note: String,
-    val dateTime: LocalDateTime,
+    val dateTime: String,
 )
 
 data class Symptom(
