@@ -34,15 +34,20 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
             val calendarTypeface = Typeface.createFromAsset(mainActivity.assets, "pretendard_regular.otf")
             calendarBottomSheet.setFonts(calendarTypeface)
 
-            calendarBottomSheet.setCalendarListener(object : CalendarListener{
-                override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                    calendarBottomSheet.resetAllSelectedViews()
-                }
+            calendarBottomSheet.setCalendarListener(
+                object : CalendarListener {
+                    override fun onDateRangeSelected(
+                        startDate: Calendar,
+                        endDate: Calendar,
+                    ) {
+                        calendarBottomSheet.resetAllSelectedViews()
+                    }
 
-                override fun onFirstDateSelected(startDate: Calendar) {
-                    currentDate = dateFormat(startDate.time)
-                }
-            })
+                    override fun onFirstDateSelected(startDate: Calendar) {
+                        currentDate = dateFormat(startDate.time)
+                    }
+                },
+            )
 
             buttonSubmit.setOnClickListener {
                 currentDate?.let { sendDate(it) }

@@ -9,8 +9,12 @@ import javax.inject.Inject
 class DogAddRepositoryImpl
     @Inject
     constructor(private val dogAddRetrofitClient: DogAddRetrofitClient) : DogAddRepository {
-        override suspend fun postDogInfo(accessToken: String, file: MultipartBody.Part, dto: RequestBody): Int {
-            try{
+        override suspend fun postDogInfo(
+            accessToken: String,
+            file: MultipartBody.Part,
+            dto: RequestBody
+        ): Int {
+            try {
                 val response = dogAddRetrofitClient.dogAddApi.postDogInfo(accessToken, file, dto)
                 if (response.isSuccessful) {
                     Log.d("DogAddRepository", "통신 성공(code-${response.code()})")

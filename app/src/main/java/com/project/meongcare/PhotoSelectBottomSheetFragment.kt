@@ -9,22 +9,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.FragmentPhotoSelectBottomSheetBinding
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.view.DogAddOnBoardingFragment
-import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -77,7 +71,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
             File.createTempFile(
                 "IMG_${timeStamp}_",
                 ".jpg",
-                storageDir
+                storageDir,
             )
         return file
     }
@@ -88,7 +82,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
             FileProvider.getUriForFile(
                 context,
                 "com.project.meongcare",
-                file
+                file,
             )
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -111,7 +105,6 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
                     dismiss()
                 }
             }
-
     }
 
     fun executeAlbum() {
@@ -123,7 +116,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     fun createAlbumBitmap() {
         requestAlbumLauncher =
             registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
+                ActivityResultContracts.StartActivityForResult(),
             ) {
                 val option = BitmapFactory.Options()
                 option.inSampleSize = 5
@@ -135,7 +128,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
                             val bitmap = BitmapFactory.decodeStream(inputStream, null, option)
                             inputStream?.close()
                             bitmap?.let { bitmapFile ->
-                                if (bitmapFile != null){
+                                if (bitmapFile != null) {
                                     sendBitmap(bitmapFile)
                                 }
                                 dismiss()

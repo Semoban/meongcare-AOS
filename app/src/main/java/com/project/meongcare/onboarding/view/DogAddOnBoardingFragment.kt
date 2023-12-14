@@ -6,8 +6,8 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
@@ -41,6 +41,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     @Inject
     lateinit var dogAddRepository: DogAddRepository
+
     @Inject
     lateinit var userPreferences: UserPreferences
 
@@ -54,7 +55,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         fragmentDogAddOnBoardingBinding = FragmentDogAddOnBoardingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner){ date ->
+        dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
                 fragmentDogAddOnBoardingBinding.textviewPetaddSelectBirthday.run {
                     fragmentDogAddOnBoardingBinding.edittextPetaddSelectBirthdayError.visibility = View.INVISIBLE
@@ -144,9 +145,15 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val dogGender = getCheckedGender(chipgroupPetaddGroupGender.checkedChipId)
                 val dogBirth = dogAddViewModel.dogBirthDate.value!!
                 val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
-                val dogBack: Double? = if (edittextPetaddBackLength.text.toString().isEmpty()) null else edittextPetaddBackLength.text.toString().toDouble()
-                val dogNeck: Double? = if (edittextPetaddNeckCircumference.text.toString().isEmpty()) null else edittextPetaddNeckCircumference.text.toString().toDouble()
-                val dogChest: Double? = if (edittextPetaddChestCircumference.text.toString().isEmpty()) null else edittextPetaddChestCircumference.text.toString().toDouble()
+                val dogBack: Double? =
+                    if (edittextPetaddBackLength.text.toString().isEmpty()) null
+                    else edittextPetaddBackLength.text.toString().toDouble()
+                val dogNeck: Double? =
+                    if (edittextPetaddNeckCircumference.text.toString().isEmpty()) null
+                    else edittextPetaddNeckCircumference.text.toString().toDouble()
+                val dogChest: Double? =
+                    if (edittextPetaddChestCircumference.text.toString().isEmpty()) null
+                    else edittextPetaddChestCircumference.text.toString().toDouble()
                 val dog =
                     Dog(
                         dogName,
@@ -157,7 +164,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                         dogWeight,
                         dogBack,
                         dogNeck,
-                        dogChest
+                        dogChest,
                     )
                 val json = Gson().toJson(dog)
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
@@ -208,7 +215,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         return outputDateFormat.format(parsedDate)
     }
 
-    fun createMultipartBody(bitmap: Bitmap?): MultipartBody.Part{
+    fun createMultipartBody(bitmap: Bitmap?): MultipartBody.Part {
         if (bitmap != null) {
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
