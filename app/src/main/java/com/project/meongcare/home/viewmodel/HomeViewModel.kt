@@ -18,9 +18,17 @@ class HomeViewModel
         val homeProfileResponse: LiveData<HomeProfileResponse?>
             get() = _homeProfileResponse
 
+        private val _homeSelectedDate = MutableLiveData<String>()
+        val homeSelectedDate: LiveData<String>
+            get() = _homeSelectedDate
+
         fun getUserProfile(accessToken: String) {
             viewModelScope.launch {
                 _homeProfileResponse.value = homeRepository.getUserProfile(accessToken)
             }
+        }
+
+        fun setSelectedDate(str: String) {
+            _homeSelectedDate.value = str
         }
     }

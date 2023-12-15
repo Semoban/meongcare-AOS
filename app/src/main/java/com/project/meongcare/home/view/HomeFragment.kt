@@ -15,12 +15,15 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), DateSubmitListener {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var mainActivity: MainActivity
 
@@ -50,13 +53,28 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeViewModel.homeSelectedDate.observe(viewLifecycleOwner) { selectedDate ->
+            if (selectedDate != null) {
+                Log.d("homeViewmodel-selectedDate", selectedDate)
+                // 가로 달력 날짜 selectedDate로 설정
+
+                // 홈에서 연결되는 api에 selectedDate로 request 전송해서 데이터 설정
+            }
+        }
+
         fragmentHomeBinding.run {
 //            homeViewModel.getUserProfile(currentAccessToken)
             currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyNjIyMzI3fQ.MMgPi787_nBf_QuH0-YCCTN6Tbh3QDpNyPGr_38PZ3Q"
             homeViewModel.getUserProfile(currentAccessToken)
 
+            // 현재 날짜로 기본값 설정
+            if (homeViewModel.homeSelectedDate.value == null) {
+                homeViewModel.setSelectedDate(getCurrentDate())
+            }
+
             imageviewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
+                modalBottomSheet.setDateSubmitListener(this@HomeFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
@@ -73,5 +91,15 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDateSubmit(str: String) {
+        homeViewModel.setSelectedDate(str)
+    }
+
+    private fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return currentDate.format(formatter)
     }
 }
