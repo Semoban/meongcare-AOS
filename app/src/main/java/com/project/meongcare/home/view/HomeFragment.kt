@@ -78,6 +78,14 @@ class HomeFragment : Fragment(), DateSubmitListener {
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
+
+            imageviewHomeAlert.setOnClickListener {
+                // 알림 화면으로 전환
+            }
+
+            imageviewHomeAddDog.setOnClickListener {
+                // 강아지 정보 등록 화면으로 전환
+            }
         }
 
         return fragmentHomeBinding.root
