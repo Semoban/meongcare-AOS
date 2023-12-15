@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
 
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { homeProfileResponse ->
             if (homeProfileResponse != null) {
-                Log.d("homeViewModel", "response not null")
                 Glide.with(this)
                     .load(homeProfileResponse.imageUrl)
                     .error(R.drawable.home_profile_default_image)
