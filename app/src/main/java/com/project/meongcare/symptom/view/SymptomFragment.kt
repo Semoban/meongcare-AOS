@@ -16,15 +16,12 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
-import com.project.meongcare.symptom.model.entities.Symptom
-import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
@@ -54,8 +51,8 @@ class SymptomFragment : Fragment() {
 
         symptomViewModel.run {
             clearLiveData()
-            if(toolbarViewModel.selectedDate.value!=null){
-                updateSymptomList(1,toolbarViewModel.selectedDate.value!!)
+            if (toolbarViewModel.selectedDate.value != null) {
+                updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
             }
             symptomList.observe(viewLifecycleOwner) {
                 Log.d("뷰모델확인", it.toString())
@@ -148,29 +145,8 @@ class SymptomFragment : Fragment() {
         ) {
             holder.itemSymptomName.text = symptomViewModel.symptomList.value!![position].note
             holder.itemSymptomTime.text =
-                converToDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
+                convertDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
             holder.itemSymptomImg.setImageResource(getSymptomImg(symptomViewModel.symptomList.value!![position]))
         }
-    }
-
-    fun getSymptomImg(symptomData: Symptom): Int {
-        return when (symptomData.symptomString) {
-            SymptomType.WEIGHT_LOSS.symptomName -> R.drawable.all_weighing_machine
-            SymptomType.HIGH_FEVER.symptomName -> R.drawable.all_temperature_measurement
-            SymptomType.COUGH.symptomName -> R.drawable.symptom_cough
-            SymptomType.DIARRHEA.symptomName -> R.drawable.symptom_diarrhea
-            SymptomType.LOSS_OF_APPETITE.symptomName -> R.drawable.symptom_loss_appetite
-            SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
-            else -> R.drawable.symptom_stethoscope
-        }
-    }
-
-    fun converToDateToTime(localMili: String): String {
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        val dateTime = LocalDateTime.parse(localMili, inputFormatter)
-
-        // LocalDateTime을 오전/오후 시간 형식으로 포맷
-        val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
-        return dateTime.format(outputFormatter)
     }
 }
