@@ -62,7 +62,7 @@ class SymptomInfoFragment : Fragment() {
                         }
 
                         R.id.menu_info_edit -> {
-                            false
+                            navController.navigate(R.id.action_symptomInfo_to_symptomEdit)
                         }
 
                         else -> {
