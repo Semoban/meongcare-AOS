@@ -5,6 +5,7 @@ import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -23,6 +24,12 @@ interface SymptomAPI {
     fun addSymptom(
         @Header("AccessToken") accessToken: String,
         @Body requestBody: ToAddSymptom,
+    ): Call<ResponseSymptom>
+
+    @DELETE("/symptom")
+    fun deleteSymptom(
+        @Header("AccessToken") accessToken: String,
+        @Query("symptomIds") symtomIds: Array<Int>,
     ): Call<ResponseSymptom>
 }
 

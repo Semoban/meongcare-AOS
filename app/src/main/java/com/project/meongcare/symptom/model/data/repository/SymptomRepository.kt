@@ -93,6 +93,39 @@ class SymptomRepository {
             )
         }
 
+        fun deleteSymptom(symptomIds: Array<Int>) {
+            val retrofit =
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+            val api = retrofit.create(SymptomAPI::class.java)
+            val call =
+                api.deleteSymptom(
+                    MainActivity.ACCESS_TOKEN,
+                    symptomIds,
+                )
+
+            call.enqueue(
+                object : Callback<ResponseSymptom> {
+                    override fun onResponse(
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("Symptom API", "통신 성공: ${response.body()}, $symptomIds")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<ResponseSymptom>,
+                        t: Throwable,
+                    ) {
+                        Log.w("Symptom API", "통신 실패: ${t.message}")
+                    }
+                },
+            )
+        }
+
         private val nullOnEmptyConverterFactory =
             object : Converter.Factory() {
                 fun converterFactory() = this
