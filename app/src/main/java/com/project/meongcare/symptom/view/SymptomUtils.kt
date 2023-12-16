@@ -1,5 +1,8 @@
 package com.project.meongcare.symptom.view
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
@@ -39,6 +42,23 @@ class SymptomUtils {
             }
         }
 
+        fun getSymptomName(symptomImg: Int): String {
+            return when (symptomImg) {
+                R.drawable.all_weighing_machine -> SymptomType.WEIGHT_LOSS.symptomName
+                R.drawable.all_temperature_measurement -> SymptomType.HIGH_FEVER.symptomName
+                R.drawable.symptom_cough -> SymptomType.COUGH.symptomName
+                R.drawable.symptom_diarrhea -> SymptomType.DIARRHEA.symptomName
+                R.drawable.symptom_loss_appetite -> SymptomType.LOSS_OF_APPETITE.symptomName
+                R.drawable.symptom_amount_activity -> SymptomType.ACTIVITY_DECREASE.symptomName
+                else -> SymptomType.ETC.symptomName
+            }
+        }
+
+        fun hideKeyboard(view: View) {
+            val inputMethodManager =
+                view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
 
     }
 }

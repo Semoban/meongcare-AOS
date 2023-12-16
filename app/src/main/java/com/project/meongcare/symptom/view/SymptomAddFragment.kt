@@ -22,6 +22,8 @@ import com.project.meongcare.databinding.FragmentSymptomAddBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomName
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.hideKeyboard
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import java.time.LocalDate
 
@@ -275,24 +277,6 @@ class SymptomAddFragment : Fragment() {
             Log.d("뷰모델", symptomViewModel.addSymptomDateText.value.toString())
         }
         return customDate
-    }
-
-    fun hideKeyboard(view: View) {
-        val inputMethodManager =
-            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    fun getSymptomName(symptomImg: Int): String {
-        return when (symptomImg) {
-            R.drawable.all_weighing_machine -> SymptomType.WEIGHT_LOSS.symptomName
-            R.drawable.all_temperature_measurement -> SymptomType.HIGH_FEVER.symptomName
-            R.drawable.symptom_cough -> SymptomType.COUGH.symptomName
-            R.drawable.symptom_diarrhea -> SymptomType.DIARRHEA.symptomName
-            R.drawable.symptom_loss_appetite -> SymptomType.LOSS_OF_APPETITE.symptomName
-            R.drawable.symptom_amount_activity -> SymptomType.ACTIVITY_DECREASE.symptomName
-            else -> SymptomType.ETC.symptomName
-        }
     }
 
     private fun isNullInput(
