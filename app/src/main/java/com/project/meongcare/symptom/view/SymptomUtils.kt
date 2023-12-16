@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class SymptomUtils {
-    companion object{
+    companion object {
         fun convertDateToTime(localMili: String): String {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
@@ -59,6 +59,5 @@ class SymptomUtils {
                 view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
-
     }
 }
