@@ -108,6 +108,11 @@ class SymptomFragment : Fragment() {
                 itemSymptomName = itemSymptomBinding.textViewItemSymptom
                 itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
                 itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
+
+                itemSymptomBinding.root.setOnClickListener {
+                    navController.navigate(R.id.action_symptom_to_symptomInfo)
+                    symptomViewModel.updateSymptomData(adapterPosition)
+                }
             }
         }
 
@@ -123,10 +128,6 @@ class SymptomFragment : Fragment() {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
-
-            itemSymptomBinding.root.setOnClickListener {
-                navController.navigate(R.id.action_symptom_to_symptomInfo)
-            }
 
             return allViewHolder
         }
@@ -158,9 +159,6 @@ class SymptomFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
     fun converToDateToTime(localMili: String): String {
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         val dateTime = LocalDateTime.parse(localMili, inputFormatter)

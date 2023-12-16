@@ -1,5 +1,6 @@
 package com.project.meongcare.symptom.viewmodel
 
+import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ class SymptomViewModel : ViewModel() {
     var addSymptomItemVisibility = MutableLiveData<Int>()
     var selectCheckedImg = MutableLiveData<ImageView>()
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
+    var infoSymptomData = MutableLiveData<Symptom>()
 
     init {
         addSymptomItemImgId.value = R.drawable.symptom_stethoscope
@@ -36,6 +38,11 @@ class SymptomViewModel : ViewModel() {
         SymptomRepository.searchByDogId(dogId, localDate) {
             symptomList.value = it as MutableList<Symptom>
         }
+    }
+
+    fun updateSymptomData(position:Int){
+        infoSymptomData.value = symptomList.value?.get(position)
+        Log.d("증상확인",infoSymptomData.value.toString())
     }
 
     fun convertToDateToMiliSec(date: Date): String {
