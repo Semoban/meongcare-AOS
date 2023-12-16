@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -38,6 +39,8 @@ class SymptomAddFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         mainActivity.detachBottomNav()
+
+        val navController = findNavController()
 
         symptomViewModel = mainActivity.symptomViewModel
 
@@ -78,6 +81,12 @@ class SymptomAddFragment : Fragment() {
         }
 
         fragmentSymptomAddBinding.run {
+            toolbarSymptomAdd.run {
+                setNavigationOnClickListener {
+                    Log.d("클릭","네비게이션 버튼 클릭함")
+                    navController.navigate(R.id.action_symptomAdd_to_symptom)
+                }
+            }
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
                 bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
@@ -104,7 +113,7 @@ class SymptomAddFragment : Fragment() {
             isNullTimePickerValue()
 
             buttonSymptomAddSelectSymptom.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT, true, null)
+//                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT, true, null)
             }
 
             isNullAddItem()
@@ -163,7 +172,7 @@ class SymptomAddFragment : Fragment() {
                     Log.d("Symptom문제", dateTimeString)
                     val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
                     SymptomRepository.addSymptom(toAddSymptom)
-                    mainActivity.removeFragment(MainActivity.SYMPTOM_ADD_FRAGMENT)
+//                    mainActivity.removeFragment(MainActivity.SYMPTOM_ADD_FRAGMENT)
                 }
             }
         }

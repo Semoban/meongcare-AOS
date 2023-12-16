@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomSelectBinding
@@ -17,6 +19,7 @@ class SymptomSelectFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
     private val symptomCheckImageViews = mutableListOf<ImageView>()
+    lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,8 @@ class SymptomSelectFragment : Fragment() {
         fragmentSymptomSelectBinding = FragmentSymptomSelectBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         symptomViewModel = mainActivity.symptomViewModel
+
+        navController = findNavController()
 
         fragmentSymptomSelectBinding.run {
             symptomCheckImageViews.add(imageViewSymptomSelectCheckWeight)
@@ -40,10 +45,9 @@ class SymptomSelectFragment : Fragment() {
                     handleSymptomCheckClick(imageView)
                 }
             }
-            toolbarSymptomSelect.run {
-                setNavigationOnClickListener {
-                    mainActivity.removeFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT)
-                }
+
+            buttonSymptomSelectCustomCancel.setOnClickListener {
+                navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
             }
 
             buttonSymptomSelectCustomComplete.setOnClickListener {
@@ -64,7 +68,7 @@ class SymptomSelectFragment : Fragment() {
 
     private fun setAddItemToSymptomAdd() {
         symptomViewModel.selectCheckedImg.value?.let { getSymptomNameFromCheck(it) }
-        mainActivity.removeFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT)
+        navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
     }
 
     fun getSymptomNameFromCheck(symptomImg: ImageView) {

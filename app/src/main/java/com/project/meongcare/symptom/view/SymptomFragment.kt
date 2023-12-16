@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
@@ -30,6 +32,7 @@ class SymptomFragment : Fragment() {
     lateinit var symptomViewModel: SymptomViewModel
     lateinit var toolbarViewModel: ToolbarViewModel
     private val calendar = Calendar.getInstance()
+    lateinit var navController: NavController
     private var currentMonth = 0
 
     override fun onCreateView(
@@ -46,6 +49,7 @@ class SymptomFragment : Fragment() {
         symptomViewModel = mainActivity.symptomViewModel
         toolbarViewModel = mainActivity.toolbarViewModel
 
+        navController = findNavController()
         symptomViewModel.run {
             symptomList.observe(viewLifecycleOwner) {
                 Log.d("뷰모델확인", it.toString())
@@ -80,7 +84,7 @@ class SymptomFragment : Fragment() {
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptom_to_symptomAdd)
             }
 
             textViewSymptomEdit.setOnClickListener {
@@ -121,7 +125,7 @@ class SymptomFragment : Fragment() {
                 )
 
             itemSymptomBinding.root.setOnClickListener {
-                // mainActivity.replaceFragment(mainActivity.SYMPTOM_INFO_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptom_to_symptomInfo)
             }
 
             return allViewHolder
@@ -154,6 +158,9 @@ class SymptomFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
     fun converToDateToTime(localMili: String): String {
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         val dateTime = LocalDateTime.parse(localMili, inputFormatter)
