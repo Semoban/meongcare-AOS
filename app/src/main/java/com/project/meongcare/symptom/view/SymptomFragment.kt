@@ -50,7 +50,13 @@ class SymptomFragment : Fragment() {
         toolbarViewModel = mainActivity.toolbarViewModel
 
         navController = findNavController()
+
+
         symptomViewModel.run {
+            clearLiveData()
+            if(toolbarViewModel.selectedDate.value!=null){
+                updateSymptomList(1,toolbarViewModel.selectedDate.value!!)
+            }
             symptomList.observe(viewLifecycleOwner) {
                 Log.d("뷰모델확인", it.toString())
                 Log.d("뷰모델확인2", it.isNullOrEmpty().toString())

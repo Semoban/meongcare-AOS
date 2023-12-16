@@ -46,23 +46,27 @@ class SymptomAddFragment : Fragment() {
 
         symptomViewModel.run {
             addSymptomItemTitle.observe(viewLifecycleOwner) { title ->
-                fragmentSymptomAddBinding.run {
-                    includeItemSymptomAdd.run {
-                        imageViewItemSymptomAdd.setImageResource(addSymptomItemImgId.value!!)
-                        textViewItemSymptomAdd.text = title.trim()
+                if(title != null){
+                    fragmentSymptomAddBinding.run {
+                        includeItemSymptomAdd.run {
+                            imageViewItemSymptomAdd.setImageResource(addSymptomItemImgId.value!!)
+                            textViewItemSymptomAdd.text = title.trim()
+                        }
                     }
+                    symptomViewModel.addSymptomItemVisibility.value = View.VISIBLE
                 }
-                symptomViewModel.addSymptomItemVisibility.value = View.VISIBLE
             }
 
             addSymptomDateText.observe(viewLifecycleOwner) {
-                fragmentSymptomAddBinding.run {
-                    textViewSymptomAddDate.run {
-                        text = symptomViewModel.addSymptomDateText.value
-                        setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                        setTextAppearance(R.style.Typography_Body1_Medium)
+                if(it != null){
+                    fragmentSymptomAddBinding.run {
+                        textViewSymptomAddDate.run {
+                            text = symptomViewModel.addSymptomDateText.value
+                            setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+                            setTextAppearance(R.style.Typography_Body1_Medium)
+                        }
+                        buttonSymptomAddDate.setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     }
-                    buttonSymptomAddDate.setBackgroundResource(R.drawable.all_rect_gray1_r5)
                 }
             }
 
@@ -113,7 +117,7 @@ class SymptomAddFragment : Fragment() {
             isNullTimePickerValue()
 
             buttonSymptomAddSelectSymptom.setOnClickListener {
-//                mainActivity.replaceFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptomAdd_to_symptomSelect)
             }
 
             isNullAddItem()
@@ -146,7 +150,7 @@ class SymptomAddFragment : Fragment() {
             buttonSymptomAddToSymptom.setOnClickListener {
                 val dateTimeString =
                     if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
-                        "${textViewSymptomAddDate.text}T${
+                        "${symptomViewModel.addSymptomDateText.value}T${
                             String.format(
                                 "%02d:%02d",
                                 timepickerSymptomAdd.hour,
@@ -171,8 +175,10 @@ class SymptomAddFragment : Fragment() {
                 if (dateTimeString != null && addItemName != null && addItemTitle != null) {
                     Log.d("Symptom문제", dateTimeString)
                     val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
+                    Log.d("Symptom문제", toAddSymptom.toString())
                     SymptomRepository.addSymptom(toAddSymptom)
-//                    mainActivity.removeFragment(MainActivity.SYMPTOM_ADD_FRAGMENT)
+                    symptomViewModel.clearLiveData()
+                    navController.navigate(R.id.action_symptomAdd_to_symptom)
                 }
             }
         }

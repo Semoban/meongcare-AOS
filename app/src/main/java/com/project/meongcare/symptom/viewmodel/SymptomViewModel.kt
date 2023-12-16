@@ -1,6 +1,7 @@
 package com.project.meongcare.symptom.viewmodel
 
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,17 +18,18 @@ import java.util.Locale
 class SymptomViewModel : ViewModel() {
     var checkedStatusList = MutableLiveData<MutableList<Boolean>>()
     var symptomList = MutableLiveData<MutableList<Symptom>>()
-    var addSymptomDateText = MutableLiveData<String>()
+    var addSymptomDateText = MutableLiveData<String?>()
     var addSymptomTimeHour: Int? = null
     var addSymptomTimeMinute: Int? = null
     var addSymptomItemImgId = MutableLiveData<Int>()
-    var addSymptomItemTitle = MutableLiveData<String>()
+    var addSymptomItemTitle = MutableLiveData<String?>()
     var addSymptomItemVisibility = MutableLiveData<Int>()
     var selectCheckedImg = MutableLiveData<ImageView>()
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
     var infoSymptomData = MutableLiveData<Symptom>()
 
     init {
+        symptomList.value = mutableListOf()
         addSymptomItemImgId.value = R.drawable.symptom_stethoscope
         checkedStatusList.value = MutableList<Boolean>(6) { false }
         textViewNoDataVisibility.value = false
@@ -53,6 +55,16 @@ class SymptomViewModel : ViewModel() {
         val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         return localDateTime.format(formatter)
+    }
+
+    fun clearLiveData() {
+        addSymptomDateText.value = null
+        addSymptomTimeHour = null
+        addSymptomTimeMinute = null
+        addSymptomItemImgId.value = R.drawable.symptom_stethoscope
+        addSymptomDateText.value = null
+        addSymptomItemTitle.value = null
+        addSymptomItemVisibility.value = View.GONE
     }
 
 
