@@ -51,6 +51,7 @@ class WeightFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initInputMethodManager()
+        val postSuccess = weightViewModel.postWeight(LocalDate.now().toString())
         showWeightEditDialog()
         fetchDailyWeight()
         fetchMonthlyWeight()

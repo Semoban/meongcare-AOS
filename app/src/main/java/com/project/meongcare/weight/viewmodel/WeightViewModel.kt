@@ -38,7 +38,7 @@ class WeightViewModel @Inject constructor(
 
     fun postWeight(
         dateTime: String,
-        weight: Double,
+        weight: Double? = null,
     ) {
         viewModelScope.launch {
             val weightPostRequest = WeightPostRequest(
