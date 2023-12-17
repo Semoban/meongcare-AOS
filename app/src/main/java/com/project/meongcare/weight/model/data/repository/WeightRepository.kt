@@ -1,5 +1,6 @@
 package com.project.meongcare.weight.model.data.repository
 
+import com.project.meongcare.weight.model.entities.WeightDayResponse
 import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
@@ -14,4 +15,6 @@ interface WeightRepository {
     suspend fun getWeeklyWeight(weightGetRequest: WeightGetRequest): WeightWeekResponse?
 
     suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest): WeightMonthResponse?
+
+    suspend fun getDayWeight(weightGetRequest: WeightGetRequest): WeightDayResponse?
 }

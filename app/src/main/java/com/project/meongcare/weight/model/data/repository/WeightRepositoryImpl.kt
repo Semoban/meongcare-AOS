@@ -20,4 +20,7 @@ class WeightRepositoryImpl @Inject constructor(
 
     override suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest) =
         weightDataSource.getMonthlyWeight(weightGetRequest)
+
+    override suspend fun getDayWeight(weightGetRequest: WeightGetRequest) =
+        weightDataSource.getDayWeight(weightGetRequest)
 }
