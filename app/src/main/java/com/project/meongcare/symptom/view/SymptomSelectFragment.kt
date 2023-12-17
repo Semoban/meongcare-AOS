@@ -47,7 +47,9 @@ class SymptomSelectFragment : Fragment() {
             }
 
             buttonSymptomSelectCustomCancel.setOnClickListener {
-                navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+                if(symptomViewModel.isEditSymptom){
+                    navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
+                } else navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
             }
 
             buttonSymptomSelectCustomComplete.setOnClickListener {
@@ -68,44 +70,46 @@ class SymptomSelectFragment : Fragment() {
 
     private fun setAddItemToSymptomAdd() {
         symptomViewModel.selectCheckedImg.value?.let { getSymptomNameFromCheck(it) }
-        navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+        if(symptomViewModel.isEditSymptom){
+            navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
+        } else navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
     }
 
     fun getSymptomNameFromCheck(symptomImg: ImageView) {
         when (symptomImg.id) {
             R.id.imageView_symptomSelect_check_weight -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.all_weighing_machine
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.all_weighing_machine
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_weight_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_highFever -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.all_temperature_measurement
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.all_temperature_measurement
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_highFever_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_cough -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_cough
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_cough
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_cough_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_diarrhea -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_diarrhea
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_diarrhea
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_diarrhea_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_lossOfAppetite -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_loss_appetite
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_loss_appetite
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_lossOfAppetite_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_activityDecrease -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_amount_activity
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_amount_activity
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_activityDecrease_title).text.toString()
             }
         }
