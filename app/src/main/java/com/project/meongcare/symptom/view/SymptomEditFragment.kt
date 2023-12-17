@@ -1,6 +1,5 @@
 package com.project.meongcare.symptom.view
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -48,7 +47,8 @@ class SymptomEditFragment : Fragment() {
         symptomViewModel.run {
             symptomDateText.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    fragmentSymptomEditBinding.textViewSymptomEditDate.text = convertDateToMonthDate(it!!)
+                    fragmentSymptomEditBinding.textViewSymptomEditDate.text =
+                        convertDateToMonthDate(it)
                 }
             }
             symptomItemTitle.observe(viewLifecycleOwner) {
@@ -109,12 +109,12 @@ class SymptomEditFragment : Fragment() {
                 hideCompleteBtn()
                 if (
                     (
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                            (
-                                keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
-                                )
-                        ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
+                            actionId == EditorInfo.IME_ACTION_DONE ||
+                                    (
+                                            keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+                                            )
+                            ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
                 ) {
                     layoutItemSymptomEdit.visibility = View.VISIBLE
                     includeItemSymptomEdit.run {
@@ -145,7 +145,8 @@ class SymptomEditFragment : Fragment() {
             buttonSymptomEditComplete.setOnClickListener {
                 val dateTimeString =
                     if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-                        val date = convertSimpleDateToMonthDate(symptomViewModel.symptomDateText.value!!)
+                        val date =
+                            convertSimpleDateToMonthDate(symptomViewModel.symptomDateText.value!!)
                         if (timepickerSymptomEdit.visibility == View.VISIBLE) {
                             "${date}T${
                                 String.format(
@@ -166,7 +167,10 @@ class SymptomEditFragment : Fragment() {
                     if (layoutItemSymptomEdit.visibility == View.VISIBLE) {
                         SymptomUtils.getSymptomName(symptomViewModel.symptomItemImgId.value!!)
                     } else {
-                        isNullInput(textViewSymptomEditSelectSymptom, buttonSymptomEditSelectSymptom)
+                        isNullInput(
+                            textViewSymptomEditSelectSymptom,
+                            buttonSymptomEditSelectSymptom
+                        )
                         null
                     }
 
@@ -174,7 +178,12 @@ class SymptomEditFragment : Fragment() {
 
                 if (dateTimeString != null && symptomItemName != null && symptomItemTitle != null) {
                     Log.d("Symptom문제", dateTimeString)
-                    val toEditSymptom = ToEditSymptom(symptomData.symptomId, dateTimeString, symptomItemName, symptomItemTitle)
+                    val toEditSymptom = ToEditSymptom(
+                        symptomData.symptomId,
+                        dateTimeString,
+                        symptomItemName,
+                        symptomItemTitle
+                    )
                     Log.d("Symptom문제", toEditSymptom.toString())
                     SymptomRepository.editSymptom(toEditSymptom)
                     symptomViewModel.clearLiveData()

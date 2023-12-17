@@ -36,7 +36,7 @@ class SymptomViewModel : ViewModel() {
 
     fun updateSymptomList(
         dogId: Int,
-        date: Date
+        date: Date,
     ) {
         val localDate = convertToDateToMiliSec(date)
         SymptomRepository.searchByDogId(dogId, localDate) {
