@@ -52,8 +52,18 @@ class WeightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initInputMethodManager()
         showWeightEditDialog()
+        fetchDailyWeight()
         fetchMonthlyWeight()
         initWeightEditDialog()
+    }
+
+    private fun fetchDailyWeight() {
+        weightViewModel.getDailyWeight("2023-12-13")
+        weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                binding.textviewWeightRecordContent.text = response.weight.toString()
+            }
+        }
     }
 
     private fun fetchMonthlyWeight() {
