@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -21,6 +24,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
+    lateinit var toolbarViewModel: ToolbarViewModel
+    lateinit var symptomViewModel: SymptomViewModel
 
     companion object {
         const val BASE_URL = "http://dev.meongcare.com/"
@@ -40,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
+        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
