@@ -191,15 +191,35 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textview_weight_monthlyrecordcontent"
+                        android:id="@+id/textview_weight_monthly_record_content_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="지난달 대비 0.23kg가 증가했어요!"
+                        android:text="지난달 대비 "
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/gray5"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_monthlyrecordtitle"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_monthlyrecordtitle" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_monthlyrecordcontent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.23"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_monthly_record_content_start"
+                        app:layout_constraintTop_toTopOf="@id/textview_weight_monthly_record_content_start" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_monthly_record_content_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg가 증가했어요!"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_monthlyrecordcontent"
+                        app:layout_constraintTop_toTopOf="@id/textview_weight_monthlyrecordcontent" />
 
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/barchart_weight_monthlyrecord"
