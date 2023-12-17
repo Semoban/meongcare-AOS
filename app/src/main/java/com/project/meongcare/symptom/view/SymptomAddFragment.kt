@@ -92,11 +92,7 @@ class SymptomAddFragment : Fragment() {
             includeBottomsheetSymptomAddDate.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
                 bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
-                val datePickerHeaderId =
-                    datepickerBottomsheetSymptomAddDate.getChildAt(0)
-                        .resources.getIdentifier("date_picker_header", "id", "android")
-                datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
-                    View.GONE
+                removeDatePickerHeader()
             }
 
             buttonSymptomAddDate.setOnClickListener {
@@ -181,6 +177,16 @@ class SymptomAddFragment : Fragment() {
             }
         }
         return fragmentSymptomAddBinding.root
+    }
+
+    private fun removeDatePickerHeader() {
+        fragmentSymptomAddBinding.includeBottomsheetSymptomAddDate.run {
+            val datePickerHeaderId =
+                datepickerBottomsheetSymptomAddDate.getChildAt(0)
+                    .resources.getIdentifier("date_picker_header", "id", "android")
+            datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
+                View.GONE
+        }
     }
 
     private fun FragmentSymptomAddBinding.isNullAddItem() {
