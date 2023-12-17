@@ -16,8 +16,15 @@ class SymptomUtils {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            // LocalDateTime을 오전/오후 시간 형식으로 포맷
             val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
+            return dateTime.format(outputFormatter)
+        }
+
+        fun convertDateToSimpleTime(localMili: String): String {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
+
+            val outputFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
             return dateTime.format(outputFormatter)
         }
 
@@ -25,8 +32,14 @@ class SymptomUtils {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            // LocalDateTime을 오전/오후 시간 형식으로 포맷
             val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.getDefault())
+            return dateTime.format(outputFormatter)
+        }
+
+        fun convertSimpleDateToMonthDate(localMili: String): String {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
+            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
             return dateTime.format(outputFormatter)
         }
 
