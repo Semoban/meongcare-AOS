@@ -48,10 +48,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:fontFamily="@font/pretendard_medium"
+                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:text="전체 삭제"
-                    android:textColor="@color/gray5"
-                    android:textSize="16dp" />
+                    android:textColor="@color/gray5" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -68,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="83dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,4 +110,5 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

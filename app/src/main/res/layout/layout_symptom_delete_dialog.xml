@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black30">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp">
+
+            <TextView
+                android:id="@+id/textview_symptom_delete_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:text="삭제를 하시겠습니까?"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_symptom_delete_dialog_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="25dp"
+                android:text="삭세를 누르면 복구할 수 없습니다."
+                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textColor="@color/gray4"
+                app:layout_constraintTop_toBottomOf="@id/textview_symptom_delete_dialog_title"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_symptom_delete_dialog_subtitle">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_symptom_delete_dialog_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/all_rect_gray2_r5"
+                    android:paddingHorizontal="32dp"
+                    android:stateListAnimator="@null"
+                    android:text="취소"
+                    android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                    android:textColor="@color/gray5"
+                    app:layout_constraintBottom_toBottomOf="@id/button_symptom_delete_dialog_delete"
+                    app:layout_constraintEnd_toStartOf="@id/button_symptom_delete_dialog_delete"
+                    app:layout_constraintTop_toTopOf="@id/button_symptom_delete_dialog_delete" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_symptom_delete_dialog_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:background="@drawable/all_rect_main4_r5"
+                    android:paddingHorizontal="32dp"
+                    android:stateListAnimator="@null"
+                    android:text="삭제"
+                    android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

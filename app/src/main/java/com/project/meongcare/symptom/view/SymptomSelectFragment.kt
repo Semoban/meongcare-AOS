@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomSelectBinding
@@ -17,6 +19,7 @@ class SymptomSelectFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
     private val symptomCheckImageViews = mutableListOf<ImageView>()
+    lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,8 @@ class SymptomSelectFragment : Fragment() {
         fragmentSymptomSelectBinding = FragmentSymptomSelectBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         symptomViewModel = mainActivity.symptomViewModel
+
+        navController = findNavController()
 
         fragmentSymptomSelectBinding.run {
             symptomCheckImageViews.add(imageViewSymptomSelectCheckWeight)
@@ -40,9 +45,12 @@ class SymptomSelectFragment : Fragment() {
                     handleSymptomCheckClick(imageView)
                 }
             }
-            toolbarSymptomSelect.run {
-                setNavigationOnClickListener {
-                    mainActivity.removeFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT)
+
+            buttonSymptomSelectCustomCancel.setOnClickListener {
+                if (symptomViewModel.isEditSymptom) {
+                    navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
+                } else {
+                    navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
                 }
             }
 
@@ -64,44 +72,48 @@ class SymptomSelectFragment : Fragment() {
 
     private fun setAddItemToSymptomAdd() {
         symptomViewModel.selectCheckedImg.value?.let { getSymptomNameFromCheck(it) }
-        mainActivity.removeFragment(MainActivity.SYMPTOM_SELECT_FRAGMENT)
+        if (symptomViewModel.isEditSymptom) {
+            navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
+        } else {
+            navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+        }
     }
 
     fun getSymptomNameFromCheck(symptomImg: ImageView) {
         when (symptomImg.id) {
             R.id.imageView_symptomSelect_check_weight -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.all_weighing_machine
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.all_weighing_machine
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_weight_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_highFever -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.all_temperature_measurement
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.all_temperature_measurement
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_highFever_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_cough -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_cough
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_cough
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_cough_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_diarrhea -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_diarrhea
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_diarrhea
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_diarrhea_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_lossOfAppetite -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_loss_appetite
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_loss_appetite
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_lossOfAppetite_title).text.toString()
             }
 
             R.id.imageView_symptomSelect_check_activityDecrease -> {
-                symptomViewModel.addSymptomItemImgId.value = R.drawable.symptom_amount_activity
-                symptomViewModel.addSymptomItemTitle.value =
+                symptomViewModel.symptomItemImgId.value = R.drawable.symptom_amount_activity
+                symptomViewModel.symptomItemTitle.value =
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_activityDecrease_title).text.toString()
             }
         }

@@ -7,6 +7,7 @@ import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,13 +16,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
-import java.time.LocalDateTime
 
 class SymptomRepository {
     companion object {
         fun searchByDogId(
             dogId: Int,
-            dateTime: LocalDateTime,
+            dateTime: String,
             callback: (List<Symptom>?) -> Unit,
         ) {
             val retrofit =
@@ -33,7 +33,7 @@ class SymptomRepository {
             val api = retrofit.create(SymptomAPI::class.java)
             val call =
                 api.getResultSymptom(
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAxMjY5MDA3fQ.Zcccin4mVzpP2vvwTe84F5vFKlPzP85w3F5nCvMvT84",
+                    MainActivity.ACCESS_TOKEN,
                     dogId,
                     dateTime,
                 )
@@ -81,6 +81,72 @@ class SymptomRepository {
                     ) {
                         if (response.isSuccessful) {
                             Log.d("Symptom API", "통신 성공: ${response.body()}, $toAddSymptom")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<ResponseSymptom>,
+                        t: Throwable,
+                    ) {
+                        Log.w("Symptom API", "통신 실패: ${t.message}")
+                    }
+                },
+            )
+        }
+
+        fun deleteSymptom(symptomIds: Array<Int>) {
+            val retrofit =
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+            val api = retrofit.create(SymptomAPI::class.java)
+            val call =
+                api.deleteSymptom(
+                    MainActivity.ACCESS_TOKEN,
+                    symptomIds,
+                )
+
+            call.enqueue(
+                object : Callback<ResponseSymptom> {
+                    override fun onResponse(
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("Symptom API", "통신 성공: ${response.body()}, $symptomIds")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<ResponseSymptom>,
+                        t: Throwable,
+                    ) {
+                        Log.w("Symptom API", "통신 실패: ${t.message}")
+                    }
+                },
+            )
+        }
+
+        fun editSymptom(toEditSymptom: ToEditSymptom) {
+            val retrofit =
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+            val api = retrofit.create(SymptomAPI::class.java)
+            val call =
+                api.editSymptom(
+                    MainActivity.ACCESS_TOKEN,
+                    toEditSymptom,
+                )
+
+            call.enqueue(
+                object : Callback<ResponseSymptom> {
+                    override fun onResponse(
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("Symptom API", "통신 성공: ${response.body()}, $toEditSymptom")
                         }
                     }
 
