@@ -17,16 +17,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.databinding.FragmentSymptomAddBinding
 import com.project.meongcare.databinding.FragmentSymptomEditBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
-import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToMonthDate
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToSimpleTime
 import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomImg
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertSimpleDateToMonthDate
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
-import java.time.LocalDate
-
 
 class SymptomEditFragment : Fragment() {
     lateinit var fragmentSymptomEditBinding: FragmentSymptomEditBinding
@@ -45,15 +43,29 @@ class SymptomEditFragment : Fragment() {
         symptomViewModel = mainActivity.symptomViewModel
         navController = findNavController()
 
-        fragmentSymptomEditBinding.run {
-            val symptomData = symptomViewModel.infoSymptomData.value
-            textViewSymptomEditDate.text = convertDateToMonthDate(symptomData!!.dateTime)
-            textViewSymptomEditTime.text = convertDateToTime(symptomData.dateTime)
-            includeItemSymptomEdit.run {
-                imageViewItemSymptomAdd.setImageResource(getSymptomImg(symptomData))
-                textViewItemSymptomAdd.text = symptomData.note
+        symptomViewModel.run {
+            symptomDateText.observe(viewLifecycleOwner){
+                if(it != null){
+                    fragmentSymptomEditBinding.textViewSymptomEditDate.text = convertDateToMonthDate(it!!)
+                }
+            }
+            symptomItemTitle.observe(viewLifecycleOwner){
+                fragmentSymptomEditBinding.includeItemSymptomEdit.run {
+                    imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
+                    textViewItemSymptomAdd.text = it
+                }
             }
 
+            selectCheckedImg.observe(viewLifecycleOwner){
+                fragmentSymptomEditBinding.includeItemSymptomEdit.run {
+                    imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
+                    textViewItemSymptomAdd.text = symptomViewModel.symptomItemTitle.value
+                }
+            }
+        }
+
+        fragmentSymptomEditBinding.run {
+            val symptomData = symptomViewModel.infoSymptomData.value!!
             includeBottomsheetSymptomEdit.run {
                 initializeBottomSheet(layoutBottomsheetSymptomAddDate)
                 bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
@@ -64,22 +76,35 @@ class SymptomEditFragment : Fragment() {
                     View.GONE
             }
 
-            textViewSymptomEditDate.setOnClickListener {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            textViewSymptomEditDate.run {
+                text = convertDateToMonthDate(symptomViewModel.symptomDateText.value!!)
+                setOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+
+            textViewSymptomEditTime.run {
+                text = convertDateToTime(symptomData.dateTime)
+            }
+            buttonSymptomEditTime.setOnClickListener {
+                it.visibility = View.GONE
+                timepickerSymptomEdit.visibility = View.VISIBLE
             }
 
             timepickerSymptomEdit.run {
                 setOnTimeChangedListener { timePicker, hour, minute ->
-                    symptomViewModel.addSymptomTimeHour = hour
-                    symptomViewModel.addSymptomTimeMinute = minute
+                    symptomViewModel.symptomTimeHour = hour
+                    symptomViewModel.symptomTimeMinute = minute
                 }
             }
 
             buttonSymptomEditSelectSymptom.setOnClickListener {
+                symptomViewModel.isEditSymptom = true
                 navController.navigate(R.id.action_symptomEdit_to_symptomSelect)
             }
 
             editTextSymptomEditCustom.setOnEditorActionListener { _, actionId, keyEvent ->
+                hideCompleteBtn()
                 if (
                     (
                             actionId == EditorInfo.IME_ACTION_DONE ||
@@ -92,51 +117,66 @@ class SymptomEditFragment : Fragment() {
                     layoutItemSymptomEdit.visibility = View.VISIBLE
                     includeItemSymptomEdit.run {
                         symptomViewModel.run {
-                            addSymptomItemImgId.value = R.drawable.symptom_stethoscope
-                            addSymptomItemTitle.value =
+                            symptomItemImgId.value = R.drawable.symptom_stethoscope
+                            symptomItemTitle.value =
                                 editTextSymptomEditCustom.text.toString().trim()
                         }
                     }
                     editTextSymptomEditCustom.text.clear()
                     editTextSymptomEditCustom.clearFocus()
+                    showCompleteBtn()
                     SymptomUtils.hideKeyboard(editTextSymptomEditCustom)
                     return@setOnEditorActionListener true
                 }
                 false
             }
 
+            includeItemSymptomEdit.run {
+                imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
+                textViewItemSymptomAdd.text = symptomViewModel.symptomItemTitle.value
+            }
+
+            buttonSymptomEditCancel.setOnClickListener {
+                navController.navigate(R.id.action_symptomEdit_to_symptomInfo)
+            }
+
             buttonSymptomEditComplete.setOnClickListener {
                 val dateTimeString =
-                    if (!symptomViewModel.addSymptomDateText.value.isNullOrEmpty()) {
-                        "${symptomViewModel.addSymptomDateText.value}T${
-                            String.format(
-                                "%02d:%02d",
-                                timepickerSymptomEdit.hour,
-                                timepickerSymptomEdit.minute,
-                            )
-                        }:00"
+                    if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
+                        val date = convertSimpleDateToMonthDate(symptomViewModel.symptomDateText.value!!)
+                        if(timepickerSymptomEdit.visibility == View.VISIBLE) {
+                            "${date}T${
+                                String.format(
+                                    "%02d:%02d",
+                                    timepickerSymptomEdit.hour,
+                                    timepickerSymptomEdit.minute,
+                                )
+                            }:00"
+                        } else {
+                            "${date}T${convertDateToSimpleTime(symptomData.dateTime)}"
+                        }
                     } else {
                         isNullInput(textViewSymptomEditDate, buttonSymptomEditDate)
                         null
                     }
 
-                val addItemName =
+                val symptomItemName =
                     if (layoutItemSymptomEdit.visibility == View.VISIBLE) {
-                        SymptomUtils.getSymptomName(symptomViewModel.addSymptomItemImgId.value!!)
+                        SymptomUtils.getSymptomName(symptomViewModel.symptomItemImgId.value!!)
                     } else {
                         isNullInput(textViewSymptomEditSelectSymptom, buttonSymptomEditSelectSymptom)
                         null
                     }
 
-                val addItemTitle = symptomViewModel.addSymptomItemTitle.value
+                val symptomItemTitle = symptomViewModel.symptomItemTitle.value
 
-                if (dateTimeString != null && addItemName != null && addItemTitle != null) {
+                if (dateTimeString != null && symptomItemName != null && symptomItemTitle != null) {
                     Log.d("Symptom문제", dateTimeString)
-                    val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
-                    Log.d("Symptom문제", toAddSymptom.toString())
-                    SymptomRepository.addSymptom(toAddSymptom)
+                    val toEditSymptom = ToEditSymptom(symptomData.symptomId, dateTimeString, symptomItemName, symptomItemTitle)
+                    Log.d("Symptom문제", toEditSymptom.toString())
+                    SymptomRepository.editSymptom(toEditSymptom)
                     symptomViewModel.clearLiveData()
-                    navController.navigate(R.id.action_symptomAdd_to_symptom)
+                    navController.navigate(R.id.action_symptomEdit_to_symptom)
                 }
             }
         }
@@ -205,16 +245,28 @@ class SymptomEditFragment : Fragment() {
         )
     }
 
-    private fun bottomSheetEvent(symptomBottomSheetCloseButton: LinearLayout): LocalDate {
-        var customDate = LocalDate.now()
+    private fun bottomSheetEvent(symptomBottomSheetCloseButton: LinearLayout) {
         symptomBottomSheetCloseButton.setOnClickListener {
             val datePicker =
                 mainActivity.findViewById<DatePicker>(R.id.datepicker_bottomsheet_symptom_add_date)
-            customDate = LocalDate.of(datePicker.year, datePicker.month + 1, datePicker.dayOfMonth)
+
+            val year = datePicker.year
+            val month = datePicker.month + 1
+            val dayOfMonth = datePicker.dayOfMonth
+
+            val customDateTime = String.format("%04d-%02d-%02dT00:00:00", year, month, dayOfMonth)
+
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            symptomViewModel.addSymptomDateText.value = customDate.toString()
-            Log.d("뷰모델", symptomViewModel.addSymptomDateText.value.toString())
+            symptomViewModel.symptomDateText.value = customDateTime.toString()
+            Log.d("뷰모델", symptomViewModel.symptomDateText.value.toString())
         }
-        return customDate
+    }
+
+    private fun hideCompleteBtn(){
+        fragmentSymptomEditBinding.layoutSymptomEditButton.visibility = View.GONE
+    }
+
+    private fun showCompleteBtn(){
+        fragmentSymptomEditBinding.layoutSymptomEditButton.visibility = View.VISIBLE
     }
 }
