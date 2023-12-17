@@ -13,6 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ToolbarCalendarWeekBinding
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertToDateToLocale
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertToLocalDateToDate
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.time.Instant
@@ -46,6 +48,7 @@ class ToolbarFragment : Fragment() {
 
         initializeBottomSheet()
         bottomSheetEvent()
+        removeDatePickerHeader()
 
         toolbarViewModel.run {
             selectedDate.observe(viewLifecycleOwner) {
@@ -76,6 +79,15 @@ class ToolbarFragment : Fragment() {
         }
 
         return fragmentToolbarBinding.root
+    }
+
+    fun removeDatePickerHeader() {
+        bottomSheet.run {
+            val datePickerHeaderId = bottomSheet.getChildAt(0)
+                .resources.getIdentifier("date_picker_header", "id", "android")
+            bottomSheet.findViewById<View>(datePickerHeaderId).visibility =
+                View.GONE
+        }
     }
 
     // Persistent BottomSheet 초기화
@@ -136,17 +148,5 @@ class ToolbarFragment : Fragment() {
             toolbarViewModel.updateDateList(convertToLocalDateToDate(customDate))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
-    }
-
-    private fun convertToLocalDateToDate(localDate: LocalDate): Date {
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-    }
-
-    private fun convertToDateToLocale(date: Date): LocalDateTime {
-        // Date를 Instant로 변환
-        val instant: Instant = date.toInstant()
-
-        // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
-        return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
     }
 }
