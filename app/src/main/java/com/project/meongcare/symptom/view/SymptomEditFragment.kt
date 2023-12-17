@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.databinding.BottomsheetSymptomAddDateTempBinding
 import com.project.meongcare.databinding.FragmentSymptomEditBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
@@ -194,8 +193,9 @@ class SymptomEditFragment : Fragment() {
 
     fun removeDatePickerHeader() {
         fragmentSymptomEditBinding.includeBottomsheetSymptomEdit.run {
-            val datePickerHeaderId = datepickerBottomsheetSymptomAddDate.getChildAt(0)
-                .resources.getIdentifier("date_picker_header", "id", "android")
+            val datePickerHeaderId =
+                datepickerBottomsheetSymptomAddDate.getChildAt(0)
+                    .resources.getIdentifier("date_picker_header", "id", "android")
             datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
                 View.GONE
         }

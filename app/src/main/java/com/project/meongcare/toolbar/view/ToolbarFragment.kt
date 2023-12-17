@@ -64,14 +64,15 @@ class ToolbarFragment : Fragment() {
     }
 
     private fun showCalendarBottomSheet() {
-        val bottomSheetDialogFragment = CalendarBottomSheetDialogFragment().apply {
-            onDateSelectedListener =
-                object : CalendarBottomSheetDialogFragment.OnDateSelectedListener {
-                    override fun onDateSelected(date: LocalDate) {
-                        toolbarViewModel.updateDateList(convertToLocalDateToDate(date))
+        val bottomSheetDialogFragment =
+            CalendarBottomSheetDialogFragment().apply {
+                onDateSelectedListener =
+                    object : CalendarBottomSheetDialogFragment.OnDateSelectedListener {
+                        override fun onDateSelected(date: LocalDate) {
+                            toolbarViewModel.updateDateList(convertToLocalDateToDate(date))
+                        }
                     }
-                }
-        }
+            }
         bottomSheetDialogFragment.show(parentFragmentManager, "CalendarBottomSheetDialogFragment")
     }
 }

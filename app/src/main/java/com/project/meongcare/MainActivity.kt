@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-
         requestPermissions(permissionList, 0)
         initNavController()
 

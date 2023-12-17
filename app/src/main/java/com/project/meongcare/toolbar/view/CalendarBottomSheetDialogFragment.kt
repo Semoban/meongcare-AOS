@@ -23,7 +23,7 @@ class CalendarBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         fragmentCalendarBottomSheetBinding = BottomsheetCalendarBinding.inflate(inflater, container, false)
 
@@ -51,16 +51,19 @@ class CalendarBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return dialog
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         removeDatePickerHeader()
     }
 
-
     fun removeDatePickerHeader() {
         fragmentCalendarBottomSheetBinding.run {
-            val datePickerHeaderId = fragmentCalendarBottomSheetBinding.datepickerBottomsheetCalendar.getChildAt(0)
-                .resources.getIdentifier("date_picker_header", "id", "android")
+            val datePickerHeaderId =
+                fragmentCalendarBottomSheetBinding.datepickerBottomsheetCalendar.getChildAt(0)
+                    .resources.getIdentifier("date_picker_header", "id", "android")
             fragmentCalendarBottomSheetBinding.root.findViewById<View>(datePickerHeaderId).visibility =
                 View.GONE
         }

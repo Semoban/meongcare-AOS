@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.databinding.BottomsheetSymptomAddDateTempBinding
 import com.project.meongcare.databinding.FragmentSymptomAddBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
