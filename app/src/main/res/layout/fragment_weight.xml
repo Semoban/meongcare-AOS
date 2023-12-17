@@ -7,16 +7,14 @@
     android:background="@color/background"
     tools:context=".weight.view.WeightFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolbar_weight"
+        android:name="com.project.meongcare.toolbar.view.ToolbarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="10.04 목"
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/Typography.Title2.SemiBold" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
