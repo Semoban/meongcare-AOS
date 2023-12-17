@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var symptomViewModel: SymptomViewModel
 
     companion object {
-        const val BASE_URL = "http://dev.meongcare.com/"
+        const val BASE_URL = "https://dev.meongcare.com/"
         const val ACCESS_TOKEN =
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyMTMzOTQ5fQ.lolNGSPRJDf3O1t-bjaPtKmVU_A4-iqfRFbbt1YYkDM"
     }
@@ -45,14 +45,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
+
         requestPermissions(permissionList, 0)
         initNavController()
+
+        toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
+        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding.run {
 //            autoLogin()
