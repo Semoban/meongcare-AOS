@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".weight.WeightFragment">
+    tools:context=".weight.view.WeightFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_weight"
@@ -90,12 +90,23 @@
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
 
                     <TextView
-                        android:id="@+id/textview_weight_recordcontent"
+                        android:id="@+id/textview_weight_record_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textAppearance="@style/Typography.Title1.SemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_weight_record_kg"
+                        app:layout_constraintEnd_toStartOf="@id/textview_weight_record_kg"
+                        app:layout_constraintTop_toTopOf="@id/textview_weight_record_kg" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_record_kg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="27dp"
                         android:layout_marginBottom="20dp"
-                        android:text="0.0KG"
+                        android:text="KG"
                         android:textAppearance="@style/Typography.Title1.SemiBold"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
