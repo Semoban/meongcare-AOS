@@ -177,9 +177,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavController() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment
+            = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navHostFragment.navController
     }
-
 }
