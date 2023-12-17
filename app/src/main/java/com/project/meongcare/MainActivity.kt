@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         requestPermissions(permissionList, 0)
+        initNavController()
 
         activityMainBinding.run {
 //            autoLogin()
@@ -172,5 +174,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initNavController() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navHostFragment.navController
     }
 }
