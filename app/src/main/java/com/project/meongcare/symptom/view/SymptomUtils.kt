@@ -6,8 +6,12 @@ import android.view.inputmethod.InputMethodManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
+import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Date
 import java.util.Locale
 
 class SymptomUtils {
@@ -41,6 +45,18 @@ class SymptomUtils {
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
             val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
             return dateTime.format(outputFormatter)
+        }
+
+        fun convertToLocalDateToDate(localDate: LocalDate): Date {
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        }
+
+        fun convertToDateToLocale(date: Date): LocalDateTime {
+            // Date를 Instant로 변환
+            val instant: Instant = date.toInstant()
+
+            // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
+            return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
         }
 
         fun getSymptomImg(symptomData: Symptom): Int {

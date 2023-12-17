@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/main4</item>
         <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorAccent">@color/main4</item>
     </style>
 
@@ -15,5 +16,18 @@
         <item name="windowSplashScreenAnimationDuration">0</item>
         <item name="postSplashScreenTheme">@style/Theme.MeongCareAos</item>
         <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="colorAccent">@color/main4</item>
+        <item name="behavior_peekHeight">0dp</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/all_calendar_bottom_sheet</item>
     </style>
 </resources>
