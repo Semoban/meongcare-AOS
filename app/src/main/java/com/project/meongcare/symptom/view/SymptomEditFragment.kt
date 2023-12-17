@@ -1,5 +1,6 @@
 package com.project.meongcare.symptom.view
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -34,8 +35,9 @@ class SymptomEditFragment : Fragment() {
     lateinit var navController: NavController
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         fragmentSymptomEditBinding = FragmentSymptomEditBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -44,19 +46,19 @@ class SymptomEditFragment : Fragment() {
         navController = findNavController()
 
         symptomViewModel.run {
-            symptomDateText.observe(viewLifecycleOwner){
-                if(it != null){
+            symptomDateText.observe(viewLifecycleOwner) {
+                if (it != null) {
                     fragmentSymptomEditBinding.textViewSymptomEditDate.text = convertDateToMonthDate(it!!)
                 }
             }
-            symptomItemTitle.observe(viewLifecycleOwner){
+            symptomItemTitle.observe(viewLifecycleOwner) {
                 fragmentSymptomEditBinding.includeItemSymptomEdit.run {
                     imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
                     textViewItemSymptomAdd.text = it
                 }
             }
 
-            selectCheckedImg.observe(viewLifecycleOwner){
+            selectCheckedImg.observe(viewLifecycleOwner) {
                 fragmentSymptomEditBinding.includeItemSymptomEdit.run {
                     imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
                     textViewItemSymptomAdd.text = symptomViewModel.symptomItemTitle.value
@@ -107,12 +109,12 @@ class SymptomEditFragment : Fragment() {
                 hideCompleteBtn()
                 if (
                     (
-                            actionId == EditorInfo.IME_ACTION_DONE ||
-                                    (
-                                            keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
-                                            )
-                            ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                            (
+                                keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+                                )
+                        ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
                 ) {
                     layoutItemSymptomEdit.visibility = View.VISIBLE
                     includeItemSymptomEdit.run {
@@ -144,7 +146,7 @@ class SymptomEditFragment : Fragment() {
                 val dateTimeString =
                     if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
                         val date = convertSimpleDateToMonthDate(symptomViewModel.symptomDateText.value!!)
-                        if(timepickerSymptomEdit.visibility == View.VISIBLE) {
+                        if (timepickerSymptomEdit.visibility == View.VISIBLE) {
                             "${date}T${
                                 String.format(
                                     "%02d:%02d",
@@ -262,11 +264,11 @@ class SymptomEditFragment : Fragment() {
         }
     }
 
-    private fun hideCompleteBtn(){
+    private fun hideCompleteBtn() {
         fragmentSymptomEditBinding.layoutSymptomEditButton.visibility = View.GONE
     }
 
-    private fun showCompleteBtn(){
+    private fun showCompleteBtn() {
         fragmentSymptomEditBinding.layoutSymptomEditButton.visibility = View.VISIBLE
     }
 }

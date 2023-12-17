@@ -45,7 +45,7 @@ class SymptomAddFragment : Fragment() {
 
         symptomViewModel.run {
             symptomItemTitle.observe(viewLifecycleOwner) { title ->
-                if(title != null){
+                if (title != null) {
                     fragmentSymptomAddBinding.run {
                         includeItemSymptomAdd.run {
                             imageViewItemSymptomAdd.setImageResource(symptomItemImgId.value!!)
@@ -57,7 +57,7 @@ class SymptomAddFragment : Fragment() {
             }
 
             symptomDateText.observe(viewLifecycleOwner) {
-                if(it != null){
+                if (it != null) {
                     fragmentSymptomAddBinding.run {
                         textViewSymptomAddDate.run {
                             text = symptomViewModel.symptomDateText.value
@@ -86,7 +86,6 @@ class SymptomAddFragment : Fragment() {
         fragmentSymptomAddBinding.run {
             toolbarSymptomAdd.run {
                 setNavigationOnClickListener {
-                    Log.d("클릭","네비게이션 버튼 클릭함")
                     navController.navigate(R.id.action_symptomAdd_to_symptom)
                 }
             }

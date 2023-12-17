@@ -65,7 +65,6 @@ class SymptomFragment : Fragment() {
 
                         Log.d("뷰모델확인3", textViewSymptomNoData.visibility.toString())
                         Log.d("뷰모델확인4", recyclerViewSymptom.visibility.toString())
-
                     }
                 }
 

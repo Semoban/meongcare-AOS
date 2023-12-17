@@ -22,11 +22,7 @@ class SymptomListEditFragment : Fragment() {
         fragmentSymptomListEditBinding = FragmentSymptomListEditBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
-
-        fragmentSymptomListEditBinding.run {
-
-        }
-
+        fragmentSymptomListEditBinding.run {}
         return fragmentSymptomListEditBinding.root
     }
 }

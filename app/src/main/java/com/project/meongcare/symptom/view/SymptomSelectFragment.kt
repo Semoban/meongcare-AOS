@@ -47,9 +47,11 @@ class SymptomSelectFragment : Fragment() {
             }
 
             buttonSymptomSelectCustomCancel.setOnClickListener {
-                if(symptomViewModel.isEditSymptom){
+                if (symptomViewModel.isEditSymptom) {
                     navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
-                } else navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+                } else {
+                    navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+                }
             }
 
             buttonSymptomSelectCustomComplete.setOnClickListener {
@@ -70,9 +72,11 @@ class SymptomSelectFragment : Fragment() {
 
     private fun setAddItemToSymptomAdd() {
         symptomViewModel.selectCheckedImg.value?.let { getSymptomNameFromCheck(it) }
-        if(symptomViewModel.isEditSymptom){
+        if (symptomViewModel.isEditSymptom) {
             navController.navigate(R.id.action_symptomSelect_to_symptomEdit)
-        } else navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+        } else {
+            navController.navigate(R.id.action_symptomSelect_to_symptomAdd)
+        }
     }
 
     fun getSymptomNameFromCheck(symptomImg: ImageView) {

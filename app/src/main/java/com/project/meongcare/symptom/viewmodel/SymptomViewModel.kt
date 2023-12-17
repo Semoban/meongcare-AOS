@@ -1,6 +1,5 @@
 package com.project.meongcare.symptom.viewmodel
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
@@ -35,23 +34,25 @@ class SymptomViewModel : ViewModel() {
         textViewNoDataVisibility.value = false
     }
 
-    fun updateSymptomList(dogId: Int, date: Date) {
+    fun updateSymptomList(
+        dogId: Int,
+        date: Date
+    ) {
         val localDate = convertToDateToMiliSec(date)
         SymptomRepository.searchByDogId(dogId, localDate) {
-            if (it != null){
+            if (it != null) {
                 symptomList.value = it as MutableList<Symptom>
             }
         }
     }
 
-    fun updateSymptomData(position:Int){
+    fun updateSymptomData(position: Int) {
         infoSymptomData.value = symptomList.value?.get(position)
-        Log.d("증상확인",infoSymptomData.value.toString())
     }
 
-    fun updateSymptomDataAll(){
+    fun updateSymptomDataAll() {
         val symptom = infoSymptomData.value
-        if(symptom != null){
+        if (symptom != null) {
             symptomDateText.value = symptom.dateTime
             symptomItemImgId.value = SymptomUtils.getSymptomImg(symptom)
             symptomItemTitle.value = symptom.note
