@@ -7,6 +7,7 @@ import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -113,6 +114,39 @@ class SymptomRepository {
                     ) {
                         if (response.isSuccessful) {
                             Log.d("Symptom API", "통신 성공: ${response.body()}, $symptomIds")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<ResponseSymptom>,
+                        t: Throwable,
+                    ) {
+                        Log.w("Symptom API", "통신 실패: ${t.message}")
+                    }
+                },
+            )
+        }
+
+        fun editSymptom(toEditSymptom: ToEditSymptom) {
+            val retrofit =
+                Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(nullOnEmptyConverterFactory)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+            val api = retrofit.create(SymptomAPI::class.java)
+            val call =
+                api.editSymptom(
+                    MainActivity.ACCESS_TOKEN,
+                    toEditSymptom,
+                )
+
+            call.enqueue(
+                object : Callback<ResponseSymptom> {
+                    override fun onResponse(
+                        call: Call<ResponseSymptom>,
+                        response: Response<ResponseSymptom>,
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("Symptom API", "통신 성공: ${response.body()}, $toEditSymptom")
                         }
                     }
 

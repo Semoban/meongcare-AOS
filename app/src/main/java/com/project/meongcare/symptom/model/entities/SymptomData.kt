@@ -16,6 +16,13 @@ data class ToAddSymptom(
     val dateTime: String,
 )
 
+data class ToEditSymptom(
+    val symptomId: Int,
+    val dateTime: String,
+    val symptomString: String,
+    val note: String,
+)
+
 data class Symptom(
     val symptomId: Int,
     val dateTime: String,
