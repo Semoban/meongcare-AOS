@@ -52,9 +52,15 @@ class WeightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initInputMethodManager()
         showWeightEditDialog()
-        initWeeklyRecordChart()
-        initMonthlyRecordChart()
+        fetchMonthlyWeight()
         initWeightEditDialog()
+    }
+
+    private fun fetchMonthlyWeight() {
+        weightViewModel.getMonthlyWeight("2023-12-17")
+        weightViewModel.monthlyWeightGet.observe(viewLifecycleOwner) { response ->
+            initMonthlyRecordChart(response)
+        }
     }
 
     private fun showWeightEditDialog() {
@@ -162,11 +168,11 @@ class WeightFragment : Fragment() {
         }
     }
 
-    private fun initMonthlyRecordChart() {
+    private fun initMonthlyRecordChart(response: WeightMonthResponse) {
         val weightMonthlyData =
             listOf(
-                BarEntry(10F, 4.23F),
-                BarEntry(11F, 4.46F),
+                BarEntry(11F, response.lastMonthWeight.toFloat()),
+                BarEntry(12F, response.thisMonthWeight.toFloat())
             )
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
@@ -200,7 +206,6 @@ class WeightFragment : Fragment() {
 
             xAxis.apply {
                 granularity = 1F
-
                 position = XAxis.XAxisPosition.BOTTOM
                 textSize = 14F
                 typeface = typo
