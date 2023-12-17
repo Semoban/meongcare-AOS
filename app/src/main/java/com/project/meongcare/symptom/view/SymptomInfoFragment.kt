@@ -62,6 +62,7 @@ class SymptomInfoFragment : Fragment() {
                         }
 
                         R.id.menu_info_edit -> {
+                            symptomViewModel.updateSymptomDataAll()
                             navController.navigate(R.id.action_symptomInfo_to_symptomEdit)
                         }
 

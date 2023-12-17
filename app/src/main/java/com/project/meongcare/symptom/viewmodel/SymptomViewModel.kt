@@ -8,29 +8,29 @@ import androidx.lifecycle.ViewModel
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
+import com.project.meongcare.symptom.view.SymptomUtils
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
-import java.util.Locale
 
 class SymptomViewModel : ViewModel() {
     var checkedStatusList = MutableLiveData<MutableList<Boolean>>()
     var symptomList = MutableLiveData<MutableList<Symptom>>()
-    var addSymptomDateText = MutableLiveData<String?>()
-    var addSymptomTimeHour: Int? = null
-    var addSymptomTimeMinute: Int? = null
-    var addSymptomItemImgId = MutableLiveData<Int>()
-    var addSymptomItemTitle = MutableLiveData<String?>()
-    var addSymptomItemVisibility = MutableLiveData<Int>()
+    var symptomDateText = MutableLiveData<String?>()
+    var symptomTimeHour: Int? = null
+    var symptomTimeMinute: Int? = null
+    var symptomItemImgId = MutableLiveData<Int>()
+    var symptomItemTitle = MutableLiveData<String?>()
+    var symptomItemVisibility = MutableLiveData<Int>()
     var selectCheckedImg = MutableLiveData<ImageView>()
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
     var infoSymptomData = MutableLiveData<Symptom>()
+    var isEditSymptom = false
 
     init {
         symptomList.value = mutableListOf()
-        addSymptomItemImgId.value = R.drawable.symptom_stethoscope
+        symptomItemImgId.value = R.drawable.symptom_stethoscope
         checkedStatusList.value = MutableList<Boolean>(6) { false }
         textViewNoDataVisibility.value = false
     }
@@ -49,6 +49,16 @@ class SymptomViewModel : ViewModel() {
         Log.d("증상확인",infoSymptomData.value.toString())
     }
 
+    fun updateSymptomDataAll(){
+        val symptom = infoSymptomData.value
+        if(symptom != null){
+            symptomDateText.value = symptom.dateTime
+            symptomItemImgId.value = SymptomUtils.getSymptomImg(symptom)
+            symptomItemTitle.value = symptom.note
+            symptomItemVisibility.value = View.VISIBLE
+        }
+    }
+
     fun convertToDateToMiliSec(date: Date): String {
         // Date를 Instant로 변환
         val instant: Instant = date.toInstant()
@@ -60,14 +70,12 @@ class SymptomViewModel : ViewModel() {
     }
 
     fun clearLiveData() {
-        addSymptomDateText.value = null
-        addSymptomTimeHour = null
-        addSymptomTimeMinute = null
-        addSymptomItemImgId.value = R.drawable.symptom_stethoscope
-        addSymptomDateText.value = null
-        addSymptomItemTitle.value = null
-        addSymptomItemVisibility.value = View.GONE
+        symptomDateText.value = null
+        symptomTimeHour = null
+        symptomTimeMinute = null
+        symptomItemImgId.value = R.drawable.symptom_stethoscope
+        symptomItemTitle.value = null
+        symptomItemVisibility.value = View.GONE
+        isEditSymptom = false
     }
-
-
 }
