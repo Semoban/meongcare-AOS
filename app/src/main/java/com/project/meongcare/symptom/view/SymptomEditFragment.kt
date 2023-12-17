@@ -109,12 +109,12 @@ class SymptomEditFragment : Fragment() {
                 hideCompleteBtn()
                 if (
                     (
-                            actionId == EditorInfo.IME_ACTION_DONE ||
-                                    (
-                                            keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
-                                            )
-                            ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                            (
+                                keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+                            )
+                    ) && editTextSymptomEditCustom.text.trim().isNotEmpty()
                 ) {
                     layoutItemSymptomEdit.visibility = View.VISIBLE
                     includeItemSymptomEdit.run {
@@ -169,7 +169,7 @@ class SymptomEditFragment : Fragment() {
                     } else {
                         isNullInput(
                             textViewSymptomEditSelectSymptom,
-                            buttonSymptomEditSelectSymptom
+                            buttonSymptomEditSelectSymptom,
                         )
                         null
                     }
@@ -178,12 +178,13 @@ class SymptomEditFragment : Fragment() {
 
                 if (dateTimeString != null && symptomItemName != null && symptomItemTitle != null) {
                     Log.d("Symptom문제", dateTimeString)
-                    val toEditSymptom = ToEditSymptom(
-                        symptomData.symptomId,
-                        dateTimeString,
-                        symptomItemName,
-                        symptomItemTitle
-                    )
+                    val toEditSymptom =
+                        ToEditSymptom(
+                            symptomData.symptomId,
+                            dateTimeString,
+                            symptomItemName,
+                            symptomItemTitle,
+                        )
                     Log.d("Symptom문제", toEditSymptom.toString())
                     SymptomRepository.editSymptom(toEditSymptom)
                     symptomViewModel.clearLiveData()
