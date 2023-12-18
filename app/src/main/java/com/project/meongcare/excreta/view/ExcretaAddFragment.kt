@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.project.meongcare.databinding.FragmentExcretaAddBinding
 
 class ExcretaAddFragment : Fragment() {
@@ -22,6 +23,13 @@ class ExcretaAddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        binding.toolbarExcretaadd.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
