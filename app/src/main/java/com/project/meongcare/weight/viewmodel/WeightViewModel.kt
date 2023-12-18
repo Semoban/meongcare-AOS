@@ -44,7 +44,7 @@ class WeightViewModel
 
         fun postWeight(
             dateTime: String,
-            weight: Double? = null, 
+            weight: Double? = null,
         ) {
             viewModelScope.launch {
                 val weightPostRequest =
@@ -80,9 +80,7 @@ class WeightViewModel
             }
         }
 
-        fun getWeeklyWeight(
-            date: String,
-        ) {
+        fun getWeeklyWeight(date: String) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
@@ -94,9 +92,7 @@ class WeightViewModel
             }
         }
 
-        fun getMonthlyWeight(
-            date: String,
-        ) {
+        fun getMonthlyWeight(date: String) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
@@ -108,9 +104,7 @@ class WeightViewModel
             }
         }
 
-        fun getDailyWeight(
-            date: String,
-        ) {
+        fun getDailyWeight(date: String) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
