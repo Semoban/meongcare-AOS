@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
+    android:background="@color/gray2"
     tools:context=".home.view.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,41 +61,48 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_home_dog_list"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraint_layout_home_toolbar">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#FFFFFF">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_home_dog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_home_dog_profile" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_home_dog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="14dp"
-                    android:visibility="visible" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp">
 
                 <ImageView
                     android:id="@+id/imageview_home_add_dog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/home_dog_add_45dp" />
+            </RelativeLayout>
 
-            </LinearLayout>
-        </HorizontalScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_home_horizon_calendar"
@@ -104,7 +111,7 @@
         android:background="@drawable/all_horizontal_calendar_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintlayout_home_dog_list">
+        app:layout_constraintTop_toBottomOf="@id/nested_scroll_view">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,12 +169,16 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerview_home_symptom"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom2" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom2"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/item_home_symptom" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -341,37 +352,40 @@
                         android:id="@+id/textview_home_nutrition_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="20dp"
                         android:letterSpacing="-0.02"
                         android:text="10"
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/gray5"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintEnd_toStartOf="@+id/textView13" />
 
                     <TextView
                         android:id="@+id/textView13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:letterSpacing="-0.02"
                         android:text=" %"
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/gray5"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/textview_home_nutrition_percentage"
-                        app:layout_constraintStart_toEndOf="@+id/textview_home_nutrition_percentage" />
+                        app:layout_constraintEnd_toStartOf="@+id/progressbar_nutrition" />
 
                     <ProgressBar
                         android:id="@+id/progressbar_nutrition"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="78dp"
                         android:layout_height="33dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:progressDrawable="@drawable/home_nutrition_progressbar"
                         android:rotation="-58.819"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toEndOf="@+id/textview_home_nutrition"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -379,13 +393,12 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintlayout_home_weight"
-                    android:layout_width="174dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/constraintlayout_home_nutrition"
                     app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_feces">
 
@@ -434,13 +447,12 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintlayout_home_feed"
-                    android:layout_width="174dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/constraintlayout_home_nutrition"
                     app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_weight">
 
@@ -508,8 +520,10 @@
         android:id="@+id/linearlayout_dog_not_exist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout_dog_exist">
@@ -519,7 +533,6 @@
             android:layout_width="88dp"
             android:layout_height="103dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="110dp"
             android:src="@drawable/home_dog_icon" />
 
         <TextView
