@@ -25,11 +25,18 @@ class ExcretaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initExcretaAddButton()
+        initExcretaEditButton()
     }
 
     private fun initExcretaAddButton() {
         binding.textviewExcretaAddbutton.setOnClickListener {
             findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment)
+        }
+    }
+
+    private fun initExcretaEditButton() {
+        binding.textviewExcretaEditbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment)
         }
     }
 
