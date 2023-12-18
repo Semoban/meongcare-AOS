@@ -7,6 +7,7 @@ import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeekResponse
+import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -67,7 +68,7 @@ class WeightRemoteDataSource @Inject constructor() {
 
     suspend fun getWeeklyWeight(
         weightGetRequest: WeightGetRequest
-    ): WeightWeekResponse? {
+    ): WeightWeeksResponse? {
         try {
             val getWeeklyResponse = weightApiService.getWeeklyWeight(
                 accessToken,
