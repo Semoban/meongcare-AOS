@@ -22,6 +22,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
+import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import com.project.meongcare.weight.viewmodel.WeightViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
@@ -53,17 +54,24 @@ class WeightFragment : Fragment() {
         initInputMethodManager()
         val postSuccess = weightViewModel.postWeight(LocalDate.now().toString())
         showWeightEditDialog()
-        fetchDailyWeight()
+        fetchWeeklyWeight()
         fetchMonthlyWeight()
         initWeightEditDialog()
     }
 
     private fun fetchDailyWeight() {
-        weightViewModel.getDailyWeight("2023-12-13")
+        weightViewModel.getDailyWeight("2023-12-18")
         weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 binding.textviewWeightRecordContent.text = response.weight.toString()
             }
+        }
+    }
+
+    private fun fetchWeeklyWeight() {
+        weightViewModel.getWeeklyWeight("2023-12-18")
+        weightViewModel.weeklyWeightGet.observe(viewLifecycleOwner) { response ->
+            initWeeklyRecordChart(response)
         }
     }
 
@@ -111,14 +119,11 @@ class WeightFragment : Fragment() {
 
     }
 
-    private fun initWeeklyRecordChart() {
-        val weightWeeklyData =
-            listOf(
-                Entry(1f, 4.67f),
-                Entry(2f, 5f),
-                Entry(3f, 4.8f),
-                Entry(4f, 4.7f),
-            )
+    private fun initWeeklyRecordChart(response: WeightWeeksResponse) {
+        val weightWeeklyData = mutableListOf<Entry>()
+            response.weeks.forEachIndexed { index, weightWeekResponse ->
+                weightWeeklyData.add(Entry((index + 1).toFloat(), weightWeekResponse.weight.toFloat()))
+            }
 
         val weightWeeklyDataSet = LineDataSet(weightWeeklyData, "")
 
