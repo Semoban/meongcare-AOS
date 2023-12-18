@@ -1,6 +1,7 @@
 package com.project.meongcare.home.model.data.remote
 
 import com.project.meongcare.home.model.entities.HomeGetDogListResponse
+import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import retrofit2.Response
@@ -21,6 +22,15 @@ interface HomeApi {
     suspend fun getDogList(
         @Header("AccessToken") accessToken: String,
     ): Response<HomeGetDogListResponse>
+
+    // 선택된 강아지의 대소변 횟수 받아오는 api
+    @GET("/excreta/home/{dogId}")
+    suspend fun getDogExcreta(
+        @Path("dogId") dogId: Long,
+        @Query("dateTime") dateTime: String,
+        @Header("AccessToken") accessToken: String,
+    ): Response<HomeGetExcretaResponse>
+
     // 선택된 강아지의 이상증상 받아오는 api
     @GET("/symptom/home/{dogId}")
     suspend fun getDogSymptom(

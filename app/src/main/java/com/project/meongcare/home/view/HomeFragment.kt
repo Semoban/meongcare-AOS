@@ -62,6 +62,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 // 가로 달력 날짜 selectedDate로 설정
 
                 if (homeViewModel.homeSelectedDogId.value != null) {
+                    // 대소변 횟수 조회
+                    homeViewModel.getDogExcreta(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                     // 이상증상 목록 조회
                     homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 }
@@ -87,6 +89,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
 
         homeViewModel.homeSelectedDogId.observe(viewLifecycleOwner) { selectedDogId ->
             if (selectedDogId != null) {
+                // 대소변 횟수 조회
+                homeViewModel.getDogExcreta(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 이상증상 목록 조회
                 homeViewModel.getDogSymptom(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
             }
@@ -101,6 +105,14 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
             }
         }
 
+
+        homeViewModel.homeDogExcreta.observe(viewLifecycleOwner) { dogExcreta ->
+            if (dogExcreta != null) {
+                Log.d("homeDogExcreta", dogExcreta.fecesCount.toString())
+                fragmentHomeBinding.textviewHomeFecesCount.text = dogExcreta.fecesCount.toString()
+                fragmentHomeBinding.textviewHomeUrineCount.text = dogExcreta.urineCount.toString()
+            }
+        }
         homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
             if (dogSymptom.symptoms.isEmpty()) {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
