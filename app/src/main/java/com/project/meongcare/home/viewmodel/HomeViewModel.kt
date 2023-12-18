@@ -8,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.home.model.data.repository.HomeRepository
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.HomeGetProfileResponse
+import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +38,17 @@ class HomeViewModel
         private val _homeSelectedDogId = MutableLiveData<Long>()
         val homeSelectedDogId: LiveData<Long>
             get() = _homeSelectedDogId
+
+        private val _homeDogSymptom = MutableLiveData<HomeGetSymptomResponse>()
+        val homeDogSymptom: LiveData<HomeGetSymptomResponse>
+            get() = _homeDogSymptom
+
+        init {
+            val currentDate = LocalDate.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            setSelectedDate(currentDate.format(formatter))
+        }
+
         fun getUserProfile(accessToken: String) {
             viewModelScope.launch {
                 _homeProfileResponse.value = homeRepository.getUserProfile(accessToken)
@@ -58,5 +72,10 @@ class HomeViewModel
         fun setSelectedDogPos(pos: Int) {
             _homeSelectedDogPos.value = pos
             Log.d("homeViewModel", "currentPos : $pos")
+        }
+        fun getDogSymptom(dogId: Long, dateTime: String, accessToken: String) {
+            viewModelScope.launch {
+                _homeDogSymptom.value = homeRepository.getDogSymptom(dogId, dateTime, accessToken)
+            }
         }
     }

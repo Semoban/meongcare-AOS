@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
@@ -42,6 +43,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyOTI0MTE1fQ.Kqpv9fK3LWpVcbA6zOwkhpnAJ637OzzZnQDOzywmFos"
 //        getAccessToken()
 
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { homeProfileResponse ->
@@ -59,7 +61,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 Log.d("homeViewmodel-selectedDate", selectedDate)
                 // 가로 달력 날짜 selectedDate로 설정
 
-                // 홈에서 연결되는 api에 selectedDate로 request 전송해서 데이터 설정
+                if (homeViewModel.homeSelectedDogId.value != null) {
+                    // 이상증상 목록 조회
+                    homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                }
+            }
+        }
+
         homeViewModel.homeDogList.observe(viewLifecycleOwner) { dogList ->
             if (dogList != null) {
                 fragmentHomeBinding.recyclerviewHomeDog.visibility = View.VISIBLE
@@ -77,6 +85,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
             }
         }
 
+        homeViewModel.homeSelectedDogId.observe(viewLifecycleOwner) { selectedDogId ->
+            if (selectedDogId != null) {
+                // 이상증상 목록 조회
+                homeViewModel.getDogSymptom(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+            }
+        }
+
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
             if (selectedDogPos != null) {
                 Log.d("homeSelectedDogName", homeViewModel.homeDogList.value!![selectedDogPos].name)
@@ -85,15 +100,25 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 adapter.updateSelectedPos(selectedDogPos)
             }
         }
+
+        homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
+            if (dogSymptom.symptoms.isEmpty()) {
+                fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
+                fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
+            } else {
+                fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_exist)
+                fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.VISIBLE
+                dogSymptom.symptoms.forEach {
+                    Log.d("homeDogSymptom", it)
+                }
+                val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
+                adapter.updateSymptomList(dogSymptom.symptoms)
+            }
+        }
+
         fragmentHomeBinding.run {
 //            homeViewModel.getUserProfile(currentAccessToken)
-            currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyNjIyMzI3fQ.MMgPi787_nBf_QuH0-YCCTN6Tbh3QDpNyPGr_38PZ3Q"
             homeViewModel.getUserProfile(currentAccessToken)
-
-            // 현재 날짜로 기본값 설정
-            if (homeViewModel.homeSelectedDate.value == null) {
-                homeViewModel.setSelectedDate(getCurrentDate())
-            }
             homeViewModel.getDogList(currentAccessToken)
 
             imageviewHomeCalendar.setOnClickListener {
@@ -115,6 +140,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 adapter = HomeDogProfileAdapter(layoutInflater, context, this@HomeFragment)
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
+
+            recyclerviewHomeSymptom.run {
+                adapter = HomeSymptomAdapter(layoutInflater, context)
+                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+            }
         }
 
         return fragmentHomeBinding.root
@@ -134,10 +164,20 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
         homeViewModel.setSelectedDate(str)
     }
 
-    private fun getCurrentDate(): String {
+    fun getCurrentDate(): String {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return currentDate.format(formatter)
+    }
+
+    fun dateFormatter(date: String): String {
+        val currentDate = getCurrentDate()
+        if (date == currentDate) {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            return LocalDate.now().atStartOfDay().format(formatter)
+        } else {
+            return (date + "T23:59:59")
+        }
     }
 
     override fun onDogProfileClick(pos: Int) {
