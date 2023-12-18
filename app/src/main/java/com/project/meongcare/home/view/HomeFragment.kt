@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), DateSubmitListener {
+class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var mainActivity: MainActivity
 
@@ -60,9 +60,31 @@ class HomeFragment : Fragment(), DateSubmitListener {
                 // 가로 달력 날짜 selectedDate로 설정
 
                 // 홈에서 연결되는 api에 selectedDate로 request 전송해서 데이터 설정
+        homeViewModel.homeDogList.observe(viewLifecycleOwner) { dogList ->
+            if (dogList != null) {
+                fragmentHomeBinding.recyclerviewHomeDog.visibility = View.VISIBLE
+                fragmentHomeBinding.linearlayoutDogExist.visibility = View.VISIBLE
+                fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.GONE
+                val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
+                adapter.updateDogProfileList(dogList)
+                if (homeViewModel.homeSelectedDogPos.value == null) {
+                    homeViewModel.setSelectedDogPos(0)
+                }
+            } else {
+                fragmentHomeBinding.recyclerviewHomeDog.visibility = View.GONE
+                fragmentHomeBinding.linearlayoutDogExist.visibility = View.GONE
+                fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.VISIBLE
             }
         }
 
+        homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
+            if (selectedDogPos != null) {
+                Log.d("homeSelectedDogName", homeViewModel.homeDogList.value!![selectedDogPos].name)
+                homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
+                val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
+                adapter.updateSelectedPos(selectedDogPos)
+            }
+        }
         fragmentHomeBinding.run {
 //            homeViewModel.getUserProfile(currentAccessToken)
             currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyNjIyMzI3fQ.MMgPi787_nBf_QuH0-YCCTN6Tbh3QDpNyPGr_38PZ3Q"
@@ -72,6 +94,7 @@ class HomeFragment : Fragment(), DateSubmitListener {
             if (homeViewModel.homeSelectedDate.value == null) {
                 homeViewModel.setSelectedDate(getCurrentDate())
             }
+            homeViewModel.getDogList(currentAccessToken)
 
             imageviewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
@@ -86,6 +109,11 @@ class HomeFragment : Fragment(), DateSubmitListener {
 
             imageviewHomeAddDog.setOnClickListener {
                 // 강아지 정보 등록 화면으로 전환
+            }
+
+            recyclerviewHomeDog.run {
+                adapter = HomeDogProfileAdapter(layoutInflater, context, this@HomeFragment)
+                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
         }
 
@@ -110,5 +138,9 @@ class HomeFragment : Fragment(), DateSubmitListener {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return currentDate.format(formatter)
+    }
+
+    override fun onDogProfileClick(pos: Int) {
+        homeViewModel.setSelectedDogPos(pos)
     }
 }
