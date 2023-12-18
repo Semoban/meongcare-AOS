@@ -120,10 +120,12 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="32dp"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@id/view_excreta_record"
                 app:layout_constraintEnd_toEndOf="@id/view_excreta_record"
                 app:layout_constraintStart_toStartOf="@id/view_excreta_record"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberfeces" />
+                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberfeces"
+                tools:listitem="@layout/item_excreta_record" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
