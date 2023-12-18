@@ -70,12 +70,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_date" />
 
-            <ImageButton
-                android:id="@+id/imagebutton_excretaadd_urine"
+            <CheckBox
+                android:id="@+id/checkbox_excretaadd_urine"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/selector_checkbox"
+                android:button="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_type"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_type"
                 app:layout_constraintTop_toTopOf="@id/textview_excretaadd_type" />
@@ -88,16 +89,17 @@
                 android:text="소변"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/imagebutton_excretaadd_urine"
-                app:layout_constraintStart_toEndOf="@id/imagebutton_excretaadd_urine"
-                app:layout_constraintTop_toTopOf="@id/imagebutton_excretaadd_urine" />
+                app:layout_constraintBottom_toBottomOf="@+id/checkbox_excretaadd_urine"
+                app:layout_constraintStart_toEndOf="@id/checkbox_excretaadd_urine"
+                app:layout_constraintTop_toTopOf="@id/checkbox_excretaadd_urine" />
 
-            <ImageButton
-                android:id="@+id/imagebutton_excretaadd_feces"
+            <CheckBox
+                android:id="@+id/checkbox_excretaadd_feces"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/selector_checkbox"
+                android:button="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_urine"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_urine"
                 app:layout_constraintTop_toTopOf="@id/textview_excretaadd_urine" />
@@ -110,9 +112,9 @@
                 android:text="대변"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@id/imagebutton_excretaadd_feces"
-                app:layout_constraintStart_toEndOf="@id/imagebutton_excretaadd_feces"
-                app:layout_constraintTop_toTopOf="@id/imagebutton_excretaadd_feces" />
+                app:layout_constraintBottom_toBottomOf="@id/checkbox_excretaadd_feces"
+                app:layout_constraintStart_toEndOf="@id/checkbox_excretaadd_feces"
+                app:layout_constraintTop_toTopOf="@id/checkbox_excretaadd_feces" />
 
             <TextView
                 android:id="@+id/textview_excretaadd_time"
