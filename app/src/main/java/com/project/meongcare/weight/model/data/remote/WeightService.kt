@@ -3,7 +3,6 @@ package com.project.meongcare.weight.model.data.remote
 import com.project.meongcare.weight.model.entities.WeightDayResponse
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPostRequest
-import com.project.meongcare.weight.model.entities.WeightWeekResponse
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -49,5 +48,4 @@ interface WeightService {
         @Path("dogId") dogId: Long,
         @Query("date") date: String,
     ): Response<WeightDayResponse>
-
 }

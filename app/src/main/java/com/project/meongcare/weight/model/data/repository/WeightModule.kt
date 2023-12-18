@@ -13,7 +13,7 @@ object WeightModule {
     @Singleton
     fun provideWeightRepository(
         weightRepositoryImpl: WeightRepositoryImpl,
-    ): WeightRepository{
+    ): WeightRepository {
         return weightRepositoryImpl
     }
 }

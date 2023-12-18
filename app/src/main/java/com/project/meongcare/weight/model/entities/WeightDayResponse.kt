@@ -1,5 +1,5 @@
 package com.project.meongcare.weight.model.entities
 
-data class WeightDayResponse (
+data class WeightDayResponse(
     val weight: Double,
 )

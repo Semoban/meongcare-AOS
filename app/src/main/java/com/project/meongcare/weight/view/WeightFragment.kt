@@ -90,19 +90,19 @@ class WeightFragment : Fragment() {
     }
 
     private fun showMonthlyWeightVariation(response: WeightMonthResponse) {
-         val monthlyWeightChange = (response.thisMonthWeight - response.lastMonthWeight)
+        val monthlyWeightChange = (response.thisMonthWeight - response.lastMonthWeight)
         binding.run {
             when {
                 monthlyWeightChange > 0 -> {
                     textviewWeightMonthlyrecordtitle.text = "이번달은 지난달 대비 증가했어요!"
                     textviewWeightMonthlyrecordcontent.text =
-                    String.format("%.2f", monthlyWeightChange)
+                        String.format("%.2f", monthlyWeightChange)
                     textviewWeightMonthlyRecordContentEnd.text = "kg가 증가했어요!"
                 }
                 monthlyWeightChange < 0 -> {
                     textviewWeightMonthlyrecordtitle.text = "이번달은 지난달 대비 감소했어요!"
                     textviewWeightMonthlyrecordcontent.text =
-                    String.format("%.2f", abs(monthlyWeightChange))
+                        String.format("%.2f", abs(monthlyWeightChange))
                     textviewWeightMonthlyRecordContentEnd.text = "kg가 감소했어요!"
                 }
                 else -> {
@@ -148,14 +148,13 @@ class WeightFragment : Fragment() {
             edittextWeighteditdialog.text.clear()
             root.visibility = View.GONE
         }
-
     }
 
     private fun initWeeklyRecordChart(response: WeightWeeksResponse) {
         val weightWeeklyData = mutableListOf<Entry>()
-            response.weeks.forEachIndexed { index, weightWeekResponse ->
-                weightWeeklyData.add(Entry((index + 1).toFloat(), weightWeekResponse.weight.toFloat()))
-            }
+        response.weeks.forEachIndexed { index, weightWeekResponse ->
+            weightWeeklyData.add(Entry((index + 1).toFloat(), weightWeekResponse.weight.toFloat()))
+        }
 
         val weightWeeklyDataSet = LineDataSet(weightWeeklyData, "")
 
@@ -220,7 +219,7 @@ class WeightFragment : Fragment() {
         val weightMonthlyData =
             listOf(
                 BarEntry(11F, response.lastMonthWeight.toFloat()),
-                BarEntry(12F, response.thisMonthWeight.toFloat())
+                BarEntry(12F, response.thisMonthWeight.toFloat()),
             )
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")

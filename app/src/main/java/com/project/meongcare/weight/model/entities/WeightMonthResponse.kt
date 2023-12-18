@@ -1,6 +1,6 @@
 package com.project.meongcare.weight.model.entities
 
-data class WeightMonthResponse (
+data class WeightMonthResponse(
     val lastMonthWeight: Double,
     val thisMonthWeight: Double,
 )
