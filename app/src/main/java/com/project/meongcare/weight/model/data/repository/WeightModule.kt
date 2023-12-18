@@ -11,9 +11,7 @@ import javax.inject.Singleton
 object WeightModule {
     @Provides
     @Singleton
-    fun provideWeightRepository(
-        weightRepositoryImpl: WeightRepositoryImpl,
-    ): WeightRepository {
+    fun provideWeightRepository(weightRepositoryImpl: WeightRepositoryImpl): WeightRepository {
         return weightRepositoryImpl
     }
 }
