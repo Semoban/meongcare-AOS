@@ -11,14 +11,14 @@ import java.lang.reflect.Type
 object WeightClient {
     private const val BASE_URL = "https://dev.meongcare.com/"
 
-    private val logging
-        = HttpLoggingInterceptor().apply {
+    private val logging =
+        HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
     // cURL을 확인 하기 위해 사용
-    private val okHttpClient
-        = OkHttpClient.Builder()
+    private val okHttpClient =
+        OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
 
@@ -32,9 +32,10 @@ object WeightClient {
     }
 
     // 비어있는 응답을 null로 처리
-    private val nullOnEmptyConverterFactory
-        = object : Converter.Factory() {
+    private val nullOnEmptyConverterFactory =
+        object : Converter.Factory() {
             fun converterFactory() = this
+
             override fun responseBodyConverter(
                 type: Type,
                 annotations: Array<out Annotation>,
@@ -42,7 +43,8 @@ object WeightClient {
             ) = object : Converter<ResponseBody, Any?> {
                 val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(converterFactory(), type, annotations)
 
-                override fun convert(value: ResponseBody) = if (value.contentLength() != 0L) nextResponseBodyConverter.convert(value) else null
+                override fun convert(value: ResponseBody) =
+                    if (value.contentLength() != 0L) nextResponseBodyConverter.convert(value) else null
             }
         }
 
