@@ -24,11 +24,23 @@ class ExcretaAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
+        toggleExcretaCheckboxesOnClick()
     }
 
     private fun initToolbar() {
         binding.toolbarExcretaadd.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun toggleExcretaCheckboxesOnClick() {
+        binding.run {
+            checkboxExcretaaddFeces.setOnClickListener {
+                checkboxExcretaaddUrine.isChecked = !checkboxExcretaaddFeces.isChecked
+            }
+            checkboxExcretaaddUrine.setOnClickListener {
+                checkboxExcretaaddFeces.isChecked = !checkboxExcretaaddUrine.isChecked
+            }
         }
     }
 
