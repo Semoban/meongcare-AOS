@@ -7,18 +7,14 @@
     android:background="@color/background"
     tools:context=".excreta.view.ExcretaFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolbar_excreta"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:name="com.project.meongcare.toolbar.view.ToolbarFragment"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="10.04 목"
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/Typography.Title2.SemiBold"
-        app:titleTextColor="@color/black" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
