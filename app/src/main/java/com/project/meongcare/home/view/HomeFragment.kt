@@ -48,6 +48,7 @@ class HomeFragment : Fragment(), DateSubmitListener {
             if (homeProfileResponse != null) {
                 Glide.with(this)
                     .load(homeProfileResponse.imageUrl)
+                    .placeholder(R.drawable.home_profile_default_image)
                     .error(R.drawable.home_profile_default_image)
                     .into(fragmentHomeBinding.imageviewHomeProfile)
             }
