@@ -77,6 +77,7 @@
                 android:layout_marginStart="16dp"
                 android:background="@drawable/selector_checkbox"
                 android:button="@android:color/transparent"
+                android:checked="true"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_type"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_type"
                 app:layout_constraintTop_toTopOf="@id/textview_excretaadd_type" />
@@ -100,6 +101,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/selector_checkbox"
                 android:button="@android:color/transparent"
+                android:checked="false"
                 app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_urine"
                 app:layout_constraintStart_toEndOf="@id/textview_excretaadd_urine"
                 app:layout_constraintTop_toTopOf="@id/textview_excretaadd_urine" />
