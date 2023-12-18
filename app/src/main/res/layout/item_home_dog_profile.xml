@@ -2,30 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:id="@+id/layout_dog_profile"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp">
 
 
-    <view
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageview_dog_profile_bg"
-        class="de.hdodenhof.circleimageview.CircleImageView"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:maxWidth="45dp"
-        android:maxHeight="45dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
         android:src="@drawable/home_dog_profile_bg_unselect"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <view
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageview_dog_profile"
-        class="de.hdodenhof.circleimageview.CircleImageView"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="2dp"
-        android:maxWidth="41dp"
-        android:maxHeight="41dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:maxWidth="45dp"
+        android:maxHeight="45dp"
+        android:src="@drawable/home_dog_default"
         app:layout_constraintBottom_toBottomOf="@+id/imageview_dog_profile_bg"
         app:layout_constraintEnd_toEndOf="@+id/imageview_dog_profile_bg"
         app:layout_constraintStart_toStartOf="@+id/imageview_dog_profile_bg"
@@ -36,6 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:maxWidth="55dp"
+        android:singleLine="true"
         android:textAppearance="@style/Typography.Body3.Medium"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
