@@ -8,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.home.model.data.repository.HomeRepository
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
+import com.project.meongcare.home.model.entities.HomeGetFeedResponse
 import com.project.meongcare.home.model.entities.HomeGetProfileResponse
+import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
+import com.project.meongcare.home.model.entities.HomeGetWeightResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -39,6 +42,18 @@ class HomeViewModel
         private val _homeSelectedDogId = MutableLiveData<Long>()
         val homeSelectedDogId: LiveData<Long>
             get() = _homeSelectedDogId
+
+        private val _homeDogWeight = MutableLiveData<HomeGetWeightResponse>()
+        val homeDogWeight: LiveData<HomeGetWeightResponse>
+            get() = _homeDogWeight
+
+        private val _homeDogFeed = MutableLiveData<HomeGetFeedResponse>()
+        val homeDogFeed: LiveData<HomeGetFeedResponse>
+            get() = _homeDogFeed
+
+        private val _homeDogSupplements = MutableLiveData<HomeGetSupplementsResponse>()
+        val homeDogSupplements: LiveData<HomeGetSupplementsResponse>
+            get() = _homeDogSupplements
 
         private val _homeDogExcreta = MutableLiveData<HomeGetExcretaResponse>()
         val homeDogExcreta: LiveData<HomeGetExcretaResponse>
@@ -77,6 +92,24 @@ class HomeViewModel
         fun setSelectedDogPos(pos: Int) {
             _homeSelectedDogPos.value = pos
             Log.d("homeViewModel", "currentPos : $pos")
+        }
+
+        fun getDogWeight(dogId: Long, date: String, accessToken: String) {
+            viewModelScope.launch {
+                _homeDogWeight.value = homeRepository.getDogWeight(dogId, date, accessToken)
+            }
+        }
+
+        fun getDogFeed(dogId: Long, date: String, accessToken: String) {
+            viewModelScope.launch {
+                _homeDogFeed.value = homeRepository.getDogFeed(dogId, date, accessToken)
+            }
+        }
+
+        fun getDogSupplements(dogId: Long, date: String, accessToken: String) {
+            viewModelScope.launch {
+                _homeDogSupplements.value = homeRepository.getDogSupplements(dogId, date, accessToken)
+            }
         }
 
         fun getDogExcreta(dogId: Long, dateTime: String, accessToken: String) {
