@@ -79,4 +79,49 @@
             android:id="@+id/action_symptomEdit_to_symptomInfo"
             app:destination="@+id/symptomInfoFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/excretaFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaFragment"
+        android:label="fragment_excreta"
+        tools:layout="@layout/fragment_excreta" >
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaAddFragment"
+            app:destination="@id/excretaAddFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaRecordEditFragment"
+            app:destination="@id/excretaRecordEditFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaInfoFragment"
+            app:destination="@id/excretaInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/excretaAddFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
+        android:label="fragment_excreta_add"
+        tools:layout="@layout/fragment_excreta_add" >
+        <action
+            android:id="@+id/action_excretaAddFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/excretaInfoFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaInfoFragment"
+        android:label="fragment_excreta_info"
+        tools:layout="@layout/fragment_excreta_info" >
+        <action
+            android:id="@+id/action_excretaInfoFragment_self"
+            app:destination="@id/excretaInfoFragment" />
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/excretaRecordEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaRecordEditFragment"
+        android:label="fragment_excreta_record_edit"
+        tools:layout="@layout/fragment_excreta_record_edit" >
+        <action
+            android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
 </navigation>
