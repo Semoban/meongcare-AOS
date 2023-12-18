@@ -18,9 +18,9 @@ import javax.inject.Inject
 class WeightViewModel @Inject constructor(
     private val weightRepositoryImpl: WeightRepositoryImpl,
 ): ViewModel() {
-    private var weightPosted = MutableLiveData<Boolean>()
-    private val _weightPosted
-        get() = weightPosted
+    private var _weightPosted = MutableLiveData<Boolean>()
+    val weightPosted
+        get() = _weightPosted
 
     private var weightPatched = MutableLiveData<Boolean>()
     private val _weightPatched
