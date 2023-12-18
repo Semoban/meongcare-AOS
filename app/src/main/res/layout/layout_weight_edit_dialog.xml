@@ -39,10 +39,10 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/all_rect_gray1_r5"
                 android:hint="숫자를 입력하세요"
-                android:inputType="number"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="13dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_weighteditdialog_title" />

@@ -8,7 +8,11 @@
         android:id="@+id/homeFragment"
         android:name="com.project.meongcare.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_weightFragment"
+            app:destination="@id/weightFragment" />
+    </fragment>
     <fragment
         android:id="@+id/symptomFragment"
         android:name="com.project.meongcare.symptom.view.SymptomFragment"
@@ -79,4 +83,9 @@
             android:id="@+id/action_symptomEdit_to_symptomInfo"
             app:destination="@+id/symptomInfoFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/weightFragment"
+        android:name="com.project.meongcare.weight.view.WeightFragment"
+        android:label="fragment_weight"
+        tools:layout="@layout/fragment_weight" />
 </navigation>
