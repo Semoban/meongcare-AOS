@@ -178,6 +178,10 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 // 알림 화면으로 전환
             }
 
+            imageviewHomeProfile.setOnClickListener {
+                // 내정보 화면으로 전환
+            }
+
             imageviewHomeAddDog.setOnClickListener {
                 // 강아지 정보 등록 화면으로 전환
             }
@@ -190,6 +194,26 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
             recyclerviewHomeSymptom.run {
                 adapter = HomeSymptomAdapter(layoutInflater, context)
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+            }
+
+            constraintlayoutHomeSymptom.setOnClickListener {
+                // 이상 증상 홈 화면으로 전환
+            }
+
+            constraintlayoutHomeFeces.setOnClickListener {
+                // 대소변 홈 화면으로 전환
+            }
+
+            constraintlayoutHomeNutrition.setOnClickListener {
+                // 영양제 홈 화면으로 전환
+            }
+
+            constraintlayoutHomeWeight.setOnClickListener {
+                // 체중 홈 화면으로 전환
+            }
+
+            constraintlayoutHomeFeed.setOnClickListener {
+                // 사료 홈 화면으로 전환
             }
         }
 
