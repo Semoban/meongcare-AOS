@@ -28,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 import java.time.LocalDate
 import kotlin.concurrent.thread
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class WeightFragment : Fragment() {
@@ -84,6 +85,32 @@ class WeightFragment : Fragment() {
         weightViewModel.getMonthlyWeight("2023-12-17")
         weightViewModel.monthlyWeightGet.observe(viewLifecycleOwner) { response ->
             initMonthlyRecordChart(response)
+            showMonthlyWeightVariation(response)
+        }
+    }
+
+    private fun showMonthlyWeightVariation(response: WeightMonthResponse) {
+         val monthlyWeightChange = (response.thisMonthWeight - response.lastMonthWeight)
+        binding.run {
+            when {
+                monthlyWeightChange > 0 -> {
+                    textviewWeightMonthlyrecordtitle.text = "이번달은 지난달 대비 증가했어요!"
+                    textviewWeightMonthlyrecordcontent.text =
+                    String.format("%.2f", monthlyWeightChange)
+                    textviewWeightMonthlyRecordContentEnd.text = "kg가 증가했어요!"
+                }
+                monthlyWeightChange < 0 -> {
+                    textviewWeightMonthlyrecordtitle.text = "이번달은 지난달 대비 감소했어요!"
+                    textviewWeightMonthlyrecordcontent.text =
+                    String.format("%.2f", abs(monthlyWeightChange))
+                    textviewWeightMonthlyRecordContentEnd.text = "kg가 감소했어요!"
+                }
+                else -> {
+                    textviewWeightMonthlyrecordtitle.text = "이번달과 지난달의 체중이 동일해요!"
+                    textviewWeightMonthlyrecordcontent.text = ""
+                    textviewWeightMonthlyRecordContentEnd.text = "변화가 없어요!"
+                }
+            }
         }
     }
 
