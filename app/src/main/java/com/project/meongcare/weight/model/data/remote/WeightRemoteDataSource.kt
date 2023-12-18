@@ -17,12 +17,10 @@ class WeightRemoteDataSource
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAyMzY3NDAzfQ.5GM7dR3jwmUE1MDAOt9m-h4E0n9l5_g7ONvtGFlgNV4"
         private val weightApiService = WeightClient.weightService
 
-        suspend fun postWeight(
-            weightPostRequest: WeightPostRequest,
-        ): Int? {
+        suspend fun postWeight(weightPostRequest: WeightPostRequest): Int? {
             try {
-                val postResponse
-                    = weightApiService.postWeight(
+                val postResponse =
+                    weightApiService.postWeight(
                         accessToken,
                         weightPostRequest,
                     )
@@ -42,12 +40,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun patchWeight(
-            weightPatchRequest: WeightPatchRequest,
-        ): Int? {
+        suspend fun patchWeight(weightPatchRequest: WeightPatchRequest): Int? {
             try {
-                val patchResponse
-                    = weightApiService.patchWeight(
+                val patchResponse =
+                    weightApiService.patchWeight(
                         accessToken,
                         weightPatchRequest.dogId,
                         weightPatchRequest.kg,
@@ -69,12 +65,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun getWeeklyWeight(
-            weightGetRequest: WeightGetRequest,
-        ): WeightWeeksResponse? {
+        suspend fun getWeeklyWeight(weightGetRequest: WeightGetRequest): WeightWeeksResponse? {
             try {
-                val getWeeklyResponse
-                    = weightApiService.getWeeklyWeight(
+                val getWeeklyResponse =
+                    weightApiService.getWeeklyWeight(
                         accessToken,
                         weightGetRequest.dogId,
                         weightGetRequest.date,
@@ -95,12 +89,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun getMonthlyWeight(
-            weightGetRequest: WeightGetRequest,
-        ): WeightMonthResponse? {
+        suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest): WeightMonthResponse? {
             try {
-                val getMonthlyResponse
-                    = weightApiService.getMonthlyWeight(
+                val getMonthlyResponse =
+                    weightApiService.getMonthlyWeight(
                         accessToken,
                         weightGetRequest.dogId,
                         weightGetRequest.date,
@@ -121,12 +113,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun getDayWeight(
-            weightGetRequest: WeightGetRequest,
-        ): WeightDayResponse? {
+        suspend fun getDayWeight(weightGetRequest: WeightGetRequest): WeightDayResponse? {
             try {
-                val getDayResponse
-                    = weightApiService.getDayWeight(
+                val getDayResponse =
+                    weightApiService.getDayWeight(
                         accessToken,
                         weightGetRequest.dogId,
                         weightGetRequest.date,
