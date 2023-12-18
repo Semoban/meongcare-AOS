@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
 
 class ExcretaFragment : Fragment() {
@@ -22,8 +24,15 @@ class ExcretaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initExcretaAddButton()
     }
-    
+
+    private fun initExcretaAddButton() {
+        binding.textviewExcretaAddbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
