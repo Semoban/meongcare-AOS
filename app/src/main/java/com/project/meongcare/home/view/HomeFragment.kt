@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
@@ -19,12 +20,14 @@ import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
+class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, HorizonCalendarItemClickListener {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var mainActivity: MainActivity
 
@@ -43,7 +46,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyOTI0MTE1fQ.Kqpv9fK3LWpVcbA6zOwkhpnAJ637OzzZnQDOzywmFos"
+        currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyOTc0NzE4fQ.nkypezwWCEiomJSQz2t24cyijjtBtyBqoZsOyi2uudo"
 //        getAccessToken()
 
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { homeProfileResponse ->
@@ -58,21 +61,28 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
 
         homeViewModel.homeSelectedDate.observe(viewLifecycleOwner) { selectedDate ->
             if (selectedDate != null) {
-                Log.d("homeViewmodel-selectedDate", selectedDate)
+                Log.d("homeViewmodel-selectedDate", selectedDate.toString())
                 // 가로 달력 날짜 selectedDate로 설정
-
+                homeViewModel.updateDateList(selectedDate)
                 if (homeViewModel.homeSelectedDogId.value != null) {
                     // 몸무게 조회
-                    homeViewModel.getDogWeight(homeViewModel.homeSelectedDogId.value!!, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                    homeViewModel.getDogWeight(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                     // 사료 섭취량 조회
-                    homeViewModel.getDogFeed(homeViewModel.homeSelectedDogId.value!!, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                    homeViewModel.getDogFeed(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                     // 영양제 섭취율 조회
-                    homeViewModel.getDogSupplements(homeViewModel.homeSelectedDogId.value!!, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                    homeViewModel.getDogSupplements(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                     // 대소변 횟수 조회
                     homeViewModel.getDogExcreta(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                     // 이상증상 목록 조회
                     homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 }
+            }
+        }
+
+        homeViewModel.homeDateList.observe(viewLifecycleOwner) { dateList ->
+            if (dateList.isNotEmpty()) {
+                val adapter = fragmentHomeBinding.recyclerviewHorizonCalendar.adapter as HomeHorizonCalendarAdapter
+                adapter.updateDateList(dateList)
             }
         }
 
@@ -93,14 +103,23 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
             }
         }
 
+        homeViewModel.homeSelectedDatePos.observe(viewLifecycleOwner) { selectedDatePos ->
+            if (selectedDatePos != null) {
+                Log.d("homeSelectedDatePos", selectedDatePos.toString())
+                //homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![selectedDatePos])
+                val adapter = fragmentHomeBinding.recyclerviewHorizonCalendar.adapter as HomeHorizonCalendarAdapter
+                adapter.updateSelectedPos(selectedDatePos)
+            }
+        }
+
         homeViewModel.homeSelectedDogId.observe(viewLifecycleOwner) { selectedDogId ->
             if (selectedDogId != null) {
                 // 몸무게 조회
-                homeViewModel.getDogWeight(selectedDogId, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                homeViewModel.getDogWeight(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 사료 섭취량 조회
-                homeViewModel.getDogFeed(selectedDogId, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                homeViewModel.getDogFeed(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 영양제 섭취율 조회
-                homeViewModel.getDogSupplements(selectedDogId, homeViewModel.homeSelectedDate.value!!, currentAccessToken)
+                homeViewModel.getDogSupplements(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 대소변 횟수 조회
                 homeViewModel.getDogExcreta(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 이상증상 목록 조회
@@ -148,7 +167,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
         }
 
         homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
-            if (dogSymptom.symptoms.isEmpty()) {
+            if (dogSymptom.symptoms.isNullOrEmpty()) {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             } else {
@@ -191,6 +210,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
 
+            recyclerviewHorizonCalendar.run {
+                adapter = HomeHorizonCalendarAdapter(layoutInflater, context, this@HomeFragment)
+                layoutManager = GridLayoutManager(context, 7)
+            }
+
             recyclerviewHomeSymptom.run {
                 adapter = HomeSymptomAdapter(layoutInflater, context)
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -231,7 +255,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
     }
 
     override fun onDateSubmit(str: String) {
-        homeViewModel.setSelectedDate(str)
+        homeViewModel.setSelectedDate(stringToDate(str))
     }
 
     fun getCurrentDate(): String {
@@ -240,17 +264,33 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener {
         return currentDate.format(formatter)
     }
 
-    fun dateFormatter(date: String): String {
+    fun dateFormatter(date: Date): String {
         val currentDate = getCurrentDate()
-        if (date == currentDate) {
+        val selectedDate = dateToString(date)
+        if (selectedDate == currentDate) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             return LocalDate.now().atStartOfDay().format(formatter)
         } else {
-            return (date + "T23:59:59")
+            return (selectedDate + "T23:59:59")
         }
+    }
+
+    fun dateToString(date: Date): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        return dateFormat.format(date)
+    }
+
+    fun stringToDate(str: String): Date {
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.parse(str)
     }
 
     override fun onDogProfileClick(pos: Int) {
         homeViewModel.setSelectedDogPos(pos)
+    }
+
+    override fun onItemClick(position: Int) {
+        homeViewModel.setSelectedDatePos(position)
+        homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![position])
     }
 }

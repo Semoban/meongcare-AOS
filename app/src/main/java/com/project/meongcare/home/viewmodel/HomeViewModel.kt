@@ -16,7 +16,9 @@ import com.project.meongcare.home.model.entities.HomeGetWeightResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,9 +29,17 @@ class HomeViewModel
         val homeProfileResponse: LiveData<HomeGetProfileResponse?>
             get() = _homeProfileResponse
 
-        private val _homeSelectedDate = MutableLiveData<String>()
-        val homeSelectedDate: LiveData<String>
+        private val _homeSelectedDate = MutableLiveData<Date>()
+        val homeSelectedDate: LiveData<Date>
             get() = _homeSelectedDate
+
+        private val _homeDateList = MutableLiveData<MutableList<Date>>()
+        val homeDateList: LiveData<MutableList<Date>>
+            get() = _homeDateList
+
+        private val _homeSelectedDatePos = MutableLiveData<Int>()
+        val homeSelectedDatePos: LiveData<Int>
+            get() = _homeSelectedDatePos
 
         private val _homeDogList = MutableLiveData<MutableList<DogProfile>?>()
         val homeDogList: LiveData<MutableList<DogProfile>?>
@@ -64,9 +74,10 @@ class HomeViewModel
             get() = _homeDogSymptom
 
         init {
-            val currentDate = LocalDate.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            setSelectedDate(currentDate.format(formatter))
+            if (_homeSelectedDate.value == null) {
+                val currentDate = LocalDate.now()
+                _homeSelectedDate.value = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+            }
         }
 
         fun getUserProfile(accessToken: String) {
@@ -75,8 +86,8 @@ class HomeViewModel
             }
         }
 
-        fun setSelectedDate(str: String) {
-            _homeSelectedDate.value = str
+        fun setSelectedDate(date: Date) {
+            _homeSelectedDate.value = date
         }
 
         fun getDogList(accessToken: String) {
@@ -92,6 +103,10 @@ class HomeViewModel
         fun setSelectedDogPos(pos: Int) {
             _homeSelectedDogPos.value = pos
             Log.d("homeViewModel", "currentPos : $pos")
+        }
+
+        fun setSelectedDatePos(pos: Int) {
+            _homeSelectedDatePos.value = pos
         }
 
         fun getDogWeight(dogId: Long, date: String, accessToken: String) {
@@ -122,5 +137,22 @@ class HomeViewModel
             viewModelScope.launch {
                 _homeDogSymptom.value = homeRepository.getDogSymptom(dogId, dateTime, accessToken)
             }
+        }
+
+        fun updateDateList(baseDate: Date) {
+            val calendar = Calendar.getInstance()
+            calendar.time = baseDate
+
+            val currentDayOfweek = calendar.get(Calendar.DAY_OF_WEEK)
+
+            calendar.add(Calendar.DAY_OF_YEAR, 1 - currentDayOfweek)
+
+            val weekDates = mutableListOf<Date>()
+            repeat(7) {
+                weekDates.add(calendar.time)
+                calendar.add(Calendar.DAY_OF_YEAR, 1)
+            }
+            _homeSelectedDatePos.value = weekDates.indexOf(baseDate)
+            _homeDateList.value = ArrayList(weekDates)
         }
     }
