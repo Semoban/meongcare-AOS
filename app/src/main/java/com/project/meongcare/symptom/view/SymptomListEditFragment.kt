@@ -1,13 +1,11 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -17,14 +15,16 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomListEditBinding
 import com.project.meongcare.databinding.ItemSymptomListEditBinding
+import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 
 class SymptomListEditFragment : Fragment() {
     lateinit var fragmentSymptomListEditBinding: FragmentSymptomListEditBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
+    lateinit var toolbarViewModel: ToolbarViewModel
     lateinit var navController: NavController
-    var isCheckedAll = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +33,8 @@ class SymptomListEditFragment : Fragment() {
         fragmentSymptomListEditBinding = FragmentSymptomListEditBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         symptomViewModel = mainActivity.symptomViewModel
+        toolbarViewModel = mainActivity.toolbarViewModel
+
         navController = findNavController()
 
         // TODO : 강아지 이름 연결 필요
@@ -44,10 +46,14 @@ class SymptomListEditFragment : Fragment() {
             createCheckedStatusMap()
 
             listEditSymptomCheckedStatusMap.observe(viewLifecycleOwner) { map ->
-                if (map.values.all { it }){
-                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(R.drawable.all_check_20dp)
+                if (map.values.all { it }) {
+                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
+                        R.drawable.all_check_20dp
+                    )
                 } else {
-                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(R.drawable.all_un_check_20dp)
+                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
+                        R.drawable.all_un_check_20dp
+                    )
                 }
 
                 fragmentSymptomListEditBinding.run {
@@ -73,12 +79,29 @@ class SymptomListEditFragment : Fragment() {
                 }
             }
 
-            recyclerViewSymptomListEdit.run {
-                adapter = SymptomListEditRecyclerViewAdapter()
-                layoutManager = LinearLayoutManager(context)
+            buttonSymptomListEditComplete.setOnClickListener {
+                if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any{ it.value } == true){
+                    includeSymptomListEditDeleteDialog.run {
+                        root.visibility = View.VISIBLE
+                        buttonSymptomDeleteDialogCancel.setOnClickListener {
+                            includeSymptomListEditDeleteDialog.root.visibility = View.GONE
+                        }
+                        buttonSymptomDeleteDialogDelete.setOnClickListener {
+                            navController.navigate(R.id.action_symptomListEdit_to_symptom)
+                            deleteCheckSymptom()
+                        }
+                    }
+                }
             }
         }
         return fragmentSymptomListEditBinding.root
+    }
+
+    private fun deleteCheckSymptom() {
+        val deleteArr =
+            symptomViewModel.listEditSymptomCheckedStatusMap.value!!.filter { it.value }.keys.toIntArray()
+        SymptomRepository.deleteSymptom(deleteArr)
+        symptomViewModel.updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
     }
 
     inner class SymptomListEditRecyclerViewAdapter :
@@ -131,9 +154,9 @@ class SymptomListEditFragment : Fragment() {
                 SymptomUtils.convertDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
             holder.itemSymptomImg.setImageResource(SymptomUtils.getSymptomImg(symptomViewModel.symptomList.value!![position]))
 
-            val isSelected = symptomViewModel.listEditSymptomCheckedStatusMap.value?.get(symptomViewModel.symptomList.value!![position].symptomId)
-            if ( isSelected == true) {
-                // 이미지뷰를 변경할 조건을 설정
+            val isSelected =
+                symptomViewModel.listEditSymptomCheckedStatusMap.value?.get(symptomViewModel.symptomList.value!![position].symptomId)
+            if (isSelected == true) {
                 holder.itemSymptomCheck.setImageResource(R.drawable.all_check_20dp)
             } else {
                 holder.itemSymptomCheck.setImageResource(R.drawable.all_un_check_20dp)
