@@ -55,7 +55,7 @@ class SymptomFragment : Fragment() {
             symptomList.observe(viewLifecycleOwner) {
 
                 fragmentSymptomBinding.run {
-                    if (symptomViewModel.symptomList.value.isNullOrEmpty()){
+                    if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
                         recyclerViewSymptom.visibility = View.GONE
                         textViewSymptomEdit.visibility = View.GONE
                         layoutSymptomNoData.visibility = View.VISIBLE

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.project.meongcare.databinding.BottomsheetCalendarBinding
 import com.project.meongcare.databinding.BottomsheetSymptomAddDateBinding
 import java.time.LocalDate
 

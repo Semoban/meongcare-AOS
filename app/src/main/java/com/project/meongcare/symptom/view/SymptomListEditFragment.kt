@@ -1,6 +1,5 @@
 package com.project.meongcare.symptom.view
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,11 +48,11 @@ class SymptomListEditFragment : Fragment() {
             listEditSymptomCheckedStatusMap.observe(viewLifecycleOwner) { map ->
                 if (map.values.all { it }) {
                     fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
-                        R.drawable.all_check_20dp
+                        R.drawable.all_check_20dp,
                     )
                 } else {
                     fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
-                        R.drawable.all_un_check_20dp
+                        R.drawable.all_un_check_20dp,
                     )
                 }
 

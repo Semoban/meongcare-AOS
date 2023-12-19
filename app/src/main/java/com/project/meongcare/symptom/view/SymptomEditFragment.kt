@@ -71,7 +71,7 @@ class SymptomEditFragment : Fragment() {
             textViewSymptomEditDate.run {
                 text = convertDateToMonthDate(symptomViewModel.symptomDateText.value!!)
                 setOnClickListener {
-                    showCalendarBottomSheet(parentFragmentManager,symptomViewModel)
+                    showCalendarBottomSheet(parentFragmentManager, symptomViewModel)
                 }
             }
 

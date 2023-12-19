@@ -93,15 +93,16 @@ class SymptomUtils {
 
         fun showCalendarBottomSheet(
             parentFragmentManager: FragmentManager,
-            symptomViewModel: SymptomViewModel
+            symptomViewModel: SymptomViewModel,
         ) {
             val bottomSheetDialogFragment =
                 SymptomBottomSheetDialogFragment().apply {
-                    onDateSelectedListener = object : SymptomBottomSheetDialogFragment.OnDateSelectedListener {
-                        override fun onDateSelected(date: LocalDate) {
-                            symptomViewModel.updateSymptomDate(date)
+                    onDateSelectedListener =
+                        object : SymptomBottomSheetDialogFragment.OnDateSelectedListener {
+                            override fun onDateSelected(date: LocalDate) {
+                                symptomViewModel.updateSymptomDate(date)
+                            }
                         }
-                    }
                 }
             bottomSheetDialogFragment.show(parentFragmentManager, "SymptomBottomSheetDialogFragment")
         }

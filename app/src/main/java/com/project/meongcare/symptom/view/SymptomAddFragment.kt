@@ -88,7 +88,7 @@ class SymptomAddFragment : Fragment() {
             }
 
             buttonSymptomAddDate.setOnClickListener {
-                showCalendarBottomSheet(parentFragmentManager,symptomViewModel)
+                showCalendarBottomSheet(parentFragmentManager, symptomViewModel)
             }
 
             isNullDate()

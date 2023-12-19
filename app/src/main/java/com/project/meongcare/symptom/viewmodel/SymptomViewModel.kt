@@ -43,12 +43,13 @@ class SymptomViewModel : ViewModel() {
         val localDate = convertToDateToMiliSec(date)
         SymptomRepository.searchByDogId(dogId, localDate) { symptoms ->
             symptoms?.let {
-                val sortedSymptoms = it.sortedBy {
-                    LocalDateTime.parse(
-                        it.dateTime,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-                    )
-                }
+                val sortedSymptoms =
+                    it.sortedBy {
+                        LocalDateTime.parse(
+                            it.dateTime,
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
+                        )
+                    }
                 symptomList.value = sortedSymptoms.toMutableList()
             }
         }
