@@ -115,7 +115,7 @@ class SymptomViewModel : ViewModel() {
         listEditSymptomCheckedStatusMap.value = currentMap
     }
 
-    fun setAllCheckedStatusToFalse() {
+    fun updateAllCheckedStatus() {
         val currentMap = listEditSymptomCheckedStatusMap.value ?: mutableMapOf()
 
         if (currentMap.any { it.value }) {

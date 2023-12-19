@@ -75,7 +75,7 @@ class SymptomListEditFragment : Fragment() {
 
             imageViewSymptomListEditDeleteAllCheck.setOnClickListener {
                 symptomViewModel.run {
-                    setAllCheckedStatusToFalse()
+                    updateAllCheckedStatus()
                 }
             }
 
