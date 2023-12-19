@@ -66,6 +66,11 @@ class SymptomListEditFragment : Fragment() {
         }
 
         fragmentSymptomListEditBinding.run {
+            if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
+                layoutSymptomListEditDeleteAllCheck.visibility = View.GONE
+                layoutSymptomListEditButton.visibility = View.GONE
+            }
+            
             toolbarSymptomListEdit.run {
                 title = "${dogName}님의 이상증상"
                 setNavigationOnClickListener {
@@ -84,7 +89,7 @@ class SymptomListEditFragment : Fragment() {
             }
 
             buttonSymptomListEditComplete.setOnClickListener {
-                if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any{ it.value } == true){
+                if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any { it.value } == true) {
                     includeSymptomListEditDeleteDialog.run {
                         root.visibility = View.VISIBLE
                         buttonSymptomDeleteDialogCancel.setOnClickListener {
