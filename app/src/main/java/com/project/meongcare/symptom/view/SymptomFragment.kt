@@ -55,16 +55,10 @@ class SymptomFragment : Fragment() {
                 updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
             }
             symptomList.observe(viewLifecycleOwner) {
-                Log.d("뷰모델확인", it.toString())
-                Log.d("뷰모델확인2", it.isNullOrEmpty().toString())
                 if (it.isNullOrEmpty()) {
                     fragmentSymptomBinding.run {
                         recyclerViewSymptom.visibility = View.GONE
                         symptomViewModel.textViewNoDataVisibility.value = true
-//                        textViewSymptomNoData.visibility = View.VISIBLE
-
-                        Log.d("뷰모델확인3", textViewSymptomNoData.visibility.toString())
-                        Log.d("뷰모델확인4", recyclerViewSymptom.visibility.toString())
                     }
                 }
 
@@ -79,7 +73,6 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        // 현재 로그인한 유저의 현재 강아지 이름
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
@@ -90,7 +83,7 @@ class SymptomFragment : Fragment() {
             }
 
             textViewSymptomEdit.setOnClickListener {
-                // mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptom_to_symptomListEdit)
             }
 
         }
