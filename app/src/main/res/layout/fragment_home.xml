@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
-    tools:context=".HomeFragment">
+    android:background="@color/gray2"
+    tools:context=".home.view.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutHomeToolbar"
+        android:id="@+id/constraint_layout_home_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#FFFFFF"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewHomeLogo"
+            android:id="@+id/imageview_home_logo"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginLeft="6dp"
@@ -28,28 +28,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageViewHomeAlert"
+            android:id="@+id/imageview_home_alert"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/all_notification_18dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewHomeProfile"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_home_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageViewHomeCalendar"
+            android:id="@+id/imageview_home_calendar"
             android:layout_width="19dp"
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/all_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewHomeAlert"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_home_alert"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.476" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageViewHomeProfile"
+            android:id="@+id/imageview_home_profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="14dp"
@@ -61,55 +61,79 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutHomeDogList"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_home_toolbar">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#FFFFFF">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_home_dog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_home_dog_profile" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewHomeDog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="14dp"
-                    android:visibility="visible" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imageViewHomeAddDog"
+                    android:id="@+id/imageview_home_add_dog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/home_dog_add_45dp" />
+            </RelativeLayout>
 
-            </LinearLayout>
-        </HorizontalScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutHomeHorizonCalendar"
+        android:id="@+id/constraintlayout_home_horizon_calendar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/all_horizontal_calendar_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayoutHomeDogList">
+        app:layout_constraintTop_toBottomOf="@id/nested_scroll_view">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_horizon_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_toolbar_calendar_week" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutDogExist"
+        android:id="@+id/linearlayout_dog_exist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -117,7 +141,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeHorizonCalendar">
+        app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_horizon_calendar">
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -129,9 +153,10 @@
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutHomeSymptom"
+                    android:id="@+id/constraintlayout_home_symptom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/home_rect_r10"
                     android:padding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +164,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/textViewHomeSymptom"
+                        android:id="@+id/textview_home_symptom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="-0.02"
@@ -149,40 +174,45 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textViewHomeSymptom2"
+                        android:id="@+id/textview_home_symptom2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:letterSpacing="-0.02"
                         android:text="오늘 이상 징후가 발견되었어요"
                         android:textAppearance="@style/Typography.Body3.Regular"
                         android:textColor="@color/gray5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewHomeSymptom" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewHomeSymptom"
+                        android:id="@+id/recyclerview_home_symptom"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewHomeSymptom2" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom2"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/item_home_symptom" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutHomeFeces"
+                    android:id="@+id/constraintlayout_home_feces"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
                     android:padding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeSymptom">
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_symptom">
 
                     <TextView
-                        android:id="@+id/textViewHomeFeces"
+                        android:id="@+id/textview_home_feces"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="-0.02"
@@ -195,9 +225,10 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="7dp"
+                        android:layout_marginEnd="8dp"
                         android:background="@drawable/home_rect_r10"
                         android:backgroundTint="@color/main1"
+                        android:minWidth="100dp"
                         android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
@@ -228,7 +259,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textViewHomeFecesCount"
+                            android:id="@+id/textview_home_feces_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:letterSpacing="-0.02"
@@ -248,7 +279,7 @@
                             android:textAppearance="@style/Typography.Body3.Medium"
                             android:textColor="@color/main4"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textViewHomeFecesCount"
+                            app:layout_constraintStart_toEndOf="@+id/textview_home_feces_count"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -258,6 +289,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/home_rect_r10"
                         android:backgroundTint="@color/sub2"
+                        android:minWidth="100dp"
                         android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -288,7 +320,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textViewHomeUrineCount"
+                            android:id="@+id/textview_home_urine_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:letterSpacing="-0.02"
@@ -308,25 +340,25 @@
                             android:textAppearance="@style/Typography.Body3.Medium"
                             android:textColor="@color/sub3"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textViewHomeUrineCount"
+                            app:layout_constraintStart_toEndOf="@+id/textview_home_urine_count"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutHomeNutrition"
+                    android:id="@+id/constraintlayout_home_nutrition"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
-                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayoutHomeFeed"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintlayout_home_feed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeFeces"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_feces"
                     app:layout_constraintVertical_bias="0.0">
 
                     <TextView
-                        android:id="@+id/textViewHomeNutrition"
+                        android:id="@+id/textview_home_nutrition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -338,56 +370,58 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textViewHomeNutritionPercentage"
+                        android:id="@+id/textview_home_nutrition_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="20dp"
                         android:letterSpacing="-0.02"
                         android:text="10"
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/gray5"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintEnd_toStartOf="@+id/textView13" />
 
                     <TextView
                         android:id="@+id/textView13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:letterSpacing="-0.02"
                         android:text=" %"
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/gray5"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textViewHomeNutritionPercentage"
-                        app:layout_constraintStart_toEndOf="@+id/textViewHomeNutritionPercentage" />
+                        app:layout_constraintBottom_toBottomOf="@+id/textview_home_nutrition_percentage"
+                        app:layout_constraintEnd_toStartOf="@+id/progressbar_nutrition" />
 
                     <ProgressBar
-                        android:id="@+id/progressBar"
+                        android:id="@+id/progressbar_nutrition"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="78dp"
                         android:layout_height="33dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:progressDrawable="@drawable/home_nutrition_progressbar"
                         android:rotation="-58.819"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textViewHomeNutrition"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/textview_home_nutrition"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutHomeWeight"
-                    android:layout_width="174dp"
+                    android:id="@+id/constraintlayout_home_weight"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayoutHomeNutrition"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeFeces">
+                    app:layout_constraintStart_toEndOf="@+id/constraintlayout_home_nutrition"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_feces">
 
                     <TextView
                         android:id="@+id/textView17"
@@ -404,7 +438,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textViewHomeWeight"
+                        android:id="@+id/textview_home_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="-0.02"
@@ -426,23 +460,22 @@
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/gray5"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textViewHomeWeight"
+                        app:layout_constraintBottom_toBottomOf="@+id/textview_home_weight"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textViewHomeWeight" />
+                        app:layout_constraintTop_toTopOf="@+id/textview_home_weight" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutHomeFeed"
-                    android:layout_width="174dp"
+                    android:id="@+id/constraintlayout_home_feed"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayoutHomeNutrition"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHomeWeight">
+                    app:layout_constraintStart_toEndOf="@+id/constraintlayout_home_nutrition"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_weight">
 
                     <TextView
                         android:id="@+id/textView14"
@@ -471,7 +504,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
                     <TextView
-                        android:id="@+id/textViewHomeFeed"
+                        android:id="@+id/textview_home_feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="-0.02"
@@ -505,21 +538,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutDogNotExist"
+        android:id="@+id/linearlayout_dog_not_exist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDogExist">
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout_dog_exist">
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="88dp"
             android:layout_height="103dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="110dp"
             android:src="@drawable/home_dog_icon" />
 
         <TextView

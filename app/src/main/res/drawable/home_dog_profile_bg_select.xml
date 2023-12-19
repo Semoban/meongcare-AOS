@@ -17,7 +17,7 @@
         android:fillColor="#ffffff"/>
     <path
         android:pathData="M27.5,27.5m-22.25,0a22.25,22.25 0,1 1,44.5 0a22.25,22.25 0,1 1,-44.5 0"
-        android:strokeWidth="0.5"
+        android:strokeWidth="1"
         android:fillColor="#00000000"
         android:strokeColor="#FF7A00"/>
   </group>
