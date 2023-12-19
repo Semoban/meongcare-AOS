@@ -98,7 +98,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         currentAccessToken,
                     )
                     // 이상증상 목록 조회
-                    homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!,
+                    homeViewModel.getDogSymptom(
+                        homeViewModel.homeSelectedDogId.value!!,
                         dateFormatter(
                             homeViewModel.homeSelectedDate.value!!,
                         ),
