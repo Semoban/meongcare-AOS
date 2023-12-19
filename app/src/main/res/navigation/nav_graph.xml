@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/symptomFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.project.meongcare.HomeFragment"
+        android:name="com.project.meongcare.home.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_symptom_to_symptomInfo"
             app:destination="@+id/symptomInfoFragment" />
+        <action
+            android:id="@+id/action_symptom_to_symptomListEdit"
+            app:destination="@+id/symptomListEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/symptomAddFragment"
@@ -67,6 +70,9 @@
         android:name="com.project.meongcare.symptom.view.SymptomListEditFragment"
         android:label="fragment_symptom_list_edit"
         tools:layout="@layout/fragment_symptom_list_edit" >
+        <action
+            android:id="@+id/action_symptomListEdit_to_symptom"
+            app:destination="@+id/symptomFragment" />
     </fragment>
     <fragment
         android:id="@+id/symptomEditFragment"
