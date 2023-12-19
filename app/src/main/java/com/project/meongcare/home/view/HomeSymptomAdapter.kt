@@ -17,23 +17,26 @@ class HomeSymptomAdapter(
 ) : RecyclerView.Adapter<HomeSymptomAdapter.SymptomViewHolder>() {
     private var symptomList: List<String> = emptyList()
 
-    fun updateSymptomList(newList: List<String>){
+    fun updateSymptomList(newList: List<String>) {
         this.symptomList = newList
         notifyDataSetChanged()
     }
 
     inner class SymptomViewHolder(itemHomeSymptomBinding: ItemHomeSymptomBinding) :
-        RecyclerView.ViewHolder(itemHomeSymptomBinding.root){
-            val imageviewSymptom: ImageView
-            val textviewSymptom: TextView
+        RecyclerView.ViewHolder(itemHomeSymptomBinding.root) {
+        val imageviewSymptom: ImageView
+        val textviewSymptom: TextView
 
-            init {
-                imageviewSymptom = itemHomeSymptomBinding.imageviewSymptom
-                textviewSymptom = itemHomeSymptomBinding.textviewSymptom
-            }
+        init {
+            imageviewSymptom = itemHomeSymptomBinding.imageviewSymptom
+            textviewSymptom = itemHomeSymptomBinding.textviewSymptom
         }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymptomViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): SymptomViewHolder {
         val itemHomeSymptomBinding = ItemHomeSymptomBinding.inflate(layoutInflater)
         itemHomeSymptomBinding.root.layoutParams =
             ViewGroup.LayoutParams(
@@ -47,7 +50,10 @@ class HomeSymptomAdapter(
         return symptomList.size
     }
 
-    override fun onBindViewHolder(holder: SymptomViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SymptomViewHolder,
+        position: Int,
+    ) {
         Glide.with(context)
             .load(getSymptomImg(symptomList[position]))
             .into(holder.imageviewSymptom)

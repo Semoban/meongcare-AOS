@@ -32,18 +32,21 @@ class HomeHorizonCalendarAdapter(
 
     inner class CalendarViewHolder(itemCalendarBinding: ItemToolbarCalendarWeekBinding) :
         RecyclerView.ViewHolder(itemCalendarBinding.root) {
-            val itemDate: TextView
-            val itemDay: TextView
-            val itemLayout: LinearLayout
+        val itemDate: TextView
+        val itemDay: TextView
+        val itemLayout: LinearLayout
 
-            init {
-                itemDate = itemCalendarBinding.tvDateCalendarItem
-                itemDay = itemCalendarBinding.tvDayCalendarItem
-                itemLayout = itemCalendarBinding.clCalendarItem
-            }
+        init {
+            itemDate = itemCalendarBinding.tvDateCalendarItem
+            itemDay = itemCalendarBinding.tvDayCalendarItem
+            itemLayout = itemCalendarBinding.clCalendarItem
         }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): CalendarViewHolder {
         val itemCalendarBinding = ItemToolbarCalendarWeekBinding.inflate(layoutInflater)
         itemCalendarBinding.root.layoutParams =
             ViewGroup.LayoutParams(
@@ -57,7 +60,10 @@ class HomeHorizonCalendarAdapter(
         return dateList.size
     }
 
-    override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: CalendarViewHolder,
+        position: Int,
+    ) {
         holder.itemDate.text = getDate(dateList[position])
         holder.itemDay.text = getDay(dateList[position])
         holder.itemLayout.setOnClickListener {
@@ -66,7 +72,12 @@ class HomeHorizonCalendarAdapter(
         updateDateLayout(holder.itemDate, holder.itemDay, holder.itemLayout, position)
     }
 
-    fun updateDateLayout(date: TextView, day: TextView, layout: LinearLayout, currentPos: Int) {
+    fun updateDateLayout(
+        date: TextView,
+        day: TextView,
+        layout: LinearLayout,
+        currentPos: Int,
+    ) {
         if (selectedPos == currentPos) {
             date.setTextColor(context.getColor(R.color.main4))
             day.setTextColor(context.getColor(R.color.main4))

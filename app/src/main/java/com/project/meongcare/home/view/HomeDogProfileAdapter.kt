@@ -32,20 +32,23 @@ class HomeDogProfileAdapter(
 
     inner class DogProfileViewHolder(itemHomeDogProfileBinding: ItemHomeDogProfileBinding) :
         RecyclerView.ViewHolder(itemHomeDogProfileBinding.root) {
-            val layoutDogProfile: ConstraintLayout
-            val imageViewDogProfileBg: CircleImageView
-            val imageViewDogProfile: CircleImageView
-            val textViewDogName: TextView
+        val layoutDogProfile: ConstraintLayout
+        val imageViewDogProfileBg: CircleImageView
+        val imageViewDogProfile: CircleImageView
+        val textViewDogName: TextView
 
-            init {
-                layoutDogProfile = itemHomeDogProfileBinding.layoutDogProfile
-                imageViewDogProfileBg = itemHomeDogProfileBinding.imageviewDogProfileBg
-                imageViewDogProfile = itemHomeDogProfileBinding.imageviewDogProfile
-                textViewDogName = itemHomeDogProfileBinding.textviewDogName
-            }
+        init {
+            layoutDogProfile = itemHomeDogProfileBinding.layoutDogProfile
+            imageViewDogProfileBg = itemHomeDogProfileBinding.imageviewDogProfileBg
+            imageViewDogProfile = itemHomeDogProfileBinding.imageviewDogProfile
+            textViewDogName = itemHomeDogProfileBinding.textviewDogName
         }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogProfileViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): DogProfileViewHolder {
         val itemHomeDogProfileBinding = ItemHomeDogProfileBinding.inflate(layoutInflater)
         itemHomeDogProfileBinding.root.layoutParams =
             ViewGroup.LayoutParams(
@@ -59,7 +62,10 @@ class HomeDogProfileAdapter(
         return dogProfileList.size
     }
 
-    override fun onBindViewHolder(holder: DogProfileViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: DogProfileViewHolder,
+        position: Int,
+    ) {
         Glide.with(context)
             .load(dogProfileList[position].imageUrl)
             .placeholder(R.drawable.home_dog_default)
@@ -75,7 +81,10 @@ class HomeDogProfileAdapter(
         updateProfileBg(holder.imageViewDogProfileBg, position)
     }
 
-    fun updateProfileBg(imageView: CircleImageView, currentPos: Int) {
+    fun updateProfileBg(
+        imageView: CircleImageView,
+        currentPos: Int,
+    ) {
         if (selectedPos == currentPos) {
             imageView.setImageResource(R.drawable.home_dog_profile_bg_select)
         } else {

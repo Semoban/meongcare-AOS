@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl
     @Inject
-    constructor(private val homeRetrofitClient: HomeRetrofitClient): HomeRepository {
+    constructor(private val homeRetrofitClient: HomeRetrofitClient) : HomeRepository {
         override suspend fun getUserProfile(accessToken: String): HomeGetProfileResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getUserProfile(accessToken)
@@ -49,7 +49,7 @@ class HomeRepositoryImpl
         override suspend fun getDogWeight(
             dogId: Long,
             date: String,
-            accessToken: String
+            accessToken: String,
         ): HomeGetWeightResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getDogWeight(dogId, date, accessToken)
@@ -69,7 +69,7 @@ class HomeRepositoryImpl
         override suspend fun getDogFeed(
             dogId: Long,
             date: String,
-            accessToken: String
+            accessToken: String,
         ): HomeGetFeedResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getDogFeed(dogId, date, accessToken)
@@ -89,7 +89,7 @@ class HomeRepositoryImpl
         override suspend fun getDogSupplements(
             dogId: Long,
             date: String,
-            accessToken: String
+            accessToken: String,
         ): HomeGetSupplementsResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getDogSupplements(dogId, date, accessToken)
@@ -109,7 +109,7 @@ class HomeRepositoryImpl
         override suspend fun getDogExcreta(
             dogId: Long,
             dateTime: String,
-            accessToken: String
+            accessToken: String,
         ): HomeGetExcretaResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getDogExcreta(dogId, dateTime, accessToken)
@@ -129,7 +129,7 @@ class HomeRepositoryImpl
         override suspend fun getDogSymptom(
             dogId: Long,
             dateTime: String,
-            accessToken: String
+            accessToken: String,
         ): HomeGetSymptomResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getDogSymptom(dogId, dateTime, accessToken)

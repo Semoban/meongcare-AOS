@@ -109,31 +109,51 @@ class HomeViewModel
             _homeSelectedDatePos.value = pos
         }
 
-        fun getDogWeight(dogId: Long, date: String, accessToken: String) {
+        fun getDogWeight(
+            dogId: Long,
+            date: String,
+            accessToken: String,
+        ) {
             viewModelScope.launch {
                 _homeDogWeight.value = homeRepository.getDogWeight(dogId, date, accessToken)
             }
         }
 
-        fun getDogFeed(dogId: Long, date: String, accessToken: String) {
+        fun getDogFeed(
+            dogId: Long,
+            date: String,
+            accessToken: String,
+        ) {
             viewModelScope.launch {
                 _homeDogFeed.value = homeRepository.getDogFeed(dogId, date, accessToken)
             }
         }
 
-        fun getDogSupplements(dogId: Long, date: String, accessToken: String) {
+        fun getDogSupplements(
+            dogId: Long,
+            date: String,
+            accessToken: String,
+        ) {
             viewModelScope.launch {
                 _homeDogSupplements.value = homeRepository.getDogSupplements(dogId, date, accessToken)
             }
         }
 
-        fun getDogExcreta(dogId: Long, dateTime: String, accessToken: String) {
+        fun getDogExcreta(
+            dogId: Long,
+            dateTime: String,
+            accessToken: String,
+        ) {
             viewModelScope.launch {
                 _homeDogExcreta.value = homeRepository.getDogExcreta(dogId, dateTime, accessToken)
             }
         }
 
-        fun getDogSymptom(dogId: Long, dateTime: String, accessToken: String) {
+        fun getDogSymptom(
+            dogId: Long,
+            dateTime: String,
+            accessToken: String,
+        ) {
             viewModelScope.launch {
                 _homeDogSymptom.value = homeRepository.getDogSymptom(dogId, dateTime, accessToken)
             }

@@ -66,15 +66,44 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 homeViewModel.updateDateList(selectedDate)
                 if (homeViewModel.homeSelectedDogId.value != null) {
                     // 몸무게 조회
-                    homeViewModel.getDogWeight(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                    homeViewModel.getDogWeight(
+                        homeViewModel.homeSelectedDogId.value!!,
+                        dateToString(
+                            homeViewModel.homeSelectedDate.value!!,
+                        ),
+                        currentAccessToken,
+                    )
                     // 사료 섭취량 조회
-                    homeViewModel.getDogFeed(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                    homeViewModel.getDogFeed(
+                        homeViewModel.homeSelectedDogId.value!!,
+                        dateToString(
+                            homeViewModel.homeSelectedDate.value!!,
+                        ),
+                        currentAccessToken,
+                    )
                     // 영양제 섭취율 조회
-                    homeViewModel.getDogSupplements(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                    homeViewModel.getDogSupplements(
+                        homeViewModel.homeSelectedDogId.value!!,
+                        dateToString(
+                            homeViewModel.homeSelectedDate.value!!,
+                        ),
+                        currentAccessToken,
+                    )
                     // 대소변 횟수 조회
-                    homeViewModel.getDogExcreta(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                    homeViewModel.getDogExcreta(
+                        homeViewModel.homeSelectedDogId.value!!,
+                        dateFormatter(
+                            homeViewModel.homeSelectedDate.value!!,
+                        ),
+                        currentAccessToken,
+                    )
                     // 이상증상 목록 조회
-                    homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                    homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!,
+                        dateFormatter(
+                            homeViewModel.homeSelectedDate.value!!,
+                        ),
+                        currentAccessToken,
+                    )
                 }
             }
         }
@@ -106,7 +135,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.homeSelectedDatePos.observe(viewLifecycleOwner) { selectedDatePos ->
             if (selectedDatePos != null) {
                 Log.d("homeSelectedDatePos", selectedDatePos.toString())
-                //homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![selectedDatePos])
                 val adapter = fragmentHomeBinding.recyclerviewHorizonCalendar.adapter as HomeHorizonCalendarAdapter
                 adapter.updateSelectedPos(selectedDatePos)
             }

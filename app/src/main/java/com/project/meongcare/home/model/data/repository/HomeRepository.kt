@@ -13,13 +13,33 @@ interface HomeRepository {
 
     suspend fun getDogList(accessToken: String): MutableList<DogProfile>?
 
-    suspend fun getDogWeight(dogId: Long, date: String, accessToken: String): HomeGetWeightResponse?
+    suspend fun getDogWeight(
+        dogId: Long,
+        date: String,
+        accessToken: String,
+    ): HomeGetWeightResponse?
 
-    suspend fun getDogFeed(dogId: Long, date: String, accessToken: String): HomeGetFeedResponse?
+    suspend fun getDogFeed(
+        dogId: Long,
+        date: String,
+        accessToken: String,
+    ): HomeGetFeedResponse?
 
-    suspend fun getDogSupplements(dogId: Long, date: String, accessToken: String): HomeGetSupplementsResponse?
+    suspend fun getDogSupplements(
+        dogId: Long,
+        date: String,
+        accessToken: String,
+    ): HomeGetSupplementsResponse?
 
-    suspend fun getDogExcreta(dogId: Long, dateTime: String, accessToken: String): HomeGetExcretaResponse?
+    suspend fun getDogExcreta(
+        dogId: Long,
+        dateTime: String,
+        accessToken: String,
+    ): HomeGetExcretaResponse?
 
-    suspend fun getDogSymptom(dogId: Long, dateTime: String, accessToken: String): HomeGetSymptomResponse?
+    suspend fun getDogSymptom(
+        dogId: Long,
+        dateTime: String,
+        accessToken: String,
+    ): HomeGetSymptomResponse?
 }
