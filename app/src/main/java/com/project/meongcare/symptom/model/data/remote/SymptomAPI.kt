@@ -31,7 +31,7 @@ interface SymptomAPI {
     @DELETE("/symptom")
     fun deleteSymptom(
         @Header("AccessToken") accessToken: String,
-        @Query("symptomIds") symtomIds: Array<Int>,
+        @Query("symptomIds") symtomIds: IntArray,
     ): Call<ResponseSymptom>
 
     @PATCH("/symptom")
