@@ -35,6 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="24dp"
                 android:orientation="horizontal">
 
 
@@ -49,8 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:text="전체 삭제"
+                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:textColor="@color/gray5" />
             </LinearLayout>
 
@@ -58,7 +59,10 @@
                 android:id="@+id/recyclerView_symptomListEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp" />
+                android:layout_marginTop="11dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_symptom_list_edit" />
         </LinearLayout>
     </ScrollView>
 
@@ -68,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
