@@ -79,6 +79,10 @@ class SymptomListEditFragment : Fragment() {
                 }
             }
 
+            buttonSymptomListEditCancel.setOnClickListener {
+                navController.navigate(R.id.action_symptomListEdit_to_symptom)
+            }
+
             buttonSymptomListEditComplete.setOnClickListener {
                 if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any{ it.value } == true){
                     includeSymptomListEditDeleteDialog.run {
