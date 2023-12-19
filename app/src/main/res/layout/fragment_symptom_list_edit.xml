@@ -18,11 +18,37 @@
         app:titleCentered="false"
         app:titleTextAppearance="@style/Typography.Title2.SemiBold" />
 
+    <LinearLayout
+        android:id="@+id/layout_symptomListEdit_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_symptomListEdit">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_paws" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="이상증상 발견하지 못했어요!"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray5" />
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollView_symptomListEdit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/layout_symptomListEdit_button"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomListEdit">
 
@@ -37,7 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="24dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="visible">
 
 
                 <ImageView
@@ -61,9 +88,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="11dp"
+                android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_symptom_list_edit" />
+                tools:listitem="@layout/item_symptom_list_edit">
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
 
@@ -75,6 +105,7 @@
         android:layout_marginEnd="27dp"
         android:layout_marginBottom="32dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

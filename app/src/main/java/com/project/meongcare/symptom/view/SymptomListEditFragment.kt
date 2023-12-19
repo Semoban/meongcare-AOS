@@ -1,5 +1,6 @@
 package com.project.meongcare.symptom.view
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,10 +68,11 @@ class SymptomListEditFragment : Fragment() {
 
         fragmentSymptomListEditBinding.run {
             if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
-                layoutSymptomListEditDeleteAllCheck.visibility = View.GONE
+                scrollViewSymptomListEdit.visibility = View.GONE
                 layoutSymptomListEditButton.visibility = View.GONE
+                layoutSymptomListEditNoData.visibility = View.VISIBLE
             }
-            
+
             toolbarSymptomListEdit.run {
                 title = "${dogName}님의 이상증상"
                 setNavigationOnClickListener {
