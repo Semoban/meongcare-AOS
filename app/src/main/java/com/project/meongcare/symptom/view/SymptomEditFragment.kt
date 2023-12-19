@@ -131,6 +131,7 @@ class SymptomEditFragment : Fragment() {
             }
 
             buttonSymptomEditCancel.setOnClickListener {
+                symptomViewModel.clearLiveData()
                 navController.navigate(R.id.action_symptomEdit_to_symptomInfo)
             }
 
