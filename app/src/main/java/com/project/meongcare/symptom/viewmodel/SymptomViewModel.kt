@@ -1,6 +1,5 @@
 package com.project.meongcare.symptom.viewmodel
 
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -30,9 +29,6 @@ class SymptomViewModel : ViewModel() {
     var infoSymptomData = MutableLiveData<Symptom>()
     var isEditSymptom = false
     val listEditSymptomCheckedStatusMap = MutableLiveData<MutableMap<Int, Boolean>>()
-    var isDeleteAllChecked = false
-    var symptomDeleteAllImg = MutableLiveData<Int>()
-
 
     init {
         symptomList.value = mutableListOf()
@@ -42,13 +38,16 @@ class SymptomViewModel : ViewModel() {
 
     fun updateSymptomList(
         dogId: Int,
-        date: Date
+        date: Date,
     ) {
         val localDate = convertToDateToMiliSec(date)
         SymptomRepository.searchByDogId(dogId, localDate) { symptoms ->
             symptoms?.let {
                 val sortedSymptoms = it.sortedBy {
-                    LocalDateTime.parse(it.dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                    LocalDateTime.parse(
+                        it.dateTime,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                    )
                 }
                 symptomList.value = sortedSymptoms.toMutableList()
             }
@@ -70,10 +69,7 @@ class SymptomViewModel : ViewModel() {
     }
 
     fun convertToDateToMiliSec(date: Date): String {
-        // Date를 Instant로 변환
         val instant: Instant = date.toInstant()
-
-        // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
         val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         return localDateTime.format(formatter)
@@ -90,10 +86,10 @@ class SymptomViewModel : ViewModel() {
     }
 
     fun updateSymptomDate(date: LocalDate) {
-        if(isEditSymptom){
+        if (isEditSymptom) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
             symptomDateText.value = date.format(formatter)
-        }else{
+        } else {
             symptomDateText.value = date.toString()
         }
     }
@@ -133,11 +129,5 @@ class SymptomViewModel : ViewModel() {
             }
             listEditSymptomCheckedStatusMap.value = currentMap
         }
-    }
-
-
-    fun <K, V> Map<K, V>.allValuesEqual(): Boolean {
-        val uniqueValues = values.distinct()
-        return uniqueValues.size == 1
     }
 }
