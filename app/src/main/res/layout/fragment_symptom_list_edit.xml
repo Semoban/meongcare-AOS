@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="이상증상 발견하지 못했어요!"
+            android:text="이상증상을 발견하지 못했어요!"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textColor="@color/gray5" />
     </LinearLayout>
