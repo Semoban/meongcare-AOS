@@ -47,23 +47,23 @@ class SymptomFragment : Fragment() {
 
         navController = findNavController()
 
-
         symptomViewModel.run {
             clearLiveData()
             if (toolbarViewModel.selectedDate.value != null) {
                 updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
             }
             symptomList.observe(viewLifecycleOwner) {
-                if (it.isNullOrEmpty()) {
-                    fragmentSymptomBinding.run {
-                        recyclerViewSymptom.visibility = View.GONE
-                        symptomViewModel.textViewNoDataVisibility.value = true
-                    }
-                }
 
                 fragmentSymptomBinding.run {
-                    textViewSymptomNoData.visibility = View.GONE
-                    recyclerViewSymptom.visibility = View.VISIBLE
+                    if (symptomViewModel.symptomList.value.isNullOrEmpty()){
+                        recyclerViewSymptom.visibility = View.GONE
+                        textViewSymptomEdit.visibility = View.GONE
+                        layoutSymptomNoData.visibility = View.VISIBLE
+                    } else {
+                        recyclerViewSymptom.visibility = View.VISIBLE
+                        textViewSymptomEdit.visibility = View.VISIBLE
+                        layoutSymptomNoData.visibility = View.GONE
+                    }
                     recyclerViewSymptom.run {
                         adapter = SymptomRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
@@ -75,6 +75,8 @@ class SymptomFragment : Fragment() {
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
+            mainActivity.attachBottomNav()
+
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
