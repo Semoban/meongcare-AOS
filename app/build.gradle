@@ -135,4 +135,8 @@ dependencies {
 
     // Expandable Layout
     implementation "com.github.skydoves:expandablelayout:1.0.7"
+
+    // OkHttp3
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
 }

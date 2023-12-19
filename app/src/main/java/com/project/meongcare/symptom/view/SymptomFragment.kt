@@ -1,22 +1,25 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
-import com.project.meongcare.symptom.model.entities.Symptom
-import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.util.Calendar
 import java.util.Date
 
@@ -24,7 +27,9 @@ class SymptomFragment : Fragment() {
     lateinit var fragmentSymptomBinding: FragmentSymptomBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
+    lateinit var toolbarViewModel: ToolbarViewModel
     private val calendar = Calendar.getInstance()
+    lateinit var navController: NavController
     private var currentMonth = 0
 
     override fun onCreateView(
@@ -38,14 +43,28 @@ class SymptomFragment : Fragment() {
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
 
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
+        symptomViewModel = mainActivity.symptomViewModel
+        toolbarViewModel = mainActivity.toolbarViewModel
+
+        navController = findNavController()
+
 
         symptomViewModel.run {
+            clearLiveData()
+            if (toolbarViewModel.selectedDate.value != null) {
+                updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
+            }
             symptomList.observe(viewLifecycleOwner) {
+                Log.d("뷰모델확인", it.toString())
+                Log.d("뷰모델확인2", it.isNullOrEmpty().toString())
                 if (it.isNullOrEmpty()) {
                     fragmentSymptomBinding.run {
-                        textViewSymptomNoData.visibility = View.VISIBLE
                         recyclerViewSymptom.visibility = View.GONE
+                        symptomViewModel.textViewNoDataVisibility.value = true
+//                        textViewSymptomNoData.visibility = View.VISIBLE
+
+                        Log.d("뷰모델확인3", textViewSymptomNoData.visibility.toString())
+                        Log.d("뷰모델확인4", recyclerViewSymptom.visibility.toString())
                     }
                 }
 
@@ -67,11 +86,11 @@ class SymptomFragment : Fragment() {
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
-//                mainActivity.replaceFragment(MainActivity.SYMPTOM_ADD_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptom_to_symptomAdd)
             }
 
             textViewSymptomEdit.setOnClickListener {
-//                mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
+                // mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
             }
 
         }
@@ -91,6 +110,11 @@ class SymptomFragment : Fragment() {
                 itemSymptomName = itemSymptomBinding.textViewItemSymptom
                 itemSymptomTime = itemSymptomBinding.textViewItemSymptomTime
                 itemSymptomImg = itemSymptomBinding.imageViewItemSymptom
+
+                itemSymptomBinding.root.setOnClickListener {
+                    navController.navigate(R.id.action_symptom_to_symptomInfo)
+                    symptomViewModel.updateSymptomData(adapterPosition)
+                }
             }
         }
 
@@ -107,10 +131,6 @@ class SymptomFragment : Fragment() {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
 
-            itemSymptomBinding.root.setOnClickListener {
-//                mainActivity.replaceFragment(mainActivity.SYMPTOM_INFO_FRAGMENT, true, null)
-            }
-
             return allViewHolder
         }
 
@@ -123,20 +143,9 @@ class SymptomFragment : Fragment() {
             position: Int,
         ) {
             holder.itemSymptomName.text = symptomViewModel.symptomList.value!![position].note
-            holder.itemSymptomTime.text = symptomViewModel.symptomList.value!![position].dateTime
+            holder.itemSymptomTime.text =
+                convertDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
             holder.itemSymptomImg.setImageResource(getSymptomImg(symptomViewModel.symptomList.value!![position]))
-        }
-    }
-
-    fun getSymptomImg(symptomData: Symptom): Int {
-        return when (symptomData.symptomString) {
-            SymptomType.WEIGHT_LOSS.symptomName -> R.drawable.all_weighing_machine
-            SymptomType.HIGH_FEVER.symptomName -> R.drawable.all_temperature_measurement
-            SymptomType.COUGH.symptomName -> R.drawable.symptom_cough
-            SymptomType.DIARRHEA.symptomName -> R.drawable.symptom_diarrhea
-            SymptomType.LOSS_OF_APPETITE.symptomName -> R.drawable.symptom_loss_appetite
-            SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
-            else -> R.drawable.symptom_stethoscope
         }
     }
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project.meongcare.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_weightFragment"
+            app:destination="@id/weightFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/symptomFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomFragment"
+        android:label="fragment_symptom"
+        tools:layout="@layout/fragment_symptom" >
+        <action
+            android:id="@+id/action_symptom_to_symptomAdd"
+            app:destination="@+id/symptomAddFragment" />
+        <action
+            android:id="@+id/action_symptom_to_symptomInfo"
+            app:destination="@+id/symptomInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/symptomAddFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomAddFragment"
+        android:label="fragment_symptom_add"
+        tools:layout="@layout/fragment_symptom_add" >
+        <action
+            android:id="@+id/action_symptomAdd_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomAdd_to_symptomSelect"
+            app:destination="@+id/symptomSelectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/symptomSelectFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomSelectFragment"
+        android:label="fragment_symptom_select"
+        tools:layout="@layout/fragment_symptom_select">
+        <action
+            android:id="@+id/action_symptomSelect_to_symptomAdd"
+            app:destination="@+id/symptomAddFragment" />
+
+        <action
+            android:id="@+id/action_symptomSelect_to_symptomEdit"
+            app:destination="@+id/symptomEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/symptomInfoFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomInfoFragment"
+        android:label="fragment_symptom_info"
+        tools:layout="@layout/fragment_symptom_info">
+        <action
+            android:id="@+id/action_symptomInfo_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomInfo_to_symptomEdit"
+            app:destination="@+id/symptomEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/symptomListEditFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomListEditFragment"
+        android:label="fragment_symptom_list_edit"
+        tools:layout="@layout/fragment_symptom_list_edit" >
+    </fragment>
+    <fragment
+        android:id="@+id/symptomEditFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomEditFragment"
+        android:label="fragment_symptom_edit"
+        tools:layout="@layout/fragment_symptom_edit" >
+        <action
+            android:id="@+id/action_symptomEdit_to_symptomSelect"
+            app:destination="@+id/symptomSelectFragment" />
+        <action
+            android:id="@+id/action_symptomEdit_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomEdit_to_symptomInfo"
+            app:destination="@+id/symptomInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weightFragment"
+        android:name="com.project.meongcare.weight.view.WeightFragment"
+        android:label="fragment_weight"
+        tools:layout="@layout/fragment_weight" />
+</navigation>
