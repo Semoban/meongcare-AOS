@@ -9,6 +9,7 @@ import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.view.SymptomUtils
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -79,4 +80,14 @@ class SymptomViewModel : ViewModel() {
         symptomItemVisibility.value = View.GONE
         isEditSymptom = false
     }
+
+    fun updateSymptomDate(date: LocalDate) {
+        if(isEditSymptom){
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
+            symptomDateText.value = date.format(formatter)
+        }else{
+            symptomDateText.value = date.toString()
+        }
+    }
+
 }

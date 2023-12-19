@@ -3,9 +3,11 @@ package com.project.meongcare.symptom.view
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.FragmentManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -87,6 +89,21 @@ class SymptomUtils {
             val inputMethodManager =
                 view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun showCalendarBottomSheet(
+            parentFragmentManager: FragmentManager,
+            symptomViewModel: SymptomViewModel
+        ) {
+            val bottomSheetDialogFragment =
+                SymptomBottomSheetDialogFragment().apply {
+                    onDateSelectedListener = object : SymptomBottomSheetDialogFragment.OnDateSelectedListener {
+                        override fun onDateSelected(date: LocalDate) {
+                            symptomViewModel.updateSymptomDate(date)
+                        }
+                    }
+                }
+            bottomSheetDialogFragment.show(parentFragmentManager, "SymptomBottomSheetDialogFragment")
         }
     }
 }
