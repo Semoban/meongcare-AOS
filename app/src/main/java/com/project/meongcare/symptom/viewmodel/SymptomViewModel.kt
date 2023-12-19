@@ -10,6 +10,7 @@ import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.view.SymptomUtils
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -37,12 +38,16 @@ class SymptomViewModel : ViewModel() {
 
     fun updateSymptomList(
         dogId: Int,
-        date: Date,
+        date: Date
     ) {
         val localDate = convertToDateToMiliSec(date)
-        SymptomRepository.searchByDogId(dogId, localDate) {
-            if (it != null) {
-                symptomList.value = it as MutableList<Symptom>
+        SymptomRepository.searchByDogId(dogId, localDate) { symptoms ->
+            symptoms?.let {
+                val sortedSymptoms = it.sortedBy {
+                    LocalDateTime.parse(it.dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                }
+
+                symptomList.value = sortedSymptoms.toMutableList()
             }
         }
     }
@@ -89,5 +94,4 @@ class SymptomViewModel : ViewModel() {
             symptomDateText.value = date.toString()
         }
     }
-
 }
