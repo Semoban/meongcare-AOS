@@ -113,6 +113,7 @@
                 app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_excreta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
