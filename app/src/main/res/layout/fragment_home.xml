@@ -80,6 +80,7 @@
                 android:id="@+id/recyclerview_home_dog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:visibility="visible"
@@ -89,8 +90,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imageview_home_add_dog"
@@ -107,12 +107,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_home_horizon_calendar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/all_horizontal_calendar_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nested_scroll_view">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_horizon_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_toolbar_calendar_week" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -139,6 +156,7 @@
                     android:id="@+id/constraintlayout_home_symptom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/home_rect_r10"
                     android:padding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -159,6 +177,7 @@
                         android:id="@+id/textview_home_symptom2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:letterSpacing="-0.02"
                         android:text="오늘 이상 징후가 발견되었어요"
                         android:textAppearance="@style/Typography.Body3.Regular"
@@ -185,7 +204,7 @@
                     android:id="@+id/constraintlayout_home_feces"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
                     android:padding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -206,9 +225,10 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="7dp"
+                        android:layout_marginEnd="8dp"
                         android:background="@drawable/home_rect_r10"
                         android:backgroundTint="@color/main1"
+                        android:minWidth="100dp"
                         android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
@@ -269,6 +289,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/home_rect_r10"
                         android:backgroundTint="@color/sub2"
+                        android:minWidth="100dp"
                         android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -329,7 +350,7 @@
                     android:id="@+id/constraintlayout_home_nutrition"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintBottom_toBottomOf="@+id/constraintlayout_home_feed"
                     app:layout_constraintStart_toStartOf="parent"
@@ -396,7 +417,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/home_rect_r10"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/constraintlayout_home_nutrition"
