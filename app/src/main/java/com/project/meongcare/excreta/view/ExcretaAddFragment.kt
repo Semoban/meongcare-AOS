@@ -31,6 +31,7 @@ class ExcretaAddFragment : Fragment() {
         initToolbar()
         initCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
+        initExcretaAddCompletionButton()
     }
 
     private fun initToolbar() {
@@ -56,6 +57,12 @@ class ExcretaAddFragment : Fragment() {
             checkboxExcretaaddUrine.setOnClickListener {
                 checkboxExcretaaddFeces.isChecked = !checkboxExcretaaddUrine.isChecked
             }
+        }
+    }
+
+    private fun initExcretaAddCompletionButton() {
+        binding.buttonExcretaaddCompletion.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
