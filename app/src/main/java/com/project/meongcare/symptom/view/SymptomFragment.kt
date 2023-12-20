@@ -1,7 +1,6 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,29 +47,23 @@ class SymptomFragment : Fragment() {
 
         navController = findNavController()
 
-
         symptomViewModel.run {
             clearLiveData()
             if (toolbarViewModel.selectedDate.value != null) {
                 updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
             }
             symptomList.observe(viewLifecycleOwner) {
-                Log.d("뷰모델확인", it.toString())
-                Log.d("뷰모델확인2", it.isNullOrEmpty().toString())
-                if (it.isNullOrEmpty()) {
-                    fragmentSymptomBinding.run {
-                        recyclerViewSymptom.visibility = View.GONE
-                        symptomViewModel.textViewNoDataVisibility.value = true
-//                        textViewSymptomNoData.visibility = View.VISIBLE
-
-                        Log.d("뷰모델확인3", textViewSymptomNoData.visibility.toString())
-                        Log.d("뷰모델확인4", recyclerViewSymptom.visibility.toString())
-                    }
-                }
 
                 fragmentSymptomBinding.run {
-                    textViewSymptomNoData.visibility = View.GONE
-                    recyclerViewSymptom.visibility = View.VISIBLE
+                    if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
+                        recyclerViewSymptom.visibility = View.GONE
+                        textViewSymptomEdit.visibility = View.GONE
+                        layoutSymptomNoData.visibility = View.VISIBLE
+                    } else {
+                        recyclerViewSymptom.visibility = View.VISIBLE
+                        textViewSymptomEdit.visibility = View.VISIBLE
+                        layoutSymptomNoData.visibility = View.GONE
+                    }
                     recyclerViewSymptom.run {
                         adapter = SymptomRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
@@ -79,10 +72,11 @@ class SymptomFragment : Fragment() {
             }
         }
 
-        // 현재 로그인한 유저의 현재 강아지 이름
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
+            mainActivity.attachBottomNav()
+
             textViewSymptomDogName.text = dogName
 
             textViewSymptomAdd.setOnClickListener {
@@ -90,7 +84,7 @@ class SymptomFragment : Fragment() {
             }
 
             textViewSymptomEdit.setOnClickListener {
-                // mainActivity.replaceFragment(mainActivity.SYMPTOM_LIST_EDIT_FRAGMENT, true, null)
+                navController.navigate(R.id.action_symptom_to_symptomListEdit)
             }
 
         }

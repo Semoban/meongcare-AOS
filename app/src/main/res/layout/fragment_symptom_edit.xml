@@ -248,7 +248,7 @@
     <include
         android:id="@+id/include_bottomsheet_symptom_edit"
         style="@style/Widget.Material3.BottomSheet"
-        layout="@layout/bottomsheet_symptom_add_date_temp"
+        layout="@layout/bottomsheet_symptom_add_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:behavior_peekHeight="0dp"

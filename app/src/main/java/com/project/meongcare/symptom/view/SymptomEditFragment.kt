@@ -7,14 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.DatePicker
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomEditBinding
@@ -24,13 +22,13 @@ import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToMo
 import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToSimpleTime
 import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertSimpleDateToMonthDate
+import com.project.meongcare.symptom.view.SymptomUtils.Companion.showCalendarBottomSheet
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 
 class SymptomEditFragment : Fragment() {
     lateinit var fragmentSymptomEditBinding: FragmentSymptomEditBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var navController: NavController
 
     override fun onCreateView(
@@ -45,6 +43,7 @@ class SymptomEditFragment : Fragment() {
         navController = findNavController()
 
         symptomViewModel.run {
+            isEditSymptom = true
             symptomDateText.observe(viewLifecycleOwner) {
                 if (it != null) {
                     fragmentSymptomEditBinding.textViewSymptomEditDate.text =
@@ -68,16 +67,11 @@ class SymptomEditFragment : Fragment() {
 
         fragmentSymptomEditBinding.run {
             val symptomData = symptomViewModel.infoSymptomData.value!!
-            includeBottomsheetSymptomEdit.run {
-                initializeBottomSheet(layoutBottomsheetSymptomAddDate)
-                bottomSheetEvent(buttonBottomsheetSymptomAddDateComplete)
-                removeDatePickerHeader()
-            }
 
             textViewSymptomEditDate.run {
                 text = convertDateToMonthDate(symptomViewModel.symptomDateText.value!!)
                 setOnClickListener {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    showCalendarBottomSheet(parentFragmentManager, symptomViewModel)
                 }
             }
 
@@ -135,6 +129,7 @@ class SymptomEditFragment : Fragment() {
             }
 
             buttonSymptomEditCancel.setOnClickListener {
+                symptomViewModel.clearLiveData()
                 navController.navigate(R.id.action_symptomEdit_to_symptomInfo)
             }
 
@@ -191,16 +186,6 @@ class SymptomEditFragment : Fragment() {
         return fragmentSymptomEditBinding.root
     }
 
-    fun removeDatePickerHeader() {
-        fragmentSymptomEditBinding.includeBottomsheetSymptomEdit.run {
-            val datePickerHeaderId =
-                datepickerBottomsheetSymptomAddDate.getChildAt(0)
-                    .resources.getIdentifier("date_picker_header", "id", "android")
-            datepickerBottomsheetSymptomAddDate.findViewById<View>(datePickerHeaderId).visibility =
-                View.GONE
-        }
-    }
-
     private fun isNullInput(
         textView: TextView,
         layout: LinearLayout,
@@ -212,71 +197,6 @@ class SymptomEditFragment : Fragment() {
         }
         layout.run {
             setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
-        }
-    }
-
-    private fun initializeBottomSheet(symptomBottomSheet: LinearLayout) {
-        // BottomSheetBehavior에 layout 설정
-        bottomSheetBehavior = BottomSheetBehavior.from(symptomBottomSheet)
-
-        bottomSheetBehavior.addBottomSheetCallback(
-            object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(
-                    bottomSheet: View,
-                    newState: Int,
-                ) {
-                    // BottomSheetBehavior state에 따른 이벤트
-                    when (newState) {
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                            Log.d("MainActivity", "state: hidden")
-                        }
-
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            Log.d("MainActivity", "state: expanded")
-                        }
-
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            Log.d("MainActivity", "state: collapsed")
-                        }
-
-                        BottomSheetBehavior.STATE_DRAGGING -> {
-                            Log.d("MainActivity", "state: dragging")
-                        }
-
-                        BottomSheetBehavior.STATE_SETTLING -> {
-                            Log.d("MainActivity", "state: settling")
-                        }
-
-                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                            Log.d("MainActivity", "state: half expanded")
-                        }
-                    }
-                }
-
-                override fun onSlide(
-                    bottomSheet: View,
-                    slideOffset: Float,
-                ) {
-                }
-            },
-        )
-    }
-
-    private fun bottomSheetEvent(symptomBottomSheetCloseButton: LinearLayout) {
-        symptomBottomSheetCloseButton.setOnClickListener {
-            val datePicker =
-                mainActivity.findViewById<DatePicker>(R.id.datepicker_bottomsheet_symptom_add_date)
-
-            val year = datePicker.year
-            val month = datePicker.month + 1
-            val dayOfMonth = datePicker.dayOfMonth
-
-            val customDateTime = String.format("%04d-%02d-%02dT00:00:00", year, month, dayOfMonth)
-
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            symptomViewModel.symptomDateText.value = customDateTime.toString()
-            Log.d("뷰모델", symptomViewModel.symptomDateText.value.toString())
         }
     }
 

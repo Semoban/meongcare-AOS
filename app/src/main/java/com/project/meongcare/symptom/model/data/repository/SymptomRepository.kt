@@ -94,7 +94,7 @@ class SymptomRepository {
             )
         }
 
-        fun deleteSymptom(symptomIds: Array<Int>) {
+        fun deleteSymptom(symptomIds: IntArray) {
             val retrofit =
                 Retrofit.Builder().baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(nullOnEmptyConverterFactory)
