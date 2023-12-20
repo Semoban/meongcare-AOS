@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentExcretaAddBinding
 
 class ExcretaAddFragment : Fragment() {
     private var _binding: FragmentExcretaAddBinding? = null
     private val binding get() = _binding!!
+
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,11 +21,13 @@ class ExcretaAddFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentExcretaAddBinding.inflate(inflater, container, false)
+        mainActivity = activity as MainActivity
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.detachBottomNav()
         initToolbar()
         toggleExcretaCheckboxesOnClick()
     }
