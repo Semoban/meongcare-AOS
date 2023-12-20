@@ -29,12 +29,22 @@ class ExcretaAddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.detachBottomNav()
         initToolbar()
+        initCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
     }
 
     private fun initToolbar() {
         binding.toolbarExcretaadd.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initCalendarModalBottomSheet() {
+        val calendarModalBottomSheet = CalendarModalBottomSheet()
+        binding.textviewExcretaaddDate.setOnClickListener {
+            calendarModalBottomSheet.show(
+                mainActivity.supportFragmentManager, CalendarModalBottomSheet.TAG
+            )
         }
     }
 
