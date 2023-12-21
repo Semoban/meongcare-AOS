@@ -21,13 +21,11 @@ class ExcretaAddFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentExcretaAddBinding.inflate(inflater, container, false)
-        mainActivity = activity as MainActivity
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity.detachBottomNav()
         initToolbar()
         initPhotoAttachModalBottomSheet()
         initCalendarModalBottomSheet()
