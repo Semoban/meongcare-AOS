@@ -19,9 +19,9 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_excreta">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="46dp"
                 android:text="초코님의 기록"
                 android:textAppearance="@style/Typography.Title2.SemiBold"
                 android:textColor="@color/black"
@@ -68,64 +68,71 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/textview_excreta_name" />
 
-            <View
-                android:id="@+id/view_excreta_record"
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="96dp"
-                android:background="@drawable/all_rect_r15"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="15dp"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_name" />
+                app:layout_constraintTop_toBottomOf="@id/textview_excreta_name">
 
-            <TextView
-                android:id="@+id/textview_excreta_numberfeces"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/all_rect_r5"
-                android:backgroundTint="@color/main1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="대변 1회"
-                android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/main4"
-                app:layout_constraintStart_toStartOf="@id/view_excreta_record"
-                app:layout_constraintTop_toTopOf="@id/view_excreta_record" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textview_excreta_numberurine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/all_rect_r5"
-                android:backgroundTint="@color/sub2"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="소변 1회"
-                android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/sub3"
-                app:layout_constraintStart_toEndOf="@id/textview_excreta_numberfeces"
-                app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
+                    <TextView
+                        android:id="@+id/textview_excreta_numberfeces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/all_rect_r5"
+                        android:backgroundTint="@color/main1"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="대변 1회"
+                        android:textAppearance="@style/Typography.Body1.Medium"
+                        android:textColor="@color/main4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_excreta"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@id/view_excreta_record"
-                app:layout_constraintEnd_toEndOf="@id/view_excreta_record"
-                app:layout_constraintStart_toStartOf="@id/view_excreta_record"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberfeces"
-                tools:listitem="@layout/item_excreta_record" />
+                    <TextView
+                        android:id="@+id/textview_excreta_numberurine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/all_rect_r5"
+                        android:backgroundTint="@color/sub2"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="소변 1회"
+                        android:textAppearance="@style/Typography.Body1.Medium"
+                        android:textColor="@color/sub3"
+                        app:layout_constraintStart_toEndOf="@id/textview_excreta_numberfeces"
+                        app:layout_constraintTop_toTopOf="@id/textview_excreta_numberfeces" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_excreta_record"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_excreta_numberfeces"
+                        tools:listitem="@layout/item_excreta_record" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

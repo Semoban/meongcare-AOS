@@ -160,7 +160,7 @@
                 android:id="@+id/checkbox_excretaadd_feces"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/selector_checkbox"
                 android:button="@android:color/transparent"
                 android:checked="false"
