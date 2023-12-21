@@ -29,6 +29,7 @@ class ExcretaAddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.detachBottomNav()
         initToolbar()
+        initPhotoAttachModalBottomSheet()
         initCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
         initExcretaAddCompletionButton()
@@ -37,6 +38,15 @@ class ExcretaAddFragment : Fragment() {
     private fun initToolbar() {
         binding.toolbarExcretaadd.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initPhotoAttachModalBottomSheet() {
+        val photoAttachModalBottomSheet = PhotoAttachModalBottomSheet()
+        binding.cardviewExcretaaddImage.setOnClickListener {
+            photoAttachModalBottomSheet.show(
+                mainActivity.supportFragmentManager, PhotoAttachModalBottomSheet.TAG
+            )
         }
     }
 
