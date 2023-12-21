@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemExcretaRecordBinding
-import com.project.meongcare.excreta.model.entities.ExcretaGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaRecord
 
-class ExcretaAdapter : ListAdapter<ExcretaGetResponse, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
+class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
     inner class ExcretaViewHolder(private val binding: ItemExcretaRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ExcretaGetResponse) {
+        fun bind(item: ExcretaRecord) {
             binding.run {
                 textviewExcretarecordType.text = item.excretaType
                 textviewExcretarecordTime.text = item.time
@@ -42,17 +42,17 @@ class ExcretaAdapter : ListAdapter<ExcretaGetResponse, ExcretaAdapter.ExcretaVie
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ExcretaGetResponse>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ExcretaRecord>() {
             override fun areItemsTheSame(
-                oldItem: ExcretaGetResponse,
-                newItem: ExcretaGetResponse,
+                oldItem: ExcretaRecord,
+                newItem: ExcretaRecord,
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: ExcretaGetResponse,
-                newItem: ExcretaGetResponse,
+                oldItem: ExcretaRecord,
+                newItem: ExcretaRecord,
             ): Boolean {
                 return oldItem == newItem
             }
