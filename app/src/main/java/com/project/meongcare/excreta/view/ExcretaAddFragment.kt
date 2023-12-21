@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentExcretaAddBinding
 
@@ -49,10 +50,10 @@ class ExcretaAddFragment : Fragment() {
     }
 
     private fun initCalendarModalBottomSheet() {
-        val calendarModalBottomSheet = CalendarModalBottomSheet()
+        val calendarModalBottomSheet = CalendarBottomSheetFragment()
         binding.textviewExcretaaddDate.setOnClickListener {
             calendarModalBottomSheet.show(
-                mainActivity.supportFragmentManager, CalendarModalBottomSheet.TAG
+                requireActivity().supportFragmentManager, "CalendarModalBottomSheet"
             )
         }
     }
