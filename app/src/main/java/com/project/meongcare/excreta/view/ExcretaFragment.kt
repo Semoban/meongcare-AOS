@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
-import com.project.meongcare.excreta.model.entities.ExcretaGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaRecord
 
 class ExcretaFragment : Fragment() {
     private var _binding: FragmentExcretaBinding? = null
@@ -17,16 +17,16 @@ class ExcretaFragment : Fragment() {
 
     private lateinit var excretaAdapter: ExcretaAdapter
     private val excreta = listOf(
-        ExcretaGetResponse(1L, "오전 10:00", "대변"),
-        ExcretaGetResponse(2L, "오전 11:00", "소변"),
-        ExcretaGetResponse(3L, "오전 10:00", "대변"),
-        ExcretaGetResponse(4L, "오전 11:00", "소변"),
-        ExcretaGetResponse(5L, "오전 10:00", "대변"),
-        ExcretaGetResponse(6L, "오전 11:00", "소변"),
-        ExcretaGetResponse(7L, "오전 10:00", "대변"),
-        ExcretaGetResponse(8L, "오전 11:00", "소변"),
-        ExcretaGetResponse(9L, "오전 10:00", "대변"),
-        ExcretaGetResponse(10L, "오전 11:00", "소변"),
+        ExcretaRecord(1L, "오전 10:00", "대변"),
+        ExcretaRecord(2L, "오전 11:00", "소변"),
+        ExcretaRecord(3L, "오전 10:00", "대변"),
+        ExcretaRecord(4L, "오전 11:00", "소변"),
+        ExcretaRecord(5L, "오전 10:00", "대변"),
+        ExcretaRecord(6L, "오전 11:00", "소변"),
+        ExcretaRecord(7L, "오전 10:00", "대변"),
+        ExcretaRecord(8L, "오전 11:00", "소변"),
+        ExcretaRecord(9L, "오전 10:00", "대변"),
+        ExcretaRecord(10L, "오전 11:00", "소변"),
     )
 
     override fun onCreateView(
