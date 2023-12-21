@@ -59,7 +59,7 @@ class ExcretaFragment : Fragment() {
     }
 
     private fun initExcretaRecordRecyclerView() {
-        binding.recyclerviewExcreta.run {
+        binding.recyclerviewExcretaRecord.run {
             adapter = excretaAdapter
             layoutManager = LinearLayoutManager(context)
         }
