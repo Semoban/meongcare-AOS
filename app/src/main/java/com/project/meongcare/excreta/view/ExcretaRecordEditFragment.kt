@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentExcretaRecordEditBinding
 import com.project.meongcare.excreta.model.entities.ExcretaRecord
 
@@ -15,7 +14,6 @@ class ExcretaRecordEditFragment : Fragment() {
     private var _binding: FragmentExcretaRecordEditBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var mainActivity: MainActivity
     private lateinit var excretaAdapter: ExcretaRecordEditAdapter
     private val excreta = listOf(
         ExcretaRecord(1L, "오전 10:00", "대변"),
@@ -36,14 +34,12 @@ class ExcretaRecordEditFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentExcretaRecordEditBinding.inflate(inflater, container, false)
-        mainActivity = activity as MainActivity
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         excretaAdapter = ExcretaRecordEditAdapter()
-        mainActivity.detachBottomNav()
         initToolbar()
         initExcretaRecordEditRecyclerView()
     }
