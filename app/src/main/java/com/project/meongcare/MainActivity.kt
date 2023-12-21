@@ -187,6 +187,32 @@ class MainActivity : AppCompatActivity() {
     private fun initNavController() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        navHostFragment.navController
+        val navController = navHostFragment.navController
+
+        // 바텀 네비게이션의 표시 여부를 한 번에 관리
+        activityMainBinding.bottomNavigationViewMain.apply {
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                when (destination.id) {
+                    R.id.homeFragment,
+                    R.id.medicalRecordFragment,
+                    R.id.excretaFragment,
+                    R.id.weightFragment,
+                    R.id.feedFragment,
+                    R.id.symptomFragment,
+                    R.id.supplementFragment, -> {
+                        activityMainBinding.bottomNavLayout.apply {
+                            alpha = 0f
+                            visibility = View.VISIBLE
+                            // 바텀 네비게이션 UI가 갑자기 나타나고 사라지는 현상을 부드럽게 처리하기 위한 애니메이션
+                            animate().alpha(1f).setDuration(100).start()
+                        }
+                    }
+
+                    else -> {
+                        activityMainBinding.bottomNavLayout.visibility = View.GONE
+                    }
+                }
+            }
+        }
     }
 }
