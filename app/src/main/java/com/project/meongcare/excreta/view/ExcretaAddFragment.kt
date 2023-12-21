@@ -14,8 +14,6 @@ class ExcretaAddFragment : Fragment() {
     private var _binding: FragmentExcretaAddBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var mainActivity: MainActivity
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +42,7 @@ class ExcretaAddFragment : Fragment() {
         val photoAttachModalBottomSheet = PhotoAttachModalBottomSheet()
         binding.cardviewExcretaaddImage.setOnClickListener {
             photoAttachModalBottomSheet.show(
-                mainActivity.supportFragmentManager, PhotoAttachModalBottomSheet.TAG
+                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheet.TAG
             )
         }
     }
