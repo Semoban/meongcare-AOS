@@ -36,11 +36,12 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
-    val permissionList = arrayOf(
-        Manifest.permission.INTERNET,
-        Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    )
+    val permissionList =
+        arrayOf(
+            Manifest.permission.INTERNET,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,33 +107,29 @@ class MainActivity : AppCompatActivity() {
     // fab menu 생기는 애니메이션
     fun floatingButtonMenuOut(binding: ActivityMainBinding) {
         val animationOut1 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_dog_food_animator)
-                .apply {
-                    setTarget(binding.menuDogFoodAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_dog_food_animator).apply {
+                setTarget(binding.menuDogFoodAdd)
+            }
         val animationOut2 =
             AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_feces_animator).apply {
                 setTarget(binding.menuFecesAdd)
             }
         val animationOut3 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_symptom_animator)
-                .apply {
-                    setTarget(binding.menuSymptomAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_symptom_animator).apply {
+                setTarget(binding.menuSymptomAdd)
+            }
         val animationOut4 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_nutrition_animator)
-                .apply {
-                    setTarget(binding.menuNutritionAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_nutrition_animator).apply {
+                setTarget(binding.menuNutritionAdd)
+            }
         val animationOut5 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_weight_animator)
-                .apply {
-                    setTarget(binding.menuWeightEdit)
-                }
-        val animationOutSet = AnimatorSet().apply {
-            play(animationOut1).with(animationOut2).with(animationOut3).with(animationOut4)
-                .with(animationOut5)
-        }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_weight_animator).apply {
+                setTarget(binding.menuWeightEdit)
+            }
+        val animationOutSet =
+            AnimatorSet().apply {
+                play(animationOut1).with(animationOut2).with(animationOut3).with(animationOut4).with(animationOut5)
+            }
 
         animationOutSet.start()
     }
@@ -140,34 +137,29 @@ class MainActivity : AppCompatActivity() {
     // fab menu 없어지는 애니메이션
     fun floatingButtonMenuIn(binding: ActivityMainBinding) {
         val animationIn1 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator)
-                .apply {
-                    setTarget(binding.menuDogFoodAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+                setTarget(binding.menuDogFoodAdd)
+            }
         val animationIn2 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator)
-                .apply {
-                    setTarget(binding.menuFecesAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+                setTarget(binding.menuFecesAdd)
+            }
         val animationIn3 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator)
-                .apply {
-                    setTarget(binding.menuSymptomAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+                setTarget(binding.menuSymptomAdd)
+            }
         val animationIn4 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator)
-                .apply {
-                    setTarget(binding.menuNutritionAdd)
-                }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+                setTarget(binding.menuNutritionAdd)
+            }
         val animationIn5 =
-            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator)
-                .apply {
-                    setTarget(binding.menuWeightEdit)
-                }
-        val animationInSet = AnimatorSet().apply {
-            play(animationIn1).with(animationIn2).with(animationIn3).with(animationIn4)
-                .with(animationIn5)
-        }
+            AnimatorInflater.loadAnimator(this@MainActivity, R.animator.menu_fade_out_animator).apply {
+                setTarget(binding.menuWeightEdit)
+            }
+        val animationInSet =
+            AnimatorSet().apply {
+                play(animationIn1).with(animationIn2).with(animationIn3).with(animationIn4).with(animationIn5)
+            }
 
         animationInSet.start()
     }
