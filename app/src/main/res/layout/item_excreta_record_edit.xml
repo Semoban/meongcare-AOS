@@ -6,7 +6,7 @@
     android:layout_marginBottom="12dp">
 
     <CheckBox
-        android:id="@+id/imagebutton_excretarecordedit_checkbox"
+        android:id="@+id/checkbox_excretarecordedit"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="7dp"
@@ -22,9 +22,9 @@
         layout="@layout/item_excreta_record"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="@id/imagebutton_excretarecordedit_checkbox"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox_excretarecordedit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imagebutton_excretarecordedit_checkbox"
-        app:layout_constraintTop_toTopOf="@id/imagebutton_excretarecordedit_checkbox" />
+        app:layout_constraintStart_toEndOf="@id/checkbox_excretarecordedit"
+        app:layout_constraintTop_toTopOf="@id/checkbox_excretarecordedit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
