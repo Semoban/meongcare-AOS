@@ -37,8 +37,6 @@ class SymptomAddFragment : Fragment() {
         fragmentSymptomAddBinding = FragmentSymptomAddBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        mainActivity.detachBottomNav()
-
         val navController = findNavController()
 
         symptomViewModel = mainActivity.symptomViewModel
