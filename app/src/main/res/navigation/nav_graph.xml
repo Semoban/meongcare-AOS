@@ -31,6 +31,9 @@
         android:label="fragment_dog_add_on_boarding"
         tools:layout="@layout/fragment_dog_add_on_boarding">
         <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_completeOnBoardingFragment"
+            app:destination="@id/completeOnBoardingFragment" />
+        <action
             android:id="@+id/action_dogAddOnBoardingFragment_to_dogVarietySearchFragment"
             app:destination="@id/dogVarietySearchFragment" />
     </fragment>
@@ -40,6 +43,16 @@
         android:name="com.project.meongcare.onboarding.view.DogVarietySearchFragment"
         android:label="fragment_dog_variety_search"
         tools:layout="@layout/fragment_dog_variety_search"/>
+
+    <fragment
+        android:id="@+id/completeOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.CompleteOnBoardingFragment"
+        android:label="fragment_complete_on_boarding"
+        tools:layout="@layout/fragment_complete_on_boarding">
+        <action
+            android:id="@+id/action_completeOnBoardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
