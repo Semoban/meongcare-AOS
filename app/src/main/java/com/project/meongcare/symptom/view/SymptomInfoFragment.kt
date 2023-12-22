@@ -53,8 +53,7 @@ class SymptomInfoFragment : Fragment() {
                                 }
                                 buttonSymptomDeleteDialogDelete.setOnClickListener {
                                     navController.navigate(R.id.action_symptomInfo_to_symptom)
-                                    val symptomIdsArray = arrayOf(symptomData!!.symptomId)
-                                    Log.d("배열확인", symptomIdsArray[0].toString())
+                                    val symptomIdsArray = intArrayOf(symptomData!!.symptomId)
                                     deleteSymptomData(symptomIdsArray)
                                 }
                             }
@@ -83,7 +82,7 @@ class SymptomInfoFragment : Fragment() {
         return fragmentSymptomInfoBinding.root
     }
 
-    fun deleteSymptomData(symptomIds: Array<Int>) {
+    fun deleteSymptomData(symptomIds: IntArray) {
         SymptomRepository.deleteSymptom(symptomIds)
         symptomViewModel.updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
     }

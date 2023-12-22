@@ -15,14 +15,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_arrow_back_18dp"
-        app:titleCentered="false" />
+        app:titleCentered="false"
+        app:titleTextAppearance="@style/Typography.Title2.SemiBold" />
+
+    <LinearLayout
+        android:id="@+id/layout_symptomListEdit_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_symptomListEdit">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_paws" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="이상증상을 발견하지 못했어요!"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray5" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView_symptomListEdit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/layout_symptomListEdit_button"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_symptomListEdit">
 
         <LinearLayout
@@ -32,13 +59,16 @@
             android:padding="24dp">
 
             <LinearLayout
+                android:id="@+id/layout_symptomListEdit_delete_all_check"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
 
                 <ImageView
-                    android:id="@+id/imageView_symptomListEdit_check"
+                    android:id="@+id/imageView_symptomListEdit_delete_all_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/all_un_check_20dp" />
@@ -48,8 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:text="전체 삭제"
+                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:textColor="@color/gray5" />
             </LinearLayout>
 
@@ -57,18 +87,25 @@
                 android:id="@+id/recyclerView_symptomListEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp" />
+                android:layout_marginTop="11dp"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_symptom_list_edit">
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/layout_symptomListEdit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -110,5 +147,16 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <include
+        android:id="@+id/include_symptomListEdit_delete_dialog"
+        layout="@layout/layout_symptom_delete_dialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
