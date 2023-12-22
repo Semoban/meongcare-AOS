@@ -42,6 +42,7 @@ class ExcretaRecordEditFragment : Fragment() {
         excretaAdapter = ExcretaRecordEditAdapter()
         initToolbar()
         initExcretaRecordEditRecyclerView()
+        initCancelButton()
     }
 
     private fun initToolbar() {
@@ -56,6 +57,12 @@ class ExcretaRecordEditFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
         excretaAdapter.submitList(excreta)
+    }
+
+    private fun initCancelButton() {
+        binding.buttonExcretarecordeditCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
