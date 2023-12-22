@@ -50,7 +50,7 @@ class ExcretaAddFragment : Fragment() {
         val calendarModalBottomSheet = CalendarBottomSheetFragment()
         binding.textviewExcretaaddDate.setOnClickListener {
             calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager, "CalendarModalBottomSheet"
+                requireActivity().supportFragmentManager, calendarModalBottomSheet.tag
             )
         }
     }
