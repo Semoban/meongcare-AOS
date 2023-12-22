@@ -30,7 +30,17 @@
         android:name="com.project.meongcare.onboarding.view.DogAddOnBoardingFragment"
         android:label="fragment_dog_add_on_boarding"
         tools:layout="@layout/fragment_dog_add_on_boarding">
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dogVarietySearchFragment"
+        android:name="com.project.meongcare.onboarding.view.DogVarietySearchFragment"
+        android:label="fragment_dog_variety_search"
+        tools:layout="@layout/fragment_dog_variety_search"/>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.project.meongcare.HomeFragment"
