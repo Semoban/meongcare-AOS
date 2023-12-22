@@ -34,7 +34,6 @@ class SymptomInfoFragment : Fragment() {
         symptomViewModel = mainActivity.symptomViewModel
         toolbarViewModel = mainActivity.toolbarViewModel
 
-        mainActivity.detachBottomNav()
         navController = findNavController()
 
         fragmentSymptomInfoBinding.run {
