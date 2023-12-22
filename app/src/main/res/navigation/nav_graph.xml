@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding">
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.project.meongcare.HomeFragment"
