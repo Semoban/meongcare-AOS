@@ -164,14 +164,6 @@ class MainActivity : AppCompatActivity() {
         animationInSet.start()
     }
 
-    fun detachBottomNav() {
-        activityMainBinding.bottomNavLayout.visibility = View.GONE
-    }
-
-    fun attachBottomNav() {
-        activityMainBinding.bottomNavLayout.visibility = View.VISIBLE
-    }
-
     fun autoLogin() {
         lifecycleScope.launch {
             userPreferences.email.collect { email ->
