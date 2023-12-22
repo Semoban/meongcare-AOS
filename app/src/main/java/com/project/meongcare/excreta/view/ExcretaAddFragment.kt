@@ -38,10 +38,10 @@ class ExcretaAddFragment : Fragment() {
     }
 
     private fun initPhotoAttachModalBottomSheet() {
-        val photoAttachModalBottomSheet = PhotoAttachModalBottomSheet()
+        val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
         binding.cardviewExcretaaddImage.setOnClickListener {
             photoAttachModalBottomSheet.show(
-                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheet.TAG
+                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheetFragment.TAG
             )
         }
     }
