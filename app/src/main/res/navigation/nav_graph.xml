@@ -20,6 +20,16 @@
         android:name="com.project.meongcare.login.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_dogAddOnBoardingFragment"
+            app:destination="@id/dogAddOnBoardingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogAddOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.DogAddOnBoardingFragment"
+        android:label="fragment_dog_add_on_boarding"
+        tools:layout="@layout/fragment_dog_add_on_boarding">
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
