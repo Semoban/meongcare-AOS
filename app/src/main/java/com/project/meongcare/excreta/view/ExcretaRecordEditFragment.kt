@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentExcretaRecordEditBinding
-import com.project.meongcare.excreta.model.entities.ExcretaRecord
+import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 
+@AndroidEntryPoint
 class ExcretaRecordEditFragment : Fragment() {
     private var _binding: FragmentExcretaRecordEditBinding? = null
     private val binding get() = _binding!!
 
+    private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private lateinit var excretaAdapter: ExcretaRecordEditAdapter
 
     override fun onCreateView(
@@ -31,6 +36,7 @@ class ExcretaRecordEditFragment : Fragment() {
         initToolbar()
         initSelectAllCheckBox()
         initExcretaRecordEditRecyclerView()
+        fetchExcretaRecord()
         initCancelButton()
     }
 
@@ -57,7 +63,17 @@ class ExcretaRecordEditFragment : Fragment() {
             adapter = excretaAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        excretaAdapter.submitList(excreta)
+    }
+
+    private fun fetchExcretaRecord() {
+        val dateTime = LocalDateTime.now().toString().slice(ExcretaFragment.DATE_TIME_START..ExcretaFragment.DATE_TIME_END)
+
+        excretaRecordViewModel.apply {
+            getExcretaRecord(dateTime)
+            excretaRecordGet.observe(viewLifecycleOwner) { response ->
+                excretaAdapter.submitList(response.excretaRecords)
+            }
+        }
     }
 
     private fun initCancelButton() {
