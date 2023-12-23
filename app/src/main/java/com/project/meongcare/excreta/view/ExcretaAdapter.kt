@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -20,8 +21,10 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
                 textviewExcretarecordType.text = Excreta.valueOf(item.excretaType).type
                 textviewExcretarecordTime.text = convertToTimeFormat(item.time)
                 root.setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putLong("excretaId", item.excretaId)
                     it.findNavController()
-                        .navigate(R.id.action_excretaFragment_to_excretaInfoFragment)
+                        .navigate(R.id.action_excretaFragment_to_excretaInfoFragment, bundle)
                 }
             }
         }
