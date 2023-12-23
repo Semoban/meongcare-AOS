@@ -29,6 +29,7 @@ class ExcretaInfoFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
+        getExcretaId()
     }
 
     private fun initToolbar() {
@@ -48,6 +49,8 @@ class ExcretaInfoFragment : Fragment() {
             }
         }
     }
+
+    private fun getExcretaId() = arguments?.getLong("excretaId")
 
     override fun onDestroyView() {
         super.onDestroyView()
