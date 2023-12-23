@@ -41,6 +41,7 @@ class ExcretaRecordEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         excretaAdapter = ExcretaRecordEditAdapter()
         initToolbar()
+        initSelectAllCheckBox()
         initExcretaRecordEditRecyclerView()
         initCancelButton()
     }
@@ -48,6 +49,18 @@ class ExcretaRecordEditFragment : Fragment() {
     private fun initToolbar() {
         binding.toolbarExcretarecordedit.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initSelectAllCheckBox() {
+        binding.apply {
+            checkboxExcretarecordeditSelectall.setOnClickListener {
+                excretaAdapter.currentList.map {
+                    it.isChecked = checkboxExcretarecordeditSelectall.isChecked
+                }
+                // notifyDataSetChanged 사용하지 않는 방법으로 수정 필요
+                excretaAdapter.notifyDataSetChanged()
+            }
         }
     }
 

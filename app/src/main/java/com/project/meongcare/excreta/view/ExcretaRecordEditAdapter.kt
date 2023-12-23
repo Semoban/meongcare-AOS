@@ -16,6 +16,7 @@ class ExcretaRecordEditAdapter : ListAdapter<ExcretaRecord, ExcretaRecordEditAda
 
         fun bind(item: ExcretaRecord) {
             binding.apply {
+                checkboxExcretarecordedit.isChecked = item.isChecked
                 includeExcretarecordeditRecord.apply {
                     textviewExcretarecordType.text = item.excretaType
                     textviewExcretarecordTime.text = item.time
