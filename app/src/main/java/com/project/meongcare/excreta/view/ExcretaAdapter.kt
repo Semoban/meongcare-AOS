@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemExcretaRecordBinding
+import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaRecord
 
 class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
@@ -16,8 +17,8 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
 
         fun bind(item: ExcretaRecord) {
             binding.run {
-                textviewExcretarecordType.text = item.excretaType
-                textviewExcretarecordTime.text = item.time
+                textviewExcretarecordType.text = Excreta.valueOf(item.excretaType).type
+                textviewExcretarecordTime.text = convertToTimeFormat(item.time)
                 root.setOnClickListener {
                     it.findNavController()
                         .navigate(R.id.action_excretaFragment_to_excretaInfoFragment)
@@ -57,5 +58,23 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
                 return oldItem == newItem
             }
         }
+
+        fun convertToTimeFormat(date: String): String {
+            val hour = date.substring(HOUR_START, HOUR_END).toInt()
+            val minute = date.substring(MINUTE_START, MINUTE_END).toInt()
+
+            if (hour == NOON) return String.format("$AFTERNOON $TIME_FORM", hour, minute)
+            if (hour > NOON) return String.format("$AFTERNOON $TIME_FORM", hour - NOON, minute)
+            return String.format("$MORNING $TIME_FORM", hour, minute)
+        }
+
+        private const val HOUR_START = 11
+        private const val HOUR_END = 13
+        private const val MINUTE_START = 14
+        private const val MINUTE_END = 16
+        private const val NOON = 12
+        private const val MORNING = "오전"
+        private const val AFTERNOON = "오후"
+        private const val TIME_FORM = "%02d:%02d"
     }
 }
