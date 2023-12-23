@@ -4,6 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_onBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.project.meongcare.login.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_dogAddOnBoardingFragment"
+            app:destination="@id/dogAddOnBoardingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogAddOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.DogAddOnBoardingFragment"
+        android:label="fragment_dog_add_on_boarding"
+        tools:layout="@layout/fragment_dog_add_on_boarding">
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_completeOnBoardingFragment"
+            app:destination="@id/completeOnBoardingFragment" />
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogVarietySearchFragment"
+        android:name="com.project.meongcare.onboarding.view.DogVarietySearchFragment"
+        android:label="fragment_dog_variety_search"
+        tools:layout="@layout/fragment_dog_variety_search"/>
+
+    <fragment
+        android:id="@+id/completeOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.CompleteOnBoardingFragment"
+        android:label="fragment_complete_on_boarding"
+        tools:layout="@layout/fragment_complete_on_boarding">
+        <action
+            android:id="@+id/action_completeOnBoardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.project.meongcare.home.view.HomeFragment"
@@ -12,7 +62,11 @@
         <action
             android:id="@+id/action_homeFragment_to_weightFragment"
             app:destination="@id/weightFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomFragment"
         android:name="com.project.meongcare.symptom.view.SymptomFragment"
@@ -28,6 +82,7 @@
             android:id="@+id/action_symptom_to_symptomListEdit"
             app:destination="@+id/symptomListEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomAddFragment"
         android:name="com.project.meongcare.symptom.view.SymptomAddFragment"
@@ -40,6 +95,7 @@
             android:id="@+id/action_symptomAdd_to_symptomSelect"
             app:destination="@+id/symptomSelectFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomSelectFragment"
         android:name="com.project.meongcare.symptom.view.SymptomSelectFragment"
@@ -53,6 +109,7 @@
             android:id="@+id/action_symptomSelect_to_symptomEdit"
             app:destination="@+id/symptomEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomInfoFragment"
         android:name="com.project.meongcare.symptom.view.SymptomInfoFragment"
@@ -65,6 +122,7 @@
             android:id="@+id/action_symptomInfo_to_symptomEdit"
             app:destination="@+id/symptomEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomListEditFragment"
         android:name="com.project.meongcare.symptom.view.SymptomListEditFragment"
@@ -74,6 +132,7 @@
             android:id="@+id/action_symptomListEdit_to_symptom"
             app:destination="@+id/symptomFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/symptomEditFragment"
         android:name="com.project.meongcare.symptom.view.SymptomEditFragment"
@@ -97,6 +156,12 @@
         tools:layout="@layout/fragment_weight" />
 
     <fragment
+        android:id="@+id/noticeFragment"
+        android:name="com.project.meongcare.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice"/>
+
+    <fragment
         android:id="@+id/excretaFragment"
         android:name="com.project.meongcare.ExcretaFragment"
         android:label="fragment_excreta"
@@ -112,6 +177,7 @@
         android:name="com.project.meongcare.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
+
     <fragment
         android:id="@+id/supplementFragment"
         android:name="com.project.meongcare.supplement.view.SupplementFragment"

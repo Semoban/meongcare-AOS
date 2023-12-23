@@ -265,10 +265,4 @@ class LoginFragment : Fragment() {
         Log.d("in-getDeviceToken-method", deviceToken)
         return deviceToken
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mainActivity = activity as MainActivity
-        mainActivity.detachBottomNav()
-    }
 }
