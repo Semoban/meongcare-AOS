@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray2"
     android:orientation="vertical"
-    tools:context=".supplement.view.SupplementFragment" >
+    tools:context=".supplement.view.SupplementFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolbar_supplement"
@@ -14,13 +15,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView_supplement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/gray2"
         app:layout_constraintBottom_toTopOf="@id/layout_supplement_no_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +50,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:textAppearance="@style/Typography.Title3.SemiBold"
-                        android:text="섭취 완료율"/>
+                        android:text="섭취 완료율"
+                        android:textAppearance="@style/Typography.Title3.SemiBold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -63,15 +63,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textAppearance="@style/Typography.Title3.SemiBold"
-                            android:text="0" />
+                            android:text="0"
+                            android:textAppearance="@style/Typography.Title3.SemiBold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textAppearance="@style/Typography.Title3.SemiBold"
-                            android:text="%" />
+                            android:text="%"
+                            android:textAppearance="@style/Typography.Title3.SemiBold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -79,12 +79,12 @@
                 <ProgressBar
                     android:id="@+id/progressBar_supplement_complete"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_width="fill_parent"
                     android:layout_height="10dp"
-                    android:indeterminate="false"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:indeterminate="false"
                     android:progressDrawable="@drawable/supplement_progress_bar" />
 
                 <LinearLayout
@@ -127,15 +127,15 @@
                         android:id="@+id/textView_supplement_dog_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Typography.Title3.SemiBold"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textAppearance="@style/Typography.Title3.SemiBold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAppearance="@style/Typography.Title3.SemiBold"
-                        android:text="님의 섭취 루틴" />
+                        android:text="님의 섭취 루틴"
+                        android:textAppearance="@style/Typography.Title3.SemiBold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -146,20 +146,20 @@
                             android:id="@+id/textView_supplement_add"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:textAppearance="@style/Typography.Body1.Regular"
-                            android:textColor="@color/gray5"
                             android:gravity="center_vertical"
-                            android:text="추가"/>
+                            android:text="추가"
+                            android:textAppearance="@style/Typography.Body1.Regular"
+                            android:textColor="@color/gray5" />
 
                         <TextView
                             android:id="@+id/textView_supplement_edit"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="12dp"
-                            android:textAppearance="@style/Typography.Body1.Regular"
-                            android:textColor="@color/gray5"
                             android:gravity="center_vertical"
-                            android:text="편집"/>
+                            android:text="편집"
+                            android:textAppearance="@style/Typography.Body1.Regular"
+                            android:textColor="@color/gray5" />
                     </LinearLayout>
 
                 </LinearLayout>
