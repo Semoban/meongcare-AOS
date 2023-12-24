@@ -53,7 +53,6 @@ class SymptomFragment : Fragment() {
                 updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
             }
             symptomList.observe(viewLifecycleOwner) {
-
                 fragmentSymptomBinding.run {
                     if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
                         recyclerViewSymptom.visibility = View.GONE
@@ -75,7 +74,6 @@ class SymptomFragment : Fragment() {
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
-
 
             textViewSymptomDogName.text = dogName
 
