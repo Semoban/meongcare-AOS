@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.model.data.remote
 
+import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,4 +15,10 @@ interface ExcretaService {
         @Path("dogId") dogId: Long,
         @Query("dateTime") dateTime: String,
     ): Response<ExcretaRecordGetResponse>
+
+    @GET("excreta/detail/{excretaId}")
+    suspend fun getExcretaDetail(
+        @Header("AccessToken") accessToken: String,
+        @Path("excretaId") excretaId: Long,
+    ): Response<ExcretaDetailGetResponse>
 }
