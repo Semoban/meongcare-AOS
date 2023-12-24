@@ -75,7 +75,7 @@ class SymptomFragment : Fragment() {
         val dogName = "김대박"
 
         fragmentSymptomBinding.run {
-            mainActivity.attachBottomNav()
+
 
             textViewSymptomDogName.text = dogName
 
