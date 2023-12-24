@@ -18,11 +18,13 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
 
         fun bind(item: ExcretaRecord) {
             binding.run {
+                val excretaTime = convertToTimeFormat(item.time)
                 textviewExcretarecordType.text = Excreta.valueOf(item.excretaType).type
-                textviewExcretarecordTime.text = convertToTimeFormat(item.time)
+                textviewExcretarecordTime.text = excretaTime
                 root.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putLong("excretaId", item.excretaId)
+                    bundle.putString("excretaTime", excretaTime)
                     it.findNavController()
                         .navigate(R.id.action_excretaFragment_to_excretaInfoFragment, bundle)
                 }
