@@ -60,6 +60,12 @@ class SupplementFragment : Fragment() {
 
         navController = findNavController()
 
+        fragmentSupplementBinding.run {
+            textViewSupplementAdd.setOnClickListener {
+                navController.navigate(R.id.action_supplement_to_supplementAdd)
+            }
+        }
+
         return fragmentSupplementBinding.root
     }
 
