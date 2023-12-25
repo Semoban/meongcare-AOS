@@ -10,8 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
+import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
+import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +43,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
         initCalendarModalBottomSheet()
         observeAndUpdateExcretaDate()
         toggleExcretaCheckboxesOnClick()
-        initExcretaAddCompletionButton()
+        saveExcretaInfo()
     }
 
     private fun initToolbar() {
@@ -97,9 +100,22 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
         excretaAddViewModel.getExcretaDate(str)
     }
 
-    private fun initExcretaAddCompletionButton() {
-        binding.buttonExcretaaddCompletion.setOnClickListener {
-            findNavController().popBackStack()
+    private fun saveExcretaInfo() {
+        binding.apply {
+            buttonExcretaaddCompletion.setOnClickListener {
+                val excretaType = if (checkboxExcretaaddUrine.isChecked) Excreta.URINE.toString()
+                else Excreta.FECES.toString()
+
+                val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
+                val excretaDateTime = "${excretaDate}T${excretaTime}"
+
+                excretaAddViewModel.postExcreta(excretaType, excretaDateTime)
+                excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
+                    if (response == SUCCESS) {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
         }
     }
 
