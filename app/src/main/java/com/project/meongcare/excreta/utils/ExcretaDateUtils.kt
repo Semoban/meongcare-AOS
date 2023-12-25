@@ -11,4 +11,12 @@ object ExcretaDateUtils {
         val parsedDate = LocalDate.parse(dateTime, inputFormat)
         return outputFormat.format(parsedDate)
     }
+
+    fun dateFormat(date: String): String {
+        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+
+        val parsedDate = LocalDate.parse(date, inputFormat).plusDays(1)
+        return outputFormat.format(parsedDate)
+    }
 }
