@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
-import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.dateFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
@@ -75,7 +75,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
                 binding.textviewExcretaaddDate.run {
                     setTextColor(resources.getColor(R.color.black, null))
                     setTextAppearance(R.style.Typography_Body1_Medium)
-                    text = dateFormat(date)
+                    text = convertDateFormat(date)
                 }
             }
         }

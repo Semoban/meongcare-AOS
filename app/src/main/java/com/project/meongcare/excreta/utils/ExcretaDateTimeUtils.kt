@@ -13,7 +13,7 @@ object ExcretaDateTimeUtils {
         return outputFormat.format(parsedDate)
     }
 
-    fun dateFormat(date: String): String {
+    fun convertDateFormat(date: String): String {
         val inputFormat = plusDay(date)
         val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 
