@@ -115,13 +115,13 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/all_rect_gray2_r5"
                         android:ems="10"
-                        android:textAppearance="@style/Typography.Body1.Regular"
-                        android:hint="브랜드브 입력해주세요"
+                        android:hint="브랜드를 입력해주세요"
                         android:inputType="text"
                         android:paddingLeft="16dp"
                         android:paddingTop="11dp"
                         android:paddingBottom="11dp"
-                        android:textColorHint="@color/gray4"/>
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4" />
 
                 </LinearLayout>
 
