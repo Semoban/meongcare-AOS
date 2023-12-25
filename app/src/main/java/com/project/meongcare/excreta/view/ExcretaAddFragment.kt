@@ -5,13 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
+import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
+import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import dagger.hilt.android.AndroidEntryPoint
 
-class ExcretaAddFragment : Fragment() {
+@AndroidEntryPoint
+class ExcretaAddFragment : Fragment(), DateSubmitListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
     private val binding get() = _binding!!
+
+    private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +54,9 @@ class ExcretaAddFragment : Fragment() {
     }
 
     private fun initCalendarModalBottomSheet() {
-        val calendarModalBottomSheet = CalendarBottomSheetFragment()
         binding.textviewExcretaaddDate.setOnClickListener {
+            val calendarModalBottomSheet = CalendarBottomSheetFragment()
+            calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
             calendarModalBottomSheet.show(
                 requireActivity().supportFragmentManager, calendarModalBottomSheet.tag
             )
@@ -64,6 +72,10 @@ class ExcretaAddFragment : Fragment() {
                 checkboxExcretaaddFeces.isChecked = !checkboxExcretaaddUrine.isChecked
             }
         }
+    }
+
+    override fun onDateSubmit(str: String) {
+        excretaAddViewModel.getExcretaDate(str)
     }
 
     private fun initExcretaAddCompletionButton() {
