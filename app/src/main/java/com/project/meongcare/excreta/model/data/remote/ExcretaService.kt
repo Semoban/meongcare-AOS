@@ -2,13 +2,26 @@ package com.project.meongcare.excreta.model.data.remote
 
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ExcretaService {
+    @Multipart
+    @POST("excreta")
+    suspend fun postExcreta(
+        @Header("AccessToken") accessToken: String,
+        @Part("dto") dto: RequestBody,
+        @Part file: MultipartBody.Part,
+    ): Response<Int>
+
     @GET("excreta/{dogId}")
     suspend fun getExcretaRecords(
         @Header("AccessToken") accessToken: String,
