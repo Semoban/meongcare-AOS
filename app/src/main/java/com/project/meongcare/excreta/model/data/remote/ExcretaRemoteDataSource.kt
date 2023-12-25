@@ -5,6 +5,7 @@ import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
+import com.project.meongcare.excreta.utils.SUCCESS
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -84,9 +85,5 @@ class ExcretaRemoteDataSource
                 Log.e("ExcretaDetailGetException", e.toString())
                 return null
             }
-        }
-
-        companion object {
-            const val SUCCESS = 200
         }
     }
