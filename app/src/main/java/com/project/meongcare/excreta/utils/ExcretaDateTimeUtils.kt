@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.utils
 
+import android.widget.TimePicker
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -24,5 +25,12 @@ object ExcretaDateTimeUtils {
         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
         return LocalDate.parse(date, inputFormat).plusDays(1).toString()
+    }
+
+    fun convertTimeFormat(timePiker: TimePicker): String {
+        val hour = timePiker.hour
+        val minute = timePiker.minute
+
+        return String.format("%02d:%02d:00", hour, minute)
     }
 }
