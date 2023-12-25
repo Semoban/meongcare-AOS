@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.CalendarBottomSheetFragment
-import com.project.meongcare.databinding.FragmentExcretaAddBinding
+import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 
 class ExcretaAddFragment : Fragment() {
-    private var _binding: FragmentExcretaAddBinding? = null
+    private var _binding: FragmentExcretaAddEditBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
