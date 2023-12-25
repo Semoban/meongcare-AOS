@@ -25,7 +25,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentExcretaAddBinding.inflate(inflater, container, false)
+        _binding = FragmentExcretaAddEditBinding.inflate(inflater, container, false)
         return binding.root
     }
 
