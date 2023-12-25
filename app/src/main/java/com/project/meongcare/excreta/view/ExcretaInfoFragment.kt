@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.dateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,7 +63,7 @@ class ExcretaInfoFragment : Fragment() {
             getExcretaDetail(getExcretaId()!!)
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
                 initExcretaImage(response.excretaImageURL)
-                binding.textviewExcretainfoDate.text = dateTimeFormat(response.dateTime)
+                binding.textviewExcretainfoDate.text = convertDateTimeFormat(response.dateTime)
                 initExcretaCheckBox(response.excretaType)
                 binding.textviewExcretainfoTime.text = getExcretaTime()
             }
