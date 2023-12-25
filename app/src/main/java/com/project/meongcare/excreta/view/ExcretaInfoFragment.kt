@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.utils.ExcretaDateUtils.dateTimeFormat
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,7 +63,7 @@ class ExcretaInfoFragment : Fragment() {
             getExcretaDetail(getExcretaId()!!)
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
                 initExcretaImage(response.excretaImageURL)
-                initDate(response)
+                binding.textviewExcretainfoDate.text = dateTimeFormat(response.dateTime)
                 initExcretaCheckBox(response.excretaType)
                 binding.textviewExcretainfoTime.text = getExcretaTime()
             }
@@ -79,14 +79,6 @@ class ExcretaInfoFragment : Fragment() {
                     .into(imageviewExcretainfoPicture)
             }
         }
-    }
-
-    private fun initDate(response: ExcretaDetailGetResponse) {
-        val year = response.dateTime.substring(YEAR_START..YEAR_END)
-        val month = response.dateTime.substring(MONTH_START..MONTH_END)
-        val day = response.dateTime.substring(DAY_START..DAY_END)
-        val date = "${year}년 ${month}월 ${day}일"
-        binding.textviewExcretainfoDate.text = date
     }
 
     private fun initExcretaCheckBox(excretaType: String) {
@@ -107,14 +99,5 @@ class ExcretaInfoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val YEAR_START = 0
-        const val YEAR_END = 3
-        const val MONTH_START = 5
-        const val MONTH_END = 6
-        const val DAY_START = 8
-        const val DAY_END = 9
     }
 }
