@@ -73,6 +73,7 @@ class ExcretaInfoFragment : Fragment() {
     private fun initExcretaImage(excretaImageURL: String) {
         binding.apply {
             if (excretaImageURL.isNotEmpty()) {
+                imageviewExcretainfoFecesIllustration.visibility = View.INVISIBLE
                 Glide.with(this@ExcretaInfoFragment)
                     .load(excretaImageURL)
                     .into(imageviewExcretainfoPicture)
