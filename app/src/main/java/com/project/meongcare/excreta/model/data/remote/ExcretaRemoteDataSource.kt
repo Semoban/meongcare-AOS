@@ -2,6 +2,7 @@ package com.project.meongcare.excreta.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import org.json.JSONObject
@@ -13,6 +14,32 @@ class ExcretaRemoteDataSource
         private val accessToken =
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val excretaApiService = ExcretaClient.excretaService
+
+        suspend fun postExcreta(
+            excretaPostRequest: ExcretaPostRequest
+        ): Int? {
+            try {
+                val postResponse =
+                    excretaApiService.postExcreta(
+                        accessToken,
+                        excretaPostRequest.dto,
+                        excretaPostRequest.file,
+                    )
+
+                return if (postResponse.code() == SUCCESS) {
+                    postResponse.body()
+                    Log.d("ExcretaPostSuccess", postResponse.code().toString())
+                } else {
+                    val stringToJson = JSONObject(postResponse.errorBody()?.string()!!)
+                    Log.d("ExcretaPostFailure", postResponse.code().toString())
+                    Log.d("ExcretaPostFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("ExcretaPostException", e.toString())
+                return null
+            }
+        }
 
         suspend fun getExcretaRecord(excretaRecordGetRequest: ExcretaRecordGetRequest): ExcretaRecordGetResponse? {
             try {
