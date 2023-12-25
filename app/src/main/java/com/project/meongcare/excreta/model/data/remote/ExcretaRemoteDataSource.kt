@@ -19,7 +19,7 @@ class ExcretaRemoteDataSource
                 val getExcretaRecordResponse =
                     excretaApiService.getExcretaRecords(
                         accessToken,
-                        excretaRecordGetRequest.excretaId,
+                        excretaRecordGetRequest.dogId,
                         excretaRecordGetRequest.dateTime,
                     )
                 return if (getExcretaRecordResponse.code() == SUCCESS) {

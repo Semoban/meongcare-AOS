@@ -1,6 +1,6 @@
 package com.project.meongcare.excreta.model.entities
 
 data class ExcretaRecordGetRequest(
-    val excretaId: Long,
+    val dogId: Long,
     val dateTime: String,
 )
