@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
-import com.project.meongcare.excreta.utils.ExcretaDateUtils.dateFormat
-import com.project.meongcare.excreta.utils.ExcretaDateUtils.plusDay
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.dateFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint

@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.utils.ExcretaDateUtils.dateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.dateTimeFormat
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
