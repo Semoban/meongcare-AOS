@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
+import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +90,7 @@ class ExcretaInfoFragment : Fragment() {
 
     private fun initExcretaCheckBox(excretaType: String) {
         binding.apply {
-            if (excretaType == "FECES") {
+            if (excretaType == Excreta.FECES.toString()) {
                 checkboxExcretainfoFeces.isChecked = true
             } else {
                 checkboxExcretainfoUrine.isChecked = true
