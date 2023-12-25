@@ -26,15 +26,15 @@ class ExcretaRemoteDataSource
                         excretaPostRequest.file,
                     )
 
-                return if (postResponse.code() == SUCCESS) {
-                    postResponse.body()
-                    Log.d("ExcretaPostSuccess", postResponse.code().toString())
-                } else {
+                if (postResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(postResponse.errorBody()?.string()!!)
                     Log.d("ExcretaPostFailure", postResponse.code().toString())
                     Log.d("ExcretaPostFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("ExcretaPostSuccess", postResponse.code().toString())
+                return postResponse.code()
             } catch (e: Exception) {
                 Log.e("ExcretaPostException", e.toString())
                 return null
