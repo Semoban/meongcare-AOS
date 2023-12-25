@@ -13,10 +13,16 @@ object ExcretaDateUtils {
     }
 
     fun dateFormat(date: String): String {
-        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val inputFormat = plusDay(date)
         val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 
-        val parsedDate = LocalDate.parse(date, inputFormat).plusDays(1)
+        val parsedDate = LocalDate.parse(inputFormat)
         return outputFormat.format(parsedDate)
+    }
+
+    fun plusDay(date: String): String {
+        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        return LocalDate.parse(date, inputFormat).plusDays(1).toString()
     }
 }
