@@ -69,6 +69,9 @@ class ExcretaFragment : Fragment() {
             getExcretaRecord(dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 binding.apply {
+                    if(response.excretaRecords.size == 0) {
+                        textviewExcretaEditbutton.visibility = View.GONE
+                    }
                     textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
                     textviewExcretaNumberurine.text = formatExcretaCount(Excreta.URINE.type, response.urineCount)
                     excretaAdapter.submitList(response.excretaRecords)
