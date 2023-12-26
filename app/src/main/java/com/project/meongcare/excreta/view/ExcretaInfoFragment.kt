@@ -51,7 +51,7 @@ class ExcretaInfoFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_info_edit ->
-                        findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaAddFragment)
+                        findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment)
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
                             deleteExcreta(intArrayOf(getExcretaId()?.toInt()!!))
