@@ -161,5 +161,9 @@
         android:name="com.project.meongcare.supplement.view.SupplementFragment"
         android:label="fragment_supplement"
         tools:layout="@layout/fragment_supplement" />
-    
+    <fragment
+        android:id="@+id/excretaEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaEditFragment"
+        android:label="ExcretaEditFragment" />
+
 </navigation>
