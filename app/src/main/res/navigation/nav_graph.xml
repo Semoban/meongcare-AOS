@@ -108,7 +108,7 @@
         android:id="@+id/excretaAddFragment"
         android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
         android:label="fragment_excreta_add"
-        tools:layout="@layout/fragment_excreta_add" >
+        tools:layout="@layout/fragment_excreta_add_edit" >
         <action
             android:id="@+id/action_excretaAddFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
