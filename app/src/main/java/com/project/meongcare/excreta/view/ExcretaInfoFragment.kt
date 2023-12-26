@@ -1,7 +1,6 @@
 package com.project.meongcare.excreta.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,7 @@ class ExcretaInfoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
+    private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,8 +52,14 @@ class ExcretaInfoFragment : Fragment() {
                 when (it.itemId) {
                     R.id.menu_info_edit ->
                         findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaAddFragment)
-                    R.id.menu_info_delete ->
-                        Log.d("대소변 정보 삭제", "대소변 정보 삭제 다이얼로그")
+                    R.id.menu_info_delete -> {
+                        excretaDeleteViewModel.apply {
+                            deleteExcreta(intArrayOf(getExcretaId()?.toInt()!!))
+                            excretaDeleted.observe(viewLifecycleOwner) { response ->
+                                if (response == SUCCESS) findNavController().popBackStack()
+                            }
+                        }
+                    }
                 }
                 false
             }
