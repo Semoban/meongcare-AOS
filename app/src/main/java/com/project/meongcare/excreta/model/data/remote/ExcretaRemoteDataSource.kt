@@ -86,4 +86,27 @@ class ExcretaRemoteDataSource
                 return null
             }
         }
+
+        suspend fun deleteExcreta(excretaIds: IntArray): Int? {
+            try {
+                val deleteExcretaResponse =
+                    excretaApiService.deleteExcreta(
+                        accessToken,
+                        excretaIds
+                    )
+
+                if (deleteExcretaResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(deleteExcretaResponse.errorBody()?.string()!!)
+                    Log.d("ExcretaDeleteFailure", deleteExcretaResponse.code().toString())
+                    Log.d("ExcretaDeleteFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("ExcretaDeleteSuccess", deleteExcretaResponse.code().toString())
+                return deleteExcretaResponse.code()
+            } catch (e: Exception) {
+                Log.e("ExcretaDeleteException", e.toString())
+                return null
+            }
+        }
     }
