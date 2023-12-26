@@ -5,6 +5,7 @@ import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -34,4 +35,10 @@ interface ExcretaService {
         @Header("AccessToken") accessToken: String,
         @Path("excretaId") excretaId: Long,
     ): Response<ExcretaDetailGetResponse>
+
+    @DELETE("excreta")
+    suspend fun deleteExcreta(
+        @Header("AccessToken") accessToken: String,
+        @Query("excretaIds") excretaIds: IntArray,
+    ): Response<Int>
 }
