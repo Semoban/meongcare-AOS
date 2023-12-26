@@ -120,9 +120,6 @@
         android:label="fragment_excreta_info"
         tools:layout="@layout/fragment_excreta_info" >
         <action
-            android:id="@+id/action_excretaInfoFragment_self"
-            app:destination="@id/excretaInfoFragment" />
-        <action
             android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
         <action
