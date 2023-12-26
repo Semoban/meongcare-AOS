@@ -11,7 +11,6 @@ object ExcretaInfoUtils {
     fun convertExcretaDto(excretaInfo: ExcretaInfo): RequestBody {
         val json = Gson().toJson(excretaInfo)
         return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-
     }
 
     fun convertExcretaFile(): MultipartBody.Part {
