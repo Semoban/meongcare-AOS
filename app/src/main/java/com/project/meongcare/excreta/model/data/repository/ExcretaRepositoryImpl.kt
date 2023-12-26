@@ -18,4 +18,7 @@ class ExcretaRepositoryImpl
 
         override suspend fun getExcretaDetail(excretaId: Long) =
             excretaRemoteDataSource.getExcretaDetail(excretaId)
+
+        override suspend fun deleteExcreta(excretaIds: IntArray) =
+            excretaRemoteDataSource.deleteExcreta(excretaIds)
     }
