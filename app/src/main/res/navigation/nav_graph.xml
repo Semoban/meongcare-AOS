@@ -123,8 +123,8 @@
             android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
         <action
-            android:id="@+id/action_excretaInfoFragment_to_excretaAddFragment"
-            app:destination="@id/excretaAddFragment" />
+            android:id="@+id/action_excretaInfoFragment_to_excretaEditFragment"
+            app:destination="@id/excretaEditFragment" />
     </fragment>
 
     <fragment
