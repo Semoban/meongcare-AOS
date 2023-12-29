@@ -40,8 +40,6 @@ class SymptomListEditFragment : Fragment() {
         // TODO : 강아지 이름 연결 필요
         val dogName = "김대박"
 
-        mainActivity.detachBottomNav()
-
         symptomViewModel.run {
             createCheckedStatusMap()
 

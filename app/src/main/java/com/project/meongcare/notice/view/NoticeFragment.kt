@@ -12,7 +12,6 @@ import com.project.meongcare.databinding.FragmentNoticeBinding
 
 class NoticeFragment : Fragment() {
     lateinit var fragmentNoticeBinding: FragmentNoticeBinding
-    lateinit var mainActivity: MainActivity
 
     val tabName = arrayOf("공지사항", "이벤트")
 
@@ -46,12 +45,6 @@ class NoticeFragment : Fragment() {
 
         return fragmentNoticeBinding.root
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        mainActivity = activity as MainActivity
-//        mainActivity.detachBottomNav()
-//    }
 }
 
 class NoticeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
