@@ -41,6 +41,10 @@ class NoticeFragment : Fragment() {
                     override fun onTabReselected(tab: TabLayout.Tab?) { }
                 },
             )
+
+            imageviewNoticeBack.setOnClickListener {
+                // 이전 화면으로 back
+            }
         }
 
         return fragmentNoticeBinding.root
