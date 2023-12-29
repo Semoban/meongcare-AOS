@@ -34,6 +34,13 @@ class NoticeTabEventFragment : Fragment() {
                 val adapter = fragmentNoticeTabEventBinding.recyclerviewNoticeTabEvent.adapter as EventAdapter
                 adapter.updateEventList(noticeResponse.records)
             }
+            if (noticeResponse.records.size == 0) {
+                fragmentNoticeTabEventBinding.recyclerviewNoticeTabEvent.visibility = View.GONE
+                fragmentNoticeTabEventBinding.linearlayoutEventNoList.visibility = View.VISIBLE
+            } else {
+                fragmentNoticeTabEventBinding.recyclerviewNoticeTabEvent.visibility = View.VISIBLE
+                fragmentNoticeTabEventBinding.linearlayoutEventNoList.visibility = View.GONE
+            }
         }
 
         fragmentNoticeTabEventBinding.run {
