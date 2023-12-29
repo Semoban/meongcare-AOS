@@ -157,7 +157,7 @@
 
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.project.meongcare.NoticeFragment"
+        android:name="com.project.meongcare.notice.view.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice"/>
 
