@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.notice.view
 
 import android.os.Bundle
 import android.util.Log
@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.project.meongcare.databinding.FragmentNoticeTabNoticeBinding
+import com.project.meongcare.databinding.FragmentNoticeTabEventBinding
 import com.project.meongcare.databinding.ItemNoticeBinding
 
-class NoticeTabNoticeFragment : Fragment() {
-    lateinit var fragmentNoticeTabNoticeBinding: FragmentNoticeTabNoticeBinding
+class NoticeTabEventFragment : Fragment() {
+    lateinit var fragmentNoticeTabEventBinding: FragmentNoticeTabEventBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -24,11 +24,11 @@ class NoticeTabNoticeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        fragmentNoticeTabNoticeBinding = FragmentNoticeTabNoticeBinding.inflate(inflater)
+        fragmentNoticeTabEventBinding = FragmentNoticeTabEventBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        fragmentNoticeTabNoticeBinding.run {
-            recyclerviewNoticeTabNotice.run {
+        fragmentNoticeTabEventBinding.run {
+            recyclerviewNoticeTabEvent.run {
                 adapter = RecyclerAdapterClass()
                 layoutManager = LinearLayoutManager(mainActivity)
 
@@ -38,7 +38,7 @@ class NoticeTabNoticeFragment : Fragment() {
             }
         }
 
-        return fragmentNoticeTabNoticeBinding.root
+        return fragmentNoticeTabEventBinding.root
     }
 
     inner class RecyclerAdapterClass : RecyclerView.Adapter<RecyclerAdapterClass.ViewHolderClass>() {
@@ -90,7 +90,7 @@ class NoticeTabNoticeFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 3
+            return 2
         }
 
         override fun onBindViewHolder(
