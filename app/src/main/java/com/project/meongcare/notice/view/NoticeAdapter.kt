@@ -37,7 +37,7 @@ class NoticeAdapter(
         init {
             expandableLayout = itemNoticeBinding.noticeItem
             noticeTitle = expandableLayout.findViewById(R.id.textview_notice_title)
-            noticeContent = itemNoticeBinding.noticeItem.secondLayout.findViewById(R.id.textview_notice_content) //expandableLayout.findViewById(R.id.textview_notice_content)
+            noticeContent = itemNoticeBinding.noticeItem.secondLayout.findViewById(R.id.textview_notice_content)
             noticeNewBadge = expandableLayout.findViewById(R.id.constraintlayout_notice_badge)
             noticeToggle = expandableLayout.findViewById(R.id.imageview_notice_toggle)
             noticeTime = expandableLayout.findViewById(R.id.textview_notice_time)

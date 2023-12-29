@@ -9,5 +9,5 @@ interface NoticeApi {
     @GET("/notice")
     suspend fun getNoticeList(
         @Query("type") type: String,
-    ):Response<NoticeGetListResponse>
+    ): Response<NoticeGetListResponse>
 }

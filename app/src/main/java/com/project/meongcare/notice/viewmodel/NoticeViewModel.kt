@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.notice.model.data.repository.NoticeRepository
-import com.project.meongcare.notice.model.entities.Notice
 import com.project.meongcare.notice.model.entities.NoticeGetListResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

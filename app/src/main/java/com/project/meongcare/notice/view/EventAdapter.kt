@@ -1,6 +1,5 @@
 package com.project.meongcare.notice.view
 
-import android.content.ClipData.Item
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -34,14 +33,17 @@ class EventAdapter(
         init {
             expandableLayout = itemNoticeBinding.noticeItem
             eventTitle = expandableLayout.findViewById(R.id.textview_notice_title)
-            eventContent = itemNoticeBinding.noticeItem.secondLayout.findViewById(R.id.textview_notice_content) //expandableLayout.findViewById(R.id.textview_notice_content)
+            eventContent = itemNoticeBinding.noticeItem.secondLayout.findViewById(R.id.textview_notice_content)
             eventNewBadge = expandableLayout.findViewById(R.id.constraintlayout_notice_badge)
             eventToggle = expandableLayout.findViewById(R.id.imageview_notice_toggle)
             eventTime = expandableLayout.findViewById(R.id.textview_notice_time)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): EventViewHolder {
         val itemNoticeBinding = ItemNoticeBinding.inflate(layoutInflater)
         var isExpanded = false
 
@@ -71,7 +73,10 @@ class EventAdapter(
         return eventList.size
     }
 
-    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: EventViewHolder,
+        position: Int,
+    ) {
         holder.eventTitle.text = eventList[position].title
         holder.eventContent.text = eventList[position].text
 

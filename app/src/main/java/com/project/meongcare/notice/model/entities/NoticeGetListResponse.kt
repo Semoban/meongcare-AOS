@@ -1,7 +1,7 @@
 package com.project.meongcare.notice.model.entities
 
 data class NoticeGetListResponse(
-    val records: MutableList<Notice>
+    val records: MutableList<Notice>,
 )
 
 data class Notice(
