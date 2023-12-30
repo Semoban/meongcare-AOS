@@ -196,17 +196,17 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
-            if (dogSymptom.symptoms.isNullOrEmpty()) {
+            if (dogSymptom.symptomRecords.isNullOrEmpty()) {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             } else {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.VISIBLE
-                dogSymptom.symptoms.forEach {
-                    Log.d("homeDogSymptom", it)
+                dogSymptom.symptomRecords.forEach {
+                    Log.d("homeDogSymptom", it.symptomString)
                 }
                 val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
-                adapter.updateSymptomList(dogSymptom.symptoms)
+                adapter.updateSymptomList(dogSymptom.symptomRecords)
             }
         }
 
