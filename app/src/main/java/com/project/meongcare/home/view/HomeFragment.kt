@@ -15,6 +15,7 @@ import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
+import com.project.meongcare.home.model.data.local.DogPreferences
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
@@ -35,6 +36,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    @Inject
+    lateinit var dogPreferences: DogPreferences
 
     lateinit var currentAccessToken: String
 
@@ -162,6 +166,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
                 adapter.updateSelectedPos(selectedDogPos)
+                dogPreferences.setDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
+                dogPreferences.setDogName(homeViewModel.homeDogList.value!![selectedDogPos].name)
             }
         }
 
