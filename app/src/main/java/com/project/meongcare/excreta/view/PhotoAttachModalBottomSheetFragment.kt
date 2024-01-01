@@ -41,6 +41,9 @@ class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
             textviewSelectCamera.setOnClickListener {
                 openCamera()
             }
+            textviewSelectAlbum.setOnClickListener {
+                openAlbum()
+            }
         }
     }
 
@@ -49,6 +52,16 @@ class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 sendUri(photoURI)
                 dismiss()
+            }
+        }
+
+    private val albumLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    sendUri(uri)
+                    dismiss()
+                }
             }
         }
 
@@ -79,6 +92,11 @@ class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
         cameraLauncher.launch(intent)
     }
 
+    private fun openAlbum() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        albumLauncher.launch(intent)
+    }
 
     private fun sendUri(uri: Uri) {
         photoListener?.onUriPassed(uri)
