@@ -1,6 +1,10 @@
 package com.project.meongcare.excreta.viewmodel
 
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +27,11 @@ class ExcretaAddViewModel
         get() = _excretaDate
 
     private var _excretaPosted = MutableLiveData<Int>()
+
+    private var _excretaImage = MutableLiveData<Uri>()
+    val excretaImage
+        get() = _excretaImage
+
     val excretaPosted
         get() = _excretaPosted
 
@@ -30,9 +39,15 @@ class ExcretaAddViewModel
         _excretaDate.value = date
     }
 
+    fun getExcretaImage(uri: Uri) {
+        _excretaImage.value = uri
+    }
+
     fun postExcreta(
         excretaType: String,
         dateTime: String,
+        context: Context,
+        uri: Uri,
     ) {
         viewModelScope.launch {
             val excretaInfo = ExcretaInfo(
@@ -41,7 +56,7 @@ class ExcretaAddViewModel
                 dateTime,
             )
             val dto = convertExcretaDto(excretaInfo)
-            val file = convertExcretaFile()
+            val file = convertExcretaFile(context, uri)
 
             val excretaPostRequest = ExcretaPostRequest(
                 dto,
