@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
+import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
@@ -20,7 +23,7 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExcretaAddFragment : Fragment(), DateSubmitListener {
+class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
     private val binding get() = _binding!!
 
@@ -53,8 +56,9 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
     }
 
     private fun initPhotoAttachModalBottomSheet() {
-        val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
         binding.cardviewExcretaaddImage.setOnClickListener {
+            val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
+            photoAttachModalBottomSheet.setPhotoListener(this@ExcretaAddFragment)
             photoAttachModalBottomSheet.show(
                 requireActivity().supportFragmentManager, PhotoAttachModalBottomSheetFragment.TAG
             )
@@ -100,6 +104,16 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
         excretaAddViewModel.getExcretaDate(str)
     }
 
+    override fun onUriPassed(uri: Uri) {
+        excretaAddViewModel.getExcretaImage(uri)
+        binding.apply {
+            Glide.with(this@ExcretaAddFragment)
+                .load(uri)
+                .into(imageviewExcretaaddPicture)
+            includeExcretaAddEditAttachPhoto.root.visibility = View.INVISIBLE
+        }
+    }
+
     private fun saveExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
@@ -109,7 +123,13 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener {
                 val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
                 val excretaDateTime = "${excretaDate}T${excretaTime}"
 
-                excretaAddViewModel.postExcreta(excretaType, excretaDateTime)
+                val currentImageUri = excretaAddViewModel.excretaImage.value
+                excretaAddViewModel.postExcreta(
+                    excretaType,
+                    excretaDateTime,
+                    requireContext(),
+                    currentImageUri ?: Uri.EMPTY
+                )
                 excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
                         findNavController().popBackStack()
