@@ -24,6 +24,7 @@ class ExcretaInfoFragment : Fragment() {
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +55,7 @@ class ExcretaInfoFragment : Fragment() {
                         findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment)
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
-                            deleteExcreta(intArrayOf(getExcretaId()?.toInt()!!))
+                            deleteExcreta(intArrayOf(getExcretaId().toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
                                 if (response == SUCCESS) findNavController().popBackStack()
                             }
@@ -68,7 +69,7 @@ class ExcretaInfoFragment : Fragment() {
 
     private fun fetchExcretaInfo() {
         excretaDetailViewModel.apply {
-            getExcretaDetail(getExcretaId()!!)
+            getExcretaDetail(getExcretaId())
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
                 initExcretaImage(response.excretaImageURL)
                 binding.textviewExcretainfoDate.text = convertDateTimeFormat(response.dateTime)
@@ -99,8 +100,7 @@ class ExcretaInfoFragment : Fragment() {
         }
     }
 
-
-    private fun getExcretaId() = arguments?.getLong("excretaId")
+    private fun getExcretaId() = arguments?.getLong("excretaId")!!
 
     private fun getExcretaTime() = arguments?.getString("excretaTime")
 
