@@ -56,6 +56,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <include
+                        android:id="@+id/include_excreta_add_edit_attach_photo"
                         layout="@layout/layout_excreta_attach_photo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
