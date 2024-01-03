@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.excreta.model.data.repository.ExcretaRepositoryImpl
 import com.project.meongcare.excreta.model.entities.ExcretaInfo
-import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
+import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaDto
 import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaFile
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,7 +58,7 @@ class ExcretaAddViewModel
             val dto = convertExcretaDto(excretaInfo)
             val file = convertExcretaFile(context, uri)
 
-            val excretaPostRequest = ExcretaPostRequest(
+            val excretaPostRequest = ExcretaUploadRequest(
                 dto,
                 file,
             )

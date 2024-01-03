@@ -2,7 +2,7 @@ package com.project.meongcare.excreta.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
-import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
+import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import com.project.meongcare.excreta.utils.SUCCESS
@@ -17,7 +17,7 @@ class ExcretaRemoteDataSource
         private val excretaApiService = ExcretaClient.excretaService
 
         suspend fun postExcreta(
-            excretaPostRequest: ExcretaPostRequest
+            excretaPostRequest: ExcretaUploadRequest
         ): Int? {
             try {
                 val postResponse =
