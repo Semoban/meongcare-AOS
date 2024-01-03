@@ -7,9 +7,12 @@ import com.project.meongcare.home.model.entities.HomeGetProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -25,6 +28,13 @@ interface HomeApi {
     suspend fun getDogList(
         @Header("AccessToken") accessToken: String,
     ): Response<HomeGetDogListResponse>
+
+    // 체중 Post api
+    @POST("/weight")
+    suspend fun postDogWeight(
+        @Header("AccessToken") accessToken: String,
+        @Body requestBody: WeightPostRequest,
+    ): Response<Int>
 
     // 선택된 강아지의 체중 받아오는 api
     @GET("/weight/home/{dogId}")
