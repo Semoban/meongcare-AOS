@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.view
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
+import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils
@@ -25,7 +27,7 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExcretaEditFragment : Fragment(), DateSubmitListener {
+class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
     private val binding get() = _binding!!
 
@@ -50,6 +52,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener {
         initExcretaImage()
         initExcretaCheckBox(excretaInfo.excretaType)
         initTime()
+        initPhotoAttachModalBottomSheet()
         initCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
         observeAndUpdateExcretaDate()
@@ -136,6 +139,16 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener {
         return excretaDate
     }
 
+    private fun initPhotoAttachModalBottomSheet() {
+        binding.cardviewExcretaaddImage.setOnClickListener {
+            val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
+            photoAttachModalBottomSheet.setPhotoListener(this@ExcretaEditFragment)
+            photoAttachModalBottomSheet.show(
+                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheetFragment.TAG
+            )
+        }
+    }
+
     private fun getExcretaInfo() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arguments?.getParcelable("excretaInfo", ExcretaDetailGetResponse::class.java)!!
     } else {
@@ -144,6 +157,16 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener {
 
     override fun onDateSubmit(str: String) {
         excretaAddViewModel.getExcretaDate(str)
+    }
+
+    override fun onUriPassed(uri: Uri) {
+        excretaAddViewModel.getExcretaImage(uri)
+        binding.apply {
+            Glide.with(this@ExcretaEditFragment)
+                .load(uri)
+                .into(imageviewExcretaaddPicture)
+            includeExcretaAddEditAttachPhoto.root.visibility = View.INVISIBLE
+        }
     }
 
     override fun onDestroyView() {
