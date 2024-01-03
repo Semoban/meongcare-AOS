@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
+import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
@@ -24,6 +26,10 @@ class ExcretaInfoFragment : Fragment() {
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
+    private lateinit var excretaInfo: ExcretaDetailGetResponse
+    private var excretaImageURL = ""
+    private var excretaDateTime = ""
+    private var excretaType = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +45,8 @@ class ExcretaInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initToolbar()
         fetchExcretaInfo()
+        initToolbar()
     }
 
     private fun initToolbar() {
@@ -51,8 +57,10 @@ class ExcretaInfoFragment : Fragment() {
 
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menu_info_edit ->
-                        findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment)
+                    R.id.menu_info_edit -> {
+                        val bundle = bundleOf("excretaInfo" to excretaInfo)
+                        findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment, bundle)
+                    }
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
                             deleteExcreta(intArrayOf(getExcretaId().toInt()))
@@ -71,9 +79,17 @@ class ExcretaInfoFragment : Fragment() {
         excretaDetailViewModel.apply {
             getExcretaDetail(getExcretaId())
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
-                initExcretaImage(response.excretaImageURL)
-                binding.textviewExcretainfoDate.text = convertDateTimeFormat(response.dateTime)
-                initExcretaCheckBox(response.excretaType)
+                excretaImageURL = response.excretaImageURL
+                excretaDateTime = response.dateTime
+                excretaType = response.excretaType
+                excretaInfo = ExcretaDetailGetResponse(
+                    excretaImageURL,
+                    excretaDateTime,
+                    excretaType
+                )
+                initExcretaImage(excretaImageURL)
+                binding.textviewExcretainfoDate.text = convertDateTimeFormat(excretaDateTime)
+                initExcretaCheckBox(excretaType)
                 binding.textviewExcretainfoTime.text = getExcretaTime()
             }
         }
