@@ -19,6 +19,7 @@ import com.project.meongcare.home.model.data.local.DogPreferences
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
@@ -70,13 +71,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 homeViewModel.updateDateList(selectedDate)
                 if (homeViewModel.homeSelectedDogId.value != null) {
                     // 몸무게 조회
-                    homeViewModel.getDogWeight(
-                        homeViewModel.homeSelectedDogId.value!!,
-                        dateToString(
-                            homeViewModel.homeSelectedDate.value!!,
-                        ),
-                        currentAccessToken,
-                    )
+                    val weightRequest = WeightPostRequest(homeViewModel.homeSelectedDogId.value!!, getCurrentDate())
+                    homeViewModel.postDogWeight(currentAccessToken, weightRequest)
                     // 사료 섭취량 조회
                     homeViewModel.getDogFeed(
                         homeViewModel.homeSelectedDogId.value!!,
@@ -148,7 +144,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.homeSelectedDogId.observe(viewLifecycleOwner) { selectedDogId ->
             if (selectedDogId != null) {
                 // 몸무게 조회
-                homeViewModel.getDogWeight(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                val weightRequest = WeightPostRequest(selectedDogId, getCurrentDate())
+                homeViewModel.postDogWeight(currentAccessToken, weightRequest)
                 // 사료 섭취량 조회
                 homeViewModel.getDogFeed(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 영양제 섭취율 조회
@@ -157,6 +154,12 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 homeViewModel.getDogExcreta(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 이상증상 목록 조회
                 homeViewModel.getDogSymptom(selectedDogId, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+            }
+        }
+
+        homeViewModel.homeDogWeightPost.observe(viewLifecycleOwner) { responseCode ->
+            if (responseCode != null && responseCode == 200) {
+                homeViewModel.getDogWeight(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
             }
         }
 
@@ -217,7 +220,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         fragmentHomeBinding.run {
-//            homeViewModel.getUserProfile(currentAccessToken)
             homeViewModel.getUserProfile(currentAccessToken)
             homeViewModel.getDogList(currentAccessToken)
 
