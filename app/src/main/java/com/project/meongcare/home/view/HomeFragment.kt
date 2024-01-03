@@ -159,7 +159,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
         homeViewModel.homeDogWeightPost.observe(viewLifecycleOwner) { responseCode ->
             if (responseCode != null && responseCode == 200) {
-                homeViewModel.getDogWeight(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                homeViewModel.getDogWeight(
+                    homeViewModel.homeSelectedDogId.value!!,
+                    dateToString(homeViewModel.homeSelectedDate.value!!),
+                    currentAccessToken,
+                )
             }
         }
 

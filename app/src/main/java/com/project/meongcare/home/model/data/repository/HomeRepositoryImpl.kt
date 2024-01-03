@@ -48,28 +48,28 @@ class HomeRepositoryImpl
             }
         }
 
-    override suspend fun postDogWeight(
-        accessToken: String,
-        weightRequest: WeightPostRequest
-    ): Int? {
-        try {
-            val response = homeRetrofitClient.homeApi.postDogWeight(accessToken, weightRequest)
-            if (response.code() == 200) {
-                Log.d("HomeRepo-PostDogWeight", "통신 성공 : ${response.code()}")
-                return response.code()
-            } else {
-                Log.d("HomeRepo-PostDogWeight", "통신 실패 : ${response.code()}")
-                val stringToJson = JSONObject(response.errorBody()?.string()!!)
-                Log.d("HomeRepo-PostDogWeight", "$stringToJson")
-                return response.code()
+        override suspend fun postDogWeight(
+            accessToken: String,
+            weightRequest: WeightPostRequest
+        ): Int? {
+            try {
+                val response = homeRetrofitClient.homeApi.postDogWeight(accessToken, weightRequest)
+                if (response.code() == 200) {
+                    Log.d("HomeRepo-PostDogWeight", "통신 성공 : ${response.code()}")
+                    return response.code()
+                } else {
+                    Log.d("HomeRepo-PostDogWeight", "통신 실패 : ${response.code()}")
+                    val stringToJson = JSONObject(response.errorBody()?.string()!!)
+                    Log.d("HomeRepo-PostDogWeight", "$stringToJson")
+                    return response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
         }
-    }
-
-    override suspend fun getDogWeight(
+    
+        override suspend fun getDogWeight(
             dogId: Long,
             date: String,
             accessToken: String,
