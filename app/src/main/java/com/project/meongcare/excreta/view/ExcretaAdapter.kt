@@ -11,6 +11,10 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemExcretaRecordBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaRecord
+import com.project.meongcare.excreta.utils.HOUR_END
+import com.project.meongcare.excreta.utils.HOUR_START
+import com.project.meongcare.excreta.utils.MINUTE_END
+import com.project.meongcare.excreta.utils.MINUTE_START
 
 class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
     inner class ExcretaViewHolder(private val binding: ItemExcretaRecordBinding) :
@@ -73,10 +77,6 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
             return String.format("$MORNING $TIME_FORM", hour, minute)
         }
 
-        private const val HOUR_START = 11
-        private const val HOUR_END = 13
-        private const val MINUTE_START = 14
-        private const val MINUTE_END = 16
         private const val NOON = 12
         private const val MORNING = "오전"
         private const val AFTERNOON = "오후"
