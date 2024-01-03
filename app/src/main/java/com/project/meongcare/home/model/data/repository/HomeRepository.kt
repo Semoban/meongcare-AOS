@@ -7,11 +7,17 @@ import com.project.meongcare.home.model.entities.HomeGetProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 
 interface HomeRepository {
     suspend fun getUserProfile(accessToken: String): HomeGetProfileResponse?
 
     suspend fun getDogList(accessToken: String): MutableList<DogProfile>?
+
+    suspend fun postDogWeight(
+        accessToken: String,
+        weightRequest: WeightPostRequest,
+    ): Int?
 
     suspend fun getDogWeight(
         dogId: Long,
