@@ -50,7 +50,7 @@ class HomeRepositoryImpl
 
         override suspend fun postDogWeight(
             accessToken: String,
-            weightRequest: WeightPostRequest
+            weightRequest: WeightPostRequest,
         ): Int? {
             try {
                 val response = homeRetrofitClient.homeApi.postDogWeight(accessToken, weightRequest)
@@ -68,7 +68,7 @@ class HomeRepositoryImpl
                 return null
             }
         }
-    
+
         override suspend fun getDogWeight(
             dogId: Long,
             date: String,
