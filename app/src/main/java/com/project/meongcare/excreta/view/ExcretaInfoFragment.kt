@@ -102,6 +102,12 @@ class ExcretaInfoFragment : Fragment() {
                 Glide.with(this@ExcretaInfoFragment)
                     .load(excretaImageURL)
                     .into(imageviewExcretainfoPicture)
+                cardviewExcretaInfoVisibilityOff.setOnClickListener { cardView ->
+                    cardView.visibility = View.GONE
+                }
+                imageviewExcretainfoPicture.setOnClickListener {
+                    cardviewExcretaInfoVisibilityOff.visibility = View.VISIBLE
+                }
             }
         }
     }
