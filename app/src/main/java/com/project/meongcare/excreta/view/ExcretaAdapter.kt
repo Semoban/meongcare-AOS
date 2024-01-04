@@ -19,7 +19,6 @@ import com.project.meongcare.excreta.utils.MINUTE_START
 class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
     inner class ExcretaViewHolder(private val binding: ItemExcretaRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(item: ExcretaRecord) {
             binding.run {
                 val excretaTime = convertToTimeFormat(item.time)
@@ -40,33 +39,40 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
         parent: ViewGroup,
         viewType: Int,
     ): ExcretaViewHolder {
-        val itemExcretaBinding = ItemExcretaRecordBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+        val itemExcretaBinding =
+            ItemExcretaRecordBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
 
         return ExcretaViewHolder(itemExcretaBinding)
     }
 
-    override fun onBindViewHolder(holder: ExcretaViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ExcretaViewHolder,
+        position: Int,
+    ) {
         holder.bind(currentList[position])
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ExcretaRecord>() {
-            override fun areItemsTheSame(
-                oldItem: ExcretaRecord,
-                newItem: ExcretaRecord,
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val diffUtil =
+            object : DiffUtil.ItemCallback<ExcretaRecord>() {
+                override fun areItemsTheSame(
+                    oldItem: ExcretaRecord,
+                    newItem: ExcretaRecord,
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: ExcretaRecord,
-                newItem: ExcretaRecord,
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: ExcretaRecord,
+                    newItem: ExcretaRecord,
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
 
         fun convertToTimeFormat(date: String): String {
             val hour = date.substring(HOUR_START, HOUR_END).toInt()
