@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.excreta.model.data.repository.ExcretaRepositoryImpl
 import com.project.meongcare.excreta.model.entities.ExcretaInfo
 import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaDto
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaPostDto
 import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ class ExcretaAddViewModel
                 excretaType,
                 dateTime,
             )
-            val dto = convertExcretaDto(excretaInfo)
+            val dto = convertExcretaPostDto(excretaInfo)
             val file = convertExcretaFile(context, uri)
 
             val excretaPostRequest = ExcretaUploadRequest(
