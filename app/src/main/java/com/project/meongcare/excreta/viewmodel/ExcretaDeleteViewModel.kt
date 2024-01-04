@@ -13,7 +13,7 @@ class ExcretaDeleteViewModel
     @Inject
     constructor(
         private val excretaRepositoryImpl: ExcretaRepositoryImpl,
-    ): ViewModel() {
+    ) : ViewModel() {
         private var _excretaDeleted = MutableLiveData<Int>()
         val excretaDeleted
             get() = _excretaDeleted
