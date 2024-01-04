@@ -47,7 +47,10 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         excretaInfo = getExcretaInfo()
         initToolbar()
@@ -113,7 +116,8 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
             val calendarModalBottomSheet = CalendarBottomSheetFragment()
             calendarModalBottomSheet.setDateSubmitListener(this@ExcretaEditFragment)
             calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager, calendarModalBottomSheet.tag
+                requireActivity().supportFragmentManager,
+                calendarModalBottomSheet.tag,
             )
         }
     }
@@ -149,7 +153,8 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
             val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
             photoAttachModalBottomSheet.setPhotoListener(this@ExcretaEditFragment)
             photoAttachModalBottomSheet.show(
-                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheetFragment.TAG
+                requireActivity().supportFragmentManager,
+                PhotoAttachModalBottomSheetFragment.TAG,
             )
         }
     }
@@ -157,8 +162,12 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun editExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType = if (checkboxExcretaaddUrine.isChecked) Excreta.URINE.toString()
-                else Excreta.FECES.toString()
+                val excretaType =
+                    if (checkboxExcretaaddUrine.isChecked) {
+                        Excreta.URINE.toString()
+                    } else {
+                        Excreta.FECES.toString()
+                    }
 
                 val excretaTime = ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
                 val excretaDateTime = "${excretaDate}T${excretaTime}"
@@ -169,7 +178,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                     excretaType,
                     excretaDateTime,
                     requireContext(),
-                    currentImageUri ?: Uri.EMPTY
+                    currentImageUri ?: Uri.EMPTY,
                 )
                 excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
@@ -182,11 +191,12 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
 
     private fun getExcretaId() = arguments?.getLong("excretaId")!!
 
-    private fun getExcretaInfo() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arguments?.getParcelable("excretaInfo", ExcretaDetailGetResponse::class.java)!!
-    } else {
-        arguments?.getParcelable("excretaInfo")!!
-    }
+    private fun getExcretaInfo() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("excretaInfo", ExcretaDetailGetResponse::class.java)!!
+        } else {
+            arguments?.getParcelable("excretaInfo")!!
+        }
 
     override fun onDateSubmit(str: String) {
         excretaPatchViewModel.getExcretaDate(str)
