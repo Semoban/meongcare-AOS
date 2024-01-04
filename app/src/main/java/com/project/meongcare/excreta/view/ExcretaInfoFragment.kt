@@ -121,8 +121,10 @@ class ExcretaInfoFragment : Fragment() {
         binding.apply {
             if (excretaType == Excreta.FECES.toString()) {
                 checkboxExcretainfoFeces.isChecked = true
+                checkboxExcretainfoUrine.isChecked = false
             } else {
                 checkboxExcretainfoUrine.isChecked = true
+                checkboxExcretainfoFeces.isChecked = false
             }
         }
     }
