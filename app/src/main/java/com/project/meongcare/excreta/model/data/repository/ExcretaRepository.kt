@@ -13,4 +13,6 @@ interface ExcretaRepository {
     suspend fun getExcretaDetail(excretaId: Long): ExcretaDetailGetResponse?
 
     suspend fun deleteExcreta(excretaIds: IntArray): Int?
+
+    suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest): Int?
 }

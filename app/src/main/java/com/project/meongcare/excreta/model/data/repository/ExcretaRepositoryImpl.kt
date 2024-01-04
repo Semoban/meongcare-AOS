@@ -21,4 +21,7 @@ class ExcretaRepositoryImpl
 
         override suspend fun deleteExcreta(excretaIds: IntArray) =
             excretaRemoteDataSource.deleteExcreta(excretaIds)
+
+        override suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest) =
+            excretaRemoteDataSource.patchExcreta(excretaUploadRequest)
     }
