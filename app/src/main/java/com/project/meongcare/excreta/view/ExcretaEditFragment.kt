@@ -17,12 +17,15 @@ import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.utils.HOUR_END
 import com.project.meongcare.excreta.utils.HOUR_START
 import com.project.meongcare.excreta.utils.MINUTE_END
 import com.project.meongcare.excreta.utils.MINUTE_START
-import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +34,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
     private val binding get() = _binding!!
 
-    private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
+    private val excretaPatchViewModel: ExcretaPatchViewModel by viewModels()
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaDate = ""
 
@@ -56,6 +59,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         initCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
         observeAndUpdateExcretaDate()
+        editExcretaInfo()
     }
 
     private fun initToolbar() {
@@ -126,13 +130,14 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     private fun observeAndUpdateExcretaDate(): String {
-        excretaAddViewModel.excretaDate.observe(viewLifecycleOwner) { date ->
+        excretaDate = excretaInfo.dateTime.substring(0..9)
+        excretaPatchViewModel.excretaDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
-                excretaDate = ExcretaDateTimeUtils.plusDay(date)
+                excretaDate = plusDay(date)
                 binding.textviewExcretaaddDate.run {
                     setTextColor(resources.getColor(R.color.black, null))
                     setTextAppearance(R.style.Typography_Body1_Medium)
-                    text = ExcretaDateTimeUtils.convertDateFormat(date)
+                    text = convertDateFormat(date)
                 }
             }
         }
@@ -149,6 +154,34 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
+    private fun editExcretaInfo() {
+        binding.apply {
+            buttonExcretaaddCompletion.setOnClickListener {
+                val excretaType = if (checkboxExcretaaddUrine.isChecked) Excreta.URINE.toString()
+                else Excreta.FECES.toString()
+
+                val excretaTime = ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
+                val excretaDateTime = "${excretaDate}T${excretaTime}"
+
+                val currentImageUri = excretaPatchViewModel.excretaImage.value
+                excretaPatchViewModel.patchExcreta(
+                    getExcretaId(),
+                    excretaType,
+                    excretaDateTime,
+                    requireContext(),
+                    currentImageUri ?: Uri.EMPTY
+                )
+                excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
+                    if (response == SUCCESS) {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getExcretaId() = arguments?.getLong("excretaId")!!
+
     private fun getExcretaInfo() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arguments?.getParcelable("excretaInfo", ExcretaDetailGetResponse::class.java)!!
     } else {
@@ -156,11 +189,11 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     override fun onDateSubmit(str: String) {
-        excretaAddViewModel.getExcretaDate(str)
+        excretaPatchViewModel.getExcretaDate(str)
     }
 
     override fun onUriPassed(uri: Uri) {
-        excretaAddViewModel.getExcretaImage(uri)
+        excretaPatchViewModel.getExcretaImage(uri)
         binding.apply {
             Glide.with(this@ExcretaEditFragment)
                 .load(uri)
