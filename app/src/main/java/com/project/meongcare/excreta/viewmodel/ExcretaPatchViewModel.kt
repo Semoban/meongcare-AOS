@@ -45,21 +45,23 @@ class ExcretaPatchViewModel
             excretaType: String,
             excretaDateTime: String,
             context: Context,
-            uri: Uri
+            uri: Uri,
         ) {
             viewModelScope.launch {
-                val excretaInfoPatch = ExcretaInfoPatch(
-                    excretaId,
-                    excretaType,
-                    excretaDateTime,
-                )
+                val excretaInfoPatch =
+                    ExcretaInfoPatch(
+                        excretaId,
+                        excretaType,
+                        excretaDateTime,
+                    )
                 val dto = convertExcretaPatchDto(excretaInfoPatch)
                 val file = convertExcretaFile(context, uri)
 
-                val excretaPatchRequest = ExcretaUploadRequest(
-                    dto,
-                    file
-                )
+                val excretaPatchRequest =
+                    ExcretaUploadRequest(
+                        dto,
+                        file,
+                    )
 
                 _excretaPatched.value = excretaRepositoryImpl.patchExcreta(excretaPatchRequest)
             }
