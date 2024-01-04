@@ -43,6 +43,7 @@ interface ExcretaService {
         @Query("excretaIds") excretaIds: IntArray,
     ): Response<Int>
 
+    @Multipart
     @PATCH("excreta")
     suspend fun patchExcreta(
         @Header("AccessToken") accessToken: String,
