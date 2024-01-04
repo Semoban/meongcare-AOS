@@ -55,15 +55,19 @@ class ExcretaInfoFragment : Fragment() {
                 findNavController().popBackStack()
             }
 
+            val excretaId = getExcretaId()
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_info_edit -> {
-                        val bundle = bundleOf("excretaInfo" to excretaInfo)
+                        val bundle = bundleOf(
+                            "excretaId" to excretaId,
+                            "excretaInfo" to excretaInfo
+                        )
                         findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment, bundle)
                     }
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
-                            deleteExcreta(intArrayOf(getExcretaId().toInt()))
+                            deleteExcreta(intArrayOf(excretaId.toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
                                 if (response == SUCCESS) findNavController().popBackStack()
                             }
