@@ -34,14 +34,19 @@ class ExcretaRecordEditFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
-        excretaAdapter = ExcretaRecordEditAdapter(object : ExcretaItemCheckedListener {
-            override fun onItemChecked(checkedIds: IntArray) {
-                deleteExcretaRecords(checkedIds)
-            }
-        })
+        excretaAdapter =
+            ExcretaRecordEditAdapter(
+                object : ExcretaItemCheckedListener {
+                    override fun onItemChecked(checkedIds: IntArray) {
+                        deleteExcretaRecords(checkedIds)
+                    }
+                })
 
         initToolbar()
         initSelectAllCheckBox()
