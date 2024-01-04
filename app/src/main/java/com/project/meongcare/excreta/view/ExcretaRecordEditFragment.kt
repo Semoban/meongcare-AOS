@@ -9,6 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentExcretaRecordEditBinding
+import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -19,6 +22,7 @@ class ExcretaRecordEditFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
+    private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
     private lateinit var excretaAdapter: ExcretaRecordEditAdapter
 
     override fun onCreateView(
@@ -32,7 +36,13 @@ class ExcretaRecordEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        excretaAdapter = ExcretaRecordEditAdapter()
+
+        excretaAdapter = ExcretaRecordEditAdapter(object : ExcretaItemCheckedListener {
+            override fun onItemChecked(checkedIds: IntArray) {
+                deleteExcretaRecords(checkedIds)
+            }
+        })
+
         initToolbar()
         initSelectAllCheckBox()
         initExcretaRecordEditRecyclerView()
@@ -79,6 +89,19 @@ class ExcretaRecordEditFragment : Fragment() {
     private fun initCancelButton() {
         binding.buttonExcretarecordeditCancel.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun deleteExcretaRecords(checkIds: IntArray) {
+        binding.buttonExcretarecordeditDelete.setOnClickListener {
+            excretaDeleteViewModel.deleteExcreta(checkIds)
+            excretaDeleteViewModel.apply {
+                excretaDeleted.observe(viewLifecycleOwner) { response ->
+                    if (response == SUCCESS) {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
         }
     }
 
