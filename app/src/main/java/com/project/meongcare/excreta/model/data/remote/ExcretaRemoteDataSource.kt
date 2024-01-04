@@ -16,9 +16,7 @@ class ExcretaRemoteDataSource
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val excretaApiService = ExcretaClient.excretaService
 
-        suspend fun postExcreta(
-            excretaPostRequest: ExcretaUploadRequest
-        ): Int? {
+        suspend fun postExcreta(excretaPostRequest: ExcretaUploadRequest): Int? {
             try {
                 val postResponse =
                     excretaApiService.postExcreta(
@@ -70,7 +68,7 @@ class ExcretaRemoteDataSource
                 val getExcretaDetailResponse =
                     excretaApiService.getExcretaDetail(
                         accessToken,
-                        excretaId
+                        excretaId,
                     )
                 return if (getExcretaDetailResponse.code() == SUCCESS) {
                     Log.d("ExcretaDetailGetSuccess", getExcretaDetailResponse.code().toString())
@@ -92,7 +90,7 @@ class ExcretaRemoteDataSource
                 val deleteExcretaResponse =
                     excretaApiService.deleteExcreta(
                         accessToken,
-                        excretaIds
+                        excretaIds,
                     )
 
                 if (deleteExcretaResponse.code() != SUCCESS) {
@@ -110,9 +108,7 @@ class ExcretaRemoteDataSource
             }
         }
 
-        suspend fun patchExcreta(
-            excretaUploadRequest: ExcretaUploadRequest
-        ): Int? {
+        suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest): Int? {
             try {
                 val patchResponse =
                     excretaApiService.patchExcreta(
