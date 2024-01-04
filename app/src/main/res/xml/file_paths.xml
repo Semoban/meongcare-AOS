@@ -3,4 +3,8 @@
     <external-path
         name="dogprofiles"
         path="Android/data/com.project.meongcare/files/Pictures"/>
+
+    <external-files-path
+        name="excreta"
+        path="Pictures/Excreta"/>
 </paths>
