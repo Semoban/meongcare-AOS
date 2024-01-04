@@ -109,4 +109,30 @@ class ExcretaRemoteDataSource
                 return null
             }
         }
+
+        suspend fun patchExcreta(
+            excretaUploadRequest: ExcretaUploadRequest
+        ): Int? {
+            try {
+                val patchResponse =
+                    excretaApiService.patchExcreta(
+                        accessToken,
+                        excretaUploadRequest.dto,
+                        excretaUploadRequest.file,
+                    )
+
+                if (patchResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(patchResponse.errorBody()?.string()!!)
+                    Log.d("ExcretaPatchFailure", patchResponse.code().toString())
+                    Log.d("ExcretaPatchFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("ExcretaPatchSuccess", patchResponse.code().toString())
+                return patchResponse.code()
+            } catch (e: Exception) {
+                Log.e("ExcretaPatchException", e.toString())
+                return null
+            }
+        }
     }
