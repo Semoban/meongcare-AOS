@@ -39,7 +39,10 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
         initPhotoAttachModalBottomSheet()
@@ -60,7 +63,8 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
             val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
             photoAttachModalBottomSheet.setPhotoListener(this@ExcretaAddFragment)
             photoAttachModalBottomSheet.show(
-                requireActivity().supportFragmentManager, PhotoAttachModalBottomSheetFragment.TAG
+                requireActivity().supportFragmentManager,
+                PhotoAttachModalBottomSheetFragment.TAG,
             )
         }
     }
@@ -70,7 +74,8 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
             val calendarModalBottomSheet = CalendarBottomSheetFragment()
             calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
             calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager, calendarModalBottomSheet.tag
+                requireActivity().supportFragmentManager,
+                calendarModalBottomSheet.tag,
             )
         }
     }
@@ -117,18 +122,22 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun saveExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType = if (checkboxExcretaaddUrine.isChecked) Excreta.URINE.toString()
-                else Excreta.FECES.toString()
+                val excretaType =
+                    if (checkboxExcretaaddUrine.isChecked) {
+                        Excreta.URINE.toString()
+                    } else {
+                        Excreta.FECES.toString()
+                    }
 
                 val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T${excretaTime}"
+                val excretaDateTime = "${excretaDate}T$excretaTime"
 
                 val currentImageUri = excretaAddViewModel.excretaImage.value
                 excretaAddViewModel.postExcreta(
                     excretaType,
                     excretaDateTime,
                     requireContext(),
-                    currentImageUri ?: Uri.EMPTY
+                    currentImageUri ?: Uri.EMPTY,
                 )
                 excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
