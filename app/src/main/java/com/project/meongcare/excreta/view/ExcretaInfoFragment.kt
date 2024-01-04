@@ -59,10 +59,11 @@ class ExcretaInfoFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_info_edit -> {
-                        val bundle = bundleOf(
-                            "excretaId" to excretaId,
-                            "excretaInfo" to excretaInfo
-                        )
+                        val bundle =
+                            bundleOf(
+                                "excretaId" to excretaId,
+                                "excretaInfo" to excretaInfo,
+                            )
                         findNavController().navigate(R.id.action_excretaInfoFragment_to_excretaEditFragment, bundle)
                     }
                     R.id.menu_info_delete -> {
@@ -86,11 +87,12 @@ class ExcretaInfoFragment : Fragment() {
                 excretaImageURL = response.excretaImageURL
                 excretaDateTime = response.dateTime
                 excretaType = response.excretaType
-                excretaInfo = ExcretaDetailGetResponse(
-                    excretaImageURL,
-                    excretaDateTime,
-                    excretaType
-                )
+                excretaInfo =
+                    ExcretaDetailGetResponse(
+                        excretaImageURL,
+                        excretaDateTime,
+                        excretaType,
+                    )
                 initExcretaImage(excretaImageURL)
                 binding.textviewExcretainfoDate.text = convertDateTimeFormat(excretaDateTime)
                 initExcretaCheckBox(excretaType)
