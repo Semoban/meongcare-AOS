@@ -1,7 +1,6 @@
 package com.project.meongcare.excreta.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.Excreta.FECES
-import com.project.meongcare.excreta.model.entities.ExcretaRecord
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -35,7 +33,10 @@ class ExcretaFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
@@ -69,7 +70,7 @@ class ExcretaFragment : Fragment() {
             getExcretaRecord(dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 binding.apply {
-                    if(response.excretaRecords.size == 0) {
+                    if (response.excretaRecords.size == 0) {
                         textviewExcretaEditbutton.visibility = View.GONE
                     }
                     textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
@@ -80,7 +81,10 @@ class ExcretaFragment : Fragment() {
         }
     }
 
-    private fun formatExcretaCount(type: String, count: Int) = "$type $count$TIME"
+    private fun formatExcretaCount(
+        type: String,
+        count: Int,
+    ) = "$type $count$TIME"
 
     override fun onDestroyView() {
         super.onDestroyView()
