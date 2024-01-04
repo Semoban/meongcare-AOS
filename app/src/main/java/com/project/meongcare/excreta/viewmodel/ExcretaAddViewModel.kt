@@ -16,51 +16,52 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExcretaAddViewModel
-@Inject constructor(
-    private val excretaRepositoryImpl: ExcretaRepositoryImpl,
-) : ViewModel() {
-    private var _excretaDate = MutableLiveData<String>()
-    val excretaDate
-        get() = _excretaDate
+    @Inject constructor(
+        private val excretaRepositoryImpl: ExcretaRepositoryImpl,
+    ) : ViewModel() {
+        private var _excretaDate = MutableLiveData<String>()
+        val excretaDate
+            get() = _excretaDate
 
-    private var _excretaPosted = MutableLiveData<Int>()
+        private var _excretaImage = MutableLiveData<Uri>()
+        val excretaImage
+            get() = _excretaImage
 
-    private var _excretaImage = MutableLiveData<Uri>()
-    val excretaImage
-        get() = _excretaImage
+        private var _excretaPosted = MutableLiveData<Int>()
+        val excretaPosted
+            get() = _excretaPosted
 
-    val excretaPosted
-        get() = _excretaPosted
+        fun getExcretaDate(date: String) {
+            _excretaDate.value = date
+        }
 
-    fun getExcretaDate(date: String) {
-        _excretaDate.value = date
-    }
+        fun getExcretaImage(uri: Uri) {
+            _excretaImage.value = uri
+        }
 
-    fun getExcretaImage(uri: Uri) {
-        _excretaImage.value = uri
-    }
+        fun postExcreta(
+            excretaType: String,
+            dateTime: String,
+            context: Context,
+            uri: Uri,
+        ) {
+            viewModelScope.launch {
+                val excretaInfo =
+                    ExcretaInfo(
+                        2L,
+                        excretaType,
+                        dateTime,
+                    )
+                val dto = convertExcretaPostDto(excretaInfo)
+                val file = convertExcretaFile(context, uri)
 
-    fun postExcreta(
-        excretaType: String,
-        dateTime: String,
-        context: Context,
-        uri: Uri,
-    ) {
-        viewModelScope.launch {
-            val excretaInfo = ExcretaInfo(
-                2L,
-                excretaType,
-                dateTime,
-            )
-            val dto = convertExcretaPostDto(excretaInfo)
-            val file = convertExcretaFile(context, uri)
+                val excretaPostRequest =
+                    ExcretaUploadRequest(
+                        dto,
+                        file,
+                    )
 
-            val excretaPostRequest = ExcretaUploadRequest(
-                dto,
-                file,
-            )
-
-            _excretaPosted.value = excretaRepositoryImpl.postExcreta(excretaPostRequest)
+                _excretaPosted.value = excretaRepositoryImpl.postExcreta(excretaPostRequest)
+            }
         }
     }
-}
