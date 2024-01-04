@@ -15,14 +15,14 @@ class ExcretaRecordEditAdapter(
 ) : ListAdapter<ExcretaRecord, ExcretaRecordEditAdapter.ExcretaRecordEditViewHolder>(diffUtil) {
     inner class ExcretaRecordEditViewHolder(private val binding: ItemExcretaRecordEditBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         init {
             binding.checkboxExcretarecordedit.setOnCheckedChangeListener { _, isChecked ->
                 val item = currentList[bindingAdapterPosition]
                 item.isChecked = isChecked
-                val checkedIds = currentList.filter { it.isChecked }
-                    .map { it.excretaId.toInt() }
-                    .toIntArray()
+                val checkedIds =
+                    currentList.filter { it.isChecked }
+                        .map { it.excretaId.toInt() }
+                        .toIntArray()
                 excretaItemCheckedListener.onItemChecked(checkedIds)
             }
         }
@@ -42,32 +42,39 @@ class ExcretaRecordEditAdapter(
         parent: ViewGroup,
         viewType: Int,
     ): ExcretaRecordEditViewHolder {
-        val itemExcretaRecordEditBinding = ItemExcretaRecordEditBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+        val itemExcretaRecordEditBinding =
+            ItemExcretaRecordEditBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
 
         return ExcretaRecordEditViewHolder(itemExcretaRecordEditBinding)
     }
 
-    override fun onBindViewHolder(holder: ExcretaRecordEditViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ExcretaRecordEditViewHolder,
+        position: Int,
+    ) {
         holder.bind(currentList[position])
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ExcretaRecord>() {
-            override fun areItemsTheSame(
-                oldItem: ExcretaRecord,
-                newItem: ExcretaRecord,
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val diffUtil =
+            object : DiffUtil.ItemCallback<ExcretaRecord>() {
+                override fun areItemsTheSame(
+                    oldItem: ExcretaRecord,
+                    newItem: ExcretaRecord,
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: ExcretaRecord,
-                newItem: ExcretaRecord,
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: ExcretaRecord,
+                    newItem: ExcretaRecord,
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }
