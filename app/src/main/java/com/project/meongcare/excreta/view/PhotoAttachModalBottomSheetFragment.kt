@@ -28,14 +28,18 @@ class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
     lateinit var file: File
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentPhotoSelectBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             textviewSelectCamera.setOnClickListener {
@@ -82,11 +86,12 @@ class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun openCamera() {
         val file = photoFile()
-        photoURI = FileProvider.getUriForFile(
-            requireContext(),
-            "com.project.meongcare",
-            file
-        )
+        photoURI =
+            FileProvider.getUriForFile(
+                requireContext(),
+                "com.project.meongcare",
+                file,
+            )
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         cameraLauncher.launch(intent)
