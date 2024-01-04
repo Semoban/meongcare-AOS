@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ExcretaDetailViewModel
     @Inject
     constructor(
-        private val excretaRepositoryImpl: ExcretaRepositoryImpl
+        private val excretaRepositoryImpl: ExcretaRepositoryImpl,
     ) : ViewModel() {
         private var _excretaDetailGet = MutableLiveData<ExcretaDetailGetResponse>()
         val excretaDetailGet
