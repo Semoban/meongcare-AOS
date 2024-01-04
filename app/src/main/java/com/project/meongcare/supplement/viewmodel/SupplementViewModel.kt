@@ -11,6 +11,7 @@ import java.util.Date
 
 class SupplementViewModel : ViewModel() {
     var supplementList = MutableLiveData<MutableList<Supplement>>()
+    var supplementCycle = MutableLiveData<Int>()
 
     init {
         supplementList.value = mutableListOf()
