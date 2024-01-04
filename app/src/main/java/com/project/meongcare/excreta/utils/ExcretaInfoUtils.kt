@@ -23,7 +23,10 @@ object ExcretaInfoUtils {
         return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
     }
 
-    fun convertExcretaFile(context: Context, uri: Uri): MultipartBody.Part {
+    fun convertExcretaFile(
+        context: Context,
+        uri: Uri,
+    ): MultipartBody.Part {
         if (uri.toString().isEmpty()) {
             val emptyFile = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
             return MultipartBody.Part.createFormData("file", "", emptyFile)
