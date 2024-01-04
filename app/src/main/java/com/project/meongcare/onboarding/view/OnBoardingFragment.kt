@@ -64,12 +64,6 @@ class OnBoardingFragment : Fragment() {
     private fun moveToLogin() {
         // LoginFragment로 이동
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mainActivity = activity as MainActivity
-        mainActivity.detachBottomNav()
-    }
 }
 
 class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {

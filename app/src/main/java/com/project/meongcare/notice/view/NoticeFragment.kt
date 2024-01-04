@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.notice.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import com.project.meongcare.databinding.FragmentNoticeBinding
 
 class NoticeFragment : Fragment() {
     lateinit var fragmentNoticeBinding: FragmentNoticeBinding
-    lateinit var mainActivity: MainActivity
 
     val tabName = arrayOf("공지사항", "이벤트")
 
@@ -42,16 +41,14 @@ class NoticeFragment : Fragment() {
                     override fun onTabReselected(tab: TabLayout.Tab?) { }
                 },
             )
+
+            imageviewNoticeBack.setOnClickListener {
+                // 이전 화면으로 back
+            }
         }
 
         return fragmentNoticeBinding.root
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        mainActivity = activity as MainActivity
-//        mainActivity.detachBottomNav()
-//    }
 }
 
 class NoticeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {

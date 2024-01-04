@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemHomeSymptomBinding
+import com.project.meongcare.home.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 
 class HomeSymptomAdapter(
     private val layoutInflater: LayoutInflater,
     private val context: Context,
 ) : RecyclerView.Adapter<HomeSymptomAdapter.SymptomViewHolder>() {
-    private var symptomList: List<String> = emptyList()
+    private var symptomList: List<Symptom> = emptyList()
 
-    fun updateSymptomList(newList: List<String>) {
+    fun updateSymptomList(newList: List<Symptom>) {
         this.symptomList = newList
         notifyDataSetChanged()
     }
@@ -55,11 +56,10 @@ class HomeSymptomAdapter(
         position: Int,
     ) {
         Glide.with(context)
-            .load(getSymptomImg(symptomList[position]))
+            .load(getSymptomImg(symptomList[position].symptomString))
             .into(holder.imageviewSymptom)
 
-        // text 값 바인딩 필
-//        holder.textviewSymptom.text =
+        holder.textviewSymptom.text = symptomList[position].note
     }
 
     fun getSymptomImg(symptomType: String): Int {

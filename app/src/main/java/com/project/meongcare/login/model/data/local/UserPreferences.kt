@@ -3,7 +3,7 @@ package com.project.meongcare.login.model.data.local
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.project.meongcare.login.view.dataStore
+import com.project.meongcare.login.view.userDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,19 +24,19 @@ class UserPreferences
 
         // 값 저장(수정)
         private suspend fun editEmail(email: String) {
-            context.dataStore.edit { preferences ->
+            context.userDataStore.edit { preferences ->
                 preferences[preferenceKeyEmail] = email
             }
         }
 
         private suspend fun editAccessToken(accessToken: String) {
-            context.dataStore.edit { preferences ->
+            context.userDataStore.edit { preferences ->
                 preferences[preferenceKeyAccessToken] = accessToken
             }
         }
 
         private suspend fun editRefreshToken(refreshToken: String) {
-            context.dataStore.edit { preferences ->
+            context.userDataStore.edit { preferences ->
                 preferences[preferenceKeyRefreshToken] = refreshToken
             }
         }
@@ -61,17 +61,17 @@ class UserPreferences
 
         // 값 가져오기
         val email: Flow<String?> =
-            context.dataStore.data.map { preferences ->
+            context.userDataStore.data.map { preferences ->
                 preferences[preferenceKeyEmail]
             }
 
         val accessToken: Flow<String?> =
-            context.dataStore.data.map { preferences ->
+            context.userDataStore.data.map { preferences ->
                 preferences[preferenceKeyAccessToken]
             }
 
         val refreshToken: Flow<String?> =
-            context.dataStore.data.map { preferences ->
+            context.userDataStore.data.map { preferences ->
                 preferences[preferenceKeyRefreshToken]
             }
     }

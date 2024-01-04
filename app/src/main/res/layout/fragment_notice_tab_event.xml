@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NoticeTabEventFragment" >
+    tools:context=".notice.view.NoticeTabEventFragment" >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_notice_tab_event"
@@ -16,4 +16,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_event_no_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="42dp"
+            android:layout_height="35dp"
+            android:src="@drawable/notice_no_list_icon" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="아직 알림이 없습니다!"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray4" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
