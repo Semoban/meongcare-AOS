@@ -125,7 +125,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun sendUri(uri: Uri) {
-        photoMenuListener?.onBitmapPassed(uri)
+        photoMenuListener?.onUriPassed(uri)
     }
 
     fun setPhotoMenuListener(listener: PhotoMenuListener) {

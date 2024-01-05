@@ -183,7 +183,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         return fragmentDogAddOnBoardingBinding.root
     }
 
-    override fun onBitmapPassed(uri: Uri) {
+    override fun onUriPassed(uri: Uri) {
         dogAddViewModel.getDogProfileImage(uri)
 
         fragmentDogAddOnBoardingBinding.run {
