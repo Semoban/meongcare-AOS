@@ -1,9 +1,9 @@
 package com.project.meongcare.excreta.model.data.repository
 
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 
 interface ExcretaRepository {
     suspend fun postExcreta(excretaUploadRequest: ExcretaUploadRequest): Int?
