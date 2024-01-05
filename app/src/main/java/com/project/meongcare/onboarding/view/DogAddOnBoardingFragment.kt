@@ -13,7 +13,6 @@ import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
-import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
