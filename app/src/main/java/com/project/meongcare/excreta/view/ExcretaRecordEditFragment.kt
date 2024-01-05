@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 @AndroidEntryPoint
 class ExcretaRecordEditFragment : Fragment() {
     private var _binding: FragmentExcretaRecordEditBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
