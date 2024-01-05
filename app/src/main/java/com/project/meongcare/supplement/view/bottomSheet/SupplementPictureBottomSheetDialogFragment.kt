@@ -32,9 +32,11 @@ class SupplementPictureBottomSheetDialogFragment : BottomSheetDialogFragment() {
         fragmentSupplementPictureBottomSheetBinding.run {
             textViewSupplementAddPictureCamera.setOnClickListener {
                 Log.d("영양제 사진", "카메라 선택")
+                dismiss()
             }
             textViewSupplementAddPictureGallery.setOnClickListener {
                 Log.d("영양제 사진", "앨범 선택")
+                dismiss()
             }
 
         }
