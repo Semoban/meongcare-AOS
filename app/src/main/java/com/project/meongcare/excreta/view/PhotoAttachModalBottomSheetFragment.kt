@@ -21,7 +21,7 @@ import java.util.Locale
 
 class PhotoAttachModalBottomSheetFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentPhotoSelectBottomSheetBinding? = null
-     val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private var photoListener: PhotoListener? = null
     private lateinit var photoURI: Uri
