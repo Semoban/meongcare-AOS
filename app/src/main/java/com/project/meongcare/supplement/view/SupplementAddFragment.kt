@@ -54,6 +54,9 @@ class SupplementAddFragment : Fragment() {
 
             supplementCycle.observe(viewLifecycleOwner) {
                 fragmentSupplementAddBinding.run {
+                    if (it > 0) {
+                        textViewSupplementAddCycleError.visibility = View.GONE
+                    }
                     layoutSupplementAddCycleText.visibility = View.VISIBLE
                     textViewSupplementAddCycleCount.text = it.toString()
                 }
@@ -62,6 +65,7 @@ class SupplementAddFragment : Fragment() {
             intakeTimeList.observe(viewLifecycleOwner) {
                 fragmentSupplementAddBinding.run {
                     if (it.isNotEmpty()) {
+                        textViewSupplementAddTimeError.visibility = View.GONE
                         textViewSupplementAddTimeListEdit.visibility = View.VISIBLE
                         imageViewSupplementAddTimeListEssential.visibility = View.GONE
                         textViewSupplementAddTimeListCount.text = "${it.size}회"
@@ -167,6 +171,14 @@ class SupplementAddFragment : Fragment() {
 
                 if (editTextSupplementAddName.text.isNullOrEmpty()) {
                     isEditTextNullOrEmpty(editTextSupplementAddName)
+                }
+
+                if (supplementViewModel.supplementCycle.value == null) {
+                    textViewSupplementAddCycleError.visibility = View.VISIBLE
+                }
+
+                if (supplementViewModel.intakeTimeList.value.isNullOrEmpty()) {
+                    textViewSupplementAddTimeError.visibility = View.VISIBLE
                 }
             }
 

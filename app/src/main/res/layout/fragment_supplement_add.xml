@@ -232,8 +232,18 @@
                             android:gravity="center_vertical"
                             android:src="@drawable/all_arrow_forward" />
                     </LinearLayout>
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_supplementAdd_cycle_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@style/Typography.Body3.Regular"
+                    android:text="필수 입력 값입니다."
+                    android:textColor="@color/sub1"
+                    android:visibility="gone"
+                    />
 
                 <View
                     android:layout_width="match_parent"
@@ -410,6 +420,17 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_supplementAdd_time_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@style/Typography.Body3.Regular"
+                    android:text="필수 입력 값입니다."
+                    android:textColor="@color/sub1"
+                    android:visibility="gone"
+                    />
 
                 <LinearLayout
                     android:id="@+id/layout_supplement_add_time_list"
