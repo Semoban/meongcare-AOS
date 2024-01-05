@@ -222,7 +222,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.project.meongcare.FeedFragment"
+        android:name="com.project.meongcare.feed.view.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
 
