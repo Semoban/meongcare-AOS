@@ -70,7 +70,12 @@ class ProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun makeProfileFile(context: Context): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "UserProfile")
+
+        // 디렉토리 존재하지 않으면 생성
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
 
         return File.createTempFile(
             "USERPROFILE_${timeStamp}_",
