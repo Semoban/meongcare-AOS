@@ -150,6 +150,60 @@
     </fragment>
 
     <fragment
+        android:id="@+id/excretaFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaFragment"
+        android:label="fragment_excreta"
+        tools:layout="@layout/fragment_excreta" >
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaAddFragment"
+            app:destination="@id/excretaAddFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaRecordEditFragment"
+            app:destination="@id/excretaRecordEditFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaInfoFragment"
+            app:destination="@id/excretaInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaAddFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
+        android:label="fragment_excreta_add"
+        tools:layout="@layout/fragment_excreta_add_edit" >
+        <action
+            android:id="@+id/action_excretaAddFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaInfoFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaInfoFragment"
+        android:label="fragment_excreta_info"
+        tools:layout="@layout/fragment_excreta_info" >
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaEditFragment"
+            app:destination="@id/excretaEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaRecordEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaRecordEditFragment"
+        android:label="fragment_excreta_record_edit"
+        tools:layout="@layout/fragment_excreta_record_edit" >
+        <action
+            android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/excretaEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaEditFragment"
+        android:label="ExcretaEditFragment" />
+
+    <fragment
         android:id="@+id/weightFragment"
         android:name="com.project.meongcare.weight.view.WeightFragment"
         android:label="fragment_weight"
@@ -160,12 +214,6 @@
         android:name="com.project.meongcare.notice.view.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice"/>
-
-    <fragment
-        android:id="@+id/excretaFragment"
-        android:name="com.project.meongcare.ExcretaFragment"
-        android:label="fragment_excreta"
-        tools:layout="@layout/fragment_excreta" />
 
     <fragment
         android:id="@+id/medicalRecordFragment"
@@ -183,4 +231,5 @@
         android:name="com.project.meongcare.supplement.view.SupplementFragment"
         android:label="fragment_supplement"
         tools:layout="@layout/fragment_supplement" />
+
 </navigation>
