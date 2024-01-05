@@ -2,9 +2,12 @@ package com.project.meongcare.supplement.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
@@ -19,6 +22,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.convertDateToTime
+import com.project.meongcare.supplement.view.SupplementUtils.Companion.hideKeyboard
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.showCycleBottomSheet
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.showTimeBottomSheet
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
@@ -124,6 +128,13 @@ class SupplementAddFragment : Fragment() {
                 navController.popBackStack()
             }
 
+            controlEditText(editTextSupplementAddBrandName, "브랜드를 입력해주세요")
+            controlEditText(editTextSupplementAddName, "제품명을 입력해주세요")
+
+
+            editTextSupplementAddName.run {
+            }
+
             layoutSupplementAddCycle.setOnClickListener {
                 showCycleBottomSheet(parentFragmentManager, supplementViewModel)
             }
@@ -146,6 +157,16 @@ class SupplementAddFragment : Fragment() {
 
             buttonSupplementAddUnitJung.setOnClickListener {
                 supplementViewModel.onJungButtonClick()
+            }
+
+            buttonSupplementAddComplete.setOnClickListener {
+                if (editTextSupplementAddBrandName.text.isNullOrEmpty()) {
+                    isEditTextNullOrEmpty(editTextSupplementAddBrandName)
+                }
+
+                if (editTextSupplementAddName.text.isNullOrEmpty()) {
+                    isEditTextNullOrEmpty(editTextSupplementAddName)
+                }
             }
 
         }
@@ -226,5 +247,59 @@ class SupplementAddFragment : Fragment() {
 
     fun onEditButtonClicked() {
         (fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter as SupplementAddTimeRecyclerViewAdapter).setAllItemsToEditMode()
+    }
+
+    fun isEditTextNullOrEmpty(editText: EditText) {
+        editText.run {
+            setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
+            setHintTextColor(getColor(mainActivity, R.color.sub1))
+            hint = "필수 입력 값입니다"
+            isCursorVisible = false
+            isFocusableInTouchMode = false
+        }
+        hideKeyboard(editText)
+    }
+
+    fun setEditTextOriginal(editText: EditText, hintText: String) {
+        editText.run {
+            setBackgroundResource(R.drawable.all_rect_gray2_r5)
+            setHintTextColor(
+                getColor(
+                    mainActivity,
+                    R.color.gray4,
+                )
+            )
+            hint = "$hintText"
+            isCursorVisible = true
+            isFocusableInTouchMode = true
+            isFocusable = true
+        }
+    }
+
+    fun controlEditText(editText: EditText, hintText: String) {
+        editText.run {
+            setOnEditorActionListener { view, actionId, keyEvent ->
+                if (
+                    (
+                            actionId == EditorInfo.IME_ACTION_DONE ||
+                                    (
+                                            keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+                                            )
+                            ) && this.text.trim().isNotEmpty()
+                ) {
+                    hideKeyboard(view)
+                }
+                false
+            }
+
+            setOnFocusChangeListener { view, b ->
+                setEditTextOriginal(this, hintText)
+            }
+
+            setOnClickListener {
+                setEditTextOriginal(this, hintText)
+            }
+        }
     }
 }
