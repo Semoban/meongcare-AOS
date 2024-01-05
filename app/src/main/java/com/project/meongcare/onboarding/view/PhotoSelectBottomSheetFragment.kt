@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.onboarding.view
 
 import android.app.Activity
 import android.content.Context
@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentPhotoSelectBottomSheetBinding
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
