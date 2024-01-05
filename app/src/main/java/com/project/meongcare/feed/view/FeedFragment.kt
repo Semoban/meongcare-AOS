@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -13,10 +15,15 @@ import com.github.mikephil.charting.data.PieEntry
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
+import com.project.meongcare.feed.viewmodel.FeedGetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FeedFragment : Fragment() {
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
+
+    private val feedGetViewModel: FeedGetViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +39,25 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        updateViewVisibilityBasedOnFeedExist()
         initNutrientPieChart()
         initNutrientTable()
+    }
+
+    private fun updateViewVisibilityBasedOnFeedExist() {
+        feedGetViewModel.getFeed()
+        feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
+            binding.apply {
+                if (response.feedId == 0L) {
+                    textviewFeedBrand.visibility = View.GONE
+                    textviewFeedName.visibility = View.GONE
+                    piechartFeedNutrient.visibility = View.GONE
+                } else {
+                    imageviewFeedBowlIllustration.visibility = View.GONE
+                    buttonFeedInputGuide.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun initNutrientPieChart() {
