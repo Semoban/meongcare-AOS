@@ -18,8 +18,8 @@ import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class ExcretaFragment : Fragment() {
-    private var _binding: FragmentExcretaBinding? = null
-    private val binding get() = _binding!!
+    private var _excretaBinding: FragmentExcretaBinding? = null
+    private val excretaBinding get() = _excretaBinding!!
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private lateinit var excretaAdapter: ExcretaAdapter
@@ -29,8 +29,8 @@ class ExcretaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentExcretaBinding.inflate(inflater, container, false)
-        return binding.root
+        _excretaBinding = FragmentExcretaBinding.inflate(inflater, container, false)
+        return excretaBinding.root
     }
 
     override fun onViewCreated(
@@ -52,13 +52,13 @@ class ExcretaFragment : Fragment() {
     }
 
     private fun initExcretaEditButton() {
-        binding.textviewExcretaEditbutton.setOnClickListener {
+        excretaBinding.textviewExcretaEditbutton.setOnClickListener {
             findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment)
         }
     }
 
     private fun initExcretaRecordRecyclerView() {
-        binding.recyclerviewExcretaRecord.run {
+        excretaBinding.recyclerviewExcretaRecord.run {
             adapter = excretaAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -69,7 +69,7 @@ class ExcretaFragment : Fragment() {
             val dateTime = LocalDateTime.now().toString().slice(DATE_TIME_START..DATE_TIME_END)
             getExcretaRecord(dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
-                binding.apply {
+                excretaBinding.apply {
                     if (response.excretaRecords.size == 0) {
                         textviewExcretaEditbutton.visibility = View.GONE
                     }
@@ -88,7 +88,7 @@ class ExcretaFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _excretaBinding = null
     }
 
     companion object {
