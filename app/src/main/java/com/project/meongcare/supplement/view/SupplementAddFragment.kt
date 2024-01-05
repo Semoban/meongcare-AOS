@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
@@ -25,6 +27,7 @@ class SupplementAddFragment : Fragment() {
     lateinit var fragmentSupplementAddBinding: FragmentSupplementAddBinding
     lateinit var mainActivity: MainActivity
     lateinit var supplementViewModel: SupplementViewModel
+    lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +35,7 @@ class SupplementAddFragment : Fragment() {
     ): View {
         fragmentSupplementAddBinding = FragmentSupplementAddBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        navController = findNavController()
 
         supplementViewModel = ViewModelProvider(this)[SupplementViewModel::class.java]
 
@@ -116,6 +120,10 @@ class SupplementAddFragment : Fragment() {
         }
 
         fragmentSupplementAddBinding.run {
+            toolbarSupplementAdd.setNavigationOnClickListener {
+                navController.popBackStack()
+            }
+
             layoutSupplementAddCycle.setOnClickListener {
                 showCycleBottomSheet(parentFragmentManager, supplementViewModel)
             }
