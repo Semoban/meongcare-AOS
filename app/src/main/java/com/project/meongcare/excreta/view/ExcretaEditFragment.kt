@@ -170,7 +170,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                     }
 
                 val excretaTime = ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T${excretaTime}"
+                val excretaDateTime = "${excretaDate}T$excretaTime"
 
                 val currentImageUri = excretaPatchViewModel.excretaImage.value
                 excretaPatchViewModel.patchExcreta(
