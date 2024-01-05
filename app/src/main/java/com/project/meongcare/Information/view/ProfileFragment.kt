@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.project.meongcare.Information.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
@@ -19,6 +21,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var mainActivity: MainActivity
 
+    private val profileViewModel: ProfileViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,6 +30,20 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        profileViewModel.userProfile.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                binding.run {
+                    Glide.with(this@ProfileFragment)
+                        .load(response.imageUrl)
+                        .error(R.drawable.profile_default_image)
+                        .into(imageviewProfileImage)
+                    textviewProfileEmail.text = response.email
+                }
+            }
+        }
+
+        profileViewModel.getUserProfile("Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NDYzNDA3fQ.n4XuhJyJAJtbJ3YNxzqYONixzKMPBNCOSLsoz6sDei0")
 
         binding.run {
             imagebuttonProfileBack.setOnClickListener {
