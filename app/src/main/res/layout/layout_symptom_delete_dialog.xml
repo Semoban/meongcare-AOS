@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:text="삭제를 하시겠습니까?"
+                android:text="삭제하시겠습니까?"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="25dp"
-                android:text="삭세를 누르면 복구할 수 없습니다."
+                android:text="삭제를 누르면 복구할 수 없습니다."
                 android:textAppearance="@style/Typography.Body2.Regular"
                 android:textColor="@color/gray4"
                 app:layout_constraintTop_toBottomOf="@id/textview_symptom_delete_dialog_title"
