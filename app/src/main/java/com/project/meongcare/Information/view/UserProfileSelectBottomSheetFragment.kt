@@ -20,7 +20,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class ProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
+class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentPhotoSelectBottomSheetBinding
     private lateinit var mainActivity: MainActivity
 
