@@ -16,6 +16,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomListEditBinding
 import com.project.meongcare.databinding.ItemSymptomListEditBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
+import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 

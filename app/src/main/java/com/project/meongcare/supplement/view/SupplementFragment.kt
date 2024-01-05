@@ -16,6 +16,7 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementBinding
 import com.project.meongcare.databinding.ItemSupplementBinding
+import com.project.meongcare.supplement.utils.SupplementUtils
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 

@@ -15,8 +15,8 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomBinding
 import com.project.meongcare.databinding.ItemSymptomBinding
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomImg
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.util.Calendar

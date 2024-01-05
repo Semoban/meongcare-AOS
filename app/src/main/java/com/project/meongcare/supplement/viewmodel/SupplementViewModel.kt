@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.model.entities.Supplement
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.convertToDateToMiliSec
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToMiliSec
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date

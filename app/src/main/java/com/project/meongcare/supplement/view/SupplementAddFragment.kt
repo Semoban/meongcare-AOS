@@ -21,11 +21,11 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.convertDateToTime
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.hideKeyboard
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.showCycleBottomSheet
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.showPictureBottomSheet
-import com.project.meongcare.supplement.view.SupplementUtils.Companion.showTimeBottomSheet
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertDateToTime
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.hideKeyboard
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showCycleBottomSheet
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showPictureBottomSheet
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showTimeBottomSheet
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 
 class SupplementAddFragment : Fragment() {
@@ -125,7 +125,6 @@ class SupplementAddFragment : Fragment() {
                     )
                 }
             }
-
         }
 
         fragmentSupplementAddBinding.run {
@@ -181,7 +180,6 @@ class SupplementAddFragment : Fragment() {
                     textViewSupplementAddTimeError.visibility = View.VISIBLE
                 }
             }
-
         }
 
         return fragmentSupplementAddBinding.root

@@ -1,4 +1,4 @@
-package com.project.meongcare.supplement.view
+package com.project.meongcare.supplement.utils
 
 import android.content.Context
 import android.util.Log
