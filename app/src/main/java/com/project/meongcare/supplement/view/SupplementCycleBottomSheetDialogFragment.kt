@@ -29,7 +29,7 @@ class SupplementCycleBottomSheetDialogFragment : BottomSheetDialogFragment() {
         fragmentSupplementCycleBottomSheetBinding = BottomsheetSupplementAddCycleBinding.inflate(inflater, container, false)
 
         fragmentSupplementCycleBottomSheetBinding.run {
-            var currentNumber = 0
+            var currentNumber = 1
             val addButton = imageViewBottomsheetSupplementAddCycleNumberPlus
             val minusButton = imageViewBottomsheetSupplementAddCycleNumberMinus
             val numberCycle = textViewBottomsheetSupplementAddCycleNumber
@@ -40,7 +40,7 @@ class SupplementCycleBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
 
             minusButton.setOnClickListener {
-                if (currentNumber > 0) {
+                if (currentNumber > 1) {
                     currentNumber--
                     numberCycle.text = currentNumber.toString()
                 }

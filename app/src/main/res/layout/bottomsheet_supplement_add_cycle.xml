@@ -46,7 +46,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:textAppearance="@style/Typography.Body1.Medium"
-            android:text="0"
+            android:text="1"
             android:gravity="center"
             android:textColor="@color/black" />
 
