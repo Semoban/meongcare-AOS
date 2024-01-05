@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
     private var excretaDate = ""
