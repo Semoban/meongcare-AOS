@@ -8,15 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.excreta.model.data.repository.ExcretaRepositoryImpl
 import com.project.meongcare.excreta.model.entities.ExcretaInfo
 import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaPostDto
 import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaFile
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaPostDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ExcretaAddViewModel
-    @Inject constructor(
+    @Inject
+    constructor(
         private val excretaRepositoryImpl: ExcretaRepositoryImpl,
     ) : ViewModel() {
         private var _excretaDate = MutableLiveData<String>()
