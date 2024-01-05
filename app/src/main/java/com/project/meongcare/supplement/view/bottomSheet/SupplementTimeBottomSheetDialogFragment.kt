@@ -1,4 +1,4 @@
-package com.project.meongcare.supplement.view
+package com.project.meongcare.supplement.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle

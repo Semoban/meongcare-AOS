@@ -1,4 +1,4 @@
-package com.project.meongcare.supplement.view
+package com.project.meongcare.supplement.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,8 +9,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.BottomsheetSupplementAddCycleBinding
-import com.project.meongcare.databinding.BottomsheetSymptomAddDateBinding
-import java.time.LocalDate
 
 class SupplementCycleBottomSheetDialogFragment : BottomSheetDialogFragment() {
     lateinit var fragmentSupplementCycleBottomSheetBinding: BottomsheetSupplementAddCycleBinding
