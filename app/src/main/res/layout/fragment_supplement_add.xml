@@ -37,7 +37,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_supplementAdd"
                     android:layout_width="match_parent"
-                    android:layout_height="189dp"
+                    android:layout_height="151dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="55dp"
                     android:layout_marginRight="55dp"
@@ -62,14 +62,15 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/supplement_img_default"/>
+                                android:src="@drawable/supplement_img_default" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/Typography.Body3.Regular"
-                                android:text="사진을 첨부해주세요"
                                 android:layout_marginTop="8dp"
-                                android:textColor="@color/gray5"/>
+                                android:text="사진을 첨부해주세요"
+                                android:textAppearance="@style/Typography.Body3.Regular"
+                                android:textColor="@color/gray5" />
 
                         </LinearLayout>
 
@@ -94,11 +95,11 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/Typography.Body1.SemiBold"
-                        android:text="브랜드" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="브랜드명"
+                            android:textAppearance="@style/Typography.Body1.SemiBold" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -139,8 +140,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/Typography.Body1.SemiBold"
-                            android:text="제품명" />
+                            android:text="제품명"
+                            android:textAppearance="@style/Typography.Body1.SemiBold" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -157,13 +158,13 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/all_rect_gray2_r5"
                         android:ems="10"
-                        android:textAppearance="@style/Typography.Body1.Regular"
                         android:hint="제품명을 입력해주세요"
                         android:inputType="text"
                         android:paddingLeft="16dp"
                         android:paddingTop="11dp"
                         android:paddingBottom="11dp"
-                        android:textColorHint="@color/gray4"/>
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4" />
 
                 </LinearLayout>
 
@@ -174,12 +175,11 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Typography.Body1.SemiBold"
-                        android:text="섭취 주기"/>
+                        android:text="섭취 주기"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -191,36 +191,38 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <LinearLayout
+                        android:id="@+id/layout_supplementAdd_cycle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/layout_supplementAdd_cycle"
+                            android:id="@+id/layout_supplementAdd_cycle_text"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
 
-                        <TextView
-                            android:id="@+id/textView_supplementAdd_cycle_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textAppearance="@style/Typography.Body2.Regular"
-                            android:text="0"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/gray5"/>
+                            <TextView
+                                android:id="@+id/textView_supplementAdd_cycle_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="0"
+                                android:textAppearance="@style/Typography.Body2.Regular"
+                                android:textColor="@color/gray5" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:textAppearance="@style/Typography.Body2.Regular"
-                            android:text="일 마다"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/gray5"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:gravity="center_vertical"
+                                android:text="일 마다"
+                                android:textAppearance="@style/Typography.Body2.Regular"
+                                android:textColor="@color/gray5" />
                         </LinearLayout>
 
                         <ImageView
@@ -238,19 +240,20 @@
                     android:layout_height="2dp"
                     android:layout_marginTop="23dp"
                     android:layout_marginBottom="23dp"
-                    android:background="@color/gray2"/>
+                    android:background="@color/gray2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Typography.Body1.SemiBold"
-                        android:text="섭취 단위"/>
+                        android:text="섭취 단위"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -261,9 +264,10 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <LinearLayout
+                        android:id="@+id/layout_supplementAdd_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -273,15 +277,16 @@
                             android:layout_width="47dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="4dp"
-                            android:gravity="center"
                             android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_mg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:text="mg"
+                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:textColor="@color/gray4" />
                         </LinearLayout>
 
@@ -290,15 +295,16 @@
                             android:layout_width="47dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="4dp"
-                            android:gravity="center"
                             android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_scoop"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:text="스쿱"
+                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:textColor="@color/gray4" />
                         </LinearLayout>
 
@@ -307,15 +313,16 @@
                             android:layout_width="47dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="4dp"
-                            android:gravity="center"
                             android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_jung"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:text="정"
+                                android:textAppearance="@style/Typography.Body2.Medium"
                                 android:textColor="@color/gray4" />
                         </LinearLayout>
 
@@ -329,7 +336,7 @@
                     android:layout_height="2dp"
                     android:layout_marginTop="23dp"
                     android:layout_marginBottom="23dp"
-                    android:background="@color/gray2"/>
+                    android:background="@color/gray2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -340,20 +347,41 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Typography.Body1.SemiBold"
-                        android:text="섭취 시간"/>
+                        android:text="섭취 시간"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
 
                     <ImageView
+                        android:id="@+id/imageView_supplementAdd_time_list_essential"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="8dp"
                         android:src="@drawable/essential_input_element_icon" />
 
+                    <LinearLayout
+                        android:id="@+id/layout_supplementAdd_time_list_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="9dp"
+                        android:layout_marginLeft="9dp"
+                        android:background="@drawable/all_rect_main1_r5"
+                        android:visibility="gone"
+                        >
+                        <TextView
+                            android:id="@+id/textView_supplementAdd_time_list_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="@style/Typography.Body1.Medium"
+                            android:textColor="@color/main4"
+                            android:text="1회"
+                            />
+                    </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -364,9 +392,9 @@
                             android:id="@+id/textView_supplementAdd_time_list_add"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:textAppearance="@style/Typography.Body2.Regular"
                             android:gravity="center_vertical"
                             android:text="추가"
+                            android:textAppearance="@style/Typography.Body2.Regular"
                             android:textColor="@color/gray4" />
 
                         <TextView
@@ -374,10 +402,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
-                            android:textAppearance="@style/Typography.Body2.Regular"
                             android:gravity="center_vertical"
                             android:text="편집"
-                            android:textColor="@color/gray4" />
+                            android:textAppearance="@style/Typography.Body2.Regular"
+                            android:textColor="@color/gray4"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -389,6 +418,13 @@
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_supplement_add_time_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_supplement_add_time" />
                 </LinearLayout>
 
             </LinearLayout>

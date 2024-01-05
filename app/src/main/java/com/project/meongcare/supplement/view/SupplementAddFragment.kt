@@ -44,16 +44,25 @@ class SupplementAddFragment : Fragment() {
             onMgButtonClick()
 
             supplementCycle.observe(viewLifecycleOwner) {
-                fragmentSupplementAddBinding.textViewSupplementAddCycleCount.text = it.toString()
+                fragmentSupplementAddBinding.run {
+                    layoutSupplementAddCycleText.visibility = View.VISIBLE
+                    textViewSupplementAddCycleCount.text = it.toString()
+                }
             }
 
             intakeTimeList.observe(viewLifecycleOwner) {
                 fragmentSupplementAddBinding.run {
-                    textViewSupplementAddTimeListEdit.visibility = if (it.isNotEmpty()) {
-                        View.VISIBLE
+                    if (it.isNotEmpty()) {
+                        textViewSupplementAddTimeListEdit.visibility = View.VISIBLE
+                        imageViewSupplementAddTimeListEssential.visibility = View.GONE
+                        textViewSupplementAddTimeListCount.text = "${it.size}회"
+                        layoutSupplementAddTimeListCount.visibility = View.VISIBLE
                     } else {
-                        View.GONE
+                        textViewSupplementAddTimeListEdit.visibility = View.GONE
+                        imageViewSupplementAddTimeListEssential.visibility = View.VISIBLE
+                        layoutSupplementAddTimeListCount.visibility = View.GONE
                     }
+
                     recyclerViewSupplementAddTimeList.run {
                         adapter = SupplementAddTimeRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
