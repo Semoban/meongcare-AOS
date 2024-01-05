@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -232,4 +235,9 @@
         android:label="fragment_supplement"
         tools:layout="@layout/fragment_supplement" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.project.meongcare.Information.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
