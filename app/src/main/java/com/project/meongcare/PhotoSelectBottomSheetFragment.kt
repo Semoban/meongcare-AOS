@@ -69,7 +69,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file =
             File.createTempFile(
-                "IMG_${timeStamp}_",
+                "DOGPROFILE_${timeStamp}_",
                 ".jpg",
                 storageDir,
             )
