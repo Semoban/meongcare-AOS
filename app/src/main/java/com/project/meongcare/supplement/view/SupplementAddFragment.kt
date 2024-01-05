@@ -24,6 +24,7 @@ import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.convertDateToTime
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.hideKeyboard
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.showCycleBottomSheet
+import com.project.meongcare.supplement.view.SupplementUtils.Companion.showPictureBottomSheet
 import com.project.meongcare.supplement.view.SupplementUtils.Companion.showTimeBottomSheet
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 
@@ -128,11 +129,12 @@ class SupplementAddFragment : Fragment() {
                 navController.popBackStack()
             }
 
+            cardViewSupplementAdd.setOnClickListener {
+                showPictureBottomSheet(parentFragmentManager, supplementViewModel)
+            }
+
             controlEditText(editTextSupplementAddBrandName, "브랜드를 입력해주세요")
             controlEditText(editTextSupplementAddName, "제품명을 입력해주세요")
-
-            editTextSupplementAddName.run {
-            }
 
             layoutSupplementAddCycle.setOnClickListener {
                 showCycleBottomSheet(parentFragmentManager, supplementViewModel)
@@ -294,7 +296,9 @@ class SupplementAddFragment : Fragment() {
             }
 
             setOnFocusChangeListener { view, b ->
-                if (b) { setEditTextOriginal(this, hintText) } else return@setOnFocusChangeListener
+                if (b) {
+                    setEditTextOriginal(this, hintText)
+                } else return@setOnFocusChangeListener
             }
 
             setOnClickListener {

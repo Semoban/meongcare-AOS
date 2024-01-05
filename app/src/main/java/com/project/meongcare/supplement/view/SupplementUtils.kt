@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.view.bottomSheet.SupplementCycleBottomSheetDialogFragment
+import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.view.bottomSheet.SupplementTimeBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import java.time.Instant
@@ -78,6 +79,22 @@ class SupplementUtils {
                 }
 
             bottomSheetFragment.show(parentFragmentManager, "SupplementTimeBottomSheetDialogFragment")
+        }
+
+        fun showPictureBottomSheet(
+            parentFragmentManager: FragmentManager,
+            supplementViewModel: SupplementViewModel
+        ) {
+            val bottomSheetFragment = SupplementPictureBottomSheetDialogFragment()
+
+//            bottomSheetFragment.onPictureChangedListener =
+//                object : SupplementPictureBottomSheetDialogFragment.OnPictureChangedListener {
+//                    override fun onPictureChanged() {
+//
+//                    }
+//                }
+
+            bottomSheetFragment.show(parentFragmentManager, "SupplementPictureBottomSheetDialogFragment")
         }
     }
 }
