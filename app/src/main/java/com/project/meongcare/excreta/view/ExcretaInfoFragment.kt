@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ExcretaInfoFragment : Fragment() {
     private var _binding: FragmentExcretaInfoBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
