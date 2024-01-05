@@ -10,5 +10,5 @@
 
     <external-files-path
         name="userprofiles"
-        path="Pictures/UserProfiles"/>
+        path="Pictures/UserProfile"/>
 </paths>
