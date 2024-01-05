@@ -48,10 +48,10 @@ class SymptomInfoFragment : Fragment() {
                         R.id.menu_info_delete -> {
                             includeSymptomDeleteDialog.root.visibility = View.VISIBLE
                             includeSymptomDeleteDialog.run {
-                                buttonSymptomDeleteDialogCancel.setOnClickListener {
+                                buttonDeleteDialogCancel.setOnClickListener {
                                     includeSymptomDeleteDialog.root.visibility = View.GONE
                                 }
-                                buttonSymptomDeleteDialogDelete.setOnClickListener {
+                                buttonDeleteDialogDelete.setOnClickListener {
                                     navController.navigate(R.id.action_symptomInfo_to_symptom)
                                     val symptomIdsArray = intArrayOf(symptomData!!.symptomId)
                                     deleteSymptomData(symptomIdsArray)

@@ -92,10 +92,10 @@ class SymptomListEditFragment : Fragment() {
                 if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any { it.value } == true) {
                     includeSymptomListEditDeleteDialog.run {
                         root.visibility = View.VISIBLE
-                        buttonSymptomDeleteDialogCancel.setOnClickListener {
+                        buttonDeleteDialogCancel.setOnClickListener {
                             includeSymptomListEditDeleteDialog.root.visibility = View.GONE
                         }
-                        buttonSymptomDeleteDialogDelete.setOnClickListener {
+                        buttonDeleteDialogDelete.setOnClickListener {
                             navController.navigate(R.id.action_symptomListEdit_to_symptom)
                             deleteCheckSymptom()
                         }
