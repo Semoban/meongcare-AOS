@@ -66,7 +66,12 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     // 사진 저장할 파일 만들기
     fun makeFile(context: Context): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "DogProfile")
+
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+
         val file =
             File.createTempFile(
                 "DOGPROFILE_${timeStamp}_",
