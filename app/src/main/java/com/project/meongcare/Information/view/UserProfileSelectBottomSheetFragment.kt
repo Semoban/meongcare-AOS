@@ -33,6 +33,7 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPhotoSelectBottomSheetBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
 
         binding.run {
             textviewSelectCamera.setOnClickListener {
@@ -51,7 +52,8 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
             ActivityResultContracts.StartActivityForResult(),
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-
+                sendUri(photoURI)
+                dismiss()
             }
         }
 
@@ -62,8 +64,9 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
             if (it.resultCode == Activity.RESULT_OK) {
                 it.data?.data?.let {  uri ->
                     if (uri != null) {
-
+                        sendUri(uri)
                     }
+                    dismiss()
                 }
             }
         }
@@ -102,5 +105,12 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
         intent.setType("image/*")
         albumLauncher.launch(intent)
     }
-    
+
+    private fun sendUri(uri: Uri) {
+        photoMenuListener?.onUriPassed(uri)
+    }
+
+    fun setPhotoMenuListener(listener: PhotoMenuListener) {
+        this.photoMenuListener = listener
+    }
 }
