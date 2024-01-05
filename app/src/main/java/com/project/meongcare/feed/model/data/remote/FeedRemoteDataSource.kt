@@ -1,0 +1,37 @@
+package com.project.meongcare.feed.model.data.remote
+
+import android.util.Log
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.feed.model.entities.FeedGetResponse
+import org.json.JSONObject
+import javax.inject.Inject
+
+class FeedRemoteDataSource
+    @Inject
+    constructor() {
+        private val accessToken =
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
+        private val feedApiService = FeedClient.feedService
+
+        suspend fun getFeed(): FeedGetResponse? {
+            try {
+                val getFeedResponse =
+                    feedApiService.getFeed(
+                        accessToken,
+                        2L,
+                    )
+                return if (getFeedResponse.code() == SUCCESS) {
+                    Log.d("FeedGetSuccess", getFeedResponse.code().toString())
+                    getFeedResponse.body()
+                } else {
+                    val stringToJson = JSONObject(getFeedResponse.errorBody()?.string()!!)
+                    Log.d("FeedGetFailure", getFeedResponse.code().toString())
+                    Log.d("FeedGetFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("FeedGetException", e.toString())
+                return null
+            }
+        }
+    }
