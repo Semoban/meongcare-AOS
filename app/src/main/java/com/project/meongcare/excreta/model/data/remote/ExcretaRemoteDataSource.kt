@@ -2,9 +2,9 @@ package com.project.meongcare.excreta.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.utils.SUCCESS
 import org.json.JSONObject
 import javax.inject.Inject
