@@ -168,19 +168,15 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
                 // 서버로 전송
                 runBlocking {
-//                    userPreferences.accessToken.collect { accessToken ->
-//                        if (accessToken != null) {
-                            val dogAddResponse =
-                                dogAddRepository.postDogInfo(
-                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NDQyOTM2fQ.NKUEOyiPWhUC5FvBrKHXy-vlo6O7D5pioUb0oULAgck",
-                                    filePart,
-                                    requestBody,
-                                )
-                            if (dogAddResponse == 200) {
-                                // CompleteOnBoardingFragment로 이동
-                            }
-//                        }
-//                    }
+                    val dogAddResponse =
+                        dogAddRepository.postDogInfo(
+                        "",
+                            filePart,
+                            requestBody,
+                        )
+                    if (dogAddResponse == 200) {
+                        // CompleteOnBoardingFragment로 이동
+                    }
                 }
             }
         }
