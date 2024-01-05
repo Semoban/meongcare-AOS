@@ -170,7 +170,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 runBlocking {
                     val dogAddResponse =
                         dogAddRepository.postDogInfo(
-                        "",
+                            "",
                             filePart,
                             requestBody,
                         )
