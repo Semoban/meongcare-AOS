@@ -131,7 +131,6 @@ class SupplementAddFragment : Fragment() {
             controlEditText(editTextSupplementAddBrandName, "브랜드를 입력해주세요")
             controlEditText(editTextSupplementAddName, "제품명을 입력해주세요")
 
-
             editTextSupplementAddName.run {
             }
 
@@ -288,13 +287,14 @@ class SupplementAddFragment : Fragment() {
                                             )
                             ) && this.text.trim().isNotEmpty()
                 ) {
+                    isCursorVisible = false
                     hideKeyboard(view)
                 }
                 false
             }
 
             setOnFocusChangeListener { view, b ->
-                setEditTextOriginal(this, hintText)
+                if (b) { setEditTextOriginal(this, hintText) } else return@setOnFocusChangeListener
             }
 
             setOnClickListener {
