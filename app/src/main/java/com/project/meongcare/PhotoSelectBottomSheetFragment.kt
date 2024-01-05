@@ -3,8 +3,6 @@ package com.project.meongcare
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -31,6 +29,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     lateinit var requestCameraLauncher: ActivityResultLauncher<Intent>
     lateinit var requestAlbumLauncher: ActivityResultLauncher<Intent>
     lateinit var file: File
+    lateinit var photoURI: Uri
 
     private var photoMenuListener: PhotoMenuListener? = null
 
@@ -78,7 +77,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
     // 카메라 앱 실행하는 인텐트 생성
     fun executeCamera(context: Context) {
-        val photoURI: Uri =
+        photoURI =
             FileProvider.getUriForFile(
                 context,
                 "com.project.meongcare",
@@ -95,13 +94,8 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult(),
             ) {
-                val option = BitmapFactory.Options()
-                option.inSampleSize = 5
-                val bitmap = BitmapFactory.decodeFile(file.absolutePath, option)
-                bitmap?.let { bitmapFile ->
-                    if (bitmapFile != null) {
-                        sendBitmap(bitmapFile)
-                    }
+                if (it.resultCode == Activity.RESULT_OK) {
+                    sendUri(photoURI)
                     dismiss()
                 }
             }
@@ -118,29 +112,19 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult(),
             ) {
-                val option = BitmapFactory.Options()
-                option.inSampleSize = 5
-
                 if (it.resultCode == Activity.RESULT_OK) {
                     it.data?.data?.let { uri ->
                         if (uri != null) {
-                            val inputStream = mainActivity.contentResolver.openInputStream(uri)
-                            val bitmap = BitmapFactory.decodeStream(inputStream, null, option)
-                            inputStream?.close()
-                            bitmap?.let { bitmapFile ->
-                                if (bitmapFile != null) {
-                                    sendBitmap(bitmapFile)
-                                }
-                                dismiss()
-                            }
+                            sendUri(uri)
                         }
+                        dismiss()
                     }
                 }
             }
     }
 
-    private fun sendBitmap(bitmap: Bitmap) {
-        photoMenuListener?.onBitmapPassed(bitmap)
+    private fun sendUri(uri: Uri) {
+        photoMenuListener?.onBitmapPassed(uri)
     }
 
     fun setPhotoMenuListener(listener: PhotoMenuListener) {
