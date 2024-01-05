@@ -1,6 +1,6 @@
 package com.project.meongcare.home.model.entities
 
-data class HomeGetProfileResponse(
+data class GetUserProfileResponse(
     val email: String,
     val imageUrl: String,
 )
