@@ -1,6 +1,9 @@
 package com.project.meongcare.supplement.view
 
+import android.content.Context
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
@@ -26,12 +29,10 @@ class SupplementUtils {
             }
         }
 
-        fun convertDateToSimpleTime(localMili: String): String {
-            val inputFormatter = DateTimeFormatter.ofPattern("HH:mm")
-            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
-
-            val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+        fun hideKeyboard(view: View) {
+            val inputMethodManager =
+                view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
         fun convertToDateToMiliSec(date: Date): String {
