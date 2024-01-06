@@ -76,6 +76,7 @@ class FeedFragment : Fragment() {
         }
         initFeedAddButton()
         initOldFeedPartRecyclerView()
+        initOldFeedSeeMoreButton()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -200,6 +201,12 @@ class FeedFragment : Fragment() {
                 }
             }
             feedPartAdapter.submitList(response.feedPartRecords)
+        }
+    }
+
+    private fun initOldFeedSeeMoreButton() {
+        binding.textviewFeedOldFeedSeeMore.setOnClickListener {
+            findNavController().navigate(R.id.action_feedFragment_to_oldFeedFragment)
         }
     }
 
