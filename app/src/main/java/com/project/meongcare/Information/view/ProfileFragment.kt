@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
@@ -62,7 +63,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         binding.run {
             imagebuttonProfileBack.setOnClickListener {
-                // 이전 화면으로 이동
+                findNavController().popBackStack()
             }
 
             imageviewProfileImage.setOnClickListener {
@@ -76,12 +77,17 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 adapter = ProfileDogAdapter(layoutInflater, context)
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
+
+            buttonProfileSetting.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+            }
         }
 
         return binding.root
     }
 
     override fun onUriPassed(uri: Uri) {
+        // uri로 회원 정보 patch api 연결한 후 통신 정상이면 이미지 뷰에 표시되도록 로직 변경
         binding.run {
             Glide.with(this@ProfileFragment)
                 .load(uri)
