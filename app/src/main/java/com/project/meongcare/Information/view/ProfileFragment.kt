@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
@@ -43,7 +44,21 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        profileViewModel.getUserProfile("Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NDYzNDA3fQ.n4XuhJyJAJtbJ3YNxzqYONixzKMPBNCOSLsoz6sDei0")
+        profileViewModel.dogList.observe(viewLifecycleOwner) { dogList ->
+            if (dogList.isNotEmpty()) {
+                binding.textViewNoDog.visibility = View.GONE
+                binding.recyclerviewProfilePetList.visibility = View.VISIBLE
+                val adapter = binding.recyclerviewProfilePetList.adapter as ProfileDogAdapter
+                adapter.updateDogList(dogList)
+            } else {
+                binding.textViewNoDog.visibility = View.VISIBLE
+                binding.recyclerviewProfilePetList.visibility = View.GONE
+            }
+        }
+
+        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NTA4MzA4fQ.9blniYll3w_xR6mOfyFcquFhLT5bmGOWrRwj9cZvpz0"
+        profileViewModel.getUserProfile(accessToken)
+        profileViewModel.getDogList(accessToken)
 
         binding.run {
             imagebuttonProfileBack.setOnClickListener {
@@ -55,6 +70,11 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 modalBottomSheet.setPhotoMenuListener(this@ProfileFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+            }
+
+            recyclerviewProfilePetList.run {
+                adapter = ProfileDogAdapter(layoutInflater, context)
+                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
         }
 
