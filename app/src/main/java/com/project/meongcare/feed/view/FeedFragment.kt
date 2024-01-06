@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -28,6 +29,7 @@ class FeedFragment : Fragment() {
 
     private val feedGetViewModel: FeedGetViewModel by viewModels()
     private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
+    private lateinit var feedPartAdapter: FeedPartAdapter
     private lateinit var feedGetResponse: FeedGetResponse
 
     override fun onCreateView(
@@ -44,6 +46,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        feedPartAdapter = FeedPartAdapter()
         feedGetViewModel.getFeed()
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
             feedGetResponse = FeedGetResponse(
@@ -69,8 +72,10 @@ class FeedFragment : Fragment() {
             initNutrientTable(feedGetResponse)
             initIntakePeriod(feedGetResponse.days)
             initDailyRecommendIntake(feedGetResponse.recommendIntake)
+            updateViewVisibilityBasedOnOldFeedPartExist(feedGetResponse.feedRecordId)
         }
         initFeedAddButton()
+        initOldFeedPartRecyclerView()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -95,8 +100,17 @@ class FeedFragment : Fragment() {
                     buttonFeedChange.visibility = View.GONE
                 }
             }
+            feedPartAdapter.submitList(response.feedPartRecords)
         }
     }
+
+    private fun initOldFeedPartRecyclerView() {
+        binding.recyclerviewFeedOldfeed.run {
+            adapter = feedPartAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
     private fun initFeedAddButton() {
         binding.buttonFeedInputGuide.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
