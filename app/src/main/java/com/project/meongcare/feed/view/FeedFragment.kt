@@ -71,6 +71,8 @@ class FeedFragment : Fragment() {
                 textviewFeedBrand.visibility = View.GONE
                 textviewFeedName.visibility = View.GONE
                 piechartFeedNutrient.visibility = View.GONE
+                textviewFeedOldFeedSeeMore.visibility = View.GONE
+                buttonFeedChange.visibility = View.GONE
             } else {
                 imageviewFeedBowlIllustration.visibility = View.GONE
                 buttonFeedInputGuide.visibility = View.GONE
