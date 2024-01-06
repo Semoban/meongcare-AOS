@@ -21,13 +21,13 @@
         android:id="@+id/scrollView_supplement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/layout_supplement_no_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_supplement"
-        app:layout_constraintVertical_bias="0.0"
-        android:fillViewport="true" >
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,8 +72,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="2dp"
                             android:text="%"
-                            android:textAppearance="@style/Typography.Title3.SemiBold" />
+                            android:textColor="@color/gray5"
+                            android:textAppearance="@style/Typography.Title3" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -82,7 +84,7 @@
                     android:id="@+id/progressBar_supplement_complete"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="10dp"
+                    android:layout_height="17dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
@@ -167,16 +169,17 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
                     android:id="@+id/recyclerView_supplement"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
+                    android:layout_marginBottom="200dp"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_supplement_title"
-                    tools:itemCount="6"
+                    tools:itemCount="3"
                     tools:listitem="@layout/item_supplement" />
 
 
