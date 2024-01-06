@@ -248,4 +248,14 @@
             app:destination="@id/feedFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/oldFeedFragment"
+        android:name="com.project.meongcare.feed.view.OldFeedFragment"
+        android:label="fragment_old_feed"
+        tools:layout="@layout/fragment_old_feed" >
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
+
 </navigation>
