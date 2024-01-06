@@ -511,7 +511,8 @@
                 custom:text_size_title="18sp"
                 custom:text_size_week="16sp"
                 custom:title_color="@color/black"
-                custom:week_color="@color/black" />
+                custom:week_color="@color/black"
+                tools:visibility="visible" />
 
             <CheckBox
                 android:id="@+id/checkbox_feedaddedit_do_not_know_end_date"
