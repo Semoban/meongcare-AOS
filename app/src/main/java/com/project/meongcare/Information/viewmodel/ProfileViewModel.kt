@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.Information.model.data.repository.ProfileRepository
+import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,10 @@ class ProfileViewModel
         val dogList
             get() = _dogList
 
+        private val _dogInfo = MutableLiveData<GetDogInfoResponse>()
+        val dogInfo
+            get() = _dogInfo
+
         fun getUserProfile(accessToken: String) {
             viewModelScope.launch {
                 _userProfile.value = profileRepository.getUserProfile(accessToken)
@@ -31,6 +36,15 @@ class ProfileViewModel
         fun getDogList(accessToken: String) {
             viewModelScope.launch {
                 _dogList.value = profileRepository.getDogList(accessToken)
+            }
+        }
+
+        fun getDogInfo(
+            dogId: Long,
+            accessToken: String,
+        ) {
+            viewModelScope.launch {
+                _dogInfo.value = profileRepository.getdogInfo(dogId, accessToken)
             }
         }
     }
