@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -61,6 +62,7 @@ class FeedFragment : Fragment() {
             initIntakePeriod(feedGetResponse.days)
             initDailyRecommendIntake(feedGetResponse.recommendIntake)
         }
+        initFeedAddButton()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -73,6 +75,12 @@ class FeedFragment : Fragment() {
                 imageviewFeedBowlIllustration.visibility = View.GONE
                 buttonFeedInputGuide.visibility = View.GONE
             }
+        }
+    }
+
+    private fun initFeedAddButton() {
+        binding.buttonFeedInputGuide.setOnClickListener {
+            findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
         }
     }
 
