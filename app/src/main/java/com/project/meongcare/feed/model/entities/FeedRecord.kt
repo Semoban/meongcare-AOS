@@ -1,6 +1,6 @@
 package com.project.meongcare.feed.model.entities
 
-data class FeedPartRecord(
+data class FeedRecord(
     val brandName: String,
     val feedName: String,
     val startDate: String,

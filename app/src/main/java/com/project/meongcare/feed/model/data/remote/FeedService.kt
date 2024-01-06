@@ -1,7 +1,7 @@
 package com.project.meongcare.feed.model.data.remote
 
 import com.project.meongcare.feed.model.entities.FeedGetResponse
-import com.project.meongcare.feed.model.entities.FeedPartRecords
+import com.project.meongcare.feed.model.entities.FeedRecords
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -26,5 +26,5 @@ interface FeedService {
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Long,
         @Query("feedRecordId") feedRecordId: Long,
-    ): Response<FeedPartRecords>
+    ): Response<FeedRecords>
 }

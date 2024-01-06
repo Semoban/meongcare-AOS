@@ -1,7 +1,6 @@
 package com.project.meongcare.feed.model.data.repository
 
 import com.project.meongcare.feed.model.data.remote.FeedRemoteDataSource
-import com.project.meongcare.feed.model.entities.FeedPartRecords
 import javax.inject.Inject
 
 class FeedRepositoryImpl
