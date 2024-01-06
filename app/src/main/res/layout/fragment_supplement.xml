@@ -17,15 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView_supplement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/layout_supplement_no_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_supplement"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:fillViewport="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +37,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/all_rect_white_r10"
                 android:orientation="vertical"
                 android:padding="15dp">
@@ -113,7 +115,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:orientation="vertical">
 
@@ -165,22 +167,23 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     android:id="@+id/recyclerView_supplement"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="22dp"
-                    android:paddingBottom="82dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_supplement_title"
-                    tools:itemCount="5"
+                    tools:itemCount="6"
                     tools:listitem="@layout/item_supplement" />
 
 
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/layout_supplement_no_data"
@@ -206,5 +209,7 @@
             android:text="생성된 루틴이 없습니다!"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textColor="@color/gray5" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

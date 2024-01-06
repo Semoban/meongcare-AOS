@@ -1,6 +1,7 @@
 package com.project.meongcare.supplement.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +37,14 @@ class SupplementFragment : Fragment() {
         toolbarViewModel = mainActivity.toolbarViewModel
         supplementViewModel = ViewModelProvider(this)[SupplementViewModel::class.java]
 
-        supplementViewModel.run {
-            if (toolbarViewModel.selectedDate.value != null) {
-                updateSupplementList(1, toolbarViewModel.selectedDate.value!!)
+        toolbarViewModel.run {
+            selectedDate.observe(viewLifecycleOwner){
+                if (it != null) {
+                    supplementViewModel.updateSupplementList(1, it)
+                }
             }
+        }
+        supplementViewModel.run {
             supplementList.observe(viewLifecycleOwner) {
                 fragmentSupplementBinding.run {
                     if (supplementViewModel.supplementList.value.isNullOrEmpty()) {
@@ -108,6 +113,7 @@ class SupplementFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
+            Log.d("supplement 4",supplementViewModel.supplementList.value!!.size.toString())
             return supplementViewModel.supplementList.value!!.size
         }
 
@@ -126,9 +132,9 @@ class SupplementFragment : Fragment() {
 
             val intakeStatus = supplementViewModel.supplementList.value!![position].intakeStatus
             if (intakeStatus) {
-                holder.itemSupplementCheckImg.setImageResource(R.drawable.all_un_check_20dp)
-            } else {
                 holder.itemSupplementCheckImg.setImageResource(R.drawable.all_check_20dp)
+            } else {
+                holder.itemSupplementCheckImg.setImageResource(R.drawable.all_un_check_20dp)
             }
         }
     }

@@ -33,9 +33,11 @@ class SupplementViewModel : ViewModel() {
         val localDate = convertToDateToDate(date)
         Log.d("Supplement",localDate.toString())
         SupplementRepository.searchByDogId(dogId, localDate) { supplements ->
-            Log.d("Supplement",supplements.toString())
-            supplements!!.sortedBy { i -> i.intakeTime }
-            supplementList.value = supplements.toMutableList()
+            if(!supplements.isNullOrEmpty()) {
+                Log.d("Supplement", supplements.toString())
+                supplementList.value = supplements!!.sortedBy { i -> i.intakeTime }.toMutableList()
+                Log.d("Supplement 3", supplementList.value.toString())
+            }
         }
     }
 
