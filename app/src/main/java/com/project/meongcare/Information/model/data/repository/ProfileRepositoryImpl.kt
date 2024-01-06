@@ -2,6 +2,7 @@ package com.project.meongcare.Information.model.data.repository
 
 import android.util.Log
 import com.project.meongcare.Information.model.data.remote.ProfileRetrofitClient
+import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import javax.inject.Inject
@@ -38,6 +39,25 @@ class ProfileRepositoryImpl
             } catch (e: Exception) {
                 e.printStackTrace()
                 return null
+            }
+        }
+
+        override suspend fun getdogInfo(
+            dogId: Long,
+            accessToken: String,
+        ): GetDogInfoResponse? {
+            return try {
+                val response = profileRetrofitClient.profileApi.getDogInfo(dogId, accessToken)
+                if (response.isSuccessful) {
+                    Log.d("ProfileRepo-DogInfo", "통신 성공 : ${response.code()}")
+                    response.body()
+                } else {
+                    Log.d("ProfileRepo-DogInfo", "통신 실패 : ${response.code()}")
+                    null
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
         }
     }
