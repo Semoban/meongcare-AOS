@@ -57,7 +57,13 @@ class FeedFragment : Fragment() {
                 response.feedRecordId,
             )
             updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
-            initNutrientPieChart()
+            initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
+            initNutrientPieChart(
+                feedGetResponse.protein,
+                feedGetResponse.fat,
+                feedGetResponse.crudeAsh,
+                feedGetResponse.moisture,
+            )
             initNutrientTable(feedGetResponse)
             initIntakePeriod(feedGetResponse.days)
             initDailyRecommendIntake(feedGetResponse.recommendIntake)
@@ -86,13 +92,23 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun initNutrientPieChart() {
+    private fun initFeedInfo(brand: String, feedName: String) {
+        binding.textviewFeedBrand.text = brand
+        binding.textviewFeedName.text = feedName
+    }
+
+    private fun initNutrientPieChart(
+        protein: Double,
+        fat: Double,
+        crudeAsh: Double,
+        moisture: Double,
+    ) {
         val nutrientRatio =
             listOf(
-                PieEntry(25f),
-                PieEntry(15f),
-                PieEntry(35f),
-                PieEntry(25f),
+                PieEntry(protein.toFloat()),
+                PieEntry(fat.toFloat()),
+                PieEntry(crudeAsh.toFloat()),
+                PieEntry(moisture.toFloat()),
             )
 
         val pieColors =
