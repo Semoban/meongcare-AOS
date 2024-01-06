@@ -51,9 +51,6 @@ class SupplementFragment : Fragment() {
                         supplementViewModel.getSupplements(
                             1,
                             it,
-                            progressBarSupplementComplete,
-                            textViewSupplementPercentage,
-                            textViewSupplementProgressPercentageBottom
                         )
                     }
                 }

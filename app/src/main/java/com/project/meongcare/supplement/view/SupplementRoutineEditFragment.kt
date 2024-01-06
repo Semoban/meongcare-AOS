@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +16,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentSupplementRoutineEditBinding
 import com.project.meongcare.databinding.ItemSupplementRoutineEditBinding
+import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.Supplement
+import com.project.meongcare.supplement.viewmodel.SupplementViewModel
+import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 
 class SupplementRoutineEditFragment : Fragment() {
     lateinit var fragmentSupplementRoutineEditBinding: FragmentSupplementRoutineEditBinding
     lateinit var mainActivity: MainActivity
     lateinit var navController: NavController
-    var supplementsList = mutableListOf<Supplement>()
+    lateinit var supplementViewModel: SupplementViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,15 +38,37 @@ class SupplementRoutineEditFragment : Fragment() {
 
         navController = findNavController()
 
-        supplementsList = arguments?.getParcelableArrayList<Supplement>("supplements_key")!!
+        val factory = SupplementViewModelFactory(SupplementRepository())
+        supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
-        Log.d("루틴 편집", supplementsList.toString())
+        supplementViewModel.run {
+            getSupplementInfos(1)
+            supplementIdListAllCheck.observe(viewLifecycleOwner) {
+                Log.d("루틴 변경", it.toString())
+                Log.d("루틴 변경2", supplementIdList.value.toString())
+                fragmentSupplementRoutineEditBinding.run {
+                    recyclerViewSupplementRoutineEdit.run {
+                        adapter = SupplementRoutineEditRecyclerViewAdapter()
+                        layoutManager = LinearLayoutManager(context)
+                    }
+                }
+            }
+            supplementInfoList.observe(viewLifecycleOwner) {
+                fragmentSupplementRoutineEditBinding.recyclerViewSupplementRoutineEdit.run {
+                    adapter = SupplementRoutineEditRecyclerViewAdapter()
+                    layoutManager = LinearLayoutManager(context)
+                }
+            }
+        }
 
         fragmentSupplementRoutineEditBinding.run {
             toolbarSupplementRoutineEdit.setNavigationOnClickListener { navController.popBackStack() }
-            recyclerViewSupplementRoutineEdit.run {
-                adapter = SupplementRoutineEditRecyclerViewAdapter()
-                layoutManager = LinearLayoutManager(context)
+
+            imageViewSupplementRoutineEditDeleteAllCheck.setOnClickListener { view ->
+                val isAllSelected = !view.isSelected
+                view.isSelected = isAllSelected
+                val temp = supplementViewModel.supplementInfoList.value!!.map { it.supplementsId }.toMutableList()
+                supplementViewModel.setAllItemsChecked(imageViewSupplementRoutineEditDeleteAllCheck.isSelected, temp)
             }
 
             buttonSupplementRoutineEditCancel.setOnClickListener {
@@ -53,6 +80,7 @@ class SupplementRoutineEditFragment : Fragment() {
 
     inner class SupplementRoutineEditRecyclerViewAdapter :
         RecyclerView.Adapter<SupplementRoutineEditRecyclerViewAdapter.SupplementRoutineEditHolder>() {
+
         inner class SupplementRoutineEditHolder(itemSupplementRoutineEditBinding: ItemSupplementRoutineEditBinding) :
             RecyclerView.ViewHolder(itemSupplementRoutineEditBinding.root) {
             val itemSupplementRoutineEditName: TextView
@@ -90,22 +118,32 @@ class SupplementRoutineEditFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return supplementsList.size
+            return supplementViewModel.supplementInfoList.value!!.size
         }
 
         override fun onBindViewHolder(
             holder: SupplementRoutineEditHolder,
             position: Int,
         ) {
-            holder.itemSupplementRoutineEditName.text = supplementsList[position].name
-            val intakeCount = supplementsList[position].intakeCount
-            val intakeUnit = supplementsList[position].intakeUnit
-            holder.itemSupplementRoutineEditAmount.text = "$intakeCount$intakeUnit"
+            Log.d("루틴 편집20", supplementViewModel.supplementInfoList.value!!.toString())
+            holder.itemSupplementRoutineEditName.text = supplementViewModel.supplementInfoList.value!![position].name
 
-            val supplementsRecordId = supplementsList[position].supplementsRecordId
+            val supplementsId = supplementViewModel.supplementInfoList.value!![position].supplementsId
+            Log.d("루틴 편집3", supplementsId.toString())
+
+            holder.itemSupplementRoutineEditCheckImg.isSelected =
+                supplementViewModel.supplementIdList.value!!.contains(supplementsId)
+            Log.d("루틴 편집4", supplementsId.toString())
 
             holder.itemSupplementRoutineEditCheckImg.setOnClickListener {
-                it.isSelected = !it.isSelected
+                supplementViewModel.updateSupplementIds(mutableListOf(supplementsId))
+                holder.itemSupplementRoutineEditCheckImg.isSelected =
+                    !holder.itemSupplementRoutineEditCheckImg.isSelected
+
+                if (supplementViewModel.supplementIdListAllCheck.value!!) {
+                    fragmentSupplementRoutineEditBinding.imageViewSupplementRoutineEditDeleteAllCheck.isSelected =
+                        false
+                }
             }
         }
     }

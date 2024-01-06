@@ -8,11 +8,14 @@ data class ResultSupplement(
     val routines: List<Supplement>,
 )
 
+data class InfoSupplement(
+    val supplementsInfos: List<SupplementInfo>,
+)
+
 data class ResponseSupplement(
     val success: Boolean,
     val message: String,
 )
-
 
 @Parcelize
 data class Supplement(
@@ -44,5 +47,11 @@ data class SupplementDto(
     val intakeCycle: Int,
     val intakeUnit: String,
     val intakeInfos: List<IntakeInfo>
+)
+
+data class SupplementInfo(
+    val supplementsId: Int,
+    val name: String,
+    val pushAgreement: Boolean,
 )
 
