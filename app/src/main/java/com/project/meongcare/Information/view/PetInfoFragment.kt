@@ -43,6 +43,11 @@ class PetInfoFragment : Fragment() {
             imagebuttonPetaddBack.setOnClickListener {
                 findNavController().popBackStack()
             }
+            imagebuttonPetaddEdit.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putParcelable("dogInfo", petInfoViewModel.dogInfo.value)
+                findNavController().navigate(R.id.action_petInfoFragment_to_petEditFragment, bundle)
+            }
             imagebuttonPetaddDelete.setOnClickListener {
                 includeDeleteDialog.root.visibility = View.VISIBLE
                 includeDeleteDialog.run {
