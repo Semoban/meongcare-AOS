@@ -22,9 +22,6 @@ import com.project.meongcare.supplement.utils.SupplementUtils
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SupplementFragment : Fragment() {
     lateinit var fragmentSupplementBinding: FragmentSupplementBinding
@@ -33,7 +30,6 @@ class SupplementFragment : Fragment() {
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
     var supplementIdList = mutableMapOf<Int, Boolean>()
-    var supplementIsCheckEditList = mutableMapOf<Int, Boolean>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +45,13 @@ class SupplementFragment : Fragment() {
             selectedDate.observe(viewLifecycleOwner) {
                 if (it != null) {
                     fragmentSupplementBinding.run {
-                        supplementViewModel.getSupplements(1, it, progressBarSupplementComplete, textViewSupplementPercentage, textViewSupplementProgressPercentageBottom)
+                        supplementViewModel.getSupplements(
+                            1,
+                            it,
+                            progressBarSupplementComplete,
+                            textViewSupplementPercentage,
+                            textViewSupplementProgressPercentageBottom
+                        )
                     }
                 }
             }
@@ -57,15 +59,11 @@ class SupplementFragment : Fragment() {
 
         supplementViewModel.run {
             supplementList.observe(viewLifecycleOwner) {
-//                var supplementIds= it.associateBy({ it.supplementsRecordId }, { it.intakeStatus }) as MutableMap<Int, Boolean>
-//                supplementIdList.putAll(supplementIds)
-//                supplementCheckCountList.putAll(supplementIds.c
                 supplementIdList = it.associateBy({ it.supplementsRecordId },
                     { it.intakeStatus }) as MutableMap<Int, Boolean>
-                supplementIsCheckEditList = it.associateBy({ it.supplementsRecordId },
-                    { false }) as MutableMap<Int, Boolean>
 
                 Log.d("supplement check toggle2", supplementIdList.toString())
+
                 fragmentSupplementBinding.run {
                     if (supplementViewModel.supplementList.value.isNullOrEmpty()) {
                         recyclerViewSupplement.visibility = View.GONE
@@ -84,7 +82,11 @@ class SupplementFragment : Fragment() {
 
                 supplementCheckCount.observe(viewLifecycleOwner) {
                     fragmentSupplementBinding.run {
-                        updatePercentage(progressBarSupplementComplete, textViewSupplementPercentage, textViewSupplementProgressPercentageBottom)
+                        updatePercentage(
+                            progressBarSupplementComplete,
+                            textViewSupplementPercentage,
+                            textViewSupplementProgressPercentageBottom
+                        )
                     }
                 }
             }
@@ -131,7 +133,6 @@ class SupplementFragment : Fragment() {
             val itemSupplementBinding = ItemSupplementBinding.inflate(layoutInflater)
             val allViewHolder = SupplementViewHolder(itemSupplementBinding)
 
-            Log.d("영양제 리사이클러뷰 에러3", allViewHolder.itemSupplementTime.toString())
             allViewHolder.itemSupplementTime
             itemSupplementBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
@@ -160,9 +161,9 @@ class SupplementFragment : Fragment() {
             val intakeUnit = supplementViewModel.supplementList.value!![position].intakeUnit
             holder.itemSupplementUnit.text = "$intakeCount$intakeUnit"
 
-//            val intakeStatus = supplementViewModel.supplementList.value!![position].intakeStatus
             val supplementsRecordId =
                 supplementViewModel.supplementList.value!![position].supplementsRecordId
+
             holder.itemSupplementCheckImg.isSelected = supplementIdList[supplementsRecordId] == true
 
             holder.itemSupplementCheckImg.setOnClickListener {
