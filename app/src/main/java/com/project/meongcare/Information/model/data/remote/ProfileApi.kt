@@ -1,5 +1,6 @@
 package com.project.meongcare.Information.model.data.remote
 
+import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,4 +11,9 @@ interface ProfileApi {
     suspend fun getUserProfile(
         @Header("AccessToken") accessToken: String,
     ): Response<GetUserProfileResponse>
+
+    @GET("/dog")
+    suspend fun getDogList(
+        @Header("AccessToken") accessToken: String,
+    ): Response<GetDogListResponse>
 }
