@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 
 class FeedAddFragment : Fragment() {
@@ -25,6 +26,13 @@ class FeedAddFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        binding.toolbarFeedaddedit.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
