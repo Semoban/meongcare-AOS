@@ -17,9 +17,14 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementBinding
 import com.project.meongcare.databinding.ItemSupplementBinding
+import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.utils.SupplementUtils
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
+import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SupplementFragment : Fragment() {
     lateinit var fragmentSupplementBinding: FragmentSupplementBinding
@@ -27,6 +32,8 @@ class SupplementFragment : Fragment() {
     lateinit var toolbarViewModel: ToolbarViewModel
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
+    var supplementIdList = mutableMapOf<Int, Boolean>()
+    var supplementIsCheckEditList = mutableMapOf<Int, Boolean>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,17 +42,30 @@ class SupplementFragment : Fragment() {
         fragmentSupplementBinding = FragmentSupplementBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         toolbarViewModel = mainActivity.toolbarViewModel
-        supplementViewModel = ViewModelProvider(this)[SupplementViewModel::class.java]
+        val factory = SupplementViewModelFactory(SupplementRepository())
+        supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
         toolbarViewModel.run {
-            selectedDate.observe(viewLifecycleOwner){
+            selectedDate.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    supplementViewModel.updateSupplementList(1, it)
+                    fragmentSupplementBinding.run {
+                        supplementViewModel.getSupplements(1, it, progressBarSupplementComplete, textViewSupplementPercentage, textViewSupplementProgressPercentageBottom)
+                    }
                 }
             }
         }
+
         supplementViewModel.run {
             supplementList.observe(viewLifecycleOwner) {
+//                var supplementIds= it.associateBy({ it.supplementsRecordId }, { it.intakeStatus }) as MutableMap<Int, Boolean>
+//                supplementIdList.putAll(supplementIds)
+//                supplementCheckCountList.putAll(supplementIds.c
+                supplementIdList = it.associateBy({ it.supplementsRecordId },
+                    { it.intakeStatus }) as MutableMap<Int, Boolean>
+                supplementIsCheckEditList = it.associateBy({ it.supplementsRecordId },
+                    { false }) as MutableMap<Int, Boolean>
+
+                Log.d("supplement check toggle2", supplementIdList.toString())
                 fragmentSupplementBinding.run {
                     if (supplementViewModel.supplementList.value.isNullOrEmpty()) {
                         recyclerViewSupplement.visibility = View.GONE
@@ -61,7 +81,14 @@ class SupplementFragment : Fragment() {
                         layoutManager = LinearLayoutManager(context)
                     }
                 }
+
+                supplementCheckCount.observe(viewLifecycleOwner) {
+                    fragmentSupplementBinding.run {
+                        updatePercentage(progressBarSupplementComplete, textViewSupplementPercentage, textViewSupplementProgressPercentageBottom)
+                    }
+                }
             }
+
         }
 
         navController = findNavController()
@@ -70,6 +97,7 @@ class SupplementFragment : Fragment() {
             textViewSupplementAdd.setOnClickListener {
                 navController.navigate(R.id.action_supplement_to_supplementAdd)
             }
+
         }
 
         return fragmentSupplementBinding.root
@@ -90,9 +118,9 @@ class SupplementFragment : Fragment() {
                 itemSupplementUnit = itemSupplementBinding.textViewItemSupplementUnit
                 itemSupplementCheckImg = itemSupplementBinding.imageViewItemSupplementCheck
 
-                itemSupplementBinding.root.setOnClickListener {
-                    navController.navigate(R.id.action_supplement_to_supplementInfo)
-                }
+//                itemSupplementBinding.root.setOnClickListener {
+//                    navController.navigate(R.id.action_supplement_to_supplementInfo)
+//                }
             }
         }
 
@@ -103,6 +131,8 @@ class SupplementFragment : Fragment() {
             val itemSupplementBinding = ItemSupplementBinding.inflate(layoutInflater)
             val allViewHolder = SupplementViewHolder(itemSupplementBinding)
 
+            Log.d("영양제 리사이클러뷰 에러3", allViewHolder.itemSupplementTime.toString())
+            allViewHolder.itemSupplementTime
             itemSupplementBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -113,7 +143,7 @@ class SupplementFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            Log.d("supplement 4",supplementViewModel.supplementList.value!!.size.toString())
+            Log.d("영양제 리사이클러뷰 에러2", supplementViewModel.supplementList.value!!.size.toString())
             return supplementViewModel.supplementList.value!!.size
         }
 
@@ -130,12 +160,19 @@ class SupplementFragment : Fragment() {
             val intakeUnit = supplementViewModel.supplementList.value!![position].intakeUnit
             holder.itemSupplementUnit.text = "$intakeCount$intakeUnit"
 
-            val intakeStatus = supplementViewModel.supplementList.value!![position].intakeStatus
-            if (intakeStatus) {
-                holder.itemSupplementCheckImg.setImageResource(R.drawable.all_check_20dp)
-            } else {
-                holder.itemSupplementCheckImg.setImageResource(R.drawable.all_un_check_20dp)
+//            val intakeStatus = supplementViewModel.supplementList.value!![position].intakeStatus
+            val supplementsRecordId =
+                supplementViewModel.supplementList.value!![position].supplementsRecordId
+            holder.itemSupplementCheckImg.isSelected = supplementIdList[supplementsRecordId] == true
+
+            holder.itemSupplementCheckImg.setOnClickListener {
+                supplementViewModel.run {
+                    checkSupplement(supplementsRecordId, holder.itemSupplementCheckImg)
+                }
             }
+
+            Log.d("영양제 리사이클러뷰 에러", "${supplementViewModel.supplementList.value!![position]}")
         }
     }
+
 }

@@ -67,7 +67,7 @@
                     android:id="@+id/imageView_item_supplement_check"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
