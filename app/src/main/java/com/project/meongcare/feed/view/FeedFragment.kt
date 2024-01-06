@@ -73,10 +73,10 @@ class FeedFragment : Fragment() {
             initIntakePeriod(feedGetResponse.days)
             initDailyRecommendIntake(feedGetResponse.recommendIntake)
             updateViewVisibilityBasedOnOldFeedPartExist(feedGetResponse.feedRecordId)
+            initOldFeedSeeMoreButton(feedGetResponse.feedRecordId)
         }
         initFeedAddButton()
         initOldFeedPartRecyclerView()
-        initOldFeedSeeMoreButton()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -204,9 +204,11 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun initOldFeedSeeMoreButton() {
+    private fun initOldFeedSeeMoreButton(feedRecordId: Long) {
         binding.textviewFeedOldFeedSeeMore.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_oldFeedFragment)
+            val bundle = Bundle()
+            bundle.putLong("feedRecordId", feedRecordId)
+            findNavController().navigate(R.id.action_feedFragment_to_oldFeedFragment, bundle)
         }
     }
 
