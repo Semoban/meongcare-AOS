@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -31,7 +30,7 @@ class SupplementFragment : Fragment() {
     lateinit var toolbarViewModel: ToolbarViewModel
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
-    var supplementIdList = mutableMapOf<Int, Boolean>()
+    var supplementIdListTemp = mutableMapOf<Int, Boolean>()
     private val TYPE_REGULAR_ITEM = 0
     private val TYPE_LAST_ITEM = 1
     override fun onCreateView(
@@ -63,7 +62,7 @@ class SupplementFragment : Fragment() {
 
         supplementViewModel.run {
             supplementList.observe(viewLifecycleOwner) {
-                supplementIdList = it.associateBy({ it.supplementsRecordId },
+                supplementIdListTemp = it.associateBy({ it.supplementsRecordId },
                     { it.intakeStatus }) as MutableMap<Int, Boolean>
 
                 Log.d("supplement check toggle2", supplementIdList.toString())
@@ -189,7 +188,7 @@ class SupplementFragment : Fragment() {
             val supplementsRecordId =
                 supplementViewModel.supplementList.value!![position].supplementsRecordId
 
-            holder.itemSupplementCheckImg.isSelected = supplementIdList[supplementsRecordId] == true
+            holder.itemSupplementCheckImg.isSelected = supplementIdListTemp[supplementsRecordId] == true
 
             holder.itemSupplementCheckImg.setOnClickListener {
                 supplementViewModel.run {
