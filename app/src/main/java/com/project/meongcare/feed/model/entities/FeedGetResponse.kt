@@ -1,8 +1,8 @@
 package com.project.meongcare.feed.model.entities
 
 data class FeedGetResponse(
-    val brand: String,
-    val feedName: String,
+    val brand: String? = null,
+    val feedName: String? = null,
     val protein: Double,
     val fat: Double,
     val crudeAsh: Double,
