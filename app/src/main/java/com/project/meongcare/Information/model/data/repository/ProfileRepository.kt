@@ -13,4 +13,9 @@ interface ProfileRepository {
         dogId: Long,
         accessToken: String,
     ): GetDogInfoResponse?
+
+    suspend fun deleteDog(
+        dogId: Long,
+        accessToken: String,
+    ): Int?
 }

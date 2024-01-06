@@ -4,6 +4,7 @@ import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -24,4 +25,10 @@ interface ProfileApi {
         @Path("dogId") dogId: Long,
         @Header("AccessToken") accessToken: String,
     ): Response<GetDogInfoResponse>
+
+    @DELETE("/dog/{dogId}")
+    suspend fun deleteDog(
+        @Path("dogId") dogId: Long,
+        @Header("AccessToken") accessToken: String,
+    ): Response<Int>
 }
