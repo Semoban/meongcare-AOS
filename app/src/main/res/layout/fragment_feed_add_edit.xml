@@ -419,40 +419,44 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_feedaddedit_daily_intake" />
 
-            <EditText
-                android:id="@+id/edittext_feedaddedit_intake_period_start"
+            <TextView
+                android:id="@+id/textview_feedaddedit_intake_period_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/all_rect_r5"
-                android:drawableEnd="@drawable/all_calendar"
-                android:hint="시작 일자"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
+                android:text="시작 일자"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintEnd_toStartOf="@id/edittext_feedaddedit_intake_period_end"
+                android:textColor="@color/gray4"
+                app:drawableEndCompat="@drawable/all_calendar"
+                app:layout_constraintEnd_toStartOf="@id/textview_feedaddedit_intake_period_end"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_intake_period_title" />
 
-            <EditText
-                android:id="@+id/edittext_feedaddedit_intake_period_end"
+            <TextView
+                android:id="@+id/textview_feedaddedit_intake_period_end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/all_rect_r5"
-                android:drawableEnd="@drawable/all_calendar"
-                android:hint="종료 일자"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
+                android:text="종료 일자"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:textColorHint="@color/gray4"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_intake_period_start"
+                android:textColor="@color/gray4"
+                app:drawableEndCompat="@drawable/all_calendar"
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_intake_period_start"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edittext_feedaddedit_intake_period_start"
-                app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_intake_period_start" />
+                app:layout_constraintStart_toEndOf="@id/textview_feedaddedit_intake_period_start"
+                app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_intake_period_start" />
 
             <CalendarView
                 android:id="@+id/calendarview_feedaddedit"
