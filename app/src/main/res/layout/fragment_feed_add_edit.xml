@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -458,15 +459,25 @@
                 app:layout_constraintStart_toEndOf="@id/textview_feedaddedit_intake_period_start"
                 app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_intake_period_start" />
 
-            <CalendarView
+            <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
                 android:id="@+id/calendarview_feedaddedit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_feedaddedit_intake_period_start" />
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="32dp"
+                custom:disable_date_color="@color/gray4"
+                custom:layout_constraintEnd_toEndOf="parent"
+                custom:layout_constraintStart_toStartOf="parent"
+                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_start"
+                custom:range_color="@color/main1"
+                custom:range_date_color="@color/main4"
+                custom:selected_date_circle_color="@color/main4"
+                custom:selected_date_color="@color/white"
+                custom:text_size_date="16sp"
+                custom:text_size_title="18sp"
+                custom:text_size_week="16sp"
+                custom:title_color="@color/black"
+                custom:week_color="@color/black" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_feedaddedit_completion"
