@@ -513,12 +513,40 @@
                 custom:title_color="@color/black"
                 custom:week_color="@color/black" />
 
+            <CheckBox
+                android:id="@+id/checkbox_feedaddedit_do_not_know_end_date"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="40dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calendarview_feedaddedit"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textview_feedaddedit_do_not_know_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:text="모름"
+                android:visibility="gone"
+                android:textColor="@color/gray4"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                app:layout_constraintBottom_toBottomOf="@id/checkbox_feedaddedit_do_not_know_end_date"
+                app:layout_constraintStart_toEndOf="@id/checkbox_feedaddedit_do_not_know_end_date"
+                app:layout_constraintTop_toTopOf="@id/checkbox_feedaddedit_do_not_know_end_date"
+                tools:visibility="visible" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_feedaddedit_completion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
-                android:layout_marginVertical="24dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/all_rect_r5"
                 android:backgroundTint="@color/main4"
                 android:paddingVertical="12dp"
@@ -528,7 +556,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendarview_feedaddedit" />
+                app:layout_constraintTop_toBottomOf="@id/checkbox_feedaddedit_do_not_know_end_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
