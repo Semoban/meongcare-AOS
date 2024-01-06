@@ -27,6 +27,10 @@ class ProfileViewModel
         val dogInfo
             get() = _dogInfo
 
+        private val _dogDeleteResponse = MutableLiveData<Int>()
+        val dogDeleteResponse
+            get() = _dogDeleteResponse
+
         fun getUserProfile(accessToken: String) {
             viewModelScope.launch {
                 _userProfile.value = profileRepository.getUserProfile(accessToken)
@@ -45,6 +49,15 @@ class ProfileViewModel
         ) {
             viewModelScope.launch {
                 _dogInfo.value = profileRepository.getdogInfo(dogId, accessToken)
+            }
+        }
+
+        fun deleteDog(
+            dogId: Long,
+            accessToken: String,
+        ) {
+            viewModelScope.launch {
+                _dogDeleteResponse.value = profileRepository.deleteDog(dogId, accessToken)
             }
         }
     }
