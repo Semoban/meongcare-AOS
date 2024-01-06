@@ -224,7 +224,11 @@
         android:id="@+id/feedFragment"
         android:name="com.project.meongcare.feed.view.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/supplementFragment"
