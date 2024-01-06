@@ -498,6 +498,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="50dp"
                 android:layout_marginTop="32dp"
+                android:visibility="gone"
                 custom:disable_date_color="@color/gray4"
                 custom:layout_constraintEnd_toEndOf="parent"
                 custom:layout_constraintStart_toStartOf="parent"
