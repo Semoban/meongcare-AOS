@@ -58,6 +58,8 @@ class FeedFragment : Fragment() {
             updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
             initNutrientPieChart()
             initNutrientTable(feedGetResponse)
+            initIntakePeriod(feedGetResponse.days)
+            initDailyRecommendIntake(feedGetResponse.recommendIntake)
         }
     }
 
@@ -149,8 +151,23 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun initIntakePeriod(days: Long) {
+        binding.textviewFeedIntakePeriodContent.text = convertIntakePeriod(days)
+    }
+
+    private fun initDailyRecommendIntake(recommendIntake: Int) {
+        binding.textviewFeedDailyIntakeContent.text = convertDailyRecommendIntake(recommendIntake)
+    }
+
     private fun convertNutrientPercentage(nutrientPercentage: Int) =
         String.format("%d%%", nutrientPercentage)
+
+    private fun convertIntakePeriod(days: Long) =
+        String.format("%d일", days)
+
+    private fun convertDailyRecommendIntake(recommendIntake: Int) =
+        String.format("%dg", recommendIntake)
+
 
     override fun onDestroyView() {
         super.onDestroyView()
