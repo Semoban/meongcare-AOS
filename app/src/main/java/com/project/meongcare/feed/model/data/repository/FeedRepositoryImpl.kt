@@ -9,4 +9,5 @@ class FeedRepositoryImpl
         private val feedRemoteDataSource: FeedRemoteDataSource,
     ) : FeedRepository {
             override suspend fun getFeed() = feedRemoteDataSource.getFeed()
+        override suspend fun postFeed() = feedRemoteDataSource.postFeed()
     }
