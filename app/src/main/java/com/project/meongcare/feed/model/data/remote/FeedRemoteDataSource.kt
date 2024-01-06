@@ -13,6 +13,27 @@ class FeedRemoteDataSource
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val feedApiService = FeedClient.feedService
 
+        suspend fun postFeed(): Int? {
+            try {
+                val postFeedResponse =
+                    feedApiService.postFeed(
+                        accessToken,
+                    )
+                return if (postFeedResponse.code() == SUCCESS) {
+                    Log.d("FeedPostSuccess", postFeedResponse.code().toString())
+                    postFeedResponse.body()
+                } else {
+                    val stringToJson = JSONObject(postFeedResponse.code().toString())
+                    Log.d("FeedPostFailure", postFeedResponse.code().toString())
+                    Log.d("FeedPostFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("FeedPostException", e.toString())
+                return null
+            }
+        }
+
         suspend fun getFeed(): FeedGetResponse? {
             try {
                 val getFeedResponse =
