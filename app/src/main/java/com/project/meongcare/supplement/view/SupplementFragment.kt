@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -30,6 +31,8 @@ class SupplementFragment : Fragment() {
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
     var supplementIdList = mutableMapOf<Int, Boolean>()
+    private val TYPE_REGULAR_ITEM = 0
+    private val TYPE_LAST_ITEM = 1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,12 +116,14 @@ class SupplementFragment : Fragment() {
             val itemSupplementTime: TextView
             val itemSupplementUnit: TextView
             val itemSupplementCheckImg: ImageView
+            val itemSupplementCardView: CardView
 
             init {
                 itemSupplementName = itemSupplementBinding.textViewItemSupplementName
                 itemSupplementTime = itemSupplementBinding.textViewItemSupplementTime
                 itemSupplementUnit = itemSupplementBinding.textViewItemSupplementUnit
                 itemSupplementCheckImg = itemSupplementBinding.imageViewItemSupplementCheck
+                itemSupplementCardView = itemSupplementBinding.cardViewItemSupplement
 
 //                itemSupplementBinding.root.setOnClickListener {
 //                    navController.navigate(R.id.action_supplement_to_supplementInfo)
@@ -133,7 +138,11 @@ class SupplementFragment : Fragment() {
             val itemSupplementBinding = ItemSupplementBinding.inflate(layoutInflater)
             val allViewHolder = SupplementViewHolder(itemSupplementBinding)
 
-            allViewHolder.itemSupplementTime
+            if (viewType == TYPE_LAST_ITEM) {
+                val layoutParams =
+                    allViewHolder.itemSupplementCardView.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.bottomMargin = 0
+            }
             itemSupplementBinding.root.layoutParams =
                 ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -146,6 +155,14 @@ class SupplementFragment : Fragment() {
         override fun getItemCount(): Int {
             Log.d("영양제 리사이클러뷰 에러2", supplementViewModel.supplementList.value!!.size.toString())
             return supplementViewModel.supplementList.value!!.size
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            return if (position == itemCount - 1) {
+                TYPE_LAST_ITEM
+            } else {
+                TYPE_REGULAR_ITEM
+            }
         }
 
         override fun onBindViewHolder(

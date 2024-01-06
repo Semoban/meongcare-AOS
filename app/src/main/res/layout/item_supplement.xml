@@ -25,6 +25,7 @@
             android:background="@color/gray3" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView_item_supplement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
