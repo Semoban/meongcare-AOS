@@ -265,6 +265,9 @@
         android:name="com.project.meongcare.feed.view.SearchFeedFragment"
         android:label="fragment_search_feed"
         tools:layout="@layout/fragment_search_feed" >
+        <action
+            android:id="@+id/action_searchFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 
 </navigation>
