@@ -124,7 +124,7 @@
 
     <include
         android:id="@+id/include_symptom_delete_dialog"
-        layout="@layout/layout_symptom_delete_dialog"
+        layout="@layout/layout_delete_dialog"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
