@@ -59,7 +59,12 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         viewModelScope.launch {
             val check = repository.checkSupplement(supplementsRecordId)
             check.onSuccess {
-                supplementCheckCount.value = supplementCheckCount.value?.plus(1)
+                if (!imageView.isSelected) {
+                    supplementCheckCount.value = supplementCheckCount.value?.plus(1)
+                } else {
+                    supplementCheckCount.value = supplementCheckCount.value?.minus(1)
+                }
+
                 Log.d("영양제 체크 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 체크 Api 통신 에러", it.toString())
