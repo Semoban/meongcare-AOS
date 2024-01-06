@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
@@ -37,6 +38,30 @@ class PetInfoFragment : Fragment() {
         val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NTI5MzQxfQ.OyMJ6nYc5ts7pIik__904ClK01HFUeYxjCbITeZMLr0"
         val dogId = arguments?.getLong("dogId")!!
         petInfoViewModel.getDogInfo(dogId, accessToken)
+
+        binding.run {
+            imagebuttonPetaddDelete.setOnClickListener {
+                includeDeleteDialog.root.visibility = View.VISIBLE
+                includeDeleteDialog.run {
+                    constraintlayoutBg.setOnClickListener {
+                        includeDeleteDialog.root.visibility = View.GONE
+                    }
+                    cardviewDialog.setOnClickListener {
+                        includeDeleteDialog.root.visibility = View.VISIBLE
+                    }
+                    buttonDeleteDialogCancel.setOnClickListener {
+                        includeDeleteDialog.root.visibility = View.GONE
+                    }
+                    buttonDeleteDialogDelete.setOnClickListener {
+                        petInfoViewModel.deleteDog(dogId, accessToken)
+                        petInfoViewModel.dogDeleteResponse.observe(viewLifecycleOwner) { response ->
+                            if (response == 200) findNavController().popBackStack()
+                        }
+                    }
+                }
+            }
+        }
+
         return binding.root
     }
 
