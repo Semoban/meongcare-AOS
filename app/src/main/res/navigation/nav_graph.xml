@@ -242,17 +242,27 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_petAddFragment"
-            app:destination="@id/petAddFragment" />
+            app:destination="@id/petInfoFragment" />
         <action
             android:id="@+id/action_profileFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/petAddFragment"
+        android:id="@+id/petInfoFragment"
         android:name="com.project.meongcare.Information.view.PetInfoFragment"
         android:label="fragment_pet_add_edit"
-        tools:layout="@layout/fragment_pet_add_edit"/>
+        tools:layout="@layout/fragment_pet_add_edit">
+        <action
+            android:id="@+id/action_petInfoFragment_to_petEditFragment"
+            app:destination="@id/petEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petEditFragment"
+        android:name="com.project.meongcare.Information.view.PetEditFragment"
+        android:label="fragment_pet_edit"
+        tools:layout="@layout/fragment_pet_edit"/>
 
     <fragment
         android:id="@+id/settingFragment"
