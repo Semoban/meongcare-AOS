@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemToolbarCalendarWeekBinding
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -93,8 +94,12 @@ class ToolbarDateRecyclerViewAdapter(val mainActivity: MainActivity) :
         }
 
         holder.itemLayout.setOnClickListener {
-            toolbarViewModel.selectDatePosition.value = position
-            toolbarViewModel.selectedDate.value = getItem(position)
+            val originCovertDate = convertToDateToDate(toolbarViewModel.selectedDate.value!!)
+            val newCovertDate = convertToDateToDate(getItem(position))
+            if (originCovertDate != newCovertDate) {
+                toolbarViewModel.selectDatePosition.value = position
+                toolbarViewModel.selectedDate.value = getItem(position)
+            }
         }
     }
 
