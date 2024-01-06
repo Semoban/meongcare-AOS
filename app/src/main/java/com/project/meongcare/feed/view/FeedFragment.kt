@@ -91,26 +91,6 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun updateViewVisibilityBasedOnOldFeedPartExist(feedRecordId: Long) {
-        feedPartGetViewModel.getFeedPart(feedRecordId)
-        feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
-            if (response.feedPartRecords.isEmpty()) {
-                binding.apply {
-                    textviewFeedOldFeedSeeMore.visibility = View.GONE
-                    buttonFeedChange.visibility = View.GONE
-                }
-            }
-            feedPartAdapter.submitList(response.feedPartRecords)
-        }
-    }
-
-    private fun initOldFeedPartRecyclerView() {
-        binding.recyclerviewFeedOldfeed.run {
-            adapter = feedPartAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-    }
-
     private fun initFeedAddButton() {
         binding.buttonFeedInputGuide.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
@@ -208,6 +188,26 @@ class FeedFragment : Fragment() {
 
     private fun initDailyRecommendIntake(recommendIntake: Int) {
         binding.textviewFeedDailyIntakeContent.text = convertDailyRecommendIntake(recommendIntake)
+    }
+
+    private fun updateViewVisibilityBasedOnOldFeedPartExist(feedRecordId: Long) {
+        feedPartGetViewModel.getFeedPart(feedRecordId)
+        feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
+            if (response.feedPartRecords.isEmpty()) {
+                binding.apply {
+                    textviewFeedOldFeedSeeMore.visibility = View.GONE
+                    buttonFeedChange.visibility = View.GONE
+                }
+            }
+            feedPartAdapter.submitList(response.feedPartRecords)
+        }
+    }
+
+    private fun initOldFeedPartRecyclerView() {
+        binding.recyclerviewFeedOldfeed.run {
+            adapter = feedPartAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun convertNutrientPercentage(nutrientPercentage: Int) =
