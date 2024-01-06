@@ -29,15 +29,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/layout_feedaddedit_image"
-                layout="@layout/layout_feed_attach_photo"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_feedaddedit_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageview_feedaddedit_picture"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/all_rect_gray2_30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <include
+                        android:id="@+id/layout_feedaddedit_image"
+                        layout="@layout/layout_feed_attach_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="76dp"
+                        android:layout_marginVertical="46dp"
+                        app:layout_constraintBottom_toBottomOf="@id/imageview_feedaddedit_picture"
+                        app:layout_constraintEnd_toEndOf="@id/imageview_feedaddedit_picture"
+                        app:layout_constraintStart_toStartOf="@id/imageview_feedaddedit_picture"
+                        app:layout_constraintTop_toTopOf="@id/imageview_feedaddedit_picture" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/textview_feedaddedit_brand"
@@ -49,7 +82,7 @@
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_feedaddedit_image" />
+                app:layout_constraintTop_toBottomOf="@id/cardview_feedaddedit_image" />
 
             <EditText
                 android:id="@+id/edittext_feedaddedit_brand"
