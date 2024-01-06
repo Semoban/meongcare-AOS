@@ -17,6 +17,7 @@ import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.viewmodel.FeedGetViewModel
+import com.project.meongcare.feed.viewmodel.FeedPartGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -26,6 +27,7 @@ class FeedFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val feedGetViewModel: FeedGetViewModel by viewModels()
+    private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
     private lateinit var feedGetResponse: FeedGetResponse
 
     override fun onCreateView(
@@ -77,8 +79,6 @@ class FeedFragment : Fragment() {
                 textviewFeedBrand.visibility = View.GONE
                 textviewFeedName.visibility = View.GONE
                 piechartFeedNutrient.visibility = View.GONE
-                textviewFeedOldFeedSeeMore.visibility = View.GONE
-                buttonFeedChange.visibility = View.GONE
             } else {
                 imageviewFeedBowlIllustration.visibility = View.GONE
                 buttonFeedInputGuide.visibility = View.GONE
@@ -86,6 +86,17 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun updateViewVisibilityBasedOnOldFeedPartExist(feedRecordId: Long) {
+        feedPartGetViewModel.getFeedPart(feedRecordId)
+        feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
+            if (response.feedPartRecords.isEmpty()) {
+                binding.apply {
+                    textviewFeedOldFeedSeeMore.visibility = View.GONE
+                    buttonFeedChange.visibility = View.GONE
+                }
+            }
+        }
+    }
     private fun initFeedAddButton() {
         binding.buttonFeedInputGuide.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
