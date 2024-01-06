@@ -36,10 +36,17 @@ class SupplementUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        fun convertToDateToMiliSec(date: Date): String {
+        fun convertToDateToDateTime(date: Date): String {
             val instant: Instant = date.toInstant()
             val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            return localDateTime.format(formatter)
+        }
+
+        fun convertToDateToDate(date: Date): String {
+            val instant: Instant = date.toInstant()
+            val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             return localDateTime.format(formatter)
         }
 

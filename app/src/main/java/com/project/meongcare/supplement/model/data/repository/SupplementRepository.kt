@@ -27,7 +27,7 @@ class SupplementRepository {
     companion object {
         fun searchByDogId(
             dogId: Int,
-            dateTime: String,
+            date: String,
             callback: (List<Supplement>?) -> Unit,
         ) {
             val retrofit =
@@ -40,8 +40,8 @@ class SupplementRepository {
             val call =
                 api.getResultSupplement(
                     MainActivity.ACCESS_TOKEN,
+                    date,
                     dogId,
-                    dateTime,
                 )
 
             call.enqueue(
@@ -51,7 +51,7 @@ class SupplementRepository {
                         response: Response<ResultSupplement>,
                     ) {
                         Log.d("Supplement API response body", "통신 성공: ${response.body()}")
-                        Log.d("Supplement API response", "통신 성공: ${response.body()}")
+                        Log.d("Supplement API response", "통신 성공: ${response}")
                         val result = response.body()?.routines
                         callback(result)
                     }

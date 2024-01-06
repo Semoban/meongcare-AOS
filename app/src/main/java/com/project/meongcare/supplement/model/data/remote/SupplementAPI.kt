@@ -17,8 +17,8 @@ interface SupplementAPI {
     @GET("/supplements")
     fun getResultSupplement(
         @Header("AccessToken") accessToken: String,
+        @Query("date") date: String,
         @Query("dogId") dogId: Int,
-        @Query("dateTime") dateTime: String,
     ): Call<ResultSupplement>
 
     @Multipart

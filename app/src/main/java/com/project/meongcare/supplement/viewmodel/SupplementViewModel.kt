@@ -1,11 +1,13 @@
 package com.project.meongcare.supplement.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.model.entities.Supplement
-import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToMiliSec
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDateTime
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -28,18 +30,12 @@ class SupplementViewModel : ViewModel() {
         dogId: Int,
         date: Date,
     ) {
-        val localDate = convertToDateToMiliSec(date)
+        val localDate = convertToDateToDate(date)
+        Log.d("Supplement",localDate.toString())
         SupplementRepository.searchByDogId(dogId, localDate) { supplements ->
-            supplements?.let {
-                val sortedSupplements =
-                    it.sortedBy {
-                        LocalDateTime.parse(
-                            it.intakeTime,
-                            DateTimeFormatter.ofPattern("HH:mm:ss"),
-                        )
-                    }
-                supplementList.value = sortedSupplements.toMutableList()
-            }
+            Log.d("Supplement",supplements.toString())
+            supplements!!.sortedBy { i -> i.intakeTime }
+            supplementList.value = supplements.toMutableList()
         }
     }
 
