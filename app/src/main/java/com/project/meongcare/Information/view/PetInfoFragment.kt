@@ -40,6 +40,9 @@ class PetInfoFragment : Fragment() {
         petInfoViewModel.getDogInfo(dogId, accessToken)
 
         binding.run {
+            imagebuttonPetaddBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
             imagebuttonPetaddDelete.setOnClickListener {
                 includeDeleteDialog.root.visibility = View.VISIBLE
                 includeDeleteDialog.run {
