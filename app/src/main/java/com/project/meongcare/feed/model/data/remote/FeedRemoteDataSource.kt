@@ -79,4 +79,27 @@ class FeedRemoteDataSource
                 return null
             }
         }
+
+        suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords? {
+            try {
+                val getPreviousFeedResponse =
+                    feedApiService.getPreviousFeed(
+                        accessToken,
+                        2L,
+                        feedRecordId,
+                    )
+                return if (getPreviousFeedResponse.code() == SUCCESS) {
+                    Log.d("PreviousFeedGetSuccess", getPreviousFeedResponse.code().toString())
+                    getPreviousFeedResponse.body()
+                } else {
+                    val stringToJson = JSONObject(getPreviousFeedResponse.errorBody()?.string()!!)
+                    Log.d("PreviousFeedGetFailure", getPreviousFeedResponse.code().toString())
+                    Log.d("PreviousFeedGetFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("PreviousFeedGetException", e.toString())
+                return null
+            }
+        }
     }
