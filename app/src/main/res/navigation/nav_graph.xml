@@ -240,4 +240,15 @@
         android:name="com.project.meongcare.Information.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_petAddFragment"
+            app:destination="@id/petAddFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petAddFragment"
+        android:name="com.project.meongcare.PetAddFragment"
+        android:label="fragment_pet_add_edit"
+        tools:layout="@layout/fragment_pet_add_edit"/>
 </navigation>
