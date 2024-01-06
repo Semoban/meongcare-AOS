@@ -228,6 +228,9 @@
         <action
             android:id="@+id/action_feedFragment_to_feedAddFragment"
             app:destination="@id/feedAddFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
     </fragment>
 
     <fragment
