@@ -199,14 +199,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         dogAddViewModel.getDogBirthDate(str)
     }
 
-    fun dateFormat(str: String): String {
-        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        val parsedDate = inputDateFormat.parse(str)
-        return outputDateFormat.format(parsedDate)
-    }
-
     fun createMultipartBody(
         context: Context,
         uri: Uri?,
@@ -240,4 +232,12 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 enum class Gender(val korean: String, val english: String) {
     MALE("남성", "male"),
     FEMALE("여성", "female"),
+}
+
+fun dateFormat(str: String): String {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
+
+    val parsedDate = inputDateFormat.parse(str)
+    return outputDateFormat.format(parsedDate)
 }
