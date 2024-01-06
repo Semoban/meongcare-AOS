@@ -3,6 +3,7 @@ package com.project.meongcare.feed.model.data.remote
 import android.util.Log
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.model.entities.FeedPartRecords
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -52,6 +53,29 @@ class FeedRemoteDataSource
                 }
             } catch (e: Exception) {
                 Log.e("FeedGetException", e.toString())
+                return null
+            }
+        }
+
+        suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords? {
+            try {
+                val getFeedPartResponse =
+                    feedApiService.getFeedPart(
+                        accessToken,
+                        2L,
+                        feedRecordId,
+                    )
+                return if (getFeedPartResponse.code() == SUCCESS) {
+                    Log.d("FeedPartGetSuccess", getFeedPartResponse.code().toString())
+                    getFeedPartResponse.body()
+                } else {
+                    val stringToJson = JSONObject(getFeedPartResponse.errorBody()?.string()!!)
+                    Log.d("FeedPartGetFailure", getFeedPartResponse.code().toString())
+                    Log.d("FeedPartGetFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("FeedPartGetException", e.toString())
                 return null
             }
         }
