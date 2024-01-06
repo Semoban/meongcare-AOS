@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -101,6 +102,13 @@ class SupplementFragment : Fragment() {
         fragmentSupplementBinding.run {
             textViewSupplementAdd.setOnClickListener {
                 navController.navigate(R.id.action_supplement_to_supplementAdd)
+            }
+
+            textViewSupplementEdit.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putParcelableArrayList("supplements_key", ArrayList(supplementViewModel.supplementList.value))
+                }
+                navController.navigate(R.id.action_supplement_to_supplementRoutineEdit, bundle)
             }
 
         }
