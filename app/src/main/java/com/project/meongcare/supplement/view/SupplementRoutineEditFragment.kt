@@ -43,6 +43,10 @@ class SupplementRoutineEditFragment : Fragment() {
                 adapter = SupplementRoutineEditRecyclerViewAdapter()
                 layoutManager = LinearLayoutManager(context)
             }
+
+            buttonSupplementRoutineEditCancel.setOnClickListener {
+                navController.popBackStack()
+            }
         }
         return fragmentSupplementRoutineEditBinding.root
     }
