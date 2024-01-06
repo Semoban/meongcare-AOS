@@ -125,7 +125,7 @@ class FeedFragment : Fragment() {
                 includeFeedNutrientCrudeProtein,
                 R.drawable.feed_rect_crude_protein_r5,
                 "조단백",
-                feedInfo.crudeAsh,
+                feedInfo.protein,
             )
             initNutrientRow(
                 includeFeedNutrientCrudeFat,
