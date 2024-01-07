@@ -2,21 +2,30 @@ package com.project.meongcare.Information.view
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), PhotoMenuListener {
@@ -25,6 +34,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +44,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        // 임시 설정
+        userPreferences.setProvider("kakao")
 
         profileViewModel.userProfile.observe(viewLifecycleOwner) { response ->
             if (response != null) {
@@ -57,7 +72,21 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NTA4MzA4fQ.9blniYll3w_xR6mOfyFcquFhLT5bmGOWrRwj9cZvpz0"
+        profileViewModel.logoutResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                lifecycleScope.launch {
+                    userPreferences.provider.collect { provider ->
+                        when (provider) {
+                            "kakao" -> kakaoLogout()
+                            "naver" -> naverLogout()
+                            "google" -> googleLogout()
+                        }
+                    }
+                }
+            }
+        }
+
+        val accessToken = ""
         profileViewModel.getUserProfile(accessToken)
         profileViewModel.getDogList(accessToken)
 
@@ -81,6 +110,25 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             buttonProfileSetting.setOnClickListener {
                 findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
             }
+
+            buttonProfileLogout.setOnClickListener {
+                includeLogoutDialog.root.visibility = View.VISIBLE
+            }
+            includeLogoutDialog.run {
+                constraintlayoutBg.setOnClickListener {
+                    includeLogoutDialog.root.visibility = View.GONE
+                }
+                cardviewDialog.setOnClickListener {
+                    includeLogoutDialog.root.visibility = View.VISIBLE
+                }
+                buttonLogoutDialogCancel.setOnClickListener {
+                    includeLogoutDialog.root.visibility = View.GONE
+                }
+                buttonLogoutDialogLogout.setOnClickListener {
+                    val refreshToken = ""
+                    profileViewModel.logoutUser(refreshToken)
+                }
+            }
         }
 
         return binding.root
@@ -94,5 +142,45 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 .error(R.drawable.profile_default_image)
                 .into(imageviewProfileImage)
         }
+    }
+
+    private fun kakaoLogout() {
+        UserApiClient.instance.logout { error ->
+            if (error != null) {
+                Log.e("Logout-kakao", "로그아웃 실패, SDK에서 토큰 삭제됨\n $error")
+            } else {
+                Log.i("Logout-kakao", "로그아웃 성공, SDK에서 토큰 삭제됨")
+                userPreferences.setProvider(null)
+                findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+            }
+        }
+    }
+
+    private fun naverLogout() {
+        NaverIdLoginSDK.logout()
+        userPreferences.setProvider(null)
+        findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+    }
+
+    private fun googleLogout() {
+        val gso =
+            GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN,
+            ).build()
+        val googleSignInClient =
+            this.let {
+                GoogleSignIn.getClient(requireContext(), gso)
+            }
+
+        googleSignInClient.signOut()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Logout-google", "로그아웃 성공")
+                    userPreferences.setProvider(null)
+                    findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                } else {
+                    Log.e("Logout-google", "로그아웃 실패")
+                }
+            }
     }
 }
