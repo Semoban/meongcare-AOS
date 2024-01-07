@@ -5,6 +5,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
+import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 import org.json.JSONObject
 import javax.inject.Inject
@@ -16,12 +17,15 @@ class FeedRemoteDataSource
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val feedApiService = FeedClient.feedService
 
-        suspend fun postFeed(): Int? {
+        suspend fun postFeed(feedUploadRequest: FeedUploadRequest): Int? {
             try {
                 val postFeedResponse =
                     feedApiService.postFeed(
                         accessToken,
+                        feedUploadRequest.dto,
+                        feedUploadRequest.file,
                     )
+
                 return if (postFeedResponse.code() == SUCCESS) {
                     Log.d("FeedPostSuccess", postFeedResponse.code().toString())
                     postFeedResponse.body()
