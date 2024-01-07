@@ -18,11 +18,22 @@ class UserPreferences
         @ApplicationContext private val context: Context,
     ) {
         // 키 정의
+        private val preferenceKeyProvider = stringPreferencesKey("provider")
         private val preferenceKeyEmail = stringPreferencesKey("email")
         private val preferenceKeyAccessToken = stringPreferencesKey("accessToken")
         private val preferenceKeyRefreshToken = stringPreferencesKey("refreshToken")
 
         // 값 저장(수정)
+        private suspend fun editProvider(provider: String?) {
+            context.userDataStore.edit { preferences ->
+                if (provider == null) {
+                    preferences.remove(preferenceKeyProvider)
+                } else {
+                    preferences[preferenceKeyProvider] = provider
+                }
+            }
+        }
+
         private suspend fun editEmail(email: String) {
             context.userDataStore.edit { preferences ->
                 preferences[preferenceKeyEmail] = email
@@ -38,6 +49,12 @@ class UserPreferences
         private suspend fun editRefreshToken(refreshToken: String) {
             context.userDataStore.edit { preferences ->
                 preferences[preferenceKeyRefreshToken] = refreshToken
+            }
+        }
+
+        fun setProvider(provider: String?) {
+            CoroutineScope(Dispatchers.IO).launch {
+                editProvider(provider)
             }
         }
 
@@ -60,6 +77,11 @@ class UserPreferences
         }
 
         // 값 가져오기
+        val provider: Flow<String?> =
+            context.userDataStore.data.map { preferences ->
+                preferences[preferenceKeyProvider]
+            }
+
         val email: Flow<String?> =
             context.userDataStore.data.map { preferences ->
                 preferences[preferenceKeyEmail]
