@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.feed.model.data.repository.FeedRepositoryImpl
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,10 +19,10 @@ class FeedPatchViewModel
         val feedPatched
             get() = _feedPatched
 
-        fun patchFeed() {
+        fun patchFeed(feedPatchRequest: FeedPatchRequest) {
             viewModelScope.launch {
                 feedPatched.value =
-                    feedRepositoryImpl.patchFeed()
+                    feedRepositoryImpl.patchFeed(feedPatchRequest)
             }
         }
     }
