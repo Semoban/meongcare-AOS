@@ -398,7 +398,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="95dp"
-                android:text="Kcal"
+                android:text="kcal/kg"
                 android:textAppearance="@style/Typography.Body2.Regular"
                 app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_kcal_content"
                 app:layout_constraintEnd_toEndOf="@id/view_feedaddedit_kcal"
