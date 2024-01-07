@@ -74,10 +74,10 @@
             android:id="@+id/switch_setting_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="16dp"
             android:thumb="@drawable/all_switch_thumb"
             app:layout_constraintBottom_toBottomOf="@id/button_setting_notification"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_setting_end"
             app:layout_constraintTop_toTopOf="@id/button_setting_notification"
             app:thumbTint="@color/white"
             app:track="@drawable/all_switch_track"
@@ -107,6 +107,17 @@
             app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
             app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
             app:layout_constraintTop_toBottomOf="@id/divider_setting_urine_feces_image" />
+
+        <include
+            android:id="@+id/include_delete_account_dialog"
+            layout="@layout/layout_delete_account_dialog"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
