@@ -3,6 +3,7 @@ package com.project.meongcare.feed.model.data.remote
 import android.util.Log
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.Feeds
 import org.json.JSONObject
@@ -126,11 +127,12 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun patchFeed(): Int? {
+        suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int? {
             try {
                 val patchFeedResponse =
                     feedApiService.patchFeed(
                         accessToken,
+                        feedPatchRequest,
                     )
                 return if (patchFeedResponse.code() == SUCCESS) {
                     Log.d("FeedPatchSuccess", patchFeedResponse.code().toString())
