@@ -1,6 +1,8 @@
 package com.project.meongcare.feed.model.data.repository
 
 import com.project.meongcare.feed.model.data.remote.FeedRemoteDataSource
+import com.project.meongcare.feed.model.entities.Feed
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import javax.inject.Inject
 
 class FeedRepositoryImpl
@@ -16,5 +18,5 @@ class FeedRepositoryImpl
 
         override suspend fun getFeeds() = feedRemoteDataSource.getFeeds()
 
-        override suspend fun patchFeed() = feedRemoteDataSource.patchFeed()
+        override suspend fun patchFeed(feedPatchRequest: FeedPatchRequest) = feedRemoteDataSource.patchFeed(feedPatchRequest)
     }

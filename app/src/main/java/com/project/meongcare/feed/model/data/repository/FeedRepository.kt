@@ -1,6 +1,7 @@
 package com.project.meongcare.feed.model.data.repository
 
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.Feeds
 
@@ -15,5 +16,5 @@ interface FeedRepository {
 
     suspend fun getFeeds(): Feeds?
 
-    suspend fun patchFeed(): Int?
+    suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int?
 }
