@@ -262,7 +262,11 @@
         android:id="@+id/petEditFragment"
         android:name="com.project.meongcare.Information.view.PetEditFragment"
         android:label="fragment_pet_edit"
-        tools:layout="@layout/fragment_pet_edit"/>
+        tools:layout="@layout/fragment_pet_edit">
+        <action
+            android:id="@+id/action_petEditFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingFragment"

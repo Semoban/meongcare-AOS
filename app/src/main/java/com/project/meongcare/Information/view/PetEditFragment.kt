@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
@@ -69,6 +70,10 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+            }
+
+            edittextPeteditType.setOnClickListener {
+                findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
             }
 
             imageviewPeteditBirthdayCalender.setOnClickListener {
