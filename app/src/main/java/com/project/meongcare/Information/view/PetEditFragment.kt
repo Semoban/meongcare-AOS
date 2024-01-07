@@ -10,10 +10,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
+import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
+import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.Gender
 import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
@@ -21,7 +24,7 @@ import com.project.meongcare.onboarding.view.dateFormat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PetEditFragment : Fragment(), PhotoMenuListener {
+class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var binding: FragmentPetEditBinding
     private lateinit var mainActivity: MainActivity
     private lateinit var dogInfo: GetDogInfoResponse
@@ -67,6 +70,13 @@ class PetEditFragment : Fragment(), PhotoMenuListener {
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
                 modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
+
+            imageviewPeteditBirthdayCalender.setOnClickListener {
+                val calendarBottomSheet = CalendarBottomSheetFragment()
+                calendarBottomSheet.setDateSubmitListener(this@PetEditFragment)
+                calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
+                calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
+            }
         }
 
         return binding.root
@@ -109,5 +119,9 @@ class PetEditFragment : Fragment(), PhotoMenuListener {
 
     override fun onUriPassed(uri: Uri) {
         petEditViewModel.setDogProfile(uri)
+    }
+
+    override fun onDateSubmit(str: String) {
+        petEditViewModel.setDogBirth(str)
     }
 }
