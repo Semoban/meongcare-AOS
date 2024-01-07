@@ -77,6 +77,7 @@ class FeedFragment : Fragment() {
         }
         initFeedAddButton()
         initOldFeedPartRecyclerView()
+        initChangeButton()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -216,6 +217,12 @@ class FeedFragment : Fragment() {
         binding.recyclerviewFeedOldfeed.run {
             adapter = feedPartAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun initChangeButton() {
+        binding.buttonFeedChange.setOnClickListener {
+            findNavController().navigate(R.id.action_feedFragment_to_searchFeedFragment)
         }
     }
 
