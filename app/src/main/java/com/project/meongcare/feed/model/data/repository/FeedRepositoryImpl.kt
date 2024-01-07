@@ -1,8 +1,9 @@
 package com.project.meongcare.feed.model.data.repository
 
+import android.util.Log
 import com.project.meongcare.feed.model.data.remote.FeedRemoteDataSource
-import com.project.meongcare.feed.model.entities.Feed
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import javax.inject.Inject
 
 class FeedRepositoryImpl
@@ -11,7 +12,7 @@ class FeedRepositoryImpl
         private val feedRemoteDataSource: FeedRemoteDataSource,
     ) : FeedRepository {
         override suspend fun getFeed() = feedRemoteDataSource.getFeed()
-        override suspend fun postFeed() = feedRemoteDataSource.postFeed()
+        override suspend fun postFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.postFeed(feedUploadRequest)
         override suspend fun getFeedPart(feedRecordId: Long) = feedRemoteDataSource.getFeedPart(feedRecordId)
 
         override suspend fun getPreviousFeed(feedRecordId: Long) = feedRemoteDataSource.getPreviousFeed(feedRecordId)
