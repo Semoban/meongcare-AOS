@@ -3,10 +3,15 @@ package com.project.meongcare.Information.model.data.remote
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ProfileApi {
@@ -30,5 +35,14 @@ interface ProfileApi {
     suspend fun deleteDog(
         @Path("dogId") dogId: Long,
         @Header("AccessToken") accessToken: String,
+    ): Response<Int>
+
+    @Multipart
+    @PUT("/dog/{dogId}")
+    suspend fun putDogInfo(
+        @Path("dogId") dogId: Long,
+        @Header("AccessToken") accessToken: String,
+        @Part file: MultipartBody.Part,
+        @Part("dto") dto: RequestBody,
     ): Response<Int>
 }

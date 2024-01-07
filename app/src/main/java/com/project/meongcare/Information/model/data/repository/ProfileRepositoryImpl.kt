@@ -5,6 +5,8 @@ import com.project.meongcare.Information.model.data.remote.ProfileRetrofitClient
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class ProfileRepositoryImpl
@@ -72,6 +74,27 @@ class ProfileRepositoryImpl
                     response.code()
                 } else {
                     Log.d("ProfileRepo-DeleteDog", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        override suspend fun putDogInfo(
+            dogId: Long,
+            accessToken: String,
+            file: MultipartBody.Part,
+            dto: RequestBody
+        ): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.putDogInfo(dogId, accessToken, file, dto)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-PutDog", "통신 성공 : ${response.code()}")
+                    response.code()
+                } else {
+                    Log.d("ProfileRepo-PutDog", "통신 실패 : ${response.code()}")
                     response.code()
                 }
             } catch (e: Exception) {
