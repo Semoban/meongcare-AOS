@@ -16,6 +16,8 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
 import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.home.model.data.local.DogProfileClickListener
+import com.project.meongcare.home.model.data.local.HorizonCalendarItemClickListener
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
