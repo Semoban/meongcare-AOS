@@ -76,6 +76,14 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
             }
 
+            checkboxPeteditNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+                isCbxChecked = isChecked
+            }
+
+            textviewPeteditNeuterStatus.setOnClickListener {
+                checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
+            }
+
             imageviewPeteditBirthdayCalender.setOnClickListener {
                 val calendarBottomSheet = CalendarBottomSheetFragment()
                 calendarBottomSheet.setDateSubmitListener(this@PetEditFragment)
