@@ -493,7 +493,29 @@
                 app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_intake_period_start" />
 
             <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
-                android:id="@+id/calendarview_feedaddedit"
+                android:id="@+id/calendarview_feedaddedit_start_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                custom:disable_date_color="@color/gray4"
+                custom:layout_constraintEnd_toEndOf="parent"
+                custom:layout_constraintStart_toStartOf="parent"
+                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_start"
+                custom:range_color="@color/main1"
+                custom:range_date_color="@color/main4"
+                custom:selected_date_circle_color="@color/main4"
+                custom:selected_date_color="@color/white"
+                custom:text_size_date="16sp"
+                custom:text_size_title="18sp"
+                custom:text_size_week="16sp"
+                custom:title_color="@color/black"
+                custom:week_color="@color/black"
+                tools:visibility="visible" />
+
+            <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+                android:id="@+id/calendarview_feedaddedit_end_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="50dp"
@@ -524,7 +546,7 @@
                 android:checked="false"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendarview_feedaddedit"
+                app:layout_constraintTop_toBottomOf="@id/calendarview_feedaddedit_start_date"
                 tools:visibility="visible" />
 
             <TextView
