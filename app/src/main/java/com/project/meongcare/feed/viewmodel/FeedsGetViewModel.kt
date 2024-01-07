@@ -19,10 +19,19 @@ class FeedsGetViewModel
         val feedsGet
             get() = _feedsGet
 
+        private var allFeeds: Feeds? = null
+
         fun getFeeds() {
             viewModelScope.launch {
-                feedsGet.value =
-                    feedRepositoryImpl.getFeeds()
+                allFeeds = feedRepositoryImpl.getFeeds()
+                _feedsGet.value = allFeeds!!
             }
+        }
+
+        fun filterFeeds(searchText: String) {
+            val filteredFeeds = allFeeds?.feeds?.filter { feed ->
+                feed.brandName.contains(searchText) || feed.feedName.contains(searchText)
+            }
+            _feedsGet.value = Feeds(filteredFeeds ?: listOf())
         }
     }
