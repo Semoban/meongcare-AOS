@@ -10,6 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSearchFeedBinding
+import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.excreta.view.ExcretaRecordEditAdapter
+import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.viewmodel.FeedPatchViewModel
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +25,7 @@ class SearchFeedFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
+    private val feedPatchViewModel: FeedPatchViewModel by viewModels()
     private lateinit var feedsAdapter: FeedsAdapter
 
     override fun onCreateView(
@@ -35,7 +42,15 @@ class SearchFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        feedsAdapter = FeedsAdapter()
+        feedsAdapter =
+            FeedsAdapter(
+                object : FeedItemSelectionListener {
+                    override fun onItemSelection(feedId: Long) {
+                        patchFeed(feedId)
+                    }
+                }
+            )
+
         initToolbar()
         initFeedsRecyclerView()
         initDirectInputButton()
@@ -55,6 +70,20 @@ class SearchFeedFragment : Fragment() {
         binding.recyclerviewSearchfeedResult.apply {
             adapter = feedsAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun patchFeed(newFeedId: Long) {
+        val feedPatchRequest =
+            FeedPatchRequest(
+                2L,
+                newFeedId,
+            )
+        feedPatchViewModel.patchFeed(feedPatchRequest)
+        feedPatchViewModel.feedPatched.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+            }
         }
     }
 

@@ -1,14 +1,18 @@
 package com.project.meongcare.feed.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemSearchFeedBinding
+import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.Feed
 
-class FeedsAdapter : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
+class FeedsAdapter(
+    private val feedItemSelectionListener: FeedItemSelectionListener,
+) : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
     inner class FeedsViewHolder(private val binding: ItemSearchFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Feed) {
@@ -16,6 +20,10 @@ class FeedsAdapter : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
                 // image
                 textviewSearchfeedBrand.text = item.brandName
                 textviewSearchfeedName.text = item.feedName
+                root.setOnClickListener {
+                    Log.d("feedId", item.feedId.toString())
+                    feedItemSelectionListener.onItemSelection(item.feedId)
+                }
             }
         }
     }
