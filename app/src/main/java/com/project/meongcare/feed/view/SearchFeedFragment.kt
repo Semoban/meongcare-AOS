@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
@@ -34,10 +35,17 @@ class SearchFeedFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         feedsAdapter = FeedsAdapter()
+        initToolbar()
         initFeedsRecyclerView()
         feedsGetViewModel.getFeeds()
         feedsGetViewModel.feedsGet.observe(viewLifecycleOwner) { response ->
             feedsAdapter.submitList(response.feeds)
+        }
+    }
+
+    private fun initToolbar() {
+        binding.toolbarSearchfeed.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
