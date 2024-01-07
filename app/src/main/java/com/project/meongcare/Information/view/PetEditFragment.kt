@@ -1,10 +1,12 @@
 package com.project.meongcare.Information.view
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -12,13 +14,16 @@ import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
+import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.Gender
+import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
 import com.project.meongcare.onboarding.view.dateFormat
 import dagger.hilt.android.AndroidEntryPoint
 
-class PetEditFragment : Fragment() {
 @AndroidEntryPoint
+class PetEditFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentPetEditBinding
+    private lateinit var mainActivity: MainActivity
     private lateinit var dogInfo: GetDogInfoResponse
 
     private val petEditViewModel: ProfileViewModel by viewModels()
@@ -31,6 +36,7 @@ class PetEditFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPetEditBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
 
         dogInfo = getDogInfo()
 
@@ -51,6 +57,15 @@ class PetEditFragment : Fragment() {
         petEditViewModel.dogBirth.observe(viewLifecycleOwner) { birth ->
             if (birth != null) {
                 binding.edittextPeteditSelectBirthday.setText(dateFormat(birth))
+            }
+        }
+
+        binding.run {
+            cardviewPeteditImage.setOnClickListener {
+                val modalBottomSheet = PhotoSelectBottomSheetFragment()
+                modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
+                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
             }
         }
 
@@ -90,5 +105,9 @@ class PetEditFragment : Fragment() {
                 edittextPeteditNeckCircumference.setText(dogInfo.neckRound.toString())
             }
         }
+    }
+
+    override fun onUriPassed(uri: Uri) {
+        petEditViewModel.setDogProfile(uri)
     }
 }
