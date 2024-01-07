@@ -1,6 +1,5 @@
 package com.project.meongcare.login.view
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -132,6 +131,7 @@ class LoginFragment : Fragment() {
 
                 // data store에 저장
                 userPreferences.setEmail(user.kakaoAccount?.email!!)
+                userPreferences.setProvider("kakao")
 
                 val loginRequest =
                     LoginRequest(
@@ -174,6 +174,7 @@ class LoginFragment : Fragment() {
 
                         // data store에 저장
                         userPreferences.setEmail(result.profile?.email!!)
+                        userPreferences.setProvider("naver")
 
                         // 서버에 로그인 정보 전송
                         val loginRequest =
@@ -241,6 +242,7 @@ class LoginFragment : Fragment() {
 
             // data store에 저장
             userPreferences.setEmail(account.email!!)
+            userPreferences.setProvider("google")
 
             val loginRequest =
                 LoginRequest(
