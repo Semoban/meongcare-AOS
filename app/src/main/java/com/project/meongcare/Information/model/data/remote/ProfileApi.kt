@@ -45,4 +45,9 @@ interface ProfileApi {
         @Part file: MultipartBody.Part,
         @Part("dto") dto: RequestBody,
     ): Response<Int>
+
+    @DELETE("/auth/logout")
+    suspend fun logoutUser(
+        @Header("RefreshToken") refreshToken: String,
+    ): Response<Int>
 }

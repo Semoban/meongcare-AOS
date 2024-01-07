@@ -38,6 +38,10 @@ class ProfileViewModel
         val dogPutResponse
             get() = _dogPutResponse
 
+        private val _logoutResponse = MutableLiveData<Int>()
+        val logoutResponse
+            get() = _logoutResponse
+
         private val _dogProfile = MutableLiveData<Uri>()
         val dogProfile
             get() = _dogProfile
@@ -92,6 +96,12 @@ class ProfileViewModel
         ) {
             viewModelScope.launch {
                 _dogPutResponse.value = profileRepository.putDogInfo(dogId, accessToken, file, dto)
+            }
+        }
+
+        fun logoutUser(refreshToken: String) {
+            viewModelScope.launch {
+                _logoutResponse.value = profileRepository.logoutUser(refreshToken)
             }
         }
     }

@@ -27,4 +27,6 @@ interface ProfileRepository {
         file: MultipartBody.Part,
         dto: RequestBody,
     ): Int?
+
+    suspend fun logoutUser(refreshToken: String): Int?
 }

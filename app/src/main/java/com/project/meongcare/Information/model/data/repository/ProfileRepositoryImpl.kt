@@ -102,4 +102,20 @@ class ProfileRepositoryImpl
                 null
             }
         }
+
+        override suspend fun logoutUser(refreshToken: String): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.logoutUser(refreshToken)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-Logout", "통신 성공")
+                    response.code()
+                } else {
+                    Log.e("ProfileRepo-Logout", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
