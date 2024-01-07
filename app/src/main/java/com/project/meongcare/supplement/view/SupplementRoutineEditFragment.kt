@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementRoutineEditBinding
 import com.project.meongcare.databinding.ItemSupplementRoutineEditBinding
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
@@ -74,6 +75,20 @@ class SupplementRoutineEditFragment : Fragment() {
             buttonSupplementRoutineEditCancel.setOnClickListener {
                 navController.popBackStack()
             }
+
+            buttonSupplementRoutineEditComplete.setOnClickListener {
+                includeSupplementRoutineEditDeleteDialog.run {
+                    root.visibility = View.VISIBLE
+                    buttonDeleteDialogCancel.setOnClickListener {
+                        includeSupplementRoutineEditDeleteDialog.root.visibility = View.GONE
+                    }
+                    buttonDeleteDialogDelete.setOnClickListener {
+                        supplementViewModel.deleteSupplements(supplementViewModel.supplementIdList.value!!.toIntArray())
+                        navController.popBackStack()
+                    }
+                }
+            }
+
         }
         return fragmentSupplementRoutineEditBinding.root
     }
@@ -84,15 +99,12 @@ class SupplementRoutineEditFragment : Fragment() {
         inner class SupplementRoutineEditHolder(itemSupplementRoutineEditBinding: ItemSupplementRoutineEditBinding) :
             RecyclerView.ViewHolder(itemSupplementRoutineEditBinding.root) {
             val itemSupplementRoutineEditName: TextView
-            val itemSupplementRoutineEditAmount: TextView
             val itemSupplementRoutineEditCheckImg: ImageView
             val itemSupplementRoutineEditAlarm: ImageView
 
             init {
                 itemSupplementRoutineEditName =
                     itemSupplementRoutineEditBinding.textViewItemSupplementRoutineEditName
-                itemSupplementRoutineEditAmount =
-                    itemSupplementRoutineEditBinding.textViewItemSupplementRoutineEditAmount
                 itemSupplementRoutineEditCheckImg =
                     itemSupplementRoutineEditBinding.imageViewItemSupplementRoutineEditCheck
                 itemSupplementRoutineEditAlarm =

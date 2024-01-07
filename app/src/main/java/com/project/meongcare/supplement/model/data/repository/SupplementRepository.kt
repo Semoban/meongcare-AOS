@@ -54,6 +54,14 @@ class SupplementRepository {
         else throw RuntimeException("Supplement check API 통신 실패")
     }
 
+    suspend fun deleteSupplementsById(supplementsIds: IntArray): Result<ResponseBody> = kotlin.runCatching {
+        val response = supplementAPI.deleteSupplementsById(MainActivity.ACCESS_TOKEN, supplementsIds)
+
+        if (response.isSuccessful) response.body()
+            ?: throw RuntimeException("Supplement delete API 통신 실패")
+        else throw RuntimeException("Supplement delete API 통신 실패")
+    }
+
     fun addSupplement(supplementDto: SupplementDto, file: File) {
         val retrofit = Retrofit.Builder()
             .baseUrl(MainActivity.BASE_URL)

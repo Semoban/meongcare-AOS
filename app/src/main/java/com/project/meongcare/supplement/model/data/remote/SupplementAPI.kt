@@ -8,6 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -31,12 +32,6 @@ interface SupplementAPI {
         @Path("dogId") dogId: Int,
     ): Response<InfoSupplement>
 
-    @PATCH("/supplements/check")
-    suspend fun checkSupplement(
-        @Header("AccessToken") accessToken: String,
-        @Query("supplementsRecordId") supplementsRecordId: Int,
-    ): Response<ResponseBody>
-
     @Multipart
     @POST("/supplements")
     fun addSupplement(
@@ -44,5 +39,17 @@ interface SupplementAPI {
         @Part filePart: MultipartBody.Part,
         @Part("dto") supplementDto: RequestBody,
     ): Call<ResponseBody>
+
+    @PATCH("/supplements/check")
+    suspend fun checkSupplement(
+        @Header("AccessToken") accessToken: String,
+        @Query("supplementsRecordId") supplementsRecordId: Int,
+    ): Response<ResponseBody>
+
+    @DELETE("/supplements")
+    suspend fun deleteSupplementsById(
+        @Header("AccessToken") accessToken: String,
+        @Query("supplementsIds") supplementsRecordId: IntArray,
+    ): Response<ResponseBody>
 }
 
