@@ -90,6 +90,10 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
                 calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
             }
+
+            buttonPeteditCancel.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
 
         return binding.root
