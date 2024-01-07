@@ -118,4 +118,20 @@ class ProfileRepositoryImpl
                 null
             }
         }
+
+        override suspend fun deleteUser(accessToken: String): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.deleteUser(accessToken)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-DeleteUser", "통신 성공")
+                    response.code()
+                } else {
+                    Log.e("ProfileRepo-DeleteUser", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }

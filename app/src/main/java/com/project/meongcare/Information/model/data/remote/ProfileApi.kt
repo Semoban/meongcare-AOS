@@ -50,4 +50,9 @@ interface ProfileApi {
     suspend fun logoutUser(
         @Header("RefreshToken") refreshToken: String,
     ): Response<Int>
+
+    @DELETE("/member")
+    suspend fun deleteUser(
+        @Header("AccessToken") accessToken: String,
+    ): Response<Int>
 }

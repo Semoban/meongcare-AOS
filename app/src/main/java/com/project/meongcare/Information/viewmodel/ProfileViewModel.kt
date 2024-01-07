@@ -42,6 +42,10 @@ class ProfileViewModel
         val logoutResponse
             get() = _logoutResponse
 
+        private val _userDeleteResponse = MutableLiveData<Int>()
+        val userDeleteResponse
+            get() = _userDeleteResponse
+
         private val _dogProfile = MutableLiveData<Uri>()
         val dogProfile
             get() = _dogProfile
@@ -102,6 +106,12 @@ class ProfileViewModel
         fun logoutUser(refreshToken: String) {
             viewModelScope.launch {
                 _logoutResponse.value = profileRepository.logoutUser(refreshToken)
+            }
+        }
+
+        fun deleteUser(accessToken: String) {
+            viewModelScope.launch {
+                _userDeleteResponse.value = profileRepository.deleteUser(accessToken)
             }
         }
     }
