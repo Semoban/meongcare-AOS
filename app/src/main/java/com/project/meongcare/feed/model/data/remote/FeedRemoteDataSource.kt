@@ -125,4 +125,25 @@ class FeedRemoteDataSource
                 return null
             }
         }
+
+        suspend fun patchFeed(): Int? {
+            try {
+                val patchFeedResponse =
+                    feedApiService.patchFeed(
+                        accessToken,
+                    )
+                return if (patchFeedResponse.code() == SUCCESS) {
+                    Log.d("FeedPatchSuccess", patchFeedResponse.code().toString())
+                    patchFeedResponse.body()
+                } else {
+                    val stringToJson = JSONObject(patchFeedResponse.errorBody()?.string()!!)
+                    Log.d("FeedPatchFailure", patchFeedResponse.code().toString())
+                    Log.d("FeedPatchFailure", "$stringToJson")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.d("FeedPatchException", e.toString())
+                return null
+            }
+        }
     }
