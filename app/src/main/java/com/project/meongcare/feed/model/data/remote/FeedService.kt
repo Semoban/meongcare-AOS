@@ -6,6 +6,7 @@ import com.project.meongcare.feed.model.entities.Feeds
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -41,4 +42,9 @@ interface FeedService {
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Long,
     ): Response<Feeds>
+
+    @PATCH("feed")
+    suspend fun patchFeed(
+        @Header("AccessToken") accessToken: String,
+    ): Response<Int>
 }
