@@ -15,4 +15,6 @@ class FeedRepositoryImpl
         override suspend fun getPreviousFeed(feedRecordId: Long) = feedRemoteDataSource.getPreviousFeed(feedRecordId)
 
         override suspend fun getFeeds() = feedRemoteDataSource.getFeeds()
+
+        override suspend fun patchFeed() = feedRemoteDataSource.patchFeed()
     }

@@ -14,4 +14,6 @@ interface FeedRepository {
     suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords?
 
     suspend fun getFeeds(): Feeds?
+
+    suspend fun patchFeed(): Int?
 }
