@@ -34,23 +34,13 @@
 
             <TextView
                 android:id="@+id/textView_item_supplementRoutineEdit_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="TextView"
                 android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/textView_item_supplementRoutineEdit_amount"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:text="TextView"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
         </LinearLayout>
 
         <ImageView
