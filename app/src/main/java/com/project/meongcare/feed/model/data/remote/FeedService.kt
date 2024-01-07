@@ -1,9 +1,11 @@
 package com.project.meongcare.feed.model.data.remote
 
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.Feeds
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -46,5 +48,6 @@ interface FeedService {
     @PATCH("feed")
     suspend fun patchFeed(
         @Header("AccessToken") accessToken: String,
+        @Body requestBody: FeedPatchRequest,
     ): Response<Int>
 }
