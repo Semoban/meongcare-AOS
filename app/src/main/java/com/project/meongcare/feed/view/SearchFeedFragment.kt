@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,7 @@ class SearchFeedFragment : Fragment() {
         feedsAdapter = FeedsAdapter()
         initToolbar()
         initFeedsRecyclerView()
+        initDirectInputButton()
         feedsGetViewModel.getFeeds()
         feedsGetViewModel.feedsGet.observe(viewLifecycleOwner) { response ->
             feedsAdapter.submitList(response.feeds)
@@ -53,6 +55,12 @@ class SearchFeedFragment : Fragment() {
         binding.recyclerviewSearchfeedResult.apply {
             adapter = feedsAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun initDirectInputButton() {
+        binding.extendedfloatingbuttonSearchfeedDirectInput.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFeedFragment_to_feedAddFragment)
         }
     }
 
