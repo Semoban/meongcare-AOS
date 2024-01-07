@@ -1,5 +1,6 @@
 package com.project.meongcare.Information.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,14 @@ class ProfileViewModel
         val dogDeleteResponse
             get() = _dogDeleteResponse
 
+        private val _dogProfile = MutableLiveData<Uri>()
+        val dogProfile
+            get() = _dogProfile
+
+        private val _dogBirth = MutableLiveData<String>()
+        val dogBirth
+            get() = _dogBirth
+
         fun getUserProfile(accessToken: String) {
             viewModelScope.launch {
                 _userProfile.value = profileRepository.getUserProfile(accessToken)
@@ -59,5 +68,13 @@ class ProfileViewModel
             viewModelScope.launch {
                 _dogDeleteResponse.value = profileRepository.deleteDog(dogId, accessToken)
             }
+        }
+
+        fun setDogProfile(uri: Uri) {
+            _dogProfile.value = uri
+        }
+
+        fun setDogBirth(birth: String) {
+            _dogBirth.value = birth
         }
     }
