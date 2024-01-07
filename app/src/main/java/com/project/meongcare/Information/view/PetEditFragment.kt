@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -65,6 +68,11 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
 
         binding.run {
+            editTextWatcher(edittextPeteditName, edittextPeteditName, "이름을 입력해주세요")
+            editTextWatcher(edittextPeteditType, edittextPeteditType, "품종을 입력해주세요")
+            editTextWatcher(edittextPeteditSelectBirthday, edittextPeteditSelectBirthday, "날짜를 선택해주세요")
+            editTextWatcher(edittextPeteditWeight, viewPeteditWeight, "")
+
             cardviewPeteditImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
                 modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
@@ -94,9 +102,44 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             buttonPeteditCancel.setOnClickListener {
                 findNavController().popBackStack()
             }
+
+            buttonPeteditSubmit.setOnClickListener {
+                if (edittextPeteditName.text.isEmpty()) {
+                    return@setOnClickListener
+                }
+                if (edittextPeteditType.text.isEmpty()) {
+                    return@setOnClickListener
+                }
+                if (edittextPeteditSelectBirthday.text.isEmpty()) {
+                    return@setOnClickListener
+                }
+                if (edittextPeteditWeight.text.isEmpty()) {
+                    return@setOnClickListener
+                }
+            }
         }
 
         return binding.root
+    }
+
+    private fun editTextWatcher(editText: EditText, targetView: View, hint: String) {
+        editText.addTextChangedListener {
+            editText.doAfterTextChanged { editable ->
+                updateEditTextStyle(editText, targetView, hint)
+            }
+        }
+    }
+
+    private fun updateEditTextStyle(editText: EditText, targetView: View, hint: String) {
+        if (editText.text.isNullOrEmpty()) {
+            targetView.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
+            editText.hint = "필수 입력 값입니다"
+            editText.setHintTextColor(requireContext().getColor(R.color.sub1))
+        } else {
+            targetView.setBackgroundResource(R.drawable.all_rect_r5)
+            editText.hint = hint
+            editText.setHintTextColor(requireContext().getColor(R.color.gray4))
+        }
     }
 
     private fun getDogInfo() =
