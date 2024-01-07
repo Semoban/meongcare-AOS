@@ -99,13 +99,25 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
+    fun patchSupplementAlarm(supplementsId: Int, pushAgreement: Boolean) {
+        viewModelScope.launch {
+            Log.d("영양제 알람1", "$supplementsId, $pushAgreement")
+            val alarm = repository.patchSupplementAlarm(supplementsId, pushAgreement)
+            alarm.onSuccess {
+                Log.d("영양제 알람 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("영양제 알람 Api 통신 에러", it.toString())
+            }
+        }
+    }
+
     fun deleteSupplements(supplementsIds: IntArray) {
         viewModelScope.launch {
             val check = repository.deleteSupplementsById(supplementsIds)
             check.onSuccess {
-                Log.d("영양제 체크 Api 통신 성공", it.toString())
+                Log.d("영양제 삭제 Api 통신 성공", it.toString())
             }.onFailure {
-                Log.d("영양제 체크 Api 통신 에러", it.toString())
+                Log.d("영양제 삭제 Api 통신 에러", it.toString())
             }
         }
     }

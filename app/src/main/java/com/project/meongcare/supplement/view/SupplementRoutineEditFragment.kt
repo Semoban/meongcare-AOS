@@ -14,11 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
-import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementRoutineEditBinding
 import com.project.meongcare.databinding.ItemSupplementRoutineEditBinding
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
-import com.project.meongcare.supplement.model.entities.Supplement
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 
@@ -68,8 +66,12 @@ class SupplementRoutineEditFragment : Fragment() {
             imageViewSupplementRoutineEditDeleteAllCheck.setOnClickListener { view ->
                 val isAllSelected = !view.isSelected
                 view.isSelected = isAllSelected
-                val temp = supplementViewModel.supplementInfoList.value!!.map { it.supplementsId }.toMutableList()
-                supplementViewModel.setAllItemsChecked(imageViewSupplementRoutineEditDeleteAllCheck.isSelected, temp)
+                val temp = supplementViewModel.supplementInfoList.value!!.map { it.supplementsId }
+                    .toMutableList()
+                supplementViewModel.setAllItemsChecked(
+                    imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
+                    temp
+                )
             }
 
             buttonSupplementRoutineEditCancel.setOnClickListener {
@@ -138,9 +140,11 @@ class SupplementRoutineEditFragment : Fragment() {
             position: Int,
         ) {
             Log.d("루틴 편집20", supplementViewModel.supplementInfoList.value!!.toString())
-            holder.itemSupplementRoutineEditName.text = supplementViewModel.supplementInfoList.value!![position].name
+            holder.itemSupplementRoutineEditName.text =
+                supplementViewModel.supplementInfoList.value!![position].name
 
-            val supplementsId = supplementViewModel.supplementInfoList.value!![position].supplementsId
+            val supplementsId =
+                supplementViewModel.supplementInfoList.value!![position].supplementsId
             Log.d("루틴 편집3", supplementsId.toString())
 
             holder.itemSupplementRoutineEditCheckImg.isSelected =
@@ -156,6 +160,17 @@ class SupplementRoutineEditFragment : Fragment() {
                     fragmentSupplementRoutineEditBinding.imageViewSupplementRoutineEditDeleteAllCheck.isSelected =
                         false
                 }
+            }
+
+            holder.itemSupplementRoutineEditAlarm.isSelected =
+                !supplementViewModel.supplementInfoList.value!![position].pushAgreement
+
+            holder.itemSupplementRoutineEditAlarm.setOnClickListener {
+                val supplementsId =
+                    supplementViewModel.supplementInfoList.value!![position].supplementsId
+                it.isSelected = !it.isSelected
+                val isAlarmTrue = it.isSelected
+                supplementViewModel.patchSupplementAlarm(supplementsId, !isAlarmTrue)
             }
         }
     }

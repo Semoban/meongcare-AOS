@@ -46,21 +46,45 @@ class SupplementRepository {
         else throw RuntimeException("Supplement get info API 통신 실패")
     }
 
-    suspend fun checkSupplement(supplementsRecordId: Int): Result<ResponseBody> = kotlin.runCatching {
-        val response = supplementAPI.checkSupplement(MainActivity.ACCESS_TOKEN, supplementsRecordId)
+    suspend fun checkSupplement(supplementsRecordId: Int): Result<ResponseBody> =
+        kotlin.runCatching {
+            val response =
+                supplementAPI.checkSupplement(MainActivity.ACCESS_TOKEN, supplementsRecordId)
 
-        if (response.isSuccessful) response.body()
-            ?: throw RuntimeException("Supplement check API 통신 실패")
-        else throw RuntimeException("Supplement check API 통신 실패")
+            if (response.isSuccessful) response.body()
+                ?: throw RuntimeException("Supplement check API 통신 실패")
+            else throw RuntimeException("Supplement check API 통신 실패")
+        }
+
+    suspend fun patchSupplementAlarm(
+        supplementsId: Int,
+        pushAgreement: Boolean
+    ): Result<ResponseBody> = kotlin.runCatching {
+        val response = supplementAPI.patchSupplementAlarmStatus(
+            MainActivity.ACCESS_TOKEN,
+            supplementsId,
+            pushAgreement
+        )
+
+        if (response.isSuccessful) {
+            response.body() ?: throw RuntimeException("Supplement alarm API returned no body.")
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorMessage =
+                "Supplement alarm API failed with code ${response.code()} and error: $errorBody"
+            throw RuntimeException(errorMessage)
+        }
     }
 
-    suspend fun deleteSupplementsById(supplementsIds: IntArray): Result<ResponseBody> = kotlin.runCatching {
-        val response = supplementAPI.deleteSupplementsById(MainActivity.ACCESS_TOKEN, supplementsIds)
+    suspend fun deleteSupplementsById(supplementsIds: IntArray): Result<ResponseBody> =
+        kotlin.runCatching {
+            val response =
+                supplementAPI.deleteSupplementsById(MainActivity.ACCESS_TOKEN, supplementsIds)
 
-        if (response.isSuccessful) response.body()
-            ?: throw RuntimeException("Supplement delete API 통신 실패")
-        else throw RuntimeException("Supplement delete API 통신 실패")
-    }
+            if (response.isSuccessful) response.body()
+                ?: throw RuntimeException("Supplement delete API 통신 실패")
+            else throw RuntimeException("Supplement delete API 통신 실패")
+        }
 
     fun addSupplement(supplementDto: SupplementDto, file: File) {
         val retrofit = Retrofit.Builder()
