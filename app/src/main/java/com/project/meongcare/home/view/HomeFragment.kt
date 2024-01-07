@@ -184,6 +184,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             if (dogWeight != null) {
                 Log.d("homeDogWeight", dogWeight.weight.toString())
                 fragmentHomeBinding.textviewHomeWeight.text = dogWeight.weight.toString()
+                dogPreferences.setDogWeight(dogWeight.weight)
             }
         }
 
