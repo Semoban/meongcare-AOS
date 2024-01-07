@@ -10,6 +10,8 @@ import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +33,10 @@ class ProfileViewModel
         private val _dogDeleteResponse = MutableLiveData<Int>()
         val dogDeleteResponse
             get() = _dogDeleteResponse
+
+        private val _dogPutResponse = MutableLiveData<Int>()
+        val dogPutResponse
+            get() = _dogPutResponse
 
         private val _dogProfile = MutableLiveData<Uri>()
         val dogProfile
@@ -76,5 +82,16 @@ class ProfileViewModel
 
         fun setDogBirth(birth: String) {
             _dogBirth.value = birth
+        }
+
+        fun putDogInfo(
+            dogId: Long,
+            accessToken: String,
+            file: MultipartBody.Part,
+            dto: RequestBody,
+        ) {
+            viewModelScope.launch {
+                _dogPutResponse.value = profileRepository.putDogInfo(dogId, accessToken, file, dto)
+            }
         }
     }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.Information.model.entities.GetDogInfoResponse
 import com.project.meongcare.Information.viewmodel.ProfileViewModel
@@ -22,10 +23,17 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
+import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.view.Gender
 import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
+import com.project.meongcare.onboarding.view.bodySizeCheck
+import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.onboarding.view.dateFormat
+import com.project.meongcare.onboarding.view.getCheckedGender
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
@@ -64,6 +72,12 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         petEditViewModel.dogBirth.observe(viewLifecycleOwner) { birth ->
             if (birth != null) {
                 binding.edittextPeteditSelectBirthday.setText(dateFormat(birth))
+            }
+        }
+
+        petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null && response == 200) {
+                findNavController().popBackStack()
             }
         }
 
@@ -116,6 +130,34 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 if (edittextPeteditWeight.text.isEmpty()) {
                     return@setOnClickListener
                 }
+
+                val dogName = edittextPeteditName.text.toString()
+                val dogType = edittextPeteditType.text.toString()
+                val dogGender = getCheckedGender(binding.root, chipgroupPeteditGroupGender.checkedChipId)
+                val dogBirth = petEditViewModel.dogBirth.value!!
+                val dogWeight = edittextPeteditWeight.text.toString().toDouble()
+                val dogBack = bodySizeCheck(edittextPeteditBackLength.text.toString())
+                val dogNeck = bodySizeCheck(edittextPeteditNeckCircumference.text.toString())
+                val dogChest = bodySizeCheck(edittextPeteditChestCircumference.text.toString())
+                val dog =
+                    Dog(
+                        dogName,
+                        dogType,
+                        dogGender,
+                        dogBirth,
+                        isCbxChecked,
+                        dogWeight,
+                        dogBack,
+                        dogNeck,
+                        dogChest,
+                    )
+
+                val json = Gson().toJson(dog)
+                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+                val filePart = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
+
+                val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NjI4MzQzfQ._y66Fy6QfznE14qRncC0kPaEVHErorVRwW4zAhoW2hI"
+                petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
             }
         }
 
