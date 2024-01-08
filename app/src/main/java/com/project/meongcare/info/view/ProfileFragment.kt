@@ -108,7 +108,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
 
             buttonProfileSetting.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.pushAgreement!!)
+                findNavController().navigate(R.id.action_profileFragment_to_settingFragment, bundle)
             }
 
             buttonProfileLogout.setOnClickListener {
