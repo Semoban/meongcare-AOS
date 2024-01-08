@@ -384,6 +384,7 @@
                 android:background="@drawable/feed_rect_gray3_r5"
                 android:gravity="end"
                 android:inputType="text"
+                android:ems="4"
                 android:paddingHorizontal="7dp"
                 android:paddingVertical="6dp"
                 android:text="000.00"
