@@ -112,10 +112,6 @@ class SupplementRoutineEditFragment : Fragment() {
                     itemSupplementRoutineEditBinding.imageViewItemSupplementRoutineEditCheck
                 itemSupplementRoutineEditAlarm =
                     itemSupplementRoutineEditBinding.imageViewItemSupplementRoutineEditAlarm
-
-                itemSupplementRoutineEditName.setOnClickListener {
-                    navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo)
-                }
             }
         }
 
@@ -165,6 +161,10 @@ class SupplementRoutineEditFragment : Fragment() {
                     fragmentSupplementRoutineEditBinding.imageViewSupplementRoutineEditDeleteAllCheck.isSelected =
                         false
                 }
+            }
+
+            holder.itemSupplementRoutineEditName.setOnClickListener {
+                navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo)
             }
 
             holder.itemSupplementRoutineEditAlarm.isSelected =
