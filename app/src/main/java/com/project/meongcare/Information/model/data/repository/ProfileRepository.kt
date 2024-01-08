@@ -31,4 +31,9 @@ interface ProfileRepository {
     suspend fun logoutUser(refreshToken: String): Int?
 
     suspend fun deleteUser(accessToken: String): Int?
+
+    suspend fun patchPushAgreement(
+        pushAgreement: Boolean,
+        accessToken: String,
+    ): Int?
 }

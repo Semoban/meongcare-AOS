@@ -10,9 +10,11 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ProfileApi {
     @GET("/member/profile")
@@ -53,6 +55,12 @@ interface ProfileApi {
 
     @DELETE("/member")
     suspend fun deleteUser(
+        @Header("AccessToken") accessToken: String,
+    ): Response<Int>
+
+    @PATCH("/member/alarm")
+    suspend fun patchPushAgreement(
+        @Query("pushAgreement") pushAgreement: Boolean,
         @Header("AccessToken") accessToken: String,
     ): Response<Int>
 }

@@ -134,4 +134,20 @@ class ProfileRepositoryImpl
                 null
             }
         }
+
+        override suspend fun patchPushAgreement(pushAgreement: Boolean, accessToken: String): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.patchPushAgreement(pushAgreement, accessToken)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-PatchPush", "통신 성공")
+                    response.code()
+                } else {
+                    Log.e("ProfileRepo-PatchPush", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
