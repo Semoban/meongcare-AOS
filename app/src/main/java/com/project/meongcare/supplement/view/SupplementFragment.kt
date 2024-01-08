@@ -1,7 +1,9 @@
 package com.project.meongcare.supplement.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,7 @@ import com.project.meongcare.supplement.utils.SupplementUtils
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
+import java.util.Calendar
 
 class SupplementFragment : Fragment() {
     lateinit var fragmentSupplementBinding: FragmentSupplementBinding
@@ -102,7 +105,10 @@ class SupplementFragment : Fragment() {
 
             textViewSupplementEdit.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putParcelableArrayList("supplements_key", ArrayList(supplementViewModel.supplementList.value))
+                    putParcelableArrayList(
+                        "supplements_key",
+                        ArrayList(supplementViewModel.supplementList.value)
+                    )
                 }
                 navController.navigate(R.id.action_supplement_to_supplementRoutineEdit, bundle)
             }
@@ -121,6 +127,7 @@ class SupplementFragment : Fragment() {
             val itemSupplementUnit: TextView
             val itemSupplementCheckImg: ImageView
             val itemSupplementCardView: CardView
+            val itemSupplementLine: View
 
             init {
                 itemSupplementName = itemSupplementBinding.textViewItemSupplementName
@@ -128,10 +135,11 @@ class SupplementFragment : Fragment() {
                 itemSupplementUnit = itemSupplementBinding.textViewItemSupplementUnit
                 itemSupplementCheckImg = itemSupplementBinding.imageViewItemSupplementCheck
                 itemSupplementCardView = itemSupplementBinding.cardViewItemSupplement
+                itemSupplementLine = itemSupplementBinding.viewItemSupplementLine
 
-//                itemSupplementBinding.root.setOnClickListener {
-//                    navController.navigate(R.id.action_supplement_to_supplementInfo)
-//                }
+                itemSupplementBinding.layoutItemSupplementText.setOnClickListener {
+                    navController.navigate(R.id.action_supplement_to_supplementInfo)
+                }
             }
         }
 
@@ -173,28 +181,81 @@ class SupplementFragment : Fragment() {
             holder: SupplementViewHolder,
             position: Int,
         ) {
+            val currentTime =
+                SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position].intakeTime)
+            var prevTime = ""
+            var nextTime = ""
+
+            if (position != 0) {
+                prevTime =
+                    SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position - 1].intakeTime)
+            }
+
+            if (position != supplementViewModel.supplementList.value!!.size - 1) {
+                nextTime =
+                    SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position + 1].intakeTime)
+            }
+
             holder.itemSupplementName.text =
                 supplementViewModel.supplementList.value!![position].name
-            holder.itemSupplementTime.text =
-                SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position].intakeTime)
+
+            holder.itemSupplementTime.text = currentTime
+
+            if (prevTime == currentTime) {
+                setCardViewMarginZero(holder)
+                holder.itemSupplementTime.visibility = View.GONE
+            }
+
+            if (currentTime == nextTime) {
+                setCardViewMarginZero(holder)
+            } else if (position != supplementViewModel.supplementList.value!!.lastIndex) {
+                holder.itemSupplementCardView.run {
+                    val layoutParams =
+                        holder.itemSupplementCardView.layoutParams as ViewGroup.MarginLayoutParams
+                    layoutParams.bottomMargin = dpToPx(context,50f)
+                }
+            }
 
             val intakeCount = supplementViewModel.supplementList.value!![position].intakeCount
             val intakeUnit = supplementViewModel.supplementList.value!![position].intakeUnit
+
             holder.itemSupplementUnit.text = "$intakeCount$intakeUnit"
 
             val supplementsRecordId =
                 supplementViewModel.supplementList.value!![position].supplementsRecordId
 
-            holder.itemSupplementCheckImg.isSelected = supplementIdListTemp[supplementsRecordId] == true
+            holder.itemSupplementCheckImg.run {
+                val today = Calendar.getInstance().time
 
-            holder.itemSupplementCheckImg.setOnClickListener {
-                supplementViewModel.run {
-                    checkSupplement(supplementsRecordId, holder.itemSupplementCheckImg)
+                if (toolbarViewModel.selectedDate.value!!.after(today)) {
+                    visibility = View.GONE
+                }
+
+                isSelected = supplementIdListTemp[supplementsRecordId] == true
+                setOnClickListener {
+                    supplementViewModel.run {
+                        checkSupplement(supplementsRecordId, holder.itemSupplementCheckImg)
+                    }
                 }
             }
-
-            Log.d("영양제 리사이클러뷰 에러", "${supplementViewModel.supplementList.value!![position]}")
         }
+
+        private fun setCardViewMarginZero(holder: SupplementViewHolder) {
+            holder.itemSupplementCardView.run {
+                val layoutParams =
+                    holder.itemSupplementCardView.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.bottomMargin = 0
+            }
+        }
+    }
+
+    fun dpToPx(context: Context, dp: Float): Int {
+        val resources = context.resources
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            resources.displayMetrics
+        ).toInt()
     }
 
 }

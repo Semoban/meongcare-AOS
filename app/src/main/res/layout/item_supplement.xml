@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:text="오전 08:00"
         android:textAppearance="@style/Typography.Body1.Medium"
-        android:textColor="@color/gray5" />
+        android:textColor="@color/gray5"
+        android:layout_marginTop="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:id="@+id/view_item_supplement_line"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
             android:background="@color/gray3" />
 
         <androidx.cardview.widget.CardView
@@ -38,10 +40,10 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="17dp"
                 android:paddingTop="20dp"
-                android:paddingRight="17dp"
                 android:paddingBottom="20dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_item_supplement_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -68,6 +70,8 @@
                     android:id="@+id/imageView_item_supplement_check"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="17dp"
                     app:srcCompat="@drawable/all_check_toggle_20dp" />
 
             </LinearLayout>
