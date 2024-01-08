@@ -43,8 +43,8 @@ class SupplementRepository {
     ): Result<DetailSupplement> = kotlin.runCatching {
         val response = supplementAPI.getSupplementDetail(MainActivity.ACCESS_TOKEN, supplementsId)
         if (response.isSuccessful) response.body()
-            ?: throw RuntimeException("Supplement get detail API 통신 실패")
-        else throw RuntimeException("Supplement get detail API 통신 실패")
+            ?: throw RuntimeException("영양제 상세조회 API 통신 실패")
+        else throw RuntimeException("영양제 상세조회 API 통신 실패")
     }
     suspend fun getSupplementDogs(
         dogId: Int,

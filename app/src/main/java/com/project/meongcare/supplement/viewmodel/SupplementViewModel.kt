@@ -73,9 +73,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
             val supplements = repository.getSupplementDetail(supplementsId)
             supplements.onSuccess {
                 supplementDetail.value = it
-                Log.d("영양제 get detail Api 통신 성공", supplementDogList.value.toString())
+                Log.d("영양제 상세 조회 Api 통신 성공", supplementDetail.value.toString())
             }.onFailure {
-                Log.d("영양제 get detail Api 통신 에러", it.toString())
+                Log.d("영양제 상세 조회 Api 통신 에러", it.toString())
             }
         }
     }
