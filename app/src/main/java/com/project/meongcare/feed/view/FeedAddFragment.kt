@@ -1,10 +1,13 @@
 package com.project.meongcare.feed.view
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -23,12 +26,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var inputMethodManager: InputMethodManager
     private val feedPostViewModel: FeedPostViewModel by viewModels()
 
     override fun onCreateView(
@@ -45,6 +50,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initInputMethodManager()
         initToolbar()
         initPhotoAttachModalBottomSheet()
         updateCalendarVisibility()
@@ -155,6 +161,21 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 textviewFeedaddeditIntakePeriodEnd,
                 checkboxFeedaddeditDoNotKnowEndDate
             )
+        }
+    }
+
+    private fun initInputMethodManager() {
+        thread {
+            SystemClock.sleep(1000)
+            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideSoftKeyboard()
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            requireActivity().currentFocus!!.clearFocus()
         }
     }
 
