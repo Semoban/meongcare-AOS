@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.project.meongcare.MainActivity
 import com.project.meongcare.supplement.model.data.remote.RetrofitInstance
 import com.project.meongcare.supplement.model.data.remote.SupplementAPI
-import com.project.meongcare.supplement.model.entities.InfoSupplement
+import com.project.meongcare.supplement.model.entities.DogSupplement
 import com.project.meongcare.supplement.model.entities.ResultSupplement
 import com.project.meongcare.supplement.model.entities.SupplementDto
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -37,10 +37,10 @@ class SupplementRepository {
         else throw RuntimeException("Supplement get API 통신 실패")
     }
 
-    suspend fun getSupplementInfos(
+    suspend fun getSupplementDogs(
         dogId: Int,
-    ): Result<InfoSupplement> = kotlin.runCatching {
-        val response = supplementAPI.getSupplementInfos(MainActivity.ACCESS_TOKEN, dogId)
+    ): Result<DogSupplement> = kotlin.runCatching {
+        val response = supplementAPI.getSupplementDogs(MainActivity.ACCESS_TOKEN, dogId)
         if (response.isSuccessful) response.body()
             ?: throw RuntimeException("Supplement get info API 통신 실패")
         else throw RuntimeException("Supplement get info API 통신 실패")

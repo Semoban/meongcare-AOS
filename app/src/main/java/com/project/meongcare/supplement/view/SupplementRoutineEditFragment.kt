@@ -42,7 +42,7 @@ class SupplementRoutineEditFragment : Fragment() {
         supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
         supplementViewModel.run {
-            getSupplementInfos(1)
+            getSupplementDogs(1)
             supplementIdListAllCheck.observe(viewLifecycleOwner) {
                 Log.d("루틴 변경", it.toString())
                 Log.d("루틴 변경2", supplementIdList.value.toString())
@@ -53,7 +53,7 @@ class SupplementRoutineEditFragment : Fragment() {
                     }
                 }
             }
-            supplementInfoList.observe(viewLifecycleOwner) {
+            supplementDogList.observe(viewLifecycleOwner) {
                 fragmentSupplementRoutineEditBinding.recyclerViewSupplementRoutineEdit.run {
                     adapter = SupplementRoutineEditRecyclerViewAdapter()
                     layoutManager = LinearLayoutManager(context)
@@ -67,7 +67,7 @@ class SupplementRoutineEditFragment : Fragment() {
             imageViewSupplementRoutineEditDeleteAllCheck.setOnClickListener { view ->
                 val isAllSelected = !view.isSelected
                 view.isSelected = isAllSelected
-                val temp = supplementViewModel.supplementInfoList.value!!.map { it.supplementsId }
+                val temp = supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
                     .toMutableList()
                 supplementViewModel.setAllItemsChecked(
                     imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
@@ -133,19 +133,19 @@ class SupplementRoutineEditFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return supplementViewModel.supplementInfoList.value!!.size
+            return supplementViewModel.supplementDogList.value!!.size
         }
 
         override fun onBindViewHolder(
             holder: SupplementRoutineEditHolder,
             position: Int,
         ) {
-            Log.d("루틴 편집20", supplementViewModel.supplementInfoList.value!!.toString())
+            Log.d("루틴 편집20", supplementViewModel.supplementDogList.value!!.toString())
             holder.itemSupplementRoutineEditName.text =
-                supplementViewModel.supplementInfoList.value!![position].name
+                supplementViewModel.supplementDogList.value!![position].name
 
             val supplementsId =
-                supplementViewModel.supplementInfoList.value!![position].supplementsId
+                supplementViewModel.supplementDogList.value!![position].supplementsId
             Log.d("루틴 편집3", supplementsId.toString())
 
             holder.itemSupplementRoutineEditCheckImg.isSelected =
@@ -168,11 +168,11 @@ class SupplementRoutineEditFragment : Fragment() {
             }
 
             holder.itemSupplementRoutineEditAlarm.isSelected =
-                !supplementViewModel.supplementInfoList.value!![position].pushAgreement
+                !supplementViewModel.supplementDogList.value!![position].pushAgreement
 
             holder.itemSupplementRoutineEditAlarm.setOnClickListener {
                 val supplementsId =
-                    supplementViewModel.supplementInfoList.value!![position].supplementsId
+                    supplementViewModel.supplementDogList.value!![position].supplementsId
                 it.isSelected = !it.isSelected
                 val isAlarmTrue = it.isSelected
                 supplementViewModel.patchSupplementAlarm(supplementsId, !isAlarmTrue)

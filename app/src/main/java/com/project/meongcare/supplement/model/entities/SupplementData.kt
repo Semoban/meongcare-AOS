@@ -1,20 +1,11 @@
 package com.project.meongcare.supplement.model.entities
 
-import android.os.Parcel
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 data class ResultSupplement(
     val routines: List<Supplement>,
 )
 
-data class InfoSupplement(
-    val supplementsInfos: List<SupplementInfo>,
-)
-
-data class ResponseSupplement(
-    val success: Boolean,
-    val message: String,
+data class DogSupplement(
+    val supplementsInfos: List<SupplementDog>,
 )
 
 data class Supplement(
@@ -40,7 +31,7 @@ data class SupplementDto(
     val intakeInfos: List<IntakeInfo>
 )
 
-data class SupplementInfo(
+data class SupplementDog(
     val supplementsId: Int,
     val name: String,
     val pushAgreement: Boolean,

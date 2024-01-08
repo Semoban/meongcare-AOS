@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.model.entities.Supplement
-import com.project.meongcare.supplement.model.entities.SupplementInfo
+import com.project.meongcare.supplement.model.entities.SupplementDog
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -30,13 +30,13 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     var supplementPercentage = MutableLiveData<Double>()
     var supplementIdList = MutableLiveData<MutableList<Int>>()
     var supplementIdListAllCheck = MutableLiveData<Boolean>()
-    var supplementInfoList = MutableLiveData<MutableList<SupplementInfo>>()
+    var supplementDogList = MutableLiveData<MutableList<SupplementDog>>()
 
     init {
         intakeTimeList.value = mutableListOf()
         supplementList.value = mutableListOf()
         supplementIdList.value = mutableListOf()
-        supplementInfoList.value = mutableListOf()
+        supplementDogList.value = mutableListOf()
         supplementCheckCount.value = 0.0
         supplementSize.value = 0.0
         supplementPercentage.value = 0.0
@@ -64,15 +64,15 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun getSupplementInfos(
+    fun getSupplementDogs(
         dogId: Int,
     ) {
         viewModelScope.launch {
-            val supplements = repository.getSupplementInfos(dogId)
+            val supplements = repository.getSupplementDogs(dogId)
             supplements.onSuccess {
-                supplementInfoList.value =
+                supplementDogList.value =
                     it.supplementsInfos.sortedBy { s -> s.supplementsId }.toMutableList()
-                Log.d("영양제 get info Api 통신 성공", supplementInfoList.value.toString())
+                Log.d("영양제 get info Api 통신 성공", supplementDogList.value.toString())
             }.onFailure {
                 Log.d("영양제 get info Api 통신 에러", it.toString())
             }

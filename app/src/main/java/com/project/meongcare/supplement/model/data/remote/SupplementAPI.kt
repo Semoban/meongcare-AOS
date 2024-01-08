@@ -1,6 +1,6 @@
 package com.project.meongcare.supplement.model.data.remote
 
-import com.project.meongcare.supplement.model.entities.InfoSupplement
+import com.project.meongcare.supplement.model.entities.DogSupplement
 import com.project.meongcare.supplement.model.entities.ResultSupplement
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,10 +26,10 @@ interface SupplementAPI {
     ): Response<ResultSupplement>
 
     @GET("/supplements/dog/{dogId}")
-    suspend fun getSupplementInfos(
+    suspend fun getSupplementDogs(
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Int,
-    ): Response<InfoSupplement>
+    ): Response<DogSupplement>
 
     @Multipart
     @POST("/supplements")
