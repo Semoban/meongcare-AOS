@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

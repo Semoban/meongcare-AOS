@@ -4,10 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.meongcare.info.model.data.repository.ProfileRepository
-import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import com.project.meongcare.info.model.data.repository.ProfileRepository
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody

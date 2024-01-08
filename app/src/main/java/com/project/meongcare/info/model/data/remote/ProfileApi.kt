@@ -1,8 +1,8 @@
 package com.project.meongcare.info.model.data.remote
 
-import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

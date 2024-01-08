@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.project.meongcare.info.model.entities.GetDogInfoResponse
-import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetAddEditBinding
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.onboarding.view.Gender
 import com.project.meongcare.onboarding.view.dateFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +35,7 @@ class PetInfoFragment : Fragment() {
             }
         }
 
-        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NTI5MzQxfQ.OyMJ6nYc5ts7pIik__904ClK01HFUeYxjCbITeZMLr0"
+        val accessToken = ""
         val dogId = arguments?.getLong("dogId")!!
         petInfoViewModel.getDogInfo(dogId, accessToken)
 

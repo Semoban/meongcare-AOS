@@ -17,10 +17,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
