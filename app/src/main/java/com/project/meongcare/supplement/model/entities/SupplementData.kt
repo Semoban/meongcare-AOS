@@ -17,9 +17,13 @@ data class Supplement(
     val intakeStatus: Boolean,
 )
 
-data class IntakeInfo(
-    val intakeTime: String,
-    val intakeCount: Int
+data class DetailSupplement(
+    val supplementsId: Int,
+    val brand: String,
+    val name: String,
+    val intakeCycle: Int,
+    val intakeUnit: String,
+    val intakeInfos: List<IntakeInfo>,
 )
 
 data class SupplementDto(
@@ -28,7 +32,12 @@ data class SupplementDto(
     val name: String,
     val intakeCycle: Int,
     val intakeUnit: String,
-    val intakeInfos: List<IntakeInfo>
+    val intakeInfos: List<IntakeInfo>,
+)
+
+data class IntakeInfo(
+    val intakeTime: String,
+    val intakeCount: Int
 )
 
 data class SupplementDog(

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
+import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.model.entities.Supplement
 import com.project.meongcare.supplement.model.entities.SupplementDog
@@ -31,6 +32,7 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     var supplementIdList = MutableLiveData<MutableList<Int>>()
     var supplementIdListAllCheck = MutableLiveData<Boolean>()
     var supplementDogList = MutableLiveData<MutableList<SupplementDog>>()
+    var supplementDetail = MutableLiveData<DetailSupplement>()
 
     init {
         intakeTimeList.value = mutableListOf()
@@ -64,6 +66,20 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
+    fun getSupplementDetail(
+        supplementsId: Int,
+    ) {
+        viewModelScope.launch {
+            val supplements = repository.getSupplementDetail(supplementsId)
+            supplements.onSuccess {
+                supplementDetail.value = it
+                Log.d("영양제 get detail Api 통신 성공", supplementDogList.value.toString())
+            }.onFailure {
+                Log.d("영양제 get detail Api 통신 에러", it.toString())
+            }
+        }
+    }
+
     fun getSupplementDogs(
         dogId: Int,
     ) {
@@ -72,9 +88,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
             supplements.onSuccess {
                 supplementDogList.value =
                     it.supplementsInfos.sortedBy { s -> s.supplementsId }.toMutableList()
-                Log.d("영양제 get info Api 통신 성공", supplementDogList.value.toString())
+                Log.d("영양제 get dog Api 통신 성공", supplementDogList.value.toString())
             }.onFailure {
-                Log.d("영양제 get info Api 통신 에러", it.toString())
+                Log.d("영양제 get dog Api 통신 에러", it.toString())
             }
         }
     }
