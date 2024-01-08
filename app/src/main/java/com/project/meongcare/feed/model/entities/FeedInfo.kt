@@ -10,6 +10,6 @@ data class FeedInfo(
     val moisture: Double,
     val kcal: Double,
     val recommendIntake: Int,
-    val startDate: Int,
-    val endDate: Int,
+    val startDate: String,
+    val endDate: String? = null,
 )
