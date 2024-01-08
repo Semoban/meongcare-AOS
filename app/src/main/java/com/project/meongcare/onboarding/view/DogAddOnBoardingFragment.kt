@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
@@ -22,6 +24,7 @@ import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.data.repository.DogAddRepository
 import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
+import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -39,6 +42,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var mainActivity: MainActivity
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
+    private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
     @Inject
     lateinit var dogAddRepository: DogAddRepository
@@ -65,12 +69,18 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 }
             }
         }
-        // 품종 뷰모델 옵저버 내에서 에러뷰 visibility 설정 필
+
+        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
+            if (dogType != null) {
+                fragmentDogAddOnBoardingBinding.edittextPetaddSelectType.run {
+                    fragmentDogAddOnBoardingBinding.edittextPetaddSelectTypeError.visibility = View.GONE
+                    text = dogType
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
+            }
+        }
 
         fragmentDogAddOnBoardingBinding.run {
-            // 품종 검색 화면 연결 전 임시 값 설정
-            edittextPetaddSelectType.text = "말티즈"
-
             // 사진 등록
             cardviewPetaddImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
@@ -82,7 +92,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
             // 품종 등록
             viewPetaddType.setOnClickListener {
-                // 품종 검색 화면으로 이동
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
             }
 
             // 날짜 등록
@@ -111,7 +121,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 edittextPetaddWeight.requestFocus()
             }
             edittextPetaddSelectTypeError.setOnClickListener {
-                // 품종 검색 화면으로 이동
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
             }
 
             // 완료
@@ -174,7 +184,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                             requestBody,
                         )
                     if (dogAddResponse == 200) {
-                        // CompleteOnBoardingFragment로 이동
+                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
                     }
                 }
             }
