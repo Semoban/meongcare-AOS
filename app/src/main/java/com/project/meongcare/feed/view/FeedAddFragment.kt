@@ -36,6 +36,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private lateinit var inputMethodManager: InputMethodManager
     private val feedPostViewModel: FeedPostViewModel by viewModels()
 
+    private var recommendIntake = 0.0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,8 +54,17 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         initInputMethodManager()
         initToolbar()
         initPhotoAttachModalBottomSheet()
+        applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
+    private fun applyKcalContentEditorBehavior() {
+        binding.edittextFeedaddeditKcalContent.apply {
+            setOnEditorActionListener { _, _, _ ->
+                initRecommendDailyIntake(text.toString().toDouble())
+                hideSoftKeyboard()
+                true
+            }
+        }
     }
 
     private fun initToolbar() {
@@ -72,6 +82,20 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 FeedPhotoAttachModalBottomSheetFragment.TAG,
             )
         }
+    }
+    private fun initRecommendDailyIntake(feedKcal: Double) {
+        val weight = 15.0
+        recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
+        binding.textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
+    }
+
+    private fun calculateRecommendDailyIntake(
+        weight: Double,
+        feedKcal: Double,
+    ): Double {
+        val dailyEnergyRequirement = 1.6 * (30 * weight + 70)
+        val recommendDailyIntake = dailyEnergyRequirement * 1000 / feedKcal
+        return String.format("%.2f", recommendDailyIntake).toDouble()
     }
 
     private fun updateCalendarVisibility() {
