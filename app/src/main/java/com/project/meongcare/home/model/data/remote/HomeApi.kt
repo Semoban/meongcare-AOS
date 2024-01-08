@@ -1,9 +1,9 @@
 package com.project.meongcare.home.model.data.remote
 
 import com.project.meongcare.home.model.entities.GetDogListResponse
+import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
-import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
