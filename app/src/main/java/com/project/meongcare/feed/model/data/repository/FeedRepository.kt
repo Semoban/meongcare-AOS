@@ -13,8 +13,6 @@ interface FeedRepository {
 
     suspend fun getFeedPart(feedRecordId: Long): FeedRecords?
 
-    suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords?
-
     suspend fun getFeeds(): Feeds?
 
     suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int?

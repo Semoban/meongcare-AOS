@@ -39,13 +39,6 @@ interface FeedService {
         @Query("feedRecordId") feedRecordId: Long,
     ): Response<FeedRecords>
 
-    @GET("feed/list/before/{dogId}")
-    suspend fun getPreviousFeed(
-        @Header("AccessToken") accessToken: String,
-        @Path("dogId") dogId: Long,
-        @Query("feedRecordId") feedRecordId: Long,
-    ): Response<FeedRecords>
-
     @GET("feed/list/{dogId}")
     suspend fun getFeeds(
         @Header("AccessToken") accessToken: String,
