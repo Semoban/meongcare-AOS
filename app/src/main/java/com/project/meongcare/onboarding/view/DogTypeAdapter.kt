@@ -30,7 +30,10 @@ class DogTypeAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogTypeViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): DogTypeViewHolder {
         val itemBinding = ItemSearchDogVarietyBinding.inflate(layoutInflater)
         itemBinding.root.layoutParams =
             ViewGroup.LayoutParams(
@@ -44,7 +47,10 @@ class DogTypeAdapter(
         return dogTypeList.size
     }
 
-    override fun onBindViewHolder(holder: DogTypeViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: DogTypeViewHolder,
+        position: Int,
+    ) {
         holder.textviewItemDog.text = dogTypeList[position]
 
         holder.constraintDogType.setOnClickListener {
