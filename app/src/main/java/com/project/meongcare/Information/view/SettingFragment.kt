@@ -38,6 +38,10 @@ class SettingFragment : Fragment() {
         }
 
         binding.run {
+            imagebuttonSettingBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             textviewSettingMembershipWithdrawal.setOnClickListener {
                 includeDeleteAccountDialog.root.visibility = View.VISIBLE
             }
