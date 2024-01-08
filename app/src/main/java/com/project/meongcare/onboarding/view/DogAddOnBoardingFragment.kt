@@ -233,7 +233,10 @@ fun createMultipartBody(
     return MultipartBody.Part.createFormData("file", "", emptyBody)
 }
 
-fun getCheckedGender(view: View, checkedChipId: Int): String {
+fun getCheckedGender(
+    view: View,
+    checkedChipId: Int,
+): String {
     val checkedChip = view.findViewById<Chip>(checkedChipId)
     return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
 }
