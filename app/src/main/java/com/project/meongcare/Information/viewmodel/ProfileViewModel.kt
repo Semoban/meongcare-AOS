@@ -46,6 +46,10 @@ class ProfileViewModel
         val userDeleteResponse
             get() = _userDeleteResponse
 
+        private val _patchPushResponse = MutableLiveData<Int>()
+        val patchPushResponse
+            get() = _patchPushResponse
+
         private val _dogProfile = MutableLiveData<Uri>()
         val dogProfile
             get() = _dogProfile
@@ -112,6 +116,15 @@ class ProfileViewModel
         fun deleteUser(accessToken: String) {
             viewModelScope.launch {
                 _userDeleteResponse.value = profileRepository.deleteUser(accessToken)
+            }
+        }
+
+        fun patchPushAgreement(
+            pushAgreement: Boolean,
+            accessToken: String,
+        ) {
+            viewModelScope.launch {
+                _patchPushResponse.value = profileRepository.patchPushAgreement(pushAgreement, accessToken)
             }
         }
     }

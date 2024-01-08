@@ -42,6 +42,16 @@ class SettingFragment : Fragment() {
             }
         }
 
+        settingViewModel.patchPushResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                when (binding.switchSettingNotification.isChecked) {
+                    true -> makeSnackBar("알림 수신 처리되었습니다.")
+                    false -> makeSnackBar("알림 거부 처리되었습니다.")
+                }
+            }
+        }
+
+        val accessToken = ""
         binding.run {
             imagebuttonSettingBack.setOnClickListener {
                 findNavController().popBackStack()
@@ -62,13 +72,16 @@ class SettingFragment : Fragment() {
                     includeDeleteAccountDialog.root.visibility = View.GONE
                 }
                 buttonDeleteAccountDialogDelete.setOnClickListener {
-                    val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NjU0MzQwfQ.gnACPYtCCD7pBMQtj8lQNMfJurfzFW837r43Xlh70X4"
                     settingViewModel.deleteUser(accessToken)
                 }
             }
 
             buttonSettingNotification.setOnClickListener {
                 switchSettingNotification.isChecked = !switchSettingNotification.isChecked
+            }
+
+            switchSettingNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+                settingViewModel.patchPushAgreement(isChecked, accessToken)
             }
         }
 
