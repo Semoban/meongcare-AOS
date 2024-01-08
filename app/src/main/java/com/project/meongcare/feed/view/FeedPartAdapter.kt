@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.meongcare.databinding.ItemFeedBinding
-import com.project.meongcare.feed.model.entities.FeedRecord
+import com.project.meongcare.feed.model.entities.FeedPartRecord
 
-class FeedPartAdapter : ListAdapter<FeedRecord, FeedPartAdapter.FeedPartViewHolder>(diffUtil) {
+class FeedPartAdapter : ListAdapter<FeedPartRecord, FeedPartAdapter.FeedPartViewHolder>(diffUtil) {
     inner class FeedPartViewHolder(private val binding: ItemFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: FeedRecord) {
+        fun bind(item: FeedPartRecord) {
             binding.run {
                 if (item.feedImageURL.isNotEmpty()) {
                     Glide.with(itemView)
@@ -50,17 +50,17 @@ class FeedPartAdapter : ListAdapter<FeedRecord, FeedPartAdapter.FeedPartViewHold
 
     companion object {
         val diffUtil =
-            object : DiffUtil.ItemCallback<FeedRecord>() {
+            object : DiffUtil.ItemCallback<FeedPartRecord>() {
                 override fun areItemsTheSame(
-                    oldItem: FeedRecord,
-                    newItem: FeedRecord,
+                    oldItem: FeedPartRecord,
+                    newItem: FeedPartRecord,
                 ): Boolean {
                     return oldItem == newItem
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: FeedRecord,
-                    newItem: FeedRecord,
+                    oldItem: FeedPartRecord,
+                    newItem: FeedPartRecord,
                 ): Boolean {
                     return oldItem == newItem
                 }
