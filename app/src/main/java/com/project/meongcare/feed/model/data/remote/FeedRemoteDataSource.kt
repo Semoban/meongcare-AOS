@@ -138,15 +138,16 @@ class FeedRemoteDataSource
                         accessToken,
                         feedPatchRequest,
                     )
-                return if (patchFeedResponse.code() == SUCCESS) {
-                    Log.d("FeedPatchSuccess", patchFeedResponse.code().toString())
-                    patchFeedResponse.body()
-                } else {
+
+                if (patchFeedResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(patchFeedResponse.errorBody()?.string()!!)
                     Log.d("FeedPatchFailure", patchFeedResponse.code().toString())
                     Log.d("FeedPatchFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("FeedPatchSuccess", patchFeedResponse.code().toString())
+                return patchFeedResponse.code()
             } catch (e: Exception) {
                 Log.d("FeedPatchException", e.toString())
                 return null
