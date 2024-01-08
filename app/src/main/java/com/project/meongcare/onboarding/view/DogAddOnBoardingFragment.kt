@@ -14,7 +14,6 @@ import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
-import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -144,7 +143,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
                 val dogName = edittextPetaddName.text.toString()
                 val dogType = edittextPetaddSelectType.text.toString()
-                val dogGender = getCheckedGender(chipgroupPetaddGroupGender.checkedChipId)
+                val dogGender = getCheckedGender(fragmentDogAddOnBoardingBinding.root, chipgroupPetaddGroupGender.checkedChipId)
                 val dogBirth = dogAddViewModel.dogBirthDate.value!!
                 val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
                 val dogBack: Double? = bodySizeCheck(edittextPetaddBackLength.text.toString())
@@ -184,7 +183,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         return fragmentDogAddOnBoardingBinding.root
     }
 
-    override fun onBitmapPassed(uri: Uri) {
+    override fun onUriPassed(uri: Uri) {
         dogAddViewModel.getDogProfileImage(uri)
 
         fragmentDogAddOnBoardingBinding.run {
@@ -199,46 +198,49 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     override fun onDateSubmit(str: String) {
         dogAddViewModel.getDogBirthDate(str)
     }
-
-    fun dateFormat(str: String): String {
-        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        val parsedDate = inputDateFormat.parse(str)
-        return outputDateFormat.format(parsedDate)
-    }
-
-    fun createMultipartBody(
-        context: Context,
-        uri: Uri?,
-    ): MultipartBody.Part {
-        if (uri != null) {
-            val inputStream = context.contentResolver.openInputStream(uri)
-            val file = File(context.cacheDir, "tempFile")
-            inputStream.use { input ->
-                file.outputStream().use { output ->
-                    input?.copyTo(output)
-                }
-            }
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-            return MultipartBody.Part.createFormData("file", file.name, requestFile)
-        }
-        val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("file", "", emptyBody)
-    }
-
-    fun getCheckedGender(checkedChipId: Int): String {
-        val checkedChip = fragmentDogAddOnBoardingBinding.root.findViewById<Chip>(checkedChipId)
-        return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
-    }
-
-    fun bodySizeCheck(str: String): Double? {
-        return if (str.isEmpty()) null else str.toDouble()
-    }
 }
 
 enum class Gender(val korean: String, val english: String) {
     MALE("남성", "male"),
     FEMALE("여성", "female"),
+}
+
+fun dateFormat(str: String): String {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
+
+    val parsedDate = inputDateFormat.parse(str)
+    return outputDateFormat.format(parsedDate)
+}
+
+fun createMultipartBody(
+    context: Context,
+    uri: Uri?,
+): MultipartBody.Part {
+    if (uri != null) {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "tempFile")
+        inputStream.use { input ->
+            file.outputStream().use { output ->
+                input?.copyTo(output)
+            }
+        }
+        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+    val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData("file", "", emptyBody)
+}
+
+fun getCheckedGender(
+    view: View,
+    checkedChipId: Int,
+): String {
+    val checkedChip = view.findViewById<Chip>(checkedChipId)
+    return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
+}
+
+fun bodySizeCheck(str: String): Double? {
+    return if (str.isEmpty()) null else str.toDouble()
 }

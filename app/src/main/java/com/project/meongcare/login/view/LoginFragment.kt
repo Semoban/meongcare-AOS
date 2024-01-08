@@ -1,6 +1,5 @@
 package com.project.meongcare.login.view
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -58,10 +57,10 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                Log.d("Login-viewmodel", "통신 성공 후 액세스 토큰 반환 ${loginResponse.accessToken}")
                 userPreferences.setAccessToken(loginResponse.accessToken)
                 userPreferences.setRefreshToken(loginResponse.refreshToken)
                 // DogAddOnBoardingFragment로 이동
@@ -132,6 +131,7 @@ class LoginFragment : Fragment() {
 
                 // data store에 저장
                 userPreferences.setEmail(user.kakaoAccount?.email!!)
+                userPreferences.setProvider("kakao")
 
                 val loginRequest =
                     LoginRequest(
@@ -174,6 +174,7 @@ class LoginFragment : Fragment() {
 
                         // data store에 저장
                         userPreferences.setEmail(result.profile?.email!!)
+                        userPreferences.setProvider("naver")
 
                         // 서버에 로그인 정보 전송
                         val loginRequest =
@@ -210,8 +211,6 @@ class LoginFragment : Fragment() {
 
                 override fun onSuccess() {
                     Log.d("Login-naver", "로그인 성공")
-                    val accessToken = NaverIdLoginSDK.getAccessToken()
-                    val refreshToken = NaverIdLoginSDK.getRefreshToken()
                     NidOAuthLogin().callProfileApi(nidProfileCallback)
                 }
             }
@@ -229,6 +228,7 @@ class LoginFragment : Fragment() {
                 .requestEmail()
                 .requestProfile()
                 .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)
+                .requestServerAuthCode(BuildConfig.GOOGLE_CLIENT_ID)
                 .build()
 
         return GoogleSignIn.getClient(mainActivity, googleSignInOptions)
@@ -241,10 +241,11 @@ class LoginFragment : Fragment() {
 
             // data store에 저장
             userPreferences.setEmail(account.email!!)
+            userPreferences.setProvider("google")
 
             val loginRequest =
                 LoginRequest(
-                    "${account.idToken}",
+                    "${account.serverAuthCode}",
                     "google",
                     "김멍멍",
                     "${account.email}",
