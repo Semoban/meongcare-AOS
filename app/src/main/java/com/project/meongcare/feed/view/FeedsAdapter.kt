@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.project.meongcare.databinding.ItemSearchFeedBinding
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.Feed
@@ -17,7 +18,11 @@ class FeedsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Feed) {
             binding.run {
-                // image
+                if (item.imageURL.isNotEmpty()) {
+                    Glide.with(itemView)
+                        .load(item.imageURL)
+                        .into(imageviewOldfeed)
+                }
                 textviewSearchfeedBrand.text = item.brandName
                 textviewSearchfeedName.text = item.feedName
                 root.setOnClickListener {
