@@ -11,10 +11,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DogTypeModule {
-
     @Provides
     @Singleton
-    fun provideContext(@ApplicationContext context: Context): Context {
+    fun provideContext(
+        @ApplicationContext context: Context,
+    ): Context {
         return context
     }
 
