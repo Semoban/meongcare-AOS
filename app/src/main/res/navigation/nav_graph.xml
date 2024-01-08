@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/supplementFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -207,5 +207,9 @@
         android:id="@+id/supplementRoutineEditFragment"
         android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
         android:label="fragment_supplement_routine_edit"
-        tools:layout="@layout/fragment_supplement_routine_edit" />
+        tools:layout="@layout/fragment_supplement_routine_edit" >
+        <action
+            android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+    </fragment>
 </navigation>

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementRoutineEditBinding
 import com.project.meongcare.databinding.ItemSupplementRoutineEditBinding
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
@@ -111,6 +112,10 @@ class SupplementRoutineEditFragment : Fragment() {
                     itemSupplementRoutineEditBinding.imageViewItemSupplementRoutineEditCheck
                 itemSupplementRoutineEditAlarm =
                     itemSupplementRoutineEditBinding.imageViewItemSupplementRoutineEditAlarm
+
+                itemSupplementRoutineEditName.setOnClickListener {
+                    navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo)
+                }
             }
         }
 
