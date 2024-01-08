@@ -11,9 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSearchFeedBinding
-import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.excreta.view.ExcretaRecordEditAdapter
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.viewmodel.FeedPatchViewModel
