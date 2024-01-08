@@ -104,13 +104,7 @@ class SupplementFragment : Fragment() {
             }
 
             textViewSupplementEdit.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putParcelableArrayList(
-                        "supplements_key",
-                        ArrayList(supplementViewModel.supplementList.value)
-                    )
-                }
-                navController.navigate(R.id.action_supplement_to_supplementRoutineEdit, bundle)
+                navController.navigate(R.id.action_supplement_to_supplementRoutineEdit)
             }
 
         }

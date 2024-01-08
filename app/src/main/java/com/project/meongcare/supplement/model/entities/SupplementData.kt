@@ -17,7 +17,6 @@ data class ResponseSupplement(
     val message: String,
 )
 
-@Parcelize
 data class Supplement(
     val supplementsRecordId: Int,
     val name: String,
@@ -25,15 +24,7 @@ data class Supplement(
     val intakeCount: Int,
     val intakeUnit: String,
     val intakeStatus: Boolean,
-) : Parcelable {
-    override fun describeContents(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun writeToParcel(p0: Parcel, p1: Int) {
-        TODO("Not yet implemented")
-    }
-}
+)
 
 data class IntakeInfo(
     val intakeTime: String,
