@@ -4,7 +4,7 @@ import android.util.Log
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
-import com.project.meongcare.feed.model.entities.FeedRecords
+import com.project.meongcare.feed.model.entities.FeedPartRecords
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 import org.json.JSONObject
@@ -63,7 +63,7 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeedPart(feedRecordId: Long): FeedRecords? {
+        suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords? {
             try {
                 val getFeedPartResponse =
                     feedApiService.getFeedPart(

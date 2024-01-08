@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.feed.model.data.repository.FeedRepositoryImpl
-import com.project.meongcare.feed.model.entities.FeedRecords
+import com.project.meongcare.feed.model.entities.FeedPartRecords
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +15,7 @@ class FeedPartGetViewModel
     constructor(
         private val feedRepositoryImpl: FeedRepositoryImpl,
     ) : ViewModel() {
-        private var _feedPartGet = MutableLiveData<FeedRecords>()
+        private var _feedPartGet = MutableLiveData<FeedPartRecords>()
         val feedPartGet
             get() = _feedPartGet
 

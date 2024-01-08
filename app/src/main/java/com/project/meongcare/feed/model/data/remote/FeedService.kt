@@ -2,7 +2,7 @@ package com.project.meongcare.feed.model.data.remote
 
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
-import com.project.meongcare.feed.model.entities.FeedRecords
+import com.project.meongcare.feed.model.entities.FeedPartRecords
 import com.project.meongcare.feed.model.entities.Feeds
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,7 +37,7 @@ interface FeedService {
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Long,
         @Query("feedRecordId") feedRecordId: Long,
-    ): Response<FeedRecords>
+    ): Response<FeedPartRecords>
 
     @GET("feed/list/{dogId}")
     suspend fun getFeeds(
