@@ -52,7 +52,12 @@ class SettingFragment : Fragment() {
         }
 
         val accessToken = ""
+        val pushAgreement = arguments?.getBoolean("pushAgreement")!!
         binding.run {
+            switchSettingNotification.run {
+                isChecked = pushAgreement
+            }
+
             imagebuttonSettingBack.setOnClickListener {
                 findNavController().popBackStack()
             }
