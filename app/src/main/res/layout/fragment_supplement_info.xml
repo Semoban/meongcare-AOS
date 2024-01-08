@@ -366,14 +366,14 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/layout_supplement_add_time_list"
+                    android:id="@+id/layout_supplement_info_time_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView_supplement_add_time_list"
+                        android:id="@+id/recyclerView_supplement_info_time_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
