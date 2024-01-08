@@ -52,6 +52,13 @@ interface SupplementAPI {
         @Query("supplementsRecordId") supplementsRecordId: Int,
     ): Response<ResponseBody>
 
+    @PATCH("/supplements/active")
+    suspend fun patchSupplementActiveStatus(
+        @Header("AccessToken") accessToken: String,
+        @Query("supplementsId") supplementsId: Int,
+        @Query("isActive") pushAgreement: Boolean,
+    ): Response<ResponseBody>
+
     @PATCH("/supplements/alarm")
     suspend fun patchSupplementAlarmStatus(
         @Header("AccessToken") accessToken: String,

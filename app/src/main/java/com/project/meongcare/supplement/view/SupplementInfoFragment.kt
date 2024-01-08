@@ -45,7 +45,6 @@ class SupplementInfoFragment : Fragment() {
         supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
         supplementViewModel.run {
-
             getSupplementDetail(supplementId!!)
             supplementDetail.observe(viewLifecycleOwner) {
                 fragmentSupplementInfoBinding.run {
@@ -61,6 +60,7 @@ class SupplementInfoFragment : Fragment() {
                     }
                 }
             }
+
         }
 
         fragmentSupplementInfoBinding.run {
@@ -84,6 +84,34 @@ class SupplementInfoFragment : Fragment() {
                     false
                 }
             }
+
+            // Todo : supplementViewModel.supplementDetail.value.isActive 로 교체
+            var temp = true
+            buttonSupplementInfoRoutine.run {
+                this.isSelected = temp
+                val selected = ContextCompat.getColor(context, R.color.white)
+                val unselected = ContextCompat.getColor(context, R.color.gray4)
+
+                textViewButtonSupplementInfoRoutine.run {
+                    if (isSelected) {
+                        setTextColor(unselected)
+                        text = "루틴 중단"
+                    } else {
+                        setTextColor(selected)
+                        text = "루틴 시작하기"
+                    }
+                }
+
+                Log.d("루틴 버튼2",textViewButtonSupplementInfoRoutine.currentTextColor.toString())
+            }
+
+            buttonSupplementInfoRoutine.setOnClickListener {
+                temp = !temp
+                it.isSelected = !it.isSelected
+                val activeStatus = it.isSelected
+                supplementViewModel.patchSupplementActive(supplementId!!, activeStatus,mainActivity,textViewButtonSupplementInfoRoutine)
+            }
+
         }
 
         return fragmentSupplementInfoBinding.root

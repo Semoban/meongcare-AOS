@@ -1,14 +1,21 @@
 package com.project.meongcare.supplement.viewmodel
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.google.android.gms.tasks.Tasks.await
+import com.project.meongcare.MainActivity
+import com.project.meongcare.R
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
@@ -126,6 +133,32 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
                 Log.d("영양제 알람 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 알람 Api 통신 에러", it.toString())
+            }
+        }
+    }
+
+    fun patchSupplementActive(supplementsId: Int, isActive: Boolean, context: Activity,textView: TextView) {
+        viewModelScope.launch {
+            Log.d("영양제 루틴 활성화 체크 중단", "$supplementsId, $isActive")
+            val active = repository.patchSupplementActive(supplementsId, isActive!!)
+            active.onSuccess {
+                Log.d("영양제 루틴 활성화 체크 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("영양제 루틴 활성화 체크 Api 통신 에러", it.toString())
+            }
+            withContext(Main){
+                val selected = ContextCompat.getColor(context, R.color.white)
+                val unselected = ContextCompat.getColor(context, R.color.gray4)
+                val status = !isActive
+                textView.run {
+                    if (status) {
+                        setTextColor(unselected)
+                        text = "루틴 중단"
+                    } else {
+                        setTextColor(selected)
+                        text = "루틴 시작하기"
+                    }
+                }
             }
         }
     }

@@ -33,8 +33,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
-
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_supplement_info"
                     android:layout_width="match_parent"
@@ -398,45 +396,24 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:id="@+id/button_supplement_info_off_routine"
+                android:id="@+id/button_supplement_info_routine"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:background="@drawable/all_rect_gray3_r5_outline"
+                android:background="@drawable/supplement_button_toggle"
                 android:orientation="vertical">
 
-
                 <TextView
+                    android:id="@+id/textView_button_supplement_info_routine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="루틴 중단"
                     android:textAppearance="@style/Typography.Bottom1.SemiBold"
-                    android:textColor="@color/gray4" />
+                    android:textColor="@drawable/supplement_button_toggle" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/button_supplement_info_on_routine"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_weight="1"
-                android:background="@drawable/all_rect_main4_r5"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="루틴 시작하기"
-                    android:textAppearance="@style/Typography.Bottom1.SemiBold"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
         </LinearLayout>
 
 

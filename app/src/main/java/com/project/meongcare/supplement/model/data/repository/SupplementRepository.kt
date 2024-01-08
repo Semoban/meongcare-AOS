@@ -85,6 +85,26 @@ class SupplementRepository {
         }
     }
 
+    suspend fun patchSupplementActive(
+        supplementsId: Int,
+        isActive: Boolean
+    ): Result<ResponseBody> = kotlin.runCatching {
+        val response = supplementAPI.patchSupplementActiveStatus(
+            MainActivity.ACCESS_TOKEN,
+            supplementsId,
+            isActive
+        )
+
+        if (response.isSuccessful) {
+            response.body() ?: throw RuntimeException("영양제 루틴 활성화 체크 API 통신 에러")
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorMessage =
+                "영양제 루틴 활성화 체크 API 통신 에러 코드 ${response.code()}, 전문: $errorBody"
+            throw RuntimeException(errorMessage)
+        }
+    }
+
     suspend fun deleteSupplementsById(supplementsIds: IntArray): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
