@@ -21,15 +21,15 @@
         android:background="@drawable/all_rect_gray3_r10_outline"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
-        android:paddingTop="22dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="22dp">
+        android:paddingRight="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
             android:orientation="horizontal">
 
             <TextView
@@ -46,8 +46,9 @@
         <ImageView
             android:id="@+id/imageView_item_supplementRoutineEdit_alarm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:paddingLeft="12dp"
             app:srcCompat="@drawable/all_notification_toggle_18dp" />
     </LinearLayout>
 </LinearLayout>

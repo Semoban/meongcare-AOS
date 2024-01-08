@@ -70,7 +70,7 @@
                     android:id="@+id/imageView_item_supplement_check"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingLeft="12dp"
+                    android:paddingLeft="17dp"
                     android:paddingRight="17dp"
                     app:srcCompat="@drawable/all_check_toggle_20dp" />
 
