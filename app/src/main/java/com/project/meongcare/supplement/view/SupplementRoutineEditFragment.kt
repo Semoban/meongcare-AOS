@@ -146,11 +146,9 @@ class SupplementRoutineEditFragment : Fragment() {
 
             val supplementsId =
                 supplementViewModel.supplementDogList.value!![position].supplementsId
-            Log.d("루틴 편집3", supplementsId.toString())
 
             holder.itemSupplementRoutineEditCheckImg.isSelected =
                 supplementViewModel.supplementIdList.value!!.contains(supplementsId)
-            Log.d("루틴 편집4", supplementsId.toString())
 
             holder.itemSupplementRoutineEditCheckImg.setOnClickListener {
                 supplementViewModel.updateSupplementIds(mutableListOf(supplementsId))
@@ -164,7 +162,9 @@ class SupplementRoutineEditFragment : Fragment() {
             }
 
             holder.itemSupplementRoutineEditName.setOnClickListener {
-                navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo)
+                val bundle = Bundle()
+                bundle.putInt("supplementsId",supplementsId)
+                navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo, bundle)
             }
 
             holder.itemSupplementRoutineEditAlarm.isSelected =
