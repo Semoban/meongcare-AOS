@@ -57,6 +57,10 @@ class SettingFragment : Fragment() {
                     settingViewModel.deleteUser(accessToken)
                 }
             }
+
+            buttonSettingNotification.setOnClickListener {
+                switchSettingNotification.isChecked = !switchSettingNotification.isChecked
+            }
         }
 
         return binding.root
