@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.view
+package com.project.meongcare.info.view
 
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import com.project.meongcare.Information.viewmodel.ProfileViewModel
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding

@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.view
+package com.project.meongcare.info.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.project.meongcare.Information.model.entities.GetDogInfoResponse
-import com.project.meongcare.Information.viewmodel.ProfileViewModel
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetAddEditBinding
 import com.project.meongcare.onboarding.view.Gender

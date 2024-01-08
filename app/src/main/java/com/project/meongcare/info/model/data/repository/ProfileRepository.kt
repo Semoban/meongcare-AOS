@@ -1,6 +1,6 @@
-package com.project.meongcare.Information.model.data.repository
+package com.project.meongcare.info.model.data.repository
 
-import com.project.meongcare.Information.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import okhttp3.MultipartBody

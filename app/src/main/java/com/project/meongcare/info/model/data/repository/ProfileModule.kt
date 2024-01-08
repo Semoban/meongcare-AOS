@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.model.data.repository
+package com.project.meongcare.info.model.data.repository
 
 import dagger.Module
 import dagger.Provides

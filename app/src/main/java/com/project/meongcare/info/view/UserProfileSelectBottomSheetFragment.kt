@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.view
+package com.project.meongcare.info.view
 
 import android.app.Activity
 import android.content.Context
@@ -62,7 +62,7 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
             ActivityResultContracts.StartActivityForResult(),
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                it.data?.data?.let {  uri ->
+                it.data?.data?.let { uri ->
                     if (uri != null) {
                         sendUri(uri)
                     }

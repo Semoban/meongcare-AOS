@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.model.data.remote
+package com.project.meongcare.info.model.data.remote
 
 import okhttp3.ResponseBody
 import retrofit2.Converter

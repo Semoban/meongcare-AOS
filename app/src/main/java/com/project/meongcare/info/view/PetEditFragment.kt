@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.view
+package com.project.meongcare.info.view
 
 import android.net.Uri
 import android.os.Build
@@ -16,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.project.meongcare.CalendarBottomSheetFragment
-import com.project.meongcare.Information.model.entities.GetDogInfoResponse
-import com.project.meongcare.Information.viewmodel.ProfileViewModel
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
@@ -156,7 +156,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
 
-                val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NjI4MzQzfQ._y66Fy6QfznE14qRncC0kPaEVHErorVRwW4zAhoW2hI"
+                val accessToken = ""
                 petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
             }
         }
@@ -164,7 +164,11 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         return binding.root
     }
 
-    private fun editTextWatcher(editText: EditText, targetView: View, hint: String) {
+    private fun editTextWatcher(
+        editText: EditText,
+        targetView: View,
+        hint: String,
+    ) {
         editText.addTextChangedListener {
             editText.doAfterTextChanged { editable ->
                 updateEditTextStyle(editText, targetView, hint)
@@ -172,7 +176,11 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
     }
 
-    private fun updateEditTextStyle(editText: EditText, targetView: View, hint: String) {
+    private fun updateEditTextStyle(
+        editText: EditText,
+        targetView: View,
+        hint: String,
+    ) {
         if (editText.text.isNullOrEmpty()) {
             targetView.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
             editText.hint = "필수 입력 값입니다"
@@ -200,8 +208,8 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             edittextPeteditName.setText(dogInfo.name)
             edittextPeteditType.setText(dogInfo.type)
             when (dogInfo.sex) {
-               Gender.FEMALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_female)
-               Gender.MALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_male)
+                Gender.FEMALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_female)
+                Gender.MALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_male)
             }
             checkboxPeteditNeuterStatus.isChecked = dogInfo.castrate
             isCbxChecked = dogInfo.castrate

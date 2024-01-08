@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.model.entities
+package com.project.meongcare.info.model.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

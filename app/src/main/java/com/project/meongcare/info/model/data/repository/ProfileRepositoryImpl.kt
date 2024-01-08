@@ -1,8 +1,8 @@
-package com.project.meongcare.Information.model.data.repository
+package com.project.meongcare.info.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.Information.model.data.remote.ProfileRetrofitClient
-import com.project.meongcare.Information.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.data.remote.ProfileRetrofitClient
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import okhttp3.MultipartBody
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ProfileRepositoryImpl
     @Inject
-    constructor(private val profileRetrofitClient: ProfileRetrofitClient): ProfileRepository {
+    constructor(private val profileRetrofitClient: ProfileRetrofitClient) : ProfileRepository {
         override suspend fun getUserProfile(accessToken: String): GetUserProfileResponse? {
             try {
                 val response = profileRetrofitClient.profileApi.getUserProfile(accessToken)
@@ -86,7 +86,7 @@ class ProfileRepositoryImpl
             dogId: Long,
             accessToken: String,
             file: MultipartBody.Part,
-            dto: RequestBody
+            dto: RequestBody,
         ): Int? {
             return try {
                 val response = profileRetrofitClient.profileApi.putDogInfo(dogId, accessToken, file, dto)
@@ -135,7 +135,10 @@ class ProfileRepositoryImpl
             }
         }
 
-        override suspend fun patchPushAgreement(pushAgreement: Boolean, accessToken: String): Int? {
+        override suspend fun patchPushAgreement(
+            pushAgreement: Boolean,
+            accessToken: String,
+        ): Int? {
             return try {
                 val response = profileRetrofitClient.profileApi.patchPushAgreement(pushAgreement, accessToken)
                 if (response.code() == 200) {

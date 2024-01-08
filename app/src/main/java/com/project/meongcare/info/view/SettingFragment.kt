@@ -1,4 +1,4 @@
-package com.project.meongcare.Information.view
+package com.project.meongcare.info.view
 
 import android.os.Bundle
 import android.view.Gravity
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.project.meongcare.Information.viewmodel.ProfileViewModel
+import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -87,6 +87,7 @@ class SettingFragment : Fragment() {
 
         return binding.root
     }
+
     fun makeSnackBar(message: String) {
         val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
         val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout

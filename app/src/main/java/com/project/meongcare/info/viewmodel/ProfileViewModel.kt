@@ -1,11 +1,11 @@
-package com.project.meongcare.Information.viewmodel
+package com.project.meongcare.info.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.meongcare.Information.model.data.repository.ProfileRepository
-import com.project.meongcare.Information.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.data.repository.ProfileRepository
+import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
