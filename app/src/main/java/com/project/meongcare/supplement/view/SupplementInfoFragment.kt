@@ -5,11 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
@@ -26,6 +27,7 @@ class SupplementInfoFragment : Fragment() {
     lateinit var fragmentSupplementInfoBinding: FragmentSupplementInfoBinding
     lateinit var mainActivity: MainActivity
     lateinit var supplementViewModel: SupplementViewModel
+    lateinit var navController: NavController
     var supplementId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +37,7 @@ class SupplementInfoFragment : Fragment() {
         fragmentSupplementInfoBinding = FragmentSupplementInfoBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        navController = findNavController()
         supplementId = arguments?.getInt("supplementsId")
         Log.d("영양제 정보1", supplementId.toString())
 
@@ -51,7 +54,7 @@ class SupplementInfoFragment : Fragment() {
                     textViewSupplementInfoCycleCount.text = it.intakeCycle.toString()
 
                     setButtonSelected(it)
-                    
+
                     recyclerViewSupplementInfoTimeList.run {
                         adapter = SupplementInfoTimeRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
@@ -59,14 +62,38 @@ class SupplementInfoFragment : Fragment() {
                 }
             }
         }
-        
+
+        fragmentSupplementInfoBinding.run {
+            toolbarSupplementInfo.run {
+                setNavigationOnClickListener {
+                    navController.popBackStack()
+                }
+
+                setOnMenuItemClickListener {
+                    Log.d("메뉴 클릭","성공")
+                    includeSupplementInfoDeleteDialog.root.visibility = View.VISIBLE
+                    includeSupplementInfoDeleteDialog.run {
+                        buttonDeleteDialogCancel.setOnClickListener {
+                            includeSupplementInfoDeleteDialog.root.visibility = View.GONE
+                        }
+                        buttonDeleteDialogDelete.setOnClickListener {
+                            supplementViewModel.deleteSupplement(supplementId!!,navController)
+                        }
+                    }
+
+                    false
+                }
+            }
+        }
+
         return fragmentSupplementInfoBinding.root
     }
 
     inner class SupplementInfoTimeRecyclerViewAdapter :
         RecyclerView.Adapter<SupplementInfoTimeRecyclerViewAdapter.SupplementInfoTimeViewHolder>() {
 
-        val intakeList = supplementViewModel.supplementDetail.value!!.intakeInfos.sortedBy { it.intakeTime }
+        val intakeList =
+            supplementViewModel.supplementDetail.value!!.intakeInfos.sortedBy { it.intakeTime }
 
         inner class SupplementInfoTimeViewHolder(itemSupplementInfoTimeBinding: ItemSupplementAddTimeBinding) :
             RecyclerView.ViewHolder(itemSupplementInfoTimeBinding.root) {

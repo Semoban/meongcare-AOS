@@ -59,10 +59,16 @@ interface SupplementAPI {
         @Query("pushAgreement") pushAgreement: Boolean,
     ): Response<ResponseBody>
 
+    @DELETE("/supplements/{supplementsId}")
+    suspend fun deleteSupplementById(
+        @Header("AccessToken") accessToken: String,
+        @Path("supplementsId") supplementsId: Int,
+    ): Response<ResponseBody>
+
     @DELETE("/supplements")
     suspend fun deleteSupplementsById(
         @Header("AccessToken") accessToken: String,
-        @Query("supplementsIds") supplementsRecordId: IntArray,
+        @Query("supplementsIds") supplementsId: IntArray,
     ): Response<ResponseBody>
 }
 

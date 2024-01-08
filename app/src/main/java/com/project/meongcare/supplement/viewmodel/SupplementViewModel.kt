@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.google.android.gms.tasks.Tasks.await
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
@@ -14,6 +16,7 @@ import com.project.meongcare.supplement.model.entities.Supplement
 import com.project.meongcare.supplement.model.entities.SupplementDog
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -134,6 +137,23 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
                 Log.d("영양제 삭제 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 삭제 Api 통신 에러", it.toString())
+            }
+        }
+    }
+
+    fun deleteSupplement(supplementsId: Int, navController: NavController) {
+        Log.d("영양제 하나 삭제1",supplementsId.toString())
+        viewModelScope.launch {
+            Log.d("영양제 하나 삭제2",supplementsId.toString())
+            val check = repository.deleteSupplementById(supplementsId)
+            check.onSuccess {
+                Log.d("영양제 하나 삭제 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("영양제 하나 삭제 Api 통신 에러", it.toString())
+            }
+
+            withContext(Main) {
+                navController.popBackStack()
             }
         }
     }
