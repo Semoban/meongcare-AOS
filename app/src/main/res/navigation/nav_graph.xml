@@ -237,7 +237,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.project.meongcare.Information.view.ProfileFragment"
+        android:name="com.project.meongcare.info.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -253,7 +253,7 @@
 
     <fragment
         android:id="@+id/petInfoFragment"
-        android:name="com.project.meongcare.Information.view.PetInfoFragment"
+        android:name="com.project.meongcare.info.view.PetInfoFragment"
         android:label="fragment_pet_add_edit"
         tools:layout="@layout/fragment_pet_add_edit">
         <action
@@ -263,7 +263,7 @@
 
     <fragment
         android:id="@+id/petEditFragment"
-        android:name="com.project.meongcare.Information.view.PetEditFragment"
+        android:name="com.project.meongcare.info.view.PetEditFragment"
         android:label="fragment_pet_edit"
         tools:layout="@layout/fragment_pet_edit">
         <action
@@ -273,7 +273,7 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.project.meongcare.Information.view.SettingFragment"
+        android:name="com.project.meongcare.info.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting">
         <action
