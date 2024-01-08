@@ -21,7 +21,7 @@ class FeedPatchViewModel
 
         fun patchFeed(feedPatchRequest: FeedPatchRequest) {
             viewModelScope.launch {
-                feedPatched.value =
+                _feedPatched.value =
                     feedRepositoryImpl.patchFeed(feedPatchRequest)
             }
         }
