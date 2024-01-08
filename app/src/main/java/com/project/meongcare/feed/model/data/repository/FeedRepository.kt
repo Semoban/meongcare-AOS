@@ -3,6 +3,7 @@ package com.project.meongcare.feed.model.data.repository
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
+import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 
@@ -14,6 +15,8 @@ interface FeedRepository {
     suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords?
 
     suspend fun getFeeds(): Feeds?
+
+    suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords?
 
     suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int?
 }
