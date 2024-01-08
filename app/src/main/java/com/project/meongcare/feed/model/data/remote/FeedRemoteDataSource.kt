@@ -26,15 +26,15 @@ class FeedRemoteDataSource
                         feedUploadRequest.file,
                     )
 
-                return if (postFeedResponse.code() == SUCCESS) {
-                    Log.d("FeedPostSuccess", postFeedResponse.code().toString())
-                    postFeedResponse.body()
-                } else {
+                if (postFeedResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(postFeedResponse.code().toString())
                     Log.d("FeedPostFailure", postFeedResponse.code().toString())
                     Log.d("FeedPostFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("FeedPostSuccess", postFeedResponse.code().toString())
+                return postFeedResponse.code()
             } catch (e: Exception) {
                 Log.e("FeedPostException", e.toString())
                 return null
