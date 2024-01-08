@@ -1,18 +1,13 @@
 package com.project.meongcare.onboarding.model.data.repository
 
 import android.content.Context
-import android.icu.text.Transliterator
-import android.os.Build
-import androidx.annotation.RequiresApi
-import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Locale
 import javax.inject.Inject
 
 class DogTypeRepository
     @Inject
     constructor(
-        private val context: Context
+        private val context: Context,
     ) {
         private val dogTypes: List<String> by lazy {
             loadDogTypes()
