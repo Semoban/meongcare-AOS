@@ -14,9 +14,9 @@ class PreviousFeedAdapter : ListAdapter<FeedRecord, PreviousFeedAdapter.Previous
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FeedRecord) {
             binding.run {
-                if (item.feedImageURL.isNotEmpty()) {
+                if (item.imageURL.isNotEmpty()) {
                     Glide.with(itemView)
-                        .load(item.feedImageURL)
+                        .load(item.imageURL)
                         .into(imageviewOldfeed)
                 }
                 val period = "${item.startDate}~ ${item.endDate}"
