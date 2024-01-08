@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -30,6 +31,7 @@ import com.project.meongcare.onboarding.view.bodySizeCheck
 import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.onboarding.view.dateFormat
 import com.project.meongcare.onboarding.view.getCheckedGender
+import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -42,6 +44,8 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var dogInfo: GetDogInfoResponse
 
     private val petEditViewModel: ProfileViewModel by viewModels()
+    private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
+
     private var isCbxChecked = false
     private var isInitialized = false
 
@@ -78,6 +82,12 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
             if (response != null && response == 200) {
                 findNavController().popBackStack()
+            }
+        }
+
+        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
+            if (dogType != null) {
+                binding.edittextPeteditType.setText(dogType)
             }
         }
 
