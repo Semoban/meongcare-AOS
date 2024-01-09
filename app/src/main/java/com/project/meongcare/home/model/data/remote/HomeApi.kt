@@ -1,15 +1,18 @@
 package com.project.meongcare.home.model.data.remote
 
-import com.project.meongcare.home.model.entities.HomeGetDogListResponse
+import com.project.meongcare.home.model.entities.GetDogListResponse
+import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
-import com.project.meongcare.home.model.entities.HomeGetProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -18,13 +21,20 @@ interface HomeApi {
     @GET("/member/profile")
     suspend fun getUserProfile(
         @Header("AccessToken") accessToken: String,
-    ): Response<HomeGetProfileResponse>
+    ): Response<GetUserProfileResponse>
 
     // 강아지 목록 받아오는 api
     @GET("/dog")
     suspend fun getDogList(
         @Header("AccessToken") accessToken: String,
-    ): Response<HomeGetDogListResponse>
+    ): Response<GetDogListResponse>
+
+    // 체중 Post api
+    @POST("/weight")
+    suspend fun postDogWeight(
+        @Header("AccessToken") accessToken: String,
+        @Body requestBody: WeightPostRequest,
+    ): Response<Int>
 
     // 선택된 강아지의 체중 받아오는 api
     @GET("/weight/home/{dogId}")

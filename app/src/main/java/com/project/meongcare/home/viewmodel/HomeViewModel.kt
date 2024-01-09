@@ -9,10 +9,11 @@ import com.project.meongcare.home.model.data.repository.HomeRepository
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
-import com.project.meongcare.home.model.entities.HomeGetProfileResponse
+import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -25,8 +26,8 @@ import javax.inject.Inject
 class HomeViewModel
     @Inject
     constructor(private val homeRepository: HomeRepository) : ViewModel() {
-        private val _homeProfileResponse = MutableLiveData<HomeGetProfileResponse?>()
-        val homeProfileResponse: LiveData<HomeGetProfileResponse?>
+        private val _homeProfileResponse = MutableLiveData<GetUserProfileResponse?>()
+        val homeProfileResponse: LiveData<GetUserProfileResponse?>
             get() = _homeProfileResponse
 
         private val _homeSelectedDate = MutableLiveData<Date>()
@@ -52,6 +53,10 @@ class HomeViewModel
         private val _homeSelectedDogId = MutableLiveData<Long>()
         val homeSelectedDogId: LiveData<Long>
             get() = _homeSelectedDogId
+
+        private val _homeDogWeightPost = MutableLiveData<Int>()
+        val homeDogWeightPost: LiveData<Int>
+            get() = _homeDogWeightPost
 
         private val _homeDogWeight = MutableLiveData<HomeGetWeightResponse>()
         val homeDogWeight: LiveData<HomeGetWeightResponse>
@@ -107,6 +112,15 @@ class HomeViewModel
 
         fun setSelectedDatePos(pos: Int) {
             _homeSelectedDatePos.value = pos
+        }
+
+        fun postDogWeight(
+            accessToken: String,
+            weightRequest: WeightPostRequest,
+        ) {
+            viewModelScope.launch {
+                _homeDogWeightPost.value = homeRepository.postDogWeight(accessToken, weightRequest)
+            }
         }
 
         fun getDogWeight(

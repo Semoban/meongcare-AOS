@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".excreta.view.ExcretaAddFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_excretaadd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_arrow_back_18dp" />
+
+    <ScrollView
+        android:id="@+id/scrollview_excretaadd"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_excretaadd">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_excretaadd_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageview_excretaadd_picture"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/all_rect_gray2_30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <include
+                        android:id="@+id/include_excreta_add_edit_attach_photo"
+                        layout="@layout/layout_excreta_attach_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="76dp"
+                        android:layout_marginVertical="46dp"
+                        app:layout_constraintBottom_toBottomOf="@id/imageview_excretaadd_picture"
+                        app:layout_constraintEnd_toEndOf="@id/imageview_excretaadd_picture"
+                        app:layout_constraintStart_toStartOf="@id/imageview_excretaadd_picture"
+                        app:layout_constraintTop_toTopOf="@id/imageview_excretaadd_picture" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textview_excretaadd_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="날짜"
+                android:textAppearance="@style/Typography.Body1.SemiBold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardview_excretaadd_image" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/essential_input_element_icon"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_date_title"
+                app:layout_constraintStart_toEndOf="@id/textview_excretaadd_date_title"
+                app:layout_constraintTop_toTopOf="@id/textview_excretaadd_date_title" />
+
+            <TextView
+                android:id="@+id/textview_excretaadd_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/all_rect_r5"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingVertical="14dp"
+                android:paddingStart="17dp"
+                android:paddingEnd="16dp"
+                android:text="날짜를 선택해주세요"
+                android:textAppearance="@style/Typography.Body1.Regular"
+                android:textColor="@color/gray4"
+                app:drawableEndCompat="@drawable/all_calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_date_title" />
+
+            <TextView
+                android:id="@+id/textview_excretaadd_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="종류"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_date" />
+
+            <ImageView
+                android:id="@+id/imageview_excretaadd_essential_input_element"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/essential_input_element_icon"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_type"
+                app:layout_constraintStart_toEndOf="@id/textview_excretaadd_type"
+                app:layout_constraintTop_toTopOf="@id/textview_excretaadd_type" />
+
+            <CheckBox
+                android:id="@+id/checkbox_excretaadd_urine"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="13dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@android:color/transparent"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_type"
+                app:layout_constraintStart_toEndOf="@id/imageview_excretaadd_essential_input_element"
+                app:layout_constraintTop_toTopOf="@id/textview_excretaadd_type" />
+
+            <TextView
+                android:id="@+id/textview_excretaadd_urine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="소변"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/checkbox_excretaadd_urine"
+                app:layout_constraintStart_toEndOf="@id/checkbox_excretaadd_urine"
+                app:layout_constraintTop_toTopOf="@id/checkbox_excretaadd_urine" />
+
+            <CheckBox
+                android:id="@+id/checkbox_excretaadd_feces"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_urine"
+                app:layout_constraintStart_toEndOf="@id/textview_excretaadd_urine"
+                app:layout_constraintTop_toTopOf="@id/textview_excretaadd_urine" />
+
+            <TextView
+                android:id="@+id/textview_excretaadd_feces"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="대변"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/checkbox_excretaadd_feces"
+                app:layout_constraintStart_toEndOf="@id/checkbox_excretaadd_feces"
+                app:layout_constraintTop_toTopOf="@id/checkbox_excretaadd_feces" />
+
+            <TextView
+                android:id="@+id/textview_excretaadd_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="시각"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@id/textview_excretaadd_type"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_type" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/essential_input_element_icon"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excretaadd_time"
+                app:layout_constraintStart_toEndOf="@id/textview_excretaadd_time"
+                app:layout_constraintTop_toTopOf="@id/textview_excretaadd_time" />
+
+            <TimePicker
+                android:id="@+id/timepiker_excretaadd_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="8dp"
+                android:numbersTextColor="@color/black"
+                android:timePickerMode="spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_excretaadd_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_excretaadd_completion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="36dp"
+                android:background="@drawable/all_rect_r5"
+                android:backgroundTint="@color/main4"
+                android:paddingVertical="12dp"
+                android:text="완료"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timepiker_excretaadd_time" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

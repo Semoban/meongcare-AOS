@@ -15,9 +15,13 @@ import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
+import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.home.model.data.local.DogProfileClickListener
+import com.project.meongcare.home.model.data.local.HorizonCalendarItemClickListener
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
@@ -35,6 +39,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    @Inject
+    lateinit var dogPreferences: DogPreferences
 
     lateinit var currentAccessToken: String
 
@@ -66,13 +73,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 homeViewModel.updateDateList(selectedDate)
                 if (homeViewModel.homeSelectedDogId.value != null) {
                     // 몸무게 조회
-                    homeViewModel.getDogWeight(
-                        homeViewModel.homeSelectedDogId.value!!,
-                        dateToString(
-                            homeViewModel.homeSelectedDate.value!!,
-                        ),
-                        currentAccessToken,
-                    )
+                    val weightRequest = WeightPostRequest(homeViewModel.homeSelectedDogId.value!!, getCurrentDate())
+                    homeViewModel.postDogWeight(currentAccessToken, weightRequest)
                     // 사료 섭취량 조회
                     homeViewModel.getDogFeed(
                         homeViewModel.homeSelectedDogId.value!!,
@@ -144,7 +146,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.homeSelectedDogId.observe(viewLifecycleOwner) { selectedDogId ->
             if (selectedDogId != null) {
                 // 몸무게 조회
-                homeViewModel.getDogWeight(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+                val weightRequest = WeightPostRequest(selectedDogId, getCurrentDate())
+                homeViewModel.postDogWeight(currentAccessToken, weightRequest)
                 // 사료 섭취량 조회
                 homeViewModel.getDogFeed(selectedDogId, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
                 // 영양제 섭취율 조회
@@ -156,12 +159,24 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
         }
 
+        homeViewModel.homeDogWeightPost.observe(viewLifecycleOwner) { responseCode ->
+            if (responseCode != null && responseCode == 200) {
+                homeViewModel.getDogWeight(
+                    homeViewModel.homeSelectedDogId.value!!,
+                    dateToString(homeViewModel.homeSelectedDate.value!!),
+                    currentAccessToken,
+                )
+            }
+        }
+
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
             if (selectedDogPos != null) {
                 Log.d("homeSelectedDogName", homeViewModel.homeDogList.value!![selectedDogPos].name)
                 homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
                 adapter.updateSelectedPos(selectedDogPos)
+                dogPreferences.setDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
+                dogPreferences.setDogName(homeViewModel.homeDogList.value!![selectedDogPos].name)
             }
         }
 
@@ -169,6 +184,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             if (dogWeight != null) {
                 Log.d("homeDogWeight", dogWeight.weight.toString())
                 fragmentHomeBinding.textviewHomeWeight.text = dogWeight.weight.toString()
+                dogPreferences.setDogWeight(dogWeight.weight)
             }
         }
 
@@ -196,22 +212,21 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
-            if (dogSymptom.symptoms.isNullOrEmpty()) {
+            if (dogSymptom.symptomRecords.isNullOrEmpty()) {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             } else {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.VISIBLE
-                dogSymptom.symptoms.forEach {
-                    Log.d("homeDogSymptom", it)
+                dogSymptom.symptomRecords.forEach {
+                    Log.d("homeDogSymptom", it.symptomString)
                 }
                 val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
-                adapter.updateSymptomList(dogSymptom.symptoms)
+                adapter.updateSymptomList(dogSymptom.symptomRecords)
             }
         }
 
         fragmentHomeBinding.run {
-//            homeViewModel.getUserProfile(currentAccessToken)
             homeViewModel.getUserProfile(currentAccessToken)
             homeViewModel.getDogList(currentAccessToken)
 
