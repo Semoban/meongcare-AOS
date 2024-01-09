@@ -36,4 +36,9 @@ interface ProfileRepository {
         pushAgreement: Boolean,
         accessToken: String,
     ): Int?
+
+    suspend fun patchProfileImage(
+        accessToken: String,
+        file: MultipartBody.Part,
+    ): Int?
 }

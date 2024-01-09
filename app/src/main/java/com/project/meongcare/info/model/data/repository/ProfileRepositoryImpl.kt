@@ -153,4 +153,20 @@ class ProfileRepositoryImpl
                 null
             }
         }
+
+        override suspend fun patchProfileImage(accessToken: String, file: MultipartBody.Part): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.patchProfileImage(accessToken, file)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-PatchProfile", "통신 성공")
+                    response.code()
+                } else {
+                    Log.d("ProfileRepo-PatchProfile", "통실 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
