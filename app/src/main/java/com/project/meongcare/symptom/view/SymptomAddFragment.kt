@@ -17,9 +17,9 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomAddBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomName
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.hideKeyboard
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.showCalendarBottomSheet
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.hideKeyboard
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 
 class SymptomAddFragment : Fragment() {

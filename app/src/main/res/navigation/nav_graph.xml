@@ -230,12 +230,6 @@
         tools:layout="@layout/fragment_feed" />
 
     <fragment
-        android:id="@+id/supplementFragment"
-        android:name="com.project.meongcare.supplement.view.SupplementFragment"
-        android:label="fragment_supplement"
-        tools:layout="@layout/fragment_supplement" />
-
-    <fragment
         android:id="@+id/profileFragment"
         android:name="com.project.meongcare.info.view.ProfileFragment"
         android:label="fragment_profile"
@@ -280,4 +274,39 @@
             android:id="@+id/action_settingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+  
+  <fragment
+        android:id="@+id/supplementFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementFragment"
+        android:label="fragment_supplement"
+        tools:layout="@layout/fragment_supplement" >
+        <action
+            android:id="@+id/action_supplement_to_supplementAdd"
+            app:destination="@+id/supplementAddFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementRoutineEdit"
+            app:destination="@+id/supplementRoutineEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/supplementAddFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementAddFragment"
+        android:label="fragment_supplement_add"
+        tools:layout="@layout/fragment_supplement_add" />
+    <fragment
+        android:id="@+id/supplementInfoFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementInfoFragment"
+        android:label="fragment_supplement_info"
+        tools:layout="@layout/fragment_supplement_info" />
+    <fragment
+        android:id="@+id/supplementRoutineEditFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
+        android:label="fragment_supplement_routine_edit"
+        tools:layout="@layout/fragment_supplement_routine_edit" >
+        <action
+            android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.project.meongcare.symptom.view
+package com.project.meongcare.symptom.utils
 
 import android.content.Context
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.view.SymptomBottomSheetDialogFragment
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import java.time.Instant
 import java.time.LocalDate

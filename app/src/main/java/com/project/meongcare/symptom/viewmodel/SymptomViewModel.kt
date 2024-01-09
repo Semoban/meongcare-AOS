@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
-import com.project.meongcare.symptom.view.SymptomUtils
+import com.project.meongcare.symptom.utils.SymptomUtils
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
