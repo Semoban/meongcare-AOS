@@ -270,8 +270,9 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     }
 
     fun onEditButtonClicked() {
-        (fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter
-            as SupplementAddTimeRecyclerViewAdapter
+        (
+            fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter
+                as SupplementAddTimeRecyclerViewAdapter
         ).setAllItemsToEditMode()
     }
 
@@ -296,7 +297,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                 getColor(
                     mainActivity,
                     R.color.gray4,
-                )
+                ),
             )
             hint = "$hintText"
             isCursorVisible = true
@@ -317,8 +318,8 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                             (
                                 keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
                                     keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
-                                )
-                        ) && this.text.trim().isNotEmpty()
+                            )
+                    ) && this.text.trim().isNotEmpty()
                 ) {
                     isCursorVisible = false
                     hideKeyboard(view)
@@ -329,7 +330,9 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             setOnFocusChangeListener { view, b ->
                 if (b) {
                     setEditTextOriginal(this, hintText)
-                } else return@setOnFocusChangeListener
+                } else {
+                    return@setOnFocusChangeListener
+                }
             }
 
             setOnClickListener {
@@ -345,16 +348,16 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
 
         bottomSheetFragment.show(
             parentFragmentManager,
-            "SupplementPictureBottomSheetDialogFragment"
+            "SupplementPictureBottomSheetDialogFragment",
         )
     }
 
     private fun checkInput(): Boolean {
         fragmentSupplementAddBinding.run {
-            if (editTextSupplementAddBrandName.text.isNullOrEmpty()
-                || editTextSupplementAddName.text.isNullOrEmpty()
-                || supplementViewModel.supplementCycle.value == null
-                || supplementViewModel.intakeTimeList.value.isNullOrEmpty()
+            if (editTextSupplementAddBrandName.text.isNullOrEmpty() ||
+                editTextSupplementAddName.text.isNullOrEmpty() ||
+                supplementViewModel.supplementCycle.value == null ||
+                supplementViewModel.intakeTimeList.value.isNullOrEmpty()
             ) {
                 if (editTextSupplementAddBrandName.text.isNullOrEmpty()) {
                     isEditTextNullOrEmpty(editTextSupplementAddBrandName)

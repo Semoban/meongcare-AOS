@@ -95,7 +95,7 @@ class SupplementUtils {
 
             bottomSheetFragment.show(
                 parentFragmentManager,
-                "SupplementCycleBottomSheetDialogFragment"
+                "SupplementCycleBottomSheetDialogFragment",
             )
         }
 
