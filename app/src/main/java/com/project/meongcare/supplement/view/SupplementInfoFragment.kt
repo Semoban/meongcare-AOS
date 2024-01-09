@@ -1,7 +1,6 @@
 package com.project.meongcare.supplement.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,6 @@ class SupplementInfoFragment : Fragment() {
 
         navController = findNavController()
         val supplementId = arguments?.getInt("supplementsId")
-        Log.d("영양제 정보1", supplementId.toString())
 
         val factory = SupplementViewModelFactory(SupplementRepository())
         supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
@@ -70,14 +68,13 @@ class SupplementInfoFragment : Fragment() {
                 }
 
                 setOnMenuItemClickListener {
-                    Log.d("메뉴 클릭","성공")
                     includeSupplementInfoDeleteDialog.root.visibility = View.VISIBLE
                     includeSupplementInfoDeleteDialog.run {
                         buttonDeleteDialogCancel.setOnClickListener {
                             includeSupplementInfoDeleteDialog.root.visibility = View.GONE
                         }
                         buttonDeleteDialogDelete.setOnClickListener {
-                            supplementViewModel.deleteSupplement(supplementId!!,navController)
+                            supplementViewModel.deleteSupplement(supplementId!!, navController)
                         }
                     }
 
@@ -101,17 +98,19 @@ class SupplementInfoFragment : Fragment() {
                         text = "루틴 시작하기"
                     }
                 }
-
-                Log.d("루틴 버튼2",textViewButtonSupplementInfoRoutine.currentTextColor.toString())
             }
 
             buttonSupplementInfoRoutine.setOnClickListener {
                 temp = !temp
                 it.isSelected = !it.isSelected
                 val activeStatus = it.isSelected
-                supplementViewModel.patchSupplementActive(supplementId!!, activeStatus,mainActivity,textViewButtonSupplementInfoRoutine)
+                supplementViewModel.patchSupplementActive(
+                    supplementId!!,
+                    activeStatus,
+                    mainActivity,
+                    textViewButtonSupplementInfoRoutine
+                )
             }
-
         }
 
         return fragmentSupplementInfoBinding.root
@@ -119,7 +118,6 @@ class SupplementInfoFragment : Fragment() {
 
     inner class SupplementInfoTimeRecyclerViewAdapter :
         RecyclerView.Adapter<SupplementInfoTimeRecyclerViewAdapter.SupplementInfoTimeViewHolder>() {
-
         val intakeList =
             supplementViewModel.supplementDetail.value!!.intakeInfos.sortedBy { it.intakeTime }
 

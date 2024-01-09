@@ -23,13 +23,13 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
+import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.SupplementDto
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertDateToTime
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.hideKeyboard
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showCycleBottomSheet
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showTimeBottomSheet
-import com.project.meongcare.supplement.view.bottomSheet.OnPictureChangedListener
 import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
@@ -173,7 +173,6 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
 
             buttonSupplementAddComplete.setOnClickListener {
                 checkInput()
-                Log.d("인풋", checkInput().toString())
                 if (checkInput()) {
                     val brandName = editTextSupplementAddBrandName.text.toString()
                     val name = editTextSupplementAddName.text.toString()
@@ -183,22 +182,20 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                     val imgUri = supplementViewModel.supplementAddImg.value
                     val supplementDto =
                         SupplementDto(1, brandName, name, cycle, intakeUnit, intakeInfo)
-                    Log.d("인풋1", supplementDto.toString())
                     supplementViewModel.addSupplement(
                         supplementDto,
                         requireContext(),
                         imgUri ?: Uri.EMPTY,
                     )
 
-                    supplementViewModel.supplementCode.observe(viewLifecycleOwner){
-                        if(it == 200)  {
+                    supplementViewModel.supplementCode.observe(viewLifecycleOwner) {
+                        if (it == 200) {
                             navController.popBackStack()
                         }
                     }
                 }
             }
         }
-
         return fragmentSupplementAddBinding.root
     }
 
@@ -236,7 +233,6 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                 )
-
             return allViewHolder
         }
 
@@ -248,7 +244,8 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             holder: SupplementAddTimeViewHolder,
             position: Int,
         ) {
-            val intakeCountString = supplementViewModel.intakeTimeList.value!![position].intakeCount
+            val intakeCountString =
+                supplementViewModel.intakeTimeList.value!![position].intakeCount
             val intakeUnitString = supplementViewModel.intakeTimeUnit.value
             holder.itemSupplementAddTimeTime.text =
                 convertDateToTime(supplementViewModel.intakeTimeList.value!![position].intakeTime)
@@ -274,7 +271,8 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     }
 
     fun onEditButtonClicked() {
-        (fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter as SupplementAddTimeRecyclerViewAdapter).setAllItemsToEditMode()
+        (fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter
+                as SupplementAddTimeRecyclerViewAdapter).setAllItemsToEditMode()
     }
 
     fun isEditTextNullOrEmpty(editText: EditText) {

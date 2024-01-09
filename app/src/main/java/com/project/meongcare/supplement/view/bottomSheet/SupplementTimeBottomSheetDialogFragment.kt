@@ -15,7 +15,10 @@ class SupplementTimeBottomSheetDialogFragment : BottomSheetDialogFragment() {
     lateinit var fragmentSupplementTimeBottomSheetBinding: BottomsheetSupplementAddTimeBinding
 
     interface OnNumberTimeChangedListener {
-        fun onNumberTimeChanged(number: Int,time: String)
+        fun onNumberTimeChanged(
+            number: Int,
+            time: String,
+        )
     }
 
     var onNumberTimeChangedListener: OnNumberTimeChangedListener? = null
@@ -25,7 +28,8 @@ class SupplementTimeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        fragmentSupplementTimeBottomSheetBinding = BottomsheetSupplementAddTimeBinding.inflate(inflater, container, false)
+        fragmentSupplementTimeBottomSheetBinding =
+            BottomsheetSupplementAddTimeBinding.inflate(inflater, container, false)
 
         fragmentSupplementTimeBottomSheetBinding.run {
             var currentNumber = 1
@@ -50,8 +54,10 @@ class SupplementTimeBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 val hour = String.format("%02d", timePicker.hour)
                 val minute = String.format("%02d", timePicker.minute)
                 val timeValue = "$hour:$minute:00"
-                Log.d("타임피커",timeValue)
-                onNumberTimeChangedListener?.onNumberTimeChanged(currentNumber, timeValue)
+                onNumberTimeChangedListener?.onNumberTimeChanged(
+                    currentNumber,
+                    timeValue,
+                )
                 dismiss()
             }
         }

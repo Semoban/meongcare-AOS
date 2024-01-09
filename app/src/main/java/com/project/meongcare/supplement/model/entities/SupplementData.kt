@@ -6,10 +6,12 @@ import okhttp3.RequestBody
 data class ResultSupplement(
     val routines: List<Supplement>,
 )
+
 data class RequestSupplement(
     val dto: RequestBody,
     val file: MultipartBody.Part,
 )
+
 data class DogSupplement(
     val supplementsInfos: List<SupplementDog>,
 )
@@ -43,7 +45,7 @@ data class SupplementDto(
 
 data class IntakeInfo(
     val intakeTime: String,
-    val intakeCount: Int
+    val intakeCount: Int,
 )
 
 data class SupplementDog(

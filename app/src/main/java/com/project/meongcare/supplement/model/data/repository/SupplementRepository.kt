@@ -20,7 +20,11 @@ class SupplementRepository {
         dogId: Int,
         date: String,
     ): Result<ResultSupplement> = kotlin.runCatching {
-        val response = supplementAPI.getResultSupplement(MainActivity.ACCESS_TOKEN, date, dogId)
+        val response = supplementAPI.getResultSupplement(
+            MainActivity.ACCESS_TOKEN,
+            date,
+            dogId,
+        )
         if (response.isSuccessful) response.body()
             ?: throw RuntimeException("Supplement get API 통신 실패")
         else throw RuntimeException("Supplement get API 통신 실패")
@@ -29,7 +33,10 @@ class SupplementRepository {
     suspend fun getSupplementDetail(
         supplementsId: Int,
     ): Result<DetailSupplement> = kotlin.runCatching {
-        val response = supplementAPI.getSupplementDetail(MainActivity.ACCESS_TOKEN, supplementsId)
+        val response = supplementAPI.getSupplementDetail(
+            MainActivity.ACCESS_TOKEN,
+            supplementsId
+        )
         if (response.isSuccessful) response.body()
             ?: throw RuntimeException("영양제 상세조회 API 통신 실패")
         else throw RuntimeException("영양제 상세조회 API 통신 실패")
@@ -47,7 +54,10 @@ class SupplementRepository {
     suspend fun checkSupplement(supplementsRecordId: Int): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
-                supplementAPI.checkSupplement(MainActivity.ACCESS_TOKEN, supplementsRecordId)
+                supplementAPI.checkSupplement(
+                    MainActivity.ACCESS_TOKEN,
+                    supplementsRecordId,
+                )
 
             if (response.isSuccessful) response.body()
                 ?: throw RuntimeException("Supplement check API 통신 실패")
@@ -56,12 +66,12 @@ class SupplementRepository {
 
     suspend fun patchSupplementAlarm(
         supplementsId: Int,
-        pushAgreement: Boolean
+        pushAgreement: Boolean,
     ): Result<ResponseBody> = kotlin.runCatching {
         val response = supplementAPI.patchSupplementAlarmStatus(
             MainActivity.ACCESS_TOKEN,
             supplementsId,
-            pushAgreement
+            pushAgreement,
         )
 
         if (response.isSuccessful) {
@@ -76,12 +86,12 @@ class SupplementRepository {
 
     suspend fun patchSupplementActive(
         supplementsId: Int,
-        isActive: Boolean
+        isActive: Boolean,
     ): Result<ResponseBody> = kotlin.runCatching {
         val response = supplementAPI.patchSupplementActiveStatus(
             MainActivity.ACCESS_TOKEN,
             supplementsId,
-            isActive
+            isActive,
         )
 
         if (response.isSuccessful) {
@@ -97,7 +107,10 @@ class SupplementRepository {
     suspend fun deleteSupplementsById(supplementsIds: IntArray): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
-                supplementAPI.deleteSupplementsById(MainActivity.ACCESS_TOKEN, supplementsIds)
+                supplementAPI.deleteSupplementsById(
+                    MainActivity.ACCESS_TOKEN,
+                    supplementsIds,
+                )
 
             if (response.isSuccessful) response.body()
                 ?: throw RuntimeException("Supplement delete API 통신 실패")
@@ -107,14 +120,17 @@ class SupplementRepository {
     suspend fun deleteSupplementById(supplementsId: Int): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
-                supplementAPI.deleteSupplementById(MainActivity.ACCESS_TOKEN, supplementsId)
+                supplementAPI.deleteSupplementById(
+                    MainActivity.ACCESS_TOKEN,
+                    supplementsId,
+                )
 
             if (response.isSuccessful) response.body()
                 ?: throw RuntimeException("영양제 하나 삭제 API 통신 실패")
             else throw RuntimeException("영양제 하나 삭제 API 통신 실패")
         }
 
-    suspend fun addSupplement(requestSupplement: RequestSupplement): Int? {
+    suspend fun addSupplement(requestSupplement: RequestSupplement): Int {
         val response =
             supplementAPI.addSupplement(
                 MainActivity.ACCESS_TOKEN,

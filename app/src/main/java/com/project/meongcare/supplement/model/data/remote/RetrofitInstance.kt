@@ -8,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object RetrofitInstance {
-
     val BASE_URL = MainActivity.BASE_URL
 
     val nullOnEmptyConverterFactory =
@@ -43,5 +42,4 @@ object RetrofitInstance {
     fun getInstance(): Retrofit {
         return client
     }
-
 }

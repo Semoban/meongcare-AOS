@@ -3,12 +3,10 @@ package com.project.meongcare.supplement.view.bottomSheet
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.BottomsheetSupplementAddPictureBinding
-import com.project.meongcare.databinding.BottomsheetSupplementAddTimeBinding
+import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -36,22 +34,23 @@ class SupplementPictureBottomSheetDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        fragmentSupplementPictureBottomSheetBinding = BottomsheetSupplementAddPictureBinding.inflate(inflater, container, false)
+        fragmentSupplementPictureBottomSheetBinding =
+            BottomsheetSupplementAddPictureBinding.inflate(inflater, container, false)
         return fragmentSupplementPictureBottomSheetBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         fragmentSupplementPictureBottomSheetBinding.run {
             textViewSupplementAddPictureCamera.setOnClickListener {
-                Log.d("영양제 사진", "카메라 선택")
                 openCamera()
             }
             textViewSupplementAddPictureGallery.setOnClickListener {
-                Log.d("영양제 사진", "앨범 선택")
                 openAlbum()
             }
-
         }
     }
 

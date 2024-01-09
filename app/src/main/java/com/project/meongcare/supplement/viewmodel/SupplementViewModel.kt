@@ -71,7 +71,6 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
                 supplementSize.value = supplementList.value!!.size.toDouble()
                 supplementCheckCount.value =
                     supplementList.value!!.count { it.intakeStatus }.toDouble()
-//                    supplementList.value = it.routines.toMutableList()
                 Log.d("Supplement get Api 통신 성공", supplementList.value.toString())
             }.onFailure {
                 Log.d("Supplement get Api 통신 에러", it.toString())
@@ -79,9 +78,7 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun getSupplementDetail(
-        supplementsId: Int,
-    ) {
+    fun getSupplementDetail(supplementsId: Int) {
         viewModelScope.launch {
             val supplements = repository.getSupplementDetail(supplementsId)
             supplements.onSuccess {
@@ -93,9 +90,7 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun getSupplementDogs(
-        dogId: Int,
-    ) {
+    fun getSupplementDogs(dogId: Int) {
         viewModelScope.launch {
             val supplements = repository.getSupplementDogs(dogId)
             supplements.onSuccess {
@@ -108,7 +103,10 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun checkSupplement(supplementsRecordId: Int, imageView: ImageView) {
+    fun checkSupplement(
+        supplementsRecordId: Int,
+        imageView: ImageView,
+    ) {
         viewModelScope.launch {
             val check = repository.checkSupplement(supplementsRecordId)
             check.onSuccess {
@@ -117,7 +115,6 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
                 } else {
                     supplementCheckCount.value = supplementCheckCount.value?.minus(1)
                 }
-
                 Log.d("영양제 체크 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 체크 Api 통신 에러", it.toString())
@@ -147,9 +144,11 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun patchSupplementAlarm(supplementsId: Int, pushAgreement: Boolean) {
+    fun patchSupplementAlarm(
+        supplementsId: Int,
+        pushAgreement: Boolean,
+    ) {
         viewModelScope.launch {
-            Log.d("영양제 알람1", "$supplementsId, $pushAgreement")
             val alarm = repository.patchSupplementAlarm(supplementsId, pushAgreement)
             alarm.onSuccess {
                 Log.d("영양제 알람 Api 통신 성공", it.toString())
@@ -163,10 +162,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         supplementsId: Int,
         isActive: Boolean,
         context: Activity,
-        textView: TextView
+        textView: TextView,
     ) {
         viewModelScope.launch {
-            Log.d("영양제 루틴 활성화 체크 중단", "$supplementsId, $isActive")
             val active = repository.patchSupplementActive(supplementsId, isActive)
             active.onSuccess {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 성공", it.toString())
@@ -201,10 +199,11 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun deleteSupplement(supplementsId: Int, navController: NavController) {
-        Log.d("영양제 하나 삭제1", supplementsId.toString())
+    fun deleteSupplement(
+        supplementsId: Int,
+        navController: NavController,
+    ) {
         viewModelScope.launch {
-            Log.d("영양제 하나 삭제2", supplementsId.toString())
             val check = repository.deleteSupplementById(supplementsId)
             check.onSuccess {
                 Log.d("영양제 하나 삭제 Api 통신 성공", it.toString())
@@ -221,7 +220,7 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     fun updatePercentage(
         progressBar: ProgressBar,
         textViewPercentage: TextView,
-        textViewCount: TextView
+        textViewCount: TextView,
     ) {
         viewModelScope.launch {
             supplementPercentage.value =
@@ -229,35 +228,30 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
                     supplementCheckCount.value!! / supplementSize.value!! * 100
                 } else 0.0
 
-            Log.d(
-                "영양제 가져오기",
-                "${supplementCheckCount.value}, ${supplementSize.value}, ${supplementPercentage.value}"
-            )
             withContext(Main) {
                 progressBar.progress = supplementPercentage.value!!.toInt()
-                textViewPercentage.text = String.format(
-                    "%.1f",
-                    supplementPercentage.value,
-                )
+                textViewPercentage.text =
+                    String.format(
+                        "%.1f",
+                        supplementPercentage.value,
+                    )
                 textViewCount.text =
                     (supplementSize.value!! - supplementCheckCount.value!!).toInt().toString()
             }
         }
     }
 
-    fun addIntakeInfoList(
-        intakeInfo: IntakeInfo
-    ) {
+    fun addIntakeInfoList(intakeInfo: IntakeInfo) {
         val currentList = intakeTimeList.value?.toMutableList() ?: mutableListOf()
 
         if (currentList.none { i -> i.intakeTime == intakeInfo.intakeTime }) {
             currentList.add(intakeInfo)
         }
 
-        intakeTimeList.value = currentList.distinct()
-            .sortedBy { intakeInfo -> intakeInfo.intakeTime } as MutableList<IntakeInfo>
+        intakeTimeList.value =
+            currentList.distinct()
+                .sortedBy { intakeInfo -> intakeInfo.intakeTime } as MutableList<IntakeInfo>
     }
-
 
     fun updateButtonStates(selectedButton: MutableLiveData<Boolean>) {
         mgButtonSelected.value = selectedButton == mgButtonSelected
@@ -292,28 +286,22 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     fun updateSupplementIds(supplementsRoutineIdList: MutableList<Int>) {
         viewModelScope.launch {
             if (supplementsRoutineIdList.isNotEmpty()) {
-                Log.d(
-                    "루틴 편집 9",
-                    supplementIdList.value!!.containsAll(supplementsRoutineIdList).toString()
-                )
-                Log.d("루틴 편집 11", supplementsRoutineIdList.toString())
                 if (supplementIdList.value!!.containsAll(supplementsRoutineIdList)) {
                     supplementIdList.value!!.removeAll(supplementsRoutineIdList)
-                    Log.d("루틴 편집 12", supplementIdList.value.toString())
                 } else {
                     supplementIdList.value!!.addAll(supplementsRoutineIdList)
-                    Log.d("루틴 편집 10", supplementIdList.value!!.toString())
                 }
             }
         }
     }
 
-    fun setAllItemsChecked(isChecked: Boolean, supplementsRoutineIdList: MutableList<Int>) {
+    fun setAllItemsChecked(
+        isChecked: Boolean,
+        supplementsRoutineIdList: MutableList<Int>,
+    ) {
         if (isChecked) {
             supplementIdList.value!!.clear()
             supplementIdList.value = supplementsRoutineIdList
-            Log.d("루틴 변경3", supplementList.value.toString())
-            Log.d("루틴 변경4", supplementIdList.value.toString())
         } else {
             supplementIdList.value!!.clear()
         }

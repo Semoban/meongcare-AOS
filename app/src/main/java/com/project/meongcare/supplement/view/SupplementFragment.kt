@@ -2,7 +2,6 @@ package com.project.meongcare.supplement.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -66,8 +65,6 @@ class SupplementFragment : Fragment() {
                 supplementIdListTemp = it.associateBy({ it.supplementsRecordId },
                     { it.intakeStatus }) as MutableMap<Int, Boolean>
 
-                Log.d("supplement check toggle2", supplementIdList.toString())
-
                 fragmentSupplementBinding.run {
                     if (supplementViewModel.supplementList.value.isNullOrEmpty()) {
                         recyclerViewSupplement.visibility = View.GONE
@@ -89,12 +86,11 @@ class SupplementFragment : Fragment() {
                         updatePercentage(
                             progressBarSupplementComplete,
                             textViewSupplementPercentage,
-                            textViewSupplementProgressPercentageBottom
+                            textViewSupplementProgressPercentageBottom,
                         )
                     }
                 }
             }
-
         }
 
         navController = findNavController()
@@ -107,9 +103,7 @@ class SupplementFragment : Fragment() {
             textViewSupplementEdit.setOnClickListener {
                 navController.navigate(R.id.action_supplement_to_supplementRoutineEdit)
             }
-
         }
-
         return fragmentSupplementBinding.root
     }
 
@@ -158,7 +152,6 @@ class SupplementFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            Log.d("영양제 리사이클러뷰 에러2", supplementViewModel.supplementList.value!!.size.toString())
             return supplementViewModel.supplementList.value!!.size
         }
 
@@ -207,7 +200,7 @@ class SupplementFragment : Fragment() {
                 holder.itemSupplementCardView.run {
                     val layoutParams =
                         holder.itemSupplementCardView.layoutParams as ViewGroup.MarginLayoutParams
-                    layoutParams.bottomMargin = dpToPx(context,50f)
+                    layoutParams.bottomMargin = dpToPx(context, 50f)
                 }
             }
 
@@ -250,13 +243,15 @@ class SupplementFragment : Fragment() {
         }
     }
 
-    fun dpToPx(context: Context, dp: Float): Int {
+    fun dpToPx(
+        context: Context,
+        dp: Float,
+    ): Int {
         val resources = context.resources
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp,
-            resources.displayMetrics
+            resources.displayMetrics,
         ).toInt()
     }
-
 }

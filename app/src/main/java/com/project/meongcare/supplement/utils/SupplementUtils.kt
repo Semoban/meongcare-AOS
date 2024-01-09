@@ -1,23 +1,14 @@
 package com.project.meongcare.supplement.utils
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
 import com.google.gson.Gson
-import com.project.meongcare.R
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.model.entities.SupplementDto
-import com.project.meongcare.supplement.view.SupplementAddFragment
 import com.project.meongcare.supplement.view.bottomSheet.SupplementCycleBottomSheetDialogFragment
-import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.view.bottomSheet.SupplementTimeBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -88,7 +79,7 @@ class SupplementUtils {
 
         fun showCycleBottomSheet(
             parentFragmentManager: FragmentManager,
-            supplementViewModel: SupplementViewModel
+            supplementViewModel: SupplementViewModel,
         ) {
             val bottomSheetFragment = SupplementCycleBottomSheetDialogFragment()
 
@@ -111,14 +102,13 @@ class SupplementUtils {
 
         fun showTimeBottomSheet(
             parentFragmentManager: FragmentManager,
-            supplementViewModel: SupplementViewModel
+            supplementViewModel: SupplementViewModel,
         ) {
             val bottomSheetFragment = SupplementTimeBottomSheetDialogFragment()
             bottomSheetFragment.onNumberTimeChangedListener =
                 object : SupplementTimeBottomSheetDialogFragment.OnNumberTimeChangedListener {
                     override fun onNumberTimeChanged(number: Int, time: String) {
                         val intakeInfo = IntakeInfo(time, number)
-                        Log.d("타임피커2", intakeInfo.toString())
                         supplementViewModel.addIntakeInfoList(intakeInfo)
                     }
                 }

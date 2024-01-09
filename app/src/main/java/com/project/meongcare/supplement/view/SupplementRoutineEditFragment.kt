@@ -67,11 +67,12 @@ class SupplementRoutineEditFragment : Fragment() {
             imageViewSupplementRoutineEditDeleteAllCheck.setOnClickListener { view ->
                 val isAllSelected = !view.isSelected
                 view.isSelected = isAllSelected
-                val temp = supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
+                val temp =
+                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
                     .toMutableList()
                 supplementViewModel.setAllItemsChecked(
                     imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
-                    temp
+                    temp,
                 )
             }
 
@@ -91,14 +92,12 @@ class SupplementRoutineEditFragment : Fragment() {
                     }
                 }
             }
-
         }
         return fragmentSupplementRoutineEditBinding.root
     }
 
     inner class SupplementRoutineEditRecyclerViewAdapter :
         RecyclerView.Adapter<SupplementRoutineEditRecyclerViewAdapter.SupplementRoutineEditHolder>() {
-
         inner class SupplementRoutineEditHolder(itemSupplementRoutineEditBinding: ItemSupplementRoutineEditBinding) :
             RecyclerView.ViewHolder(itemSupplementRoutineEditBinding.root) {
             val itemSupplementRoutineEditName: TextView
@@ -163,7 +162,7 @@ class SupplementRoutineEditFragment : Fragment() {
 
             holder.itemSupplementRoutineEditName.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putInt("supplementsId",supplementsId)
+                bundle.putInt("supplementsId", supplementsId)
                 navController.navigate(R.id.action_supplementRoutineEdit_to_supplementInfo, bundle)
             }
 
