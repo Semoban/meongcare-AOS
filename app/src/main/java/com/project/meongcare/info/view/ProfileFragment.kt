@@ -23,6 +23,7 @@ import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
+import com.project.meongcare.onboarding.view.createMultipartBody
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,6 +34,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var mainActivity: MainActivity
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private lateinit var profileUri: Uri
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -86,7 +88,25 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        val accessToken = ""
+        profileViewModel.patchProfileResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                binding.run {
+                    Glide.with(this@ProfileFragment)
+                        .load(profileUri)
+                        .into(imageviewProfileImage)
+                }
+                makeSnackBar(binding.root, requireContext(), "프로필 사진 변경이 완료되었습니다.")
+            } else {
+                binding.run {
+                    Glide.with(this@ProfileFragment)
+                        .load(R.drawable.profile_default_image)
+                        .into(imageviewProfileImage)
+                }
+                makeSnackBar(binding.root, requireContext(), "프로필 사진 변경에 실패하였습니다.")
+            }
+        }
+
+        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NzY4MzU0fQ.cN4yZ3Ou9YcUHusdd8Z_IsmA7KF-gzZ3kVc5fljELTM"
         profileViewModel.getUserProfile(accessToken)
         profileViewModel.getDogList(accessToken)
 
@@ -108,7 +128,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
 
             buttonProfileSetting.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.pushAgreement!!)
+                findNavController().navigate(R.id.action_profileFragment_to_settingFragment, bundle)
             }
 
             buttonProfileLogout.setOnClickListener {
@@ -135,13 +157,10 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     }
 
     override fun onUriPassed(uri: Uri) {
-        // uri로 회원 정보 patch api 연결한 후 통신 정상이면 이미지 뷰에 표시되도록 로직 변경
-        binding.run {
-            Glide.with(this@ProfileFragment)
-                .load(uri)
-                .error(R.drawable.profile_default_image)
-                .into(imageviewProfileImage)
-        }
+        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NzY4MzU0fQ.cN4yZ3Ou9YcUHusdd8Z_IsmA7KF-gzZ3kVc5fljELTM"
+        profileUri = uri
+        val multipartBody = createMultipartBody(requireContext(), uri)
+        profileViewModel.patchProfileImage(accessToken, multipartBody)
     }
 
     private fun kakaoLogout() {

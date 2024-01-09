@@ -63,4 +63,11 @@ interface ProfileApi {
         @Query("pushAgreement") pushAgreement: Boolean,
         @Header("AccessToken") accessToken: String,
     ): Response<Int>
+
+    @Multipart
+    @PATCH("member/profile")
+    suspend fun patchProfileImage(
+        @Header("AccessToken") accessToken: String,
+        @Part file: MultipartBody.Part,
+    ): Response<Int>
 }

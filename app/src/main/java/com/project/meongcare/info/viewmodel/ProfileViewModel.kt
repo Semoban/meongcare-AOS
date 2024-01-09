@@ -50,6 +50,10 @@ class ProfileViewModel
         val patchPushResponse
             get() = _patchPushResponse
 
+        private val _patchProfileResponse = MutableLiveData<Int>()
+        val patchProfileResponse
+            get() = _patchProfileResponse
+
         private val _dogProfile = MutableLiveData<Uri>()
         val dogProfile
             get() = _dogProfile
@@ -125,6 +129,15 @@ class ProfileViewModel
         ) {
             viewModelScope.launch {
                 _patchPushResponse.value = profileRepository.patchPushAgreement(pushAgreement, accessToken)
+            }
+        }
+
+        fun patchProfileImage(
+            accessToken: String,
+            file: MultipartBody.Part,
+        ) {
+            viewModelScope.launch {
+                _patchProfileResponse.value = profileRepository.patchProfileImage(accessToken, file)
             }
         }
     }
