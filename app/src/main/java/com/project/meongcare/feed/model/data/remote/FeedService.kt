@@ -55,7 +55,7 @@ interface FeedService {
         @Query("feedRecordId") feedRecordId: Long,
     ): Response<FeedRecords>
 
-    @GET("feed/detail/{dogId}")
+    @GET("feed/detail/{feedId}")
     suspend fun getDetailFeed(
         @Header("AccessToken") accessToken: String,
         @Path("feedId") feedId: Long,
