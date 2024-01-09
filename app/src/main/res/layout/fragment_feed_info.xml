@@ -324,7 +324,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:background="@drawable/all_rect_gray3_r5"
+                android:background="@drawable/feed_rect_gray3_r5"
                 android:paddingHorizontal="7dp"
                 android:paddingVertical="6dp"
                 android:text="000.00"
