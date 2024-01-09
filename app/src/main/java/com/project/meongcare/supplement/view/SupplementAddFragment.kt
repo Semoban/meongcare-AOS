@@ -104,10 +104,10 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             mgButtonSelected.observe(viewLifecycleOwner) { isSelected ->
                 fragmentSupplementAddBinding.run {
                     buttonSupplementAddUnitMg.setBackgroundResource(
-                        if (isSelected) selected else unSelected
+                        if (isSelected) selected else unSelected,
                     )
                     textViewButtonSupplementAddUnitMg.setTextColor(
-                        if (isSelected) selectedTextColor else unSelectedTextColor
+                        if (isSelected) selectedTextColor else unSelectedTextColor,
                     )
                 }
             }
@@ -115,10 +115,10 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             scoopButtonSelected.observe(viewLifecycleOwner) { isSelected ->
                 fragmentSupplementAddBinding.run {
                     buttonSupplementAddUnitScoop.setBackgroundResource(
-                        if (isSelected) selected else unSelected
+                        if (isSelected) selected else unSelected,
                     )
                     textViewButtonSupplementAddUnitScoop.setTextColor(
-                        if (scoopButtonSelected.value == true) selectedTextColor else unSelectedTextColor
+                        if (scoopButtonSelected.value == true) selectedTextColor else unSelectedTextColor,
                     )
                 }
             }
@@ -126,10 +126,10 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             jungButtonSelected.observe(viewLifecycleOwner) { isSelected ->
                 fragmentSupplementAddBinding.run {
                     buttonSupplementAddUnitJung.setBackgroundResource(
-                        if (isSelected) selected else unSelected
+                        if (isSelected) selected else unSelected,
                     )
                     textViewButtonSupplementAddUnitJung.setTextColor(
-                        if (jungButtonSelected.value == true) selectedTextColor else unSelectedTextColor
+                        if (jungButtonSelected.value == true) selectedTextColor else unSelectedTextColor,
                     )
                 }
             }
@@ -201,7 +201,6 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
 
     inner class SupplementAddTimeRecyclerViewAdapter :
         RecyclerView.Adapter<SupplementAddTimeRecyclerViewAdapter.SupplementAddTimeViewHolder>() {
-
         private val itemEditModeStates =
             MutableList(supplementViewModel.intakeTimeList.value!!.size) { false }
 
@@ -249,7 +248,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             val intakeUnitString = supplementViewModel.intakeTimeUnit.value
             holder.itemSupplementAddTimeTime.text =
                 convertDateToTime(supplementViewModel.intakeTimeList.value!![position].intakeTime)
-            holder.itemSupplementAddTimeAmount.text = "${intakeCountString}${intakeUnitString}"
+            holder.itemSupplementAddTimeAmount.text = "$intakeCountString$intakeUnitString"
 
             if (itemEditModeStates[position]) {
                 holder.itemSupplementAddTimeMinus.visibility = View.VISIBLE
@@ -272,7 +271,8 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
 
     fun onEditButtonClicked() {
         (fragmentSupplementAddBinding.recyclerViewSupplementAddTimeList.adapter
-                as SupplementAddTimeRecyclerViewAdapter).setAllItemsToEditMode()
+            as SupplementAddTimeRecyclerViewAdapter
+        ).setAllItemsToEditMode()
     }
 
     fun isEditTextNullOrEmpty(editText: EditText) {
@@ -286,7 +286,10 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
         hideKeyboard(editText)
     }
 
-    fun setEditTextOriginal(editText: EditText, hintText: String) {
+    fun setEditTextOriginal(
+        editText: EditText,
+        hintText: String,
+    ) {
         editText.run {
             setBackgroundResource(R.drawable.all_rect_gray2_r5)
             setHintTextColor(
@@ -302,17 +305,20 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
         }
     }
 
-    fun controlEditText(editText: EditText, hintText: String) {
+    fun controlEditText(
+        editText: EditText,
+        hintText: String,
+    ) {
         editText.run {
             setOnEditorActionListener { view, actionId, keyEvent ->
                 if (
                     (
-                            actionId == EditorInfo.IME_ACTION_DONE ||
-                                    (
-                                            keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
-                                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
-                                            )
-                            ) && this.text.trim().isNotEmpty()
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                            (
+                                keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
+                                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
+                                )
+                        ) && this.text.trim().isNotEmpty()
                 ) {
                     isCursorVisible = false
                     hideKeyboard(view)
@@ -345,7 +351,11 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
 
     private fun checkInput(): Boolean {
         fragmentSupplementAddBinding.run {
-            if (editTextSupplementAddBrandName.text.isNullOrEmpty() || editTextSupplementAddName.text.isNullOrEmpty() || supplementViewModel.supplementCycle.value == null || supplementViewModel.intakeTimeList.value.isNullOrEmpty()) {
+            if (editTextSupplementAddBrandName.text.isNullOrEmpty()
+                || editTextSupplementAddName.text.isNullOrEmpty()
+                || supplementViewModel.supplementCycle.value == null
+                || supplementViewModel.intakeTimeList.value.isNullOrEmpty()
+            ) {
                 if (editTextSupplementAddBrandName.text.isNullOrEmpty()) {
                     isEditTextNullOrEmpty(editTextSupplementAddBrandName)
                 }

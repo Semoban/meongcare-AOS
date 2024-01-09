@@ -58,7 +58,6 @@ class SupplementInfoFragment : Fragment() {
                     }
                 }
             }
-
         }
 
         fragmentSupplementInfoBinding.run {
@@ -108,7 +107,7 @@ class SupplementInfoFragment : Fragment() {
                     supplementId!!,
                     activeStatus,
                     mainActivity,
-                    textViewButtonSupplementInfoRoutine
+                    textViewButtonSupplementInfoRoutine,
                 )
             }
         }
@@ -162,7 +161,7 @@ class SupplementInfoFragment : Fragment() {
             val intakeUnitString = supplementViewModel.supplementDetail.value!!.intakeUnit
             holder.itemSupplementInfoTimeTime.text =
                 SupplementUtils.convertDateToTime(intakeList[position].intakeTime)
-            holder.itemSupplementInfoTimeAmount.text = "${intakeCountString}${intakeUnitString}"
+            holder.itemSupplementInfoTimeAmount.text = "$intakeCountString$intakeUnitString"
         }
     }
 
@@ -179,7 +178,6 @@ class SupplementInfoFragment : Fragment() {
             "스쿱" -> {
                 buttonSupplementInfoUnitScoop.setBackgroundResource(selected)
                 textViewButtonSupplementInfoUnitScoop.setTextColor(selectedTextColor)
-
             }
 
             "정" -> {

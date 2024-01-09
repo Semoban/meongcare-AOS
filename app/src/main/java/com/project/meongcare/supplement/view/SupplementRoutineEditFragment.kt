@@ -68,8 +68,7 @@ class SupplementRoutineEditFragment : Fragment() {
                 val isAllSelected = !view.isSelected
                 view.isSelected = isAllSelected
                 val temp =
-                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
-                    .toMutableList()
+                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }.toMutableList()
                 supplementViewModel.setAllItemsChecked(
                     imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
                     temp,

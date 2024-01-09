@@ -34,8 +34,8 @@ class SupplementFragment : Fragment() {
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
     var supplementIdListTemp = mutableMapOf<Int, Boolean>()
-    private val TYPE_REGULAR_ITEM = 0
-    private val TYPE_LAST_ITEM = 1
+    private val regularItem = 0
+    private val lastItem = 1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,8 +62,11 @@ class SupplementFragment : Fragment() {
 
         supplementViewModel.run {
             supplementList.observe(viewLifecycleOwner) {
-                supplementIdListTemp = it.associateBy({ it.supplementsRecordId },
-                    { it.intakeStatus }) as MutableMap<Int, Boolean>
+                supplementIdListTemp =
+                    it.associateBy(
+                        { it.supplementsRecordId },
+                        { it.intakeStatus },
+                    ) as MutableMap<Int, Boolean>
 
                 fragmentSupplementBinding.run {
                     if (supplementViewModel.supplementList.value.isNullOrEmpty()) {
@@ -137,7 +140,7 @@ class SupplementFragment : Fragment() {
             val itemSupplementBinding = ItemSupplementBinding.inflate(layoutInflater)
             val allViewHolder = SupplementViewHolder(itemSupplementBinding)
 
-            if (viewType == TYPE_LAST_ITEM) {
+            if (viewType == lastItem) {
                 val layoutParams =
                     allViewHolder.itemSupplementCardView.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.bottomMargin = 0
@@ -157,9 +160,9 @@ class SupplementFragment : Fragment() {
 
         override fun getItemViewType(position: Int): Int {
             return if (position == itemCount - 1) {
-                TYPE_LAST_ITEM
+                lastItem
             } else {
-                TYPE_REGULAR_ITEM
+                regularItem
             }
         }
 
@@ -167,7 +170,6 @@ class SupplementFragment : Fragment() {
             holder: SupplementViewHolder,
             position: Int,
         ) {
-
 //            val supplementId = supplementViewModel.supplementList.value!![position].supplementsId
             val currentTime =
                 SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position].intakeTime)

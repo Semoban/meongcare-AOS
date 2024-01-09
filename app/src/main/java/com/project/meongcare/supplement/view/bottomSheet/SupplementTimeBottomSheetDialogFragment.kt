@@ -2,7 +2,6 @@ package com.project.meongcare.supplement.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

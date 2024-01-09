@@ -88,11 +88,12 @@ class SupplementRepository {
         supplementsId: Int,
         isActive: Boolean,
     ): Result<ResponseBody> = kotlin.runCatching {
-        val response = supplementAPI.patchSupplementActiveStatus(
-            MainActivity.ACCESS_TOKEN,
-            supplementsId,
-            isActive,
-        )
+        val response =
+            supplementAPI.patchSupplementActiveStatus(
+                MainActivity.ACCESS_TOKEN,
+                supplementsId,
+                isActive,
+            )
 
         if (response.isSuccessful) {
             response.body() ?: throw RuntimeException("영양제 루틴 활성화 체크 API 통신 에러")
@@ -140,6 +141,4 @@ class SupplementRepository {
         return response.code()
     }
 }
-
-
 

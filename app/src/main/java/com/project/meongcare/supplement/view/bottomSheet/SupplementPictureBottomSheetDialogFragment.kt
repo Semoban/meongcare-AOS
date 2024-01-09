@@ -126,5 +126,4 @@ class SupplementPictureBottomSheetDialogFragment : BottomSheetDialogFragment() {
     fun setOnPictureChangedListener(listener: OnPictureChangedListener) {
         this.onPictureChangedListener = listener
     }
-
 }

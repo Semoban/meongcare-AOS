@@ -43,7 +43,6 @@ class SupplementUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-
         fun convertToDateToDate(date: Date): String {
             val instant: Instant = date.toInstant()
             val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
@@ -107,7 +106,10 @@ class SupplementUtils {
             val bottomSheetFragment = SupplementTimeBottomSheetDialogFragment()
             bottomSheetFragment.onNumberTimeChangedListener =
                 object : SupplementTimeBottomSheetDialogFragment.OnNumberTimeChangedListener {
-                    override fun onNumberTimeChanged(number: Int, time: String) {
+                    override fun onNumberTimeChanged(
+                        number: Int,
+                        time: String,
+                    ) {
                         val intakeInfo = IntakeInfo(time, number)
                         supplementViewModel.addIntakeInfoList(intakeInfo)
                     }
@@ -115,7 +117,7 @@ class SupplementUtils {
 
             bottomSheetFragment.show(
                 parentFragmentManager,
-                "SupplementTimeBottomSheetDialogFragment"
+                "SupplementTimeBottomSheetDialogFragment",
             )
         }
     }

@@ -226,7 +226,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
             supplementPercentage.value =
                 if (supplementCheckCount.value!! != 0.0 || supplementSize.value!! != 0.0) {
                     supplementCheckCount.value!! / supplementSize.value!! * 100
-                } else 0.0
+                } else {
+                    0.0
+                }
 
             withContext(Main) {
                 progressBar.progress = supplementPercentage.value!!.toInt()
