@@ -262,6 +262,9 @@
         <action
             android:id="@+id/action_oldFeedFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFeedFragment"
@@ -274,6 +277,15 @@
         <action
             android:id="@+id/action_searchFeedFragment_to_feedAddFragment"
             app:destination="@id/feedAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedInfoFragment"
+        android:name="com.project.meongcare.feed.view.FeedInfoFragment"
+        android:label="fragment_feed_info"
+        tools:layout="@layout/fragment_feed_info" >
+        <action
+            android:id="@+id/action_feedInfoFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
     </fragment>
 
 </navigation>
