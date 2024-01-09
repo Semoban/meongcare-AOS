@@ -1,9 +1,15 @@
 package com.project.meongcare.supplement.model.entities
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+
 data class ResultSupplement(
     val routines: List<Supplement>,
 )
-
+data class RequestSupplement(
+    val dto: RequestBody,
+    val file: MultipartBody.Part,
+)
 data class DogSupplement(
     val supplementsInfos: List<SupplementDog>,
 )

@@ -28,7 +28,6 @@ class SupplementInfoFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
-    var supplementId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +37,7 @@ class SupplementInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         navController = findNavController()
-        supplementId = arguments?.getInt("supplementsId")
+        val supplementId = arguments?.getInt("supplementsId")
         Log.d("영양제 정보1", supplementId.toString())
 
         val factory = SupplementViewModelFactory(SupplementRepository())
@@ -51,6 +50,7 @@ class SupplementInfoFragment : Fragment() {
                     textViewSupplementInfoName.text = it.name
                     textViewSupplementInfoBrandName.text = it.brand
                     textViewSupplementInfoCycleCount.text = it.intakeCycle.toString()
+                    textViewSupplementInfoTimeListCount.text = "${it.intakeInfos.size}회"
 
                     setButtonSelected(it)
 

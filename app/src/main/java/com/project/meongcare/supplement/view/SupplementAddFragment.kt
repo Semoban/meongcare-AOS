@@ -1,5 +1,6 @@
 package com.project.meongcare.supplement.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -17,22 +18,28 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
+import com.project.meongcare.supplement.model.data.repository.SupplementRepository
+import com.project.meongcare.supplement.model.entities.SupplementDto
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertDateToTime
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.hideKeyboard
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showCycleBottomSheet
-import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showPictureBottomSheet
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showTimeBottomSheet
+import com.project.meongcare.supplement.view.bottomSheet.OnPictureChangedListener
+import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
+import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 
-class SupplementAddFragment : Fragment() {
+class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     lateinit var fragmentSupplementAddBinding: FragmentSupplementAddBinding
     lateinit var mainActivity: MainActivity
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +49,8 @@ class SupplementAddFragment : Fragment() {
         mainActivity = activity as MainActivity
         navController = findNavController()
 
-        supplementViewModel = ViewModelProvider(this)[SupplementViewModel::class.java]
+        val factory = SupplementViewModelFactory(SupplementRepository())
+        supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
         supplementViewModel.run {
             val selected = R.drawable.all_rect_main1_r5_outline_main3
@@ -133,7 +141,7 @@ class SupplementAddFragment : Fragment() {
             }
 
             cardViewSupplementAdd.setOnClickListener {
-                showPictureBottomSheet(parentFragmentManager, supplementViewModel)
+                showPictureBottomSheet()
             }
 
             controlEditText(editTextSupplementAddBrandName, "브랜드를 입력해주세요")
@@ -164,20 +172,29 @@ class SupplementAddFragment : Fragment() {
             }
 
             buttonSupplementAddComplete.setOnClickListener {
-                if (editTextSupplementAddBrandName.text.isNullOrEmpty()) {
-                    isEditTextNullOrEmpty(editTextSupplementAddBrandName)
-                }
+                checkInput()
+                Log.d("인풋", checkInput().toString())
+                if (checkInput()) {
+                    val brandName = editTextSupplementAddBrandName.text.toString()
+                    val name = editTextSupplementAddName.text.toString()
+                    val cycle = supplementViewModel.supplementCycle.value!!
+                    val intakeUnit = supplementViewModel.intakeTimeUnit.value!!
+                    val intakeInfo = supplementViewModel.intakeTimeList.value!!
+                    val imgUri = supplementViewModel.supplementAddImg.value
+                    val supplementDto =
+                        SupplementDto(1, brandName, name, cycle, intakeUnit, intakeInfo)
+                    Log.d("인풋1", supplementDto.toString())
+                    supplementViewModel.addSupplement(
+                        supplementDto,
+                        requireContext(),
+                        imgUri ?: Uri.EMPTY,
+                    )
 
-                if (editTextSupplementAddName.text.isNullOrEmpty()) {
-                    isEditTextNullOrEmpty(editTextSupplementAddName)
-                }
-
-                if (supplementViewModel.supplementCycle.value == null) {
-                    textViewSupplementAddCycleError.visibility = View.VISIBLE
-                }
-
-                if (supplementViewModel.intakeTimeList.value.isNullOrEmpty()) {
-                    textViewSupplementAddTimeError.visibility = View.VISIBLE
+                    supplementViewModel.supplementCode.observe(viewLifecycleOwner){
+                        if(it == 200)  {
+                            navController.popBackStack()
+                        }
+                    }
                 }
             }
         }
@@ -315,5 +332,46 @@ class SupplementAddFragment : Fragment() {
                 setEditTextOriginal(this, hintText)
             }
         }
+    }
+
+    private fun showPictureBottomSheet() {
+        val bottomSheetFragment = SupplementPictureBottomSheetDialogFragment()
+
+        bottomSheetFragment.setOnPictureChangedListener(this)
+
+        bottomSheetFragment.show(
+            parentFragmentManager,
+            "SupplementPictureBottomSheetDialogFragment"
+        )
+    }
+
+    private fun checkInput(): Boolean {
+        fragmentSupplementAddBinding.run {
+            if (editTextSupplementAddBrandName.text.isNullOrEmpty() || editTextSupplementAddName.text.isNullOrEmpty() || supplementViewModel.supplementCycle.value == null || supplementViewModel.intakeTimeList.value.isNullOrEmpty()) {
+                if (editTextSupplementAddBrandName.text.isNullOrEmpty()) {
+                    isEditTextNullOrEmpty(editTextSupplementAddBrandName)
+                }
+                if (editTextSupplementAddName.text.isNullOrEmpty()) {
+                    isEditTextNullOrEmpty(editTextSupplementAddName)
+                }
+                if (supplementViewModel.supplementCycle.value == null) {
+                    textViewSupplementAddCycleError.visibility = View.VISIBLE
+                }
+                if (supplementViewModel.intakeTimeList.value.isNullOrEmpty()) {
+                    textViewSupplementAddTimeError.visibility = View.VISIBLE
+                }
+                return false
+            }
+        }
+        return true
+    }
+
+    override fun onPictureChanged(uri: Uri) {
+        supplementViewModel.supplementAddImg.value = uri
+        Glide.with(this@SupplementAddFragment)
+            .load(uri)
+            .into(fragmentSupplementAddBinding.imageViewSupplementAdd)
+        fragmentSupplementAddBinding.layoutSupplementAddImage.visibility = View.GONE
+        fragmentSupplementAddBinding.imageViewSupplementAdd.visibility = View.VISIBLE
     }
 }

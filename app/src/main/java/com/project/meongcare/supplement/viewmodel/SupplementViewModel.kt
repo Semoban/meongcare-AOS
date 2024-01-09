@@ -2,10 +2,9 @@ package com.project.meongcare.supplement.viewmodel
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -13,17 +12,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.google.android.gms.tasks.Tasks.await
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
+import com.project.meongcare.supplement.model.entities.RequestSupplement
 import com.project.meongcare.supplement.model.entities.Supplement
 import com.project.meongcare.supplement.model.entities.SupplementDog
+import com.project.meongcare.supplement.model.entities.SupplementDto
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertPictureToFile
+import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertSupplementDto
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -43,6 +43,8 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     var supplementIdListAllCheck = MutableLiveData<Boolean>()
     var supplementDogList = MutableLiveData<MutableList<SupplementDog>>()
     var supplementDetail = MutableLiveData<DetailSupplement>()
+    var supplementAddImg = MutableLiveData<Uri?>()
+    var supplementCode = MutableLiveData<Int?>()
 
     init {
         intakeTimeList.value = mutableListOf()
@@ -53,6 +55,7 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         supplementSize.value = 0.0
         supplementPercentage.value = 0.0
         supplementIdListAllCheck.value = false
+        supplementAddImg.value = null
     }
 
     fun getSupplements(
@@ -125,6 +128,25 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
+    fun addSupplement(
+        supplementDto: SupplementDto,
+        context: Context,
+        uri: Uri,
+    ) {
+        viewModelScope.launch {
+            val dto = convertSupplementDto(supplementDto)
+            val file = convertPictureToFile(context, uri)
+
+            val requestSupplement =
+                RequestSupplement(
+                    dto,
+                    file,
+                )
+
+            supplementCode.value = repository.addSupplement(requestSupplement)
+        }
+    }
+
     fun patchSupplementAlarm(supplementsId: Int, pushAgreement: Boolean) {
         viewModelScope.launch {
             Log.d("영양제 알람1", "$supplementsId, $pushAgreement")
@@ -137,16 +159,21 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun patchSupplementActive(supplementsId: Int, isActive: Boolean, context: Activity,textView: TextView) {
+    fun patchSupplementActive(
+        supplementsId: Int,
+        isActive: Boolean,
+        context: Activity,
+        textView: TextView
+    ) {
         viewModelScope.launch {
             Log.d("영양제 루틴 활성화 체크 중단", "$supplementsId, $isActive")
-            val active = repository.patchSupplementActive(supplementsId, isActive!!)
+            val active = repository.patchSupplementActive(supplementsId, isActive)
             active.onSuccess {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 에러", it.toString())
             }
-            withContext(Main){
+            withContext(Main) {
                 val selected = ContextCompat.getColor(context, R.color.white)
                 val unselected = ContextCompat.getColor(context, R.color.gray4)
                 val status = !isActive
@@ -175,9 +202,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     }
 
     fun deleteSupplement(supplementsId: Int, navController: NavController) {
-        Log.d("영양제 하나 삭제1",supplementsId.toString())
+        Log.d("영양제 하나 삭제1", supplementsId.toString())
         viewModelScope.launch {
-            Log.d("영양제 하나 삭제2",supplementsId.toString())
+            Log.d("영양제 하나 삭제2", supplementsId.toString())
             val check = repository.deleteSupplementById(supplementsId)
             check.onSuccess {
                 Log.d("영양제 하나 삭제 Api 통신 성공", it.toString())

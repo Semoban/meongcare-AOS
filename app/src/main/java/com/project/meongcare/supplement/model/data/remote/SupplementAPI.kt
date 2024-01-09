@@ -40,11 +40,11 @@ interface SupplementAPI {
 
     @Multipart
     @POST("/supplements")
-    fun addSupplement(
+    suspend fun addSupplement(
         @Header("AccessToken") accessToken: String,
         @Part filePart: MultipartBody.Part,
         @Part("dto") supplementDto: RequestBody,
-    ): Call<ResponseBody>
+    ):  Response<ResponseBody>
 
     @PATCH("/supplements/check")
     suspend fun checkSupplement(

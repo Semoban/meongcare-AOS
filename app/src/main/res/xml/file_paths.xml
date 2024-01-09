@@ -2,5 +2,17 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path
         name="dogprofiles"
-        path="Android/data/com.project.meongcare/files/Pictures"/>
+        path="Pictures/DogProfile"/>
+
+    <external-files-path
+        name="excreta"
+        path="Pictures/Excreta"/>
+
+    <external-files-path
+        name="userprofiles"
+        path="Pictures/UserProfile"/>
+
+    <external-files-path
+        name="supplement"
+        path="Pictures/Supplement"/>
 </paths>

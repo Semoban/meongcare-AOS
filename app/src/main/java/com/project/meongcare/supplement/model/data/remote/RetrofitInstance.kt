@@ -10,7 +10,6 @@ import java.lang.reflect.Type
 object RetrofitInstance {
 
     val BASE_URL = MainActivity.BASE_URL
-    val ACCESS_TOKEN = MainActivity
 
     val nullOnEmptyConverterFactory =
         object : Converter.Factory() {

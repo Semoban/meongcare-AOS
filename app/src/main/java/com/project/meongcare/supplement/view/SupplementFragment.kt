@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -122,6 +123,7 @@ class SupplementFragment : Fragment() {
             val itemSupplementCheckImg: ImageView
             val itemSupplementCardView: CardView
             val itemSupplementLine: View
+            val itemSupplementLayout: LinearLayout
 
             init {
                 itemSupplementName = itemSupplementBinding.textViewItemSupplementName
@@ -130,10 +132,7 @@ class SupplementFragment : Fragment() {
                 itemSupplementCheckImg = itemSupplementBinding.imageViewItemSupplementCheck
                 itemSupplementCardView = itemSupplementBinding.cardViewItemSupplement
                 itemSupplementLine = itemSupplementBinding.viewItemSupplementLine
-
-                itemSupplementBinding.layoutItemSupplementText.setOnClickListener {
-                    navController.navigate(R.id.action_supplement_to_supplementInfo)
-                }
+                itemSupplementLayout = itemSupplementBinding.layoutItemSupplementText
             }
         }
 
@@ -175,6 +174,8 @@ class SupplementFragment : Fragment() {
             holder: SupplementViewHolder,
             position: Int,
         ) {
+
+//            val supplementId = supplementViewModel.supplementList.value!![position].supplementsId
             val currentTime =
                 SupplementUtils.convertDateToTime(supplementViewModel.supplementList.value!![position].intakeTime)
             var prevTime = ""
@@ -231,6 +232,12 @@ class SupplementFragment : Fragment() {
                         checkSupplement(supplementsRecordId, holder.itemSupplementCheckImg)
                     }
                 }
+            }
+
+            holder.itemSupplementLayout.setOnClickListener {
+//                val bundle = Bundle()
+//                bundle.putInt("supplementsId",supplementsId)
+//                navController.navigate(R.id.action_supplement_to_supplementInfo,bundle)
             }
         }
 
