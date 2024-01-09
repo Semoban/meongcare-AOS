@@ -95,7 +95,11 @@ class SettingFragment : Fragment() {
     }
 }
 
-fun makeSnackBar(view: View, context: Context, message: String) {
+fun makeSnackBar(
+    view: View,
+    context: Context,
+    message: String,
+) {
     val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
     val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
 
