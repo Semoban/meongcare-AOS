@@ -1,19 +1,21 @@
 package com.project.meongcare.onboarding.view
 
-import android.graphics.Bitmap
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
-import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -22,13 +24,15 @@ import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.data.repository.DogAddRepository
 import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
+import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -38,6 +42,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var mainActivity: MainActivity
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
+    private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
     @Inject
     lateinit var dogAddRepository: DogAddRepository
@@ -64,12 +69,18 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 }
             }
         }
-        // 품종 뷰모델 옵저버 내에서 에러뷰 visibility 설정 필
+
+        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
+            if (dogType != null) {
+                fragmentDogAddOnBoardingBinding.edittextPetaddSelectType.run {
+                    fragmentDogAddOnBoardingBinding.edittextPetaddSelectTypeError.visibility = View.GONE
+                    text = dogType
+                    setTextAppearance(R.style.Typography_Body1_Medium)
+                }
+            }
+        }
 
         fragmentDogAddOnBoardingBinding.run {
-            // 품종 검색 화면 연결 전 임시 값 설정
-            edittextPetaddSelectType.text = "말티즈"
-
             // 사진 등록
             cardviewPetaddImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
@@ -81,7 +92,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
             // 품종 등록
             viewPetaddType.setOnClickListener {
-                // 품종 검색 화면으로 이동
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
             }
 
             // 날짜 등록
@@ -110,7 +121,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 edittextPetaddWeight.requestFocus()
             }
             edittextPetaddSelectTypeError.setOnClickListener {
-                // 품종 검색 화면으로 이동
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
             }
 
             // 완료
@@ -142,7 +153,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
                 val dogName = edittextPetaddName.text.toString()
                 val dogType = edittextPetaddSelectType.text.toString()
-                val dogGender = getCheckedGender(chipgroupPetaddGroupGender.checkedChipId)
+                val dogGender = getCheckedGender(fragmentDogAddOnBoardingBinding.root, chipgroupPetaddGroupGender.checkedChipId)
                 val dogBirth = dogAddViewModel.dogBirthDate.value!!
                 val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
                 val dogBack: Double? = bodySizeCheck(edittextPetaddBackLength.text.toString())
@@ -162,36 +173,33 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                     )
                 val json = Gson().toJson(dog)
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                val filePart = createMultipartBody(dogAddViewModel.dogProfileImage.value)
+                val filePart = createMultipartBody(mainActivity, dogAddViewModel.dogProfileImage.value)
 
                 // 서버로 전송
                 runBlocking {
-                    userPreferences.accessToken.collect { accessToken ->
-                        if (accessToken != null) {
-                            val dogAddResponse = dogAddRepository.postDogInfo(accessToken, filePart, requestBody)
-                            if (dogAddResponse == 200) {
-                                // CompleteOnBoardingFragment로 이동
-                            }
-                        }
+                    val dogAddResponse =
+                        dogAddRepository.postDogInfo(
+                            "",
+                            filePart,
+                            requestBody,
+                        )
+                    if (dogAddResponse == 200) {
+                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
                     }
                 }
-//                runBlocking {
-//                    val dogAddResponse = dogAddRepository.postDogInfo(accessT, filePart, requestBody)
-//                    if (dogAddResponse == 200) {
-//                        // CompleteOnBoardingFragment로 이동
-//                    }
-//                }
             }
         }
 
         return fragmentDogAddOnBoardingBinding.root
     }
 
-    override fun onBitmapPassed(bitmap: Bitmap) {
-        dogAddViewModel.getDogProfileImage(bitmap)
+    override fun onUriPassed(uri: Uri) {
+        dogAddViewModel.getDogProfileImage(uri)
 
         fragmentDogAddOnBoardingBinding.run {
-            imageviewPetaddImage.setImageBitmap(bitmap)
+            Glide.with(this@DogAddOnBoardingFragment)
+                .load(uri)
+                .into(imageviewPetaddImage)
             imageviewPetaddDog.visibility = View.GONE
             textviewPetaddImageDescription.visibility = View.GONE
         }
@@ -200,39 +208,49 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     override fun onDateSubmit(str: String) {
         dogAddViewModel.getDogBirthDate(str)
     }
-
-    fun dateFormat(str: String): String {
-        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        val parsedDate = inputDateFormat.parse(str)
-        return outputDateFormat.format(parsedDate)
-    }
-
-    fun createMultipartBody(bitmap: Bitmap?): MultipartBody.Part {
-        if (bitmap != null) {
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-            val byteArray = byteArrayOutputStream.toByteArray()
-            val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-            return MultipartBody.Part.createFormData("file", "image.jpg", base64Image.toRequestBody())
-        }
-        val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("file", "", emptyBody)
-    }
-
-    fun getCheckedGender(checkedChipId: Int): String {
-        val checkedChip = fragmentDogAddOnBoardingBinding.root.findViewById<Chip>(checkedChipId)
-        return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
-    }
-
-    fun bodySizeCheck(str: String): Double? {
-        return if (str.isEmpty()) null else str.toDouble()
-    }
 }
 
 enum class Gender(val korean: String, val english: String) {
     MALE("남성", "male"),
     FEMALE("여성", "female"),
+}
+
+fun dateFormat(str: String): String {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
+
+    val parsedDate = inputDateFormat.parse(str)
+    return outputDateFormat.format(parsedDate)
+}
+
+fun createMultipartBody(
+    context: Context,
+    uri: Uri?,
+): MultipartBody.Part {
+    if (uri != null) {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "tempFile")
+        inputStream.use { input ->
+            file.outputStream().use { output ->
+                input?.copyTo(output)
+            }
+        }
+        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+    val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData("file", "", emptyBody)
+}
+
+fun getCheckedGender(
+    view: View,
+    checkedChipId: Int,
+): String {
+    val checkedChip = view.findViewById<Chip>(checkedChipId)
+    return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
+}
+
+fun bodySizeCheck(str: String): Double? {
+    return if (str.isEmpty()) null else str.toDouble()
 }

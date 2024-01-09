@@ -1,7 +1,7 @@
 package com.project.meongcare.onboarding.model.data.local
 
-import android.graphics.Bitmap
+import android.net.Uri
 
 interface PhotoMenuListener {
-    fun onBitmapPassed(bitmap: Bitmap)
+    fun onUriPassed(uri: Uri)
 }

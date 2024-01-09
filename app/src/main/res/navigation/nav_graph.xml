@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -150,6 +153,60 @@
     </fragment>
 
     <fragment
+        android:id="@+id/excretaFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaFragment"
+        android:label="fragment_excreta"
+        tools:layout="@layout/fragment_excreta" >
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaAddFragment"
+            app:destination="@id/excretaAddFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaRecordEditFragment"
+            app:destination="@id/excretaRecordEditFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaInfoFragment"
+            app:destination="@id/excretaInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaAddFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
+        android:label="fragment_excreta_add"
+        tools:layout="@layout/fragment_excreta_add_edit" >
+        <action
+            android:id="@+id/action_excretaAddFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaInfoFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaInfoFragment"
+        android:label="fragment_excreta_info"
+        tools:layout="@layout/fragment_excreta_info" >
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaEditFragment"
+            app:destination="@id/excretaEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaRecordEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaRecordEditFragment"
+        android:label="fragment_excreta_record_edit"
+        tools:layout="@layout/fragment_excreta_record_edit" >
+        <action
+            android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/excretaEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaEditFragment"
+        android:label="ExcretaEditFragment" />
+
+    <fragment
         android:id="@+id/weightFragment"
         android:name="com.project.meongcare.weight.view.WeightFragment"
         android:label="fragment_weight"
@@ -157,15 +214,9 @@
 
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.project.meongcare.NoticeFragment"
+        android:name="com.project.meongcare.notice.view.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice"/>
-
-    <fragment
-        android:id="@+id/excretaFragment"
-        android:name="com.project.meongcare.ExcretaFragment"
-        android:label="fragment_excreta"
-        tools:layout="@layout/fragment_excreta" />
 
     <fragment
         android:id="@+id/medicalRecordFragment"
@@ -179,6 +230,52 @@
         tools:layout="@layout/fragment_feed" />
 
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.project.meongcare.info.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_petAddFragment"
+            app:destination="@id/petInfoFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petInfoFragment"
+        android:name="com.project.meongcare.info.view.PetInfoFragment"
+        android:label="fragment_pet_add_edit"
+        tools:layout="@layout/fragment_pet_add_edit">
+        <action
+            android:id="@+id/action_petInfoFragment_to_petEditFragment"
+            app:destination="@id/petEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petEditFragment"
+        android:name="com.project.meongcare.info.view.PetEditFragment"
+        android:label="fragment_pet_edit"
+        tools:layout="@layout/fragment_pet_edit">
+        <action
+            android:id="@+id/action_petEditFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.project.meongcare.info.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+  
+  <fragment
         android:id="@+id/supplementFragment"
         android:name="com.project.meongcare.supplement.view.SupplementFragment"
         android:label="fragment_supplement"
@@ -211,5 +308,5 @@
         <action
             android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
             app:destination="@+id/supplementInfoFragment" />
-    </fragment>
+     </fragment>
 </navigation>

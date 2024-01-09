@@ -68,10 +68,9 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
 
     fun dateFormat(date: Date): String {
         val inputDateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
-        val outputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
         inputDateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        outputDateFormat.timeZone = TimeZone.getTimeZone("GMT")
 
         val parsedDate = inputDateFormat.parse(date.toString())
         return outputDateFormat.format(parsedDate)

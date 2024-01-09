@@ -11,7 +11,8 @@ import com.project.meongcare.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 
 // data store 인스턴스 생성
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userPreferences")
+val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = "userPreferences")
+val Context.dogDataStore: DataStore<Preferences> by preferencesDataStore(name = "dogPreferences")
 
 @HiltAndroidApp
 class GlobalApplication : Application() {
