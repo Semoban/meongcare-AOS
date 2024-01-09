@@ -10,7 +10,6 @@ import com.project.meongcare.supplement.model.entities.ResultSupplement
 import okhttp3.ResponseBody
 
 class SupplementRepository {
-
     companion object {
         private val supplementAPI: SupplementAPI =
             RetrofitInstance.getInstance().create(SupplementAPI::class.java)
@@ -21,11 +20,12 @@ class SupplementRepository {
         date: String,
     ): Result<ResultSupplement> =
         kotlin.runCatching {
-            val response = supplementAPI.getResultSupplement(
-                MainActivity.ACCESS_TOKEN,
-                date,
-                dogId,
-            )
+            val response =
+                supplementAPI.getResultSupplement(
+                    MainActivity.ACCESS_TOKEN,
+                    date,
+                    dogId,
+                )
             if (response.isSuccessful) {
                 response.body()
                     ?: throw RuntimeException("Supplement get API 통신 실패")
@@ -34,14 +34,13 @@ class SupplementRepository {
             }
         }
 
-    suspend fun getSupplementDetail(
-        supplementsId: Int,
-    ): Result<DetailSupplement> =
+    suspend fun getSupplementDetail(supplementsId: Int): Result<DetailSupplement> =
         kotlin.runCatching {
-            val response = supplementAPI.getSupplementDetail(
-                MainActivity.ACCESS_TOKEN,
-                supplementsId
-            )
+            val response =
+                supplementAPI.getSupplementDetail(
+                    MainActivity.ACCESS_TOKEN,
+                    supplementsId,
+                )
             if (response.isSuccessful) {
                 response.body()
                     ?: throw RuntimeException("영양제 상세조회 API 통신 실패")
@@ -50,9 +49,7 @@ class SupplementRepository {
             }
         }
 
-    suspend fun getSupplementDogs(
-        dogId: Int,
-    ): Result<DogSupplement> =
+    suspend fun getSupplementDogs(dogId: Int): Result<DogSupplement> =
         kotlin.runCatching {
             val response = supplementAPI.getSupplementDogs(MainActivity.ACCESS_TOKEN, dogId)
             if (response.isSuccessful) {
@@ -84,11 +81,12 @@ class SupplementRepository {
         pushAgreement: Boolean,
     ): Result<ResponseBody> =
         kotlin.runCatching {
-            val response = supplementAPI.patchSupplementAlarmStatus(
-                MainActivity.ACCESS_TOKEN,
-                supplementsId,
-                pushAgreement,
-            )
+            val response =
+                supplementAPI.patchSupplementAlarmStatus(
+                    MainActivity.ACCESS_TOKEN,
+                    supplementsId,
+                    pushAgreement,
+                )
 
             if (response.isSuccessful) {
                 response.body() ?: throw RuntimeException("Supplement alarm API returned no body.")

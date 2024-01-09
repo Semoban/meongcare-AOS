@@ -31,13 +31,13 @@ object RetrofitInstance {
             }
         }
 
-
-    val client = Retrofit
-        .Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(nullOnEmptyConverterFactory)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    val client =
+        Retrofit
+            .Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(nullOnEmptyConverterFactory)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     fun getInstance(): Retrofit {
         return client
