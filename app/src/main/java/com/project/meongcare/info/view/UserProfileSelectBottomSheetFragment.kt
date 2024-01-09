@@ -1,6 +1,7 @@
 package com.project.meongcare.info.view
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.MainActivity
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPhotoSelectBottomSheetBinding
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import java.io.File
@@ -36,11 +38,16 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
+            divider2.visibility = View.VISIBLE
+            textviewSelectDefault.visibility = View.VISIBLE
             textviewSelectCamera.setOnClickListener {
                 executeCamera(mainActivity)
             }
             textviewSelectAlbum.setOnClickListener {
                 executeAlbum()
+            }
+            textviewSelectDefault.setOnClickListener {
+                setDefaultImage()
             }
         }
 
@@ -104,6 +111,19 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.setType("image/*")
         albumLauncher.launch(intent)
+    }
+
+    private fun setDefaultImage() {
+        val defaultImageUri =  requireContext().resources.let { resources ->
+            Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.profile_default_image))
+                .appendPath(resources.getResourceTypeName(R.drawable.profile_default_image))
+                .appendPath(resources.getResourceEntryName(R.drawable.profile_default_image))
+                .build()
+        }
+        sendUri(defaultImageUri)
+        dismiss()
     }
 
     private fun sendUri(uri: Uri) {
