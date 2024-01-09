@@ -154,7 +154,10 @@ class ProfileRepositoryImpl
             }
         }
 
-        override suspend fun patchProfileImage(accessToken: String, file: MultipartBody.Part): Int? {
+        override suspend fun patchProfileImage(
+            accessToken: String,
+            file: MultipartBody.Part,
+        ): Int? {
             return try {
                 val response = profileRetrofitClient.profileApi.patchProfileImage(accessToken, file)
                 if (response.code() == 200) {
