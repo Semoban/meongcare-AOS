@@ -1,5 +1,7 @@
 package com.project.meongcare.feed.model.data.remote
 
+import com.project.meongcare.feed.model.entities.Feed
+import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
@@ -52,6 +54,13 @@ interface FeedService {
         @Path("dogId") dogId: Long,
         @Query("feedRecordId") feedRecordId: Long,
     ): Response<FeedRecords>
+
+    @GET("feed/detail/{dogId}")
+    suspend fun getDetailFeed(
+        @Header("AccessToken") accessToken: String,
+        @Path("feedId") feedId: Long,
+        @Query("feedRecordId") feedRecordId: Long,
+    ): Response<FeedDetailGetResponse>
 
     @PATCH("feed")
     suspend fun patchFeed(
