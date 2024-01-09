@@ -114,14 +114,15 @@ class UserProfileSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setDefaultImage() {
-        val defaultImageUri =  requireContext().resources.let { resources ->
-            Uri.Builder()
-                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(resources.getResourcePackageName(R.drawable.profile_default_image))
-                .appendPath(resources.getResourceTypeName(R.drawable.profile_default_image))
-                .appendPath(resources.getResourceEntryName(R.drawable.profile_default_image))
-                .build()
-        }
+        val defaultImageUri =
+            requireContext().resources.let { resources ->
+                Uri.Builder()
+                    .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                    .authority(resources.getResourcePackageName(R.drawable.profile_default_image))
+                    .appendPath(resources.getResourceTypeName(R.drawable.profile_default_image))
+                    .appendPath(resources.getResourceEntryName(R.drawable.profile_default_image))
+                    .build()
+            }
         sendUri(defaultImageUri)
         dismiss()
     }
