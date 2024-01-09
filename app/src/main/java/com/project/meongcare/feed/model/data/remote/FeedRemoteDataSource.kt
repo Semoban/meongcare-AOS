@@ -2,6 +2,7 @@ package com.project.meongcare.feed.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
@@ -129,6 +130,33 @@ class FeedRemoteDataSource
                 return getPreviousFeedResponse.body()
             } catch (e: Exception) {
                 Log.d("PreviousFeedGetException", e.toString())
+                return null
+            }
+        }
+
+        suspend fun getFeedDetail(
+            feedId: Long,
+            feedRecordId: Long,
+        ): FeedDetailGetResponse? {
+            try {
+                val getFeedDetailResponse =
+                    feedApiService.getDetailFeed(
+                        accessToken,
+                        feedId,
+                        feedRecordId,
+                    )
+
+                if (getFeedDetailResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(getFeedDetailResponse.errorBody()?.string()!!)
+                    Log.d("FeedDetailGetFailure", getFeedDetailResponse.code().toString())
+                    Log.d("FeedDetailGetFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("FeedDetailGetSuccess", getFeedDetailResponse.code().toString())
+                return getFeedDetailResponse.body()
+            } catch (e: Exception) {
+                Log.d("FeedDetailGetException", e.toString())
                 return null
             }
         }
