@@ -1,5 +1,9 @@
 package com.project.meongcare.feed.model.entities
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class FeedDetailGetResponse(
     val brand: String,
     val feedName: String,
@@ -12,4 +16,4 @@ data class FeedDetailGetResponse(
     val imageURL: String,
     val startDate: String,
     val endDate: String,
-)
+) : Parcelable
