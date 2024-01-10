@@ -1,5 +1,6 @@
 package com.project.meongcare.feed.view
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -7,14 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
+import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 
-class FeedEditFragment: Fragment() {
+class FeedEditFragment: Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
     private val binding
         get() = _binding!!
@@ -22,6 +26,8 @@ class FeedEditFragment: Fragment() {
     private var feedId = 0L
     private var feedRecordId = 0L
     private lateinit var feedInfo: FeedDetailGetResponse
+
+    private val feedPutViewModel: FeedPutViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +48,7 @@ class FeedEditFragment: Fragment() {
         feedInfo = getFeedInfo()
         initToolbar()
         fetchFeedInfo()
+        initPhotoAttachModalBottomSheet()
     }
 
     private fun fetchFeedInfo() {
@@ -83,6 +90,17 @@ class FeedEditFragment: Fragment() {
         }
     }
 
+    private fun initPhotoAttachModalBottomSheet() {
+        binding.cardviewFeedaddeditImage.setOnClickListener {
+            val photoAttachModalBottomSheet = FeedPhotoAttachModalBottomSheetFragment()
+            photoAttachModalBottomSheet.setPhotoListener(this@FeedEditFragment)
+            photoAttachModalBottomSheet.show(
+                requireActivity().supportFragmentManager,
+                FeedPhotoAttachModalBottomSheetFragment.TAG,
+            )
+        }
+    }
+
     private fun getFeedId() = arguments?.getLong("feedId")!!
 
     private fun getFeedRecordId() = arguments?.getLong("feedRecordId")!!
@@ -93,6 +111,15 @@ class FeedEditFragment: Fragment() {
         } else {
             arguments?.getParcelable("feedInfo")!!
         }
+
+    override fun onUriPassed(uri: Uri) {
+        binding.apply {
+            Glide.with(this@FeedEditFragment)
+                .load(uri)
+                .into(imageviewFeedaddeditPicture)
+            layoutFeedaddeditImage.root.visibility = View.INVISIBLE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
