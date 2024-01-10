@@ -55,7 +55,7 @@ class FeedInfoFragment : Fragment() {
                 textviewFeedinfoCrudeProteinRatio.text = response.protein.toString()
                 textviewFeedinfoCrudeFatRatio.text = response.fat.toString()
                 textviewFeedinfoMoistureRatio.text = response.moisture.toString()
-                textviewFeedinfoCrudeAsh.text = response.crudeAsh.toString()
+                textviewFeedinfoCrudeAshRatio.text = response.crudeAsh.toString()
                 textviewFeedinfoKcalContent.text = response.kcal.toString()
                 textviewFeedinfoDailyIntakeContent.text = response.recommendIntake.toString()
                 // 형식 변환 필요 2024-01-10 -> 2024년 01월 10일
