@@ -47,9 +47,11 @@ class FeedInfoFragment : Fragment() {
     private fun fetchFeedInfo() {
         feedInfoFeedDetailGetViewModel.feedDetailGet.observe(viewLifecycleOwner) { response ->
             binding.apply {
-                Glide.with(this@FeedInfoFragment)
-                    .load(response.imageURL)
-                    .into(imageviewFeedinfo)
+                if (response.imageURL.isNotEmpty()) {
+                    Glide.with(this@FeedInfoFragment)
+                        .load(response.imageURL)
+                        .into(imageviewFeedinfo)
+                }
                 textviewFeedinfoBrandContent.text = response.brand
                 textviewFeedinfoNameContent.text = response.feedName
                 textviewFeedinfoCrudeProteinRatio.text = response.protein.toString()
