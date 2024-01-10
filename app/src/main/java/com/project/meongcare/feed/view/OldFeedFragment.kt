@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentOldFeedBinding
 import com.project.meongcare.feed.viewmodel.PreviousFeedGetViewModel
@@ -40,7 +41,14 @@ class OldFeedFragment : Fragment() {
         previousFeedGetViewModel.previousFeedGet.observe(viewLifecycleOwner) { response ->
             previousFeedAdapter.submitList(response.feedRecords)
         }
+        initToolbar()
         initPreviousFeedRecyclerView()
+    }
+
+    private fun initToolbar() {
+        binding.toolbarOldfeed.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initPreviousFeedRecyclerView() {
