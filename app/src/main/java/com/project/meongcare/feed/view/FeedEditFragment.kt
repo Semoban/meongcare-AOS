@@ -49,6 +49,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         initToolbar()
         fetchFeedInfo()
         initPhotoAttachModalBottomSheet()
+        updateCalendarVisibility()
     }
 
     private fun fetchFeedInfo() {
@@ -98,6 +99,31 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                 requireActivity().supportFragmentManager,
                 FeedPhotoAttachModalBottomSheetFragment.TAG,
             )
+        }
+    }
+
+    private fun updateCalendarVisibility() {
+        binding.apply {
+            textviewFeedaddeditIntakePeriodStart.apply {
+                setOnClickListener {
+                    setTextColor(resources.getColor(R.color.black, null))
+                    calendarviewFeedaddeditStartDate.visibility = View.VISIBLE
+                    calendarviewFeedaddeditEndDate.visibility = View.GONE
+                    checkboxFeedaddeditDoNotKnowEndDate.visibility = View.GONE
+                    textviewFeedaddeditDoNotKnowEndDate.visibility = View.GONE
+                    textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
+                }
+            }
+            textviewFeedaddeditIntakePeriodEnd.apply {
+                setOnClickListener {
+                    setTextColor(resources.getColor(R.color.black, null))
+                    calendarviewFeedaddeditEndDate.visibility = View.VISIBLE
+                    calendarviewFeedaddeditStartDate.visibility = View.INVISIBLE
+                    checkboxFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
+                    textviewFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
+                    textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
+                }
+            }
         }
     }
 
