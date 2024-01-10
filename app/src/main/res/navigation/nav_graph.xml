@@ -286,6 +286,17 @@
         <action
             android:id="@+id/action_feedInfoFragment_to_oldFeedFragment"
             app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedInfoFragment_to_feedEditFragment"
+            app:destination="@id/feedEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedEditFragment"
+        android:name="com.project.meongcare.feed.view.FeedEditFragment"
+        android:label="FeedEditFragment" >
+        <action
+            android:id="@+id/action_feedEditFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
     </fragment>
 
 </navigation>
