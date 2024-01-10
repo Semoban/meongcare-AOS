@@ -18,8 +18,8 @@ class FeedInfoFragment : Fragment() {
 
     private val feedInfoFeedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
 
-    var feedId = 0L
-    var feedRecordId = 0L
+    private var feedId = 0L
+    private var feedRecordId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
