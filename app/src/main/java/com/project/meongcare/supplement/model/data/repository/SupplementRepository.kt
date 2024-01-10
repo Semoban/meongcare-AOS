@@ -1,7 +1,7 @@
 package com.project.meongcare.supplement.model.data.repository
 
 import com.project.meongcare.MainActivity
-import com.project.meongcare.supplement.model.data.remote.RetrofitInstance
+import com.project.meongcare.supplement.model.data.remote.SupplementRetrofitInstance
 import com.project.meongcare.supplement.model.data.remote.SupplementAPI
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.DogSupplement
@@ -12,7 +12,7 @@ import okhttp3.ResponseBody
 class SupplementRepository {
     companion object {
         private val supplementAPI: SupplementAPI =
-            RetrofitInstance.getInstance().create(SupplementAPI::class.java)
+            SupplementRetrofitInstance.getInstance().create(SupplementAPI::class.java)
     }
 
     suspend fun getSupplements(

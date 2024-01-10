@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
-object RetrofitInstance {
+object SupplementRetrofitInstance {
     val BASE_URL = MainActivity.BASE_URL
 
     val nullOnEmptyConverterFactory =
