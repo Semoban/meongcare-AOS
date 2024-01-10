@@ -252,6 +252,9 @@
         <action
             android:id="@+id/action_feedAddFragment_to_searchFeedFragment"
             app:destination="@id/searchFeedFragment" />
+        <action
+            android:id="@+id/action_feedAddFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
     </fragment>
 
     <fragment
@@ -286,6 +289,9 @@
         <action
             android:id="@+id/action_feedInfoFragment_to_oldFeedFragment"
             app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedInfoFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
     </fragment>
 
 </navigation>
