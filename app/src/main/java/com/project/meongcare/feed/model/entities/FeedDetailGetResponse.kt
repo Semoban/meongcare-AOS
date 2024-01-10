@@ -15,5 +15,5 @@ data class FeedDetailGetResponse(
     val recommendIntake: Long,
     val imageURL: String,
     val startDate: String,
-    val endDate: String,
+    val endDate: String?,
 ) : Parcelable

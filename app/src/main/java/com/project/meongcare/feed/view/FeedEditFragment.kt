@@ -65,7 +65,11 @@ class FeedEditFragment: Fragment() {
                 setTextColor(resources.getColor(R.color.black, null))
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
-                text = convertDateFormat(feedInfo.endDate)
+                text = if (feedInfo.endDate != null) {
+                    convertDateFormat(feedInfo.endDate)
+                } else {
+                    "모름"
+                }
                 setTextColor(resources.getColor(R.color.black, null))
             }
         }

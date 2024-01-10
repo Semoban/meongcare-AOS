@@ -82,7 +82,11 @@ class FeedInfoFragment : Fragment() {
                 textviewFeedinfoKcalContent.text = feedInfo.kcal.toString()
                 textviewFeedinfoDailyIntakeContent.text = feedInfo.recommendIntake.toString()
                 textviewFeedinfoIntakePeriodStart.text = convertDateFormat(feedInfo.startDate)
-                textviewFeedinfoIntakePeriodEnd.text = convertDateFormat(feedInfo.endDate)
+                if (feedInfo.endDate != null) {
+                    textviewFeedinfoIntakePeriodEnd.text = convertDateFormat(feedInfo.endDate)
+                } else {
+                    textviewFeedinfoIntakePeriodEnd.text = "모름"
+                }
             }
         }
     }
