@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.project.meongcare.excreta.model.entities.ExcretaInfo
 import com.project.meongcare.excreta.model.entities.ExcretaInfoPatch
 import com.project.meongcare.feed.model.entities.FeedInfo
+import com.project.meongcare.feed.model.entities.FeedPutInfo
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,6 +17,11 @@ import java.io.File
 object FeedInfoUtils {
     fun convertFeedPostDto(feedInfo: FeedInfo): RequestBody {
         val json = Gson().toJson(feedInfo)
+        return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+    }
+
+    fun convertFeedPutDto(feedPutInfo: FeedPutInfo): RequestBody {
+        val json = Gson().toJson(feedPutInfo)
         return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
     }
 
