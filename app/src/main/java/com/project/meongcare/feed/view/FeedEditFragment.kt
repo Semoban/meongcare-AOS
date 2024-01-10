@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
+import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 
 class FeedEditFragment: Fragment() {
     private var _binding: FragmentFeedAddEditBinding? = null
@@ -36,6 +39,34 @@ class FeedEditFragment: Fragment() {
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
         feedInfo = getFeedInfo()
+        fetchFeedInfo()
+    }
+
+    private fun fetchFeedInfo() {
+        binding.apply {
+            if (feedInfo.imageURL.isNotEmpty()) {
+                Glide.with(this@FeedEditFragment)
+                    .load(feedInfo.imageURL)
+                    .into(imageviewFeedaddeditPicture)
+                layoutFeedaddeditImage.root.visibility = View.INVISIBLE
+            }
+            edittextFeedaddeditBrand.setText(feedInfo.brand)
+            edittextFeedaddeditName.setText(feedInfo.feedName)
+            edittextFeedaddeditCrudeProteinPercentage.setText(feedInfo.protein.toString())
+            edittextFeedaddeditCrudeFatPercent.setText(feedInfo.fat.toString())
+            edittextFeedaddeditCrudeAshPercent.setText(feedInfo.crudeAsh.toString())
+            edittextFeedaddeditMoisturePercent.setText(feedInfo.moisture.toString())
+            edittextFeedaddeditKcalContent.setText(feedInfo.kcal.toString())
+            textviewFeedaddeditDailyIntakeContent.text = "${feedInfo.recommendIntake}g"
+            textviewFeedaddeditIntakePeriodStart.apply {
+                text = convertDateFormat(feedInfo.startDate)
+                setTextColor(resources.getColor(R.color.black, null))
+            }
+            textviewFeedaddeditIntakePeriodEnd.apply {
+                text = convertDateFormat(feedInfo.endDate)
+                setTextColor(resources.getColor(R.color.black, null))
+            }
+        }
     }
 
     private fun getFeedId() = arguments?.getLong("feedId")!!
