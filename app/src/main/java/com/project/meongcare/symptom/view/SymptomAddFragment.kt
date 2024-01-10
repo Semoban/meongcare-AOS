@@ -11,21 +11,24 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomAddBinding
-import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.hideKeyboard
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import java.time.LocalDate
 
-class SymptomAddFragment : Fragment() {
+class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSelectedListener {
     lateinit var fragmentSymptomAddBinding: FragmentSymptomAddBinding
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
+    var isEditSymptom = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,7 +39,9 @@ class SymptomAddFragment : Fragment() {
 
         val navController = findNavController()
 
-        symptomViewModel = mainActivity.symptomViewModel
+        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
+
+        getBundleOfSymptomSelectData()
 
         symptomViewModel.run {
             symptomItemTitle.observe(viewLifecycleOwner) { title ->
@@ -71,7 +76,6 @@ class SymptomAddFragment : Fragment() {
                             text = "증상을 선택해주세요"
                             setTextColor(ContextCompat.getColor(mainActivity, R.color.gray4))
                         }
-
                         buttonSymptomAddSelectSymptom.setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     }
                 }
@@ -86,10 +90,8 @@ class SymptomAddFragment : Fragment() {
             }
 
             buttonSymptomAddDate.setOnClickListener {
-                showCalendarBottomSheet(parentFragmentManager, symptomViewModel)
+                showCalendarBottomSheet(parentFragmentManager, this@SymptomAddFragment)
             }
-
-            isNullDate()
 
             timepickerSymptomAdd.run {
                 setOnTimeChangedListener { timePicker, hour, minute ->
@@ -98,13 +100,14 @@ class SymptomAddFragment : Fragment() {
                 }
             }
 
-            isNullTimePickerValue()
 
             buttonSymptomAddSelectSymptom.setOnClickListener {
-                navController.navigate(R.id.action_symptomAdd_to_symptomSelect)
+                val bundle = Bundle()
+                bundle.putBoolean("isEditSymptom", isEditSymptom)
+                navController.navigate(R.id.action_symptomAdd_to_symptomSelect, bundle)
             }
 
-            isNullAddItem()
+            nullCheckAndSetEssenial()
 
             editTextSymptomAddCustom.setOnEditorActionListener { _, actionId, keyEvent ->
                 if (
@@ -114,7 +117,7 @@ class SymptomAddFragment : Fragment() {
                                 keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN &&
                                     keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
                             )
-                    ) && editTextSymptomAddCustom.text.trim().isNotEmpty()
+                        ) && editTextSymptomAddCustom.text.trim().isNotEmpty()
                 ) {
                     layoutSymptomAddList.visibility = View.VISIBLE
                     includeItemSymptomAdd.run {
@@ -123,8 +126,7 @@ class SymptomAddFragment : Fragment() {
                             symptomItemTitle.value = editTextSymptomAddCustom.text.toString().trim()
                         }
                     }
-                    editTextSymptomAddCustom.text.clear()
-                    editTextSymptomAddCustom.clearFocus()
+                    setClearEditTextSymptomAddCustom()
                     hideKeyboard(editTextSymptomAddCustom)
                     return@setOnEditorActionListener true
                 }
@@ -132,67 +134,105 @@ class SymptomAddFragment : Fragment() {
             }
 
             buttonSymptomAddToSymptom.setOnClickListener {
-                val dateTimeString =
-                    if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-                        "${symptomViewModel.symptomDateText.value}T${
-                            String.format(
-                                "%02d:%02d",
-                                timepickerSymptomAdd.hour,
-                                timepickerSymptomAdd.minute,
-                            )
-                        }:00"
-                    } else {
-                        isNullInput(textViewSymptomAddDate, buttonSymptomAddDate)
-                        null
-                    }
-
-                val addItemName =
-                    if (layoutSymptomAddList.visibility == View.VISIBLE) {
-                        getSymptomName(symptomViewModel.symptomItemImgId.value!!)
-                    } else {
-                        isNullInput(textViewSymptomAddSelectSymptom, buttonSymptomAddSelectSymptom)
-                        null
-                    }
-
-                val addItemTitle = symptomViewModel.symptomItemTitle.value
-
-                if (dateTimeString != null && addItemName != null && addItemTitle != null) {
-                    Log.d("Symptom문제", dateTimeString)
-                    val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
-                    Log.d("Symptom문제", toAddSymptom.toString())
-                    SymptomRepository.addSymptom(toAddSymptom)
-                    symptomViewModel.clearLiveData()
-                    navController.navigate(R.id.action_symptomAdd_to_symptom)
-                }
+                addSymptom(navController)
             }
         }
         return fragmentSymptomAddBinding.root
     }
 
-    private fun FragmentSymptomAddBinding.isNullAddItem() {
-        if (!symptomViewModel.symptomItemTitle.value.isNullOrEmpty()) {
-            layoutSymptomAddList.visibility = View.VISIBLE
-            includeItemSymptomAdd.run {
-                imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
-                textViewItemSymptomAdd.text = symptomViewModel.symptomItemTitle.value!!.trim()
-            }
-        } else {
-            layoutSymptomAddList.visibility = View.GONE
+    private fun getBundleOfSymptomSelectData() {
+        if (arguments?.getInt("symptomItemImgId") != null) {
+            Log.d("번들 확인1", arguments?.getInt("symptomItemImgId").toString())
+            Log.d("번들 확인2", arguments?.getString("symptomItemTitle").toString())
+            symptomViewModel.symptomItemImgId.value = arguments?.getInt("symptomItemImgId")
+            symptomViewModel.symptomItemTitle.value = arguments?.getString("symptomItemTitle")
         }
     }
 
-    private fun FragmentSymptomAddBinding.isNullTimePickerValue() {
+    private fun setClearEditTextSymptomAddCustom() {
+        fragmentSymptomAddBinding.editTextSymptomAddCustom.text.clear()
+        fragmentSymptomAddBinding.editTextSymptomAddCustom.clearFocus()
+    }
+
+    private fun nullCheckAndSetEssenial() {
+        isNullDate()
+        isNullTimePickerValue()
+        isNullAddItem()
+    }
+
+    private fun addSymptom(navController: NavController) {
+        val dateTimeString = getDateTimeString()
+        val addItemName = getAddItemName()
+        val addItemTitle = symptomViewModel.symptomItemTitle.value
+        checkNullAndAddData(dateTimeString, addItemName, addItemTitle, navController)
+    }
+
+    private fun checkNullAndAddData(
+        dateTimeString: String?,
+        addItemName: String?,
+        addItemTitle: String?,
+        navController: NavController
+    ) {
+        if (dateTimeString != null && addItemName != null && addItemTitle != null) {
+            val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
+            symptomViewModel.addSymptomData(toAddSymptom, navController)
+        }
+    }
+
+    private fun getAddItemName() =
+        if (fragmentSymptomAddBinding.layoutSymptomAddList.visibility == View.VISIBLE) {
+            getSymptomName(symptomViewModel.symptomItemImgId.value!!)
+        } else {
+            isNullInput(
+                fragmentSymptomAddBinding.textViewSymptomAddSelectSymptom,
+                fragmentSymptomAddBinding.buttonSymptomAddSelectSymptom
+            )
+            null
+        }
+
+    private fun getDateTimeString() =
+        if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
+            "${symptomViewModel.symptomDateText.value}T${
+                String.format(
+                    "%02d:%02d",
+                    fragmentSymptomAddBinding.timepickerSymptomAdd.hour,
+                    fragmentSymptomAddBinding.timepickerSymptomAdd.minute,
+                )
+            }:00"
+        } else {
+            isNullInput(
+                fragmentSymptomAddBinding.textViewSymptomAddDate,
+                fragmentSymptomAddBinding.buttonSymptomAddDate
+            )
+            null
+        }
+
+    private fun isNullAddItem() {
+        fragmentSymptomAddBinding.run {
+            if (!symptomViewModel.symptomItemTitle.value.isNullOrEmpty()) {
+                layoutSymptomAddList.visibility = View.VISIBLE
+                includeItemSymptomAdd.run {
+                    imageViewItemSymptomAdd.setImageResource(symptomViewModel.symptomItemImgId.value!!)
+                    textViewItemSymptomAdd.text = symptomViewModel.symptomItemTitle.value!!.trim()
+                }
+            } else {
+                layoutSymptomAddList.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun isNullTimePickerValue() {
         if (symptomViewModel.symptomTimeHour != null && symptomViewModel.symptomTimeMinute != null) {
-            timepickerSymptomAdd.run {
+            fragmentSymptomAddBinding.timepickerSymptomAdd.run {
                 hour = symptomViewModel.symptomTimeHour!!
                 minute = symptomViewModel.symptomTimeMinute!!
             }
         }
     }
 
-    private fun FragmentSymptomAddBinding.isNullDate() {
+    private fun isNullDate() {
         if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-            textViewSymptomAddDate.run {
+            fragmentSymptomAddBinding.textViewSymptomAddDate.run {
                 text = symptomViewModel.symptomDateText.value
                 setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
                 setTextAppearance(R.style.Typography_Body1_Medium)
@@ -212,6 +252,10 @@ class SymptomAddFragment : Fragment() {
         layout.run {
             setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         }
+    }
+
+    override fun onDateSelected(date: LocalDate) {
+        symptomViewModel.updateSymptomDate(date, isEditSymptom)
     }
 }
 

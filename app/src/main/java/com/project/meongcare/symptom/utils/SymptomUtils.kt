@@ -92,19 +92,9 @@ class SymptomUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        fun showCalendarBottomSheet(
-            parentFragmentManager: FragmentManager,
-            symptomViewModel: SymptomViewModel,
-        ) {
-            val bottomSheetDialogFragment =
-                SymptomBottomSheetDialogFragment().apply {
-                    onDateSelectedListener =
-                        object : SymptomBottomSheetDialogFragment.OnDateSelectedListener {
-                            override fun onDateSelected(date: LocalDate) {
-                                symptomViewModel.updateSymptomDate(date)
-                            }
-                        }
-                }
+        fun showCalendarBottomSheet(parentFragmentManager: FragmentManager, onDateSelectedListener: SymptomBottomSheetDialogFragment.OnDateSelectedListener) {
+            val bottomSheetDialogFragment = SymptomBottomSheetDialogFragment()
+            bottomSheetDialogFragment.setOnDateSelecetedListener(onDateSelectedListener)
             bottomSheetDialogFragment.show(parentFragmentManager, "SymptomBottomSheetDialogFragment")
         }
     }

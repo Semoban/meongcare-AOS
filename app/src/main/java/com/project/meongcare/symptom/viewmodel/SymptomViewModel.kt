@@ -5,10 +5,16 @@ import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
+import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -27,7 +33,6 @@ class SymptomViewModel : ViewModel() {
     var selectCheckedImg = MutableLiveData<ImageView>()
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
     var infoSymptomData = MutableLiveData<Symptom>()
-    var isEditSymptom = false
     val listEditSymptomCheckedStatusMap = MutableLiveData<MutableMap<Int, Boolean>>()
 
     init {
@@ -41,16 +46,13 @@ class SymptomViewModel : ViewModel() {
         date: Date,
     ) {
         val localDate = convertToDateToMiliSec(date)
-        SymptomRepository.searchByDogId(dogId, localDate) { symptoms ->
-            symptoms?.let {
-                val sortedSymptoms =
-                    it.sortedBy {
-                        LocalDateTime.parse(
-                            it.dateTime,
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
-                        )
-                    }
-                symptomList.value = sortedSymptoms.toMutableList()
+        viewModelScope.launch {
+            SymptomRepository.searchByDogId(dogId, localDate) {list ->
+                symptomList.value = list?.sortedBy { it.dateTime }?.toMutableList()
+            }
+
+            withContext(Main){
+
             }
         }
     }
@@ -83,10 +85,9 @@ class SymptomViewModel : ViewModel() {
         symptomItemImgId.value = R.drawable.symptom_stethoscope
         symptomItemTitle.value = null
         symptomItemVisibility.value = View.GONE
-        isEditSymptom = false
     }
 
-    fun updateSymptomDate(date: LocalDate) {
+    fun updateSymptomDate(date: LocalDate, isEditSymptom: Boolean) {
         if (isEditSymptom) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
             symptomDateText.value = date.format(formatter)
@@ -129,6 +130,22 @@ class SymptomViewModel : ViewModel() {
                 currentMap[symptomId] = true
             }
             listEditSymptomCheckedStatusMap.value = currentMap
+        }
+    }
+
+    fun deleteSymptomData(symptomIds: IntArray) {
+        viewModelScope.launch {
+            SymptomRepository.deleteSymptom(symptomIds)
+        }
+    }
+
+    fun addSymptomData(toAddSymptom: ToAddSymptom, navController: NavController) {
+        viewModelScope.launch {
+            SymptomRepository.addSymptom(toAddSymptom)
+            withContext(Main){
+                clearLiveData()
+                navController.popBackStack()
+            }
         }
     }
 }
