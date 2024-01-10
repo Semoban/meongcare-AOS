@@ -8,7 +8,6 @@ import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.view.SymptomBottomSheetDialogFragment
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -55,11 +54,16 @@ class SymptomUtils {
         }
 
         fun convertToDateToLocale(date: Date): LocalDateTime {
-            // Date를 Instant로 변환
             val instant: Instant = date.toInstant()
 
-            // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
             return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+        }
+
+        fun convertToDateToMiliSec(date: Date): String {
+            val instant: Instant = date.toInstant()
+            val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            return localDateTime.format(formatter)
         }
 
         fun getSymptomImg(symptomData: Symptom): Int {

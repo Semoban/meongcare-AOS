@@ -6,23 +6,19 @@ import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
+import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils
-import kotlinx.coroutines.Dispatchers.Main
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToDateToMiliSec
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
-class SymptomViewModel : ViewModel() {
+class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() {
     var symptomList = MutableLiveData<MutableList<Symptom>>()
     var symptomDateText = MutableLiveData<String?>()
     var symptomTimeHour: Int? = null
@@ -34,6 +30,7 @@ class SymptomViewModel : ViewModel() {
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
     var infoSymptomData = MutableLiveData<Symptom>()
     val listEditSymptomCheckedStatusMap = MutableLiveData<MutableMap<Int, Boolean>>()
+    var addSymptomCode = MutableLiveData<Int?>()
 
     init {
         symptomList.value = mutableListOf()
@@ -41,18 +38,18 @@ class SymptomViewModel : ViewModel() {
         textViewNoDataVisibility.value = false
     }
 
-    fun updateSymptomList(
+    fun getSymptomList(
         dogId: Int,
         date: Date,
     ) {
         val localDate = convertToDateToMiliSec(date)
         viewModelScope.launch {
-            SymptomRepository.searchByDogId(dogId, localDate) {list ->
-                symptomList.value = list?.sortedBy { it.dateTime }?.toMutableList()
-            }
-
-            withContext(Main){
-
+            val symptoms = repository.getSupplementByDogId(dogId, localDate)
+            symptoms.onSuccess {
+                symptomList.value = it.records.sortedBy { s -> s.dateTime }.toMutableList()
+                Log.d("Symptom get Api 통신 성공", symptomList.value.toString())
+            }.onFailure {
+                Log.d("Symptom get Api 통신 에러", it.toString())
             }
         }
     }
@@ -69,13 +66,6 @@ class SymptomViewModel : ViewModel() {
             symptomItemTitle.value = symptom.note
             symptomItemVisibility.value = View.VISIBLE
         }
-    }
-
-    fun convertToDateToMiliSec(date: Date): String {
-        val instant: Instant = date.toInstant()
-        val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        return localDateTime.format(formatter)
     }
 
     fun clearLiveData() {
@@ -133,19 +123,31 @@ class SymptomViewModel : ViewModel() {
         }
     }
 
-    fun deleteSymptomData(symptomIds: IntArray) {
+    fun deleteSymptom(symptomIds: IntArray) {
         viewModelScope.launch {
-            SymptomRepository.deleteSymptom(symptomIds)
+            val delete = repository.deleteSymptom(symptomIds)
+            delete.onSuccess {
+                Log.d("이상증상 삭제 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("이상증상 삭제 Api 통신 에러", it.toString())
+            }
         }
     }
 
-    fun addSymptomData(toAddSymptom: ToAddSymptom, navController: NavController) {
+    fun patchSymptom(toEditSymptom: ToEditSymptom) {
         viewModelScope.launch {
-            SymptomRepository.addSymptom(toAddSymptom)
-            withContext(Main){
-                clearLiveData()
-                navController.popBackStack()
+            val delete = repository.patchSymptom(toEditSymptom)
+            delete.onSuccess {
+                Log.d("이상증상 수정 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("이상증상 수정 Api 통신 에러", it.toString())
             }
+        }
+    }
+
+    fun addSymptomData(toAddSymptom: ToAddSymptom) {
+        viewModelScope.launch {
+            addSymptomCode.value = repository.addSymptom(toAddSymptom)
         }
     }
 }

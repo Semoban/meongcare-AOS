@@ -4,11 +4,6 @@ data class ResultSymptom(
     val records: List<Symptom>,
 )
 
-data class ResponseSymptom(
-    val success: Boolean,
-    val message: String,
-)
-
 data class ToAddSymptom(
     val dogId: Int,
     val symptomString: String,
