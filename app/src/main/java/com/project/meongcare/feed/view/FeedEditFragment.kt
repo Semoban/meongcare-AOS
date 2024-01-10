@@ -10,25 +10,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
+import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
+import com.project.meongcare.feed.model.entities.FeedPutInfo
+import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.concurrent.thread
 
+@AndroidEntryPoint
 class FeedEditFragment: Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
     private val binding
@@ -37,6 +45,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
     private var feedId = 0L
     private var feedRecordId = 0L
     private lateinit var feedInfo: FeedDetailGetResponse
+    private lateinit var feedPutInfo: FeedPutInfo
     private var recommendIntake = 0.0
     var selectedStartDate = ""
     var selectedEndDate = ""
@@ -68,6 +77,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
+        editFeedInfo()
     }
 
     private fun fetchFeedInfo() {
@@ -236,6 +246,60 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         }
     }
 
+    private fun createFeedInfo() {
+        binding.apply {
+            val brand = edittextFeedaddeditBrand.text.toString()
+            val feedName = edittextFeedaddeditName.text.toString()
+            val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
+            val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
+            val crudeAsh = edittextFeedaddeditCrudeAshPercent.text.toString()
+            val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+            val kcal = edittextFeedaddeditKcalContent.text.toString()
+            feedPutInfo = FeedPutInfo(
+                feedId,
+                brand,
+                feedName,
+                protein.toDouble(),
+                fat.toDouble(),
+                crudeAsh.toDouble(),
+                moisture.toDouble(),
+                kcal.toDouble(),
+                recommendIntake.toInt(),
+                selectedStartDate,
+                selectedEndDate,
+                feedRecordId,
+            )
+        }
+    }
+    private fun editFeedInfo() {
+        binding.apply {
+            buttonFeedaddeditCompletion.setOnClickListener {
+                createFeedInfo()
+                val imageUri = feedPutViewModel.feedImage.value
+
+                val dto = convertFeedPutDto(feedPutInfo)
+                val file = convertFeedFile(
+                    requireContext(),
+                    imageUri ?: Uri.EMPTY
+                )
+
+                val feedUploadRequest = FeedUploadRequest(
+                    dto,
+                    file,
+                )
+                feedPutViewModel.putFeed(feedUploadRequest)
+                feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
+                    if (response == SUCCESS) {
+                        findNavController().popBackStack()
+                        Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Snackbar.make(requireView(), "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
     private fun initInputMethodManager() {
         thread {
             SystemClock.sleep(1000)
@@ -263,6 +327,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         }
 
     override fun onUriPassed(uri: Uri) {
+        feedPutViewModel.getImageFeed(uri)
         binding.apply {
             Glide.with(this@FeedEditFragment)
                 .load(uri)
