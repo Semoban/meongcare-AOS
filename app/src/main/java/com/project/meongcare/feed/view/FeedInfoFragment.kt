@@ -78,7 +78,7 @@ class FeedInfoFragment : Fragment() {
             }
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
-                    R.id.menu_info_edit -> findNavController().navigate(R.id.action_feedInfoFragment_to_feedAddFragment)
+                    R.id.menu_info_edit -> findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment)
                     R.id.menu_info_delete -> Log.d("사료 정보 삭제", "사료 정보 삭제")
                 }
                 false
