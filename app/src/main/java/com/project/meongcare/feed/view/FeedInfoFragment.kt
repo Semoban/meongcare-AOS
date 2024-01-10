@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
+import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -80,9 +81,8 @@ class FeedInfoFragment : Fragment() {
                 textviewFeedinfoCrudeAshRatio.text = feedInfo.crudeAsh.toString()
                 textviewFeedinfoKcalContent.text = feedInfo.kcal.toString()
                 textviewFeedinfoDailyIntakeContent.text = feedInfo.recommendIntake.toString()
-                // 형식 변환 필요 2024-01-10 -> 2024년 01월 10일
-                textviewFeedinfoIntakePeriodStart.text = feedInfo.startDate
-                textviewFeedinfoIntakePeriodEnd.text = feedInfo.endDate
+                textviewFeedinfoIntakePeriodStart.text = convertDateFormat(feedInfo.startDate)
+                textviewFeedinfoIntakePeriodEnd.text = convertDateFormat(feedInfo.endDate)
             }
         }
     }
