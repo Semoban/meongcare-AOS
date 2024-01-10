@@ -1,6 +1,7 @@
 package com.project.meongcare.feed.viewmodel
 
 import android.app.assist.AssistStructure.ViewNode
+import android.net.Uri
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,9 +18,19 @@ class FeedPutViewModel
     constructor(
         private val feedRepositoryImpl: FeedRepositoryImpl,
     ) : ViewModel() {
+        private var _feedImage = MutableLiveData<Uri>()
+        val feedImage
+            get() = _feedImage
+
         private var _feedPut = MutableLiveData<Int>()
         val feedPut
             get() = _feedPut
+
+        fun getImageFeed(uri: Uri) {
+            viewModelScope.launch {
+                _feedImage.value = uri
+            }
+        }
 
         fun putFeed(feedUploadRequest: FeedUploadRequest) {
             viewModelScope.launch {
