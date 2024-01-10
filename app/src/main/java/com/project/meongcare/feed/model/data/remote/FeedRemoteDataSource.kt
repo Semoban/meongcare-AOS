@@ -183,4 +183,28 @@ class FeedRemoteDataSource
                 return null
             }
         }
+
+        suspend fun putFeed(feedUploadRequest: FeedUploadRequest): Int? {
+            try {
+                val putFeedResponse =
+                    feedApiService.putFeed(
+                        accessToken,
+                        feedUploadRequest.dto,
+                        feedUploadRequest.file,
+                    )
+
+                if (putFeedResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(putFeedResponse.code().toString())
+                    Log.d("FeedPutFailure", putFeedResponse.code().toString())
+                    Log.d("FeedPutFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("FeedPutSuccess", putFeedResponse.code().toString())
+                return putFeedResponse.code()
+            } catch (e: Exception) {
+                Log.e("FeedPutException", e.toString())
+                return null
+            }
+        }
     }
