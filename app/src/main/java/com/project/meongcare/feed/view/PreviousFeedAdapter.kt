@@ -28,7 +28,8 @@ class PreviousFeedAdapter : ListAdapter<FeedRecord, PreviousFeedAdapter.Previous
                 textviewOldfeedDate.text = period
                 root.setOnClickListener {
                     val bundle = Bundle()
-                    // bundle.putLong("feedId", item.feedId)
+                    // 백엔드 수정 사항 반영 되면 임시 값 8L -> item.feedId로 변경 필요
+                    bundle.putLong("feedId", 8L)
                     bundle.putLong("feedRecordId", item.feedRecordId)
                     it.findNavController().navigate(R.id.action_oldFeedFragment_to_feedInfoFragment, bundle)
                 }
