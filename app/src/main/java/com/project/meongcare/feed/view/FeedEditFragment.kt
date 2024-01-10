@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
@@ -39,6 +40,7 @@ class FeedEditFragment: Fragment() {
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
         feedInfo = getFeedInfo()
+        initToolbar()
         fetchFeedInfo()
     }
 
@@ -65,6 +67,14 @@ class FeedEditFragment: Fragment() {
             textviewFeedaddeditIntakePeriodEnd.apply {
                 text = convertDateFormat(feedInfo.endDate)
                 setTextColor(resources.getColor(R.color.black, null))
+            }
+        }
+    }
+
+    private fun initToolbar() {
+        binding.toolbarFeedaddedit.apply {
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
             }
         }
     }
