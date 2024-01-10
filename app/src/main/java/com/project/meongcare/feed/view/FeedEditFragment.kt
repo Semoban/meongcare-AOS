@@ -1,12 +1,16 @@
 package com.project.meongcare.feed.view
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +27,7 @@ import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlin.concurrent.thread
 
 class FeedEditFragment: Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
@@ -32,10 +37,12 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
     private var feedId = 0L
     private var feedRecordId = 0L
     private lateinit var feedInfo: FeedDetailGetResponse
+    private var recommendIntake = 0.0
     var selectedStartDate = ""
     var selectedEndDate = ""
 
     private val feedPutViewModel: FeedPutViewModel by viewModels()
+    private lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +58,14 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initInputMethodManager()
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
         feedInfo = getFeedInfo()
         initToolbar()
         fetchFeedInfo()
         initPhotoAttachModalBottomSheet()
+        applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
     }
@@ -109,6 +118,31 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                 FeedPhotoAttachModalBottomSheetFragment.TAG,
             )
         }
+    }
+
+    private fun applyKcalContentEditorBehavior() {
+        binding.edittextFeedaddeditKcalContent.apply {
+            setOnEditorActionListener { _, _, _ ->
+                initRecommendDailyIntake(text.toString().toDouble())
+                hideSoftKeyboard()
+                true
+            }
+        }
+    }
+
+    private fun initRecommendDailyIntake(feedKcal: Double) {
+        val weight = 15.0
+        recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
+        binding.textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
+    }
+
+    private fun calculateRecommendDailyIntake(
+        weight: Double,
+        feedKcal: Double,
+    ): Double {
+        val dailyEnergyRequirement = 1.6 * (30 * weight + 70)
+        val recommendDailyIntake = dailyEnergyRequirement * 1000 / feedKcal
+        return String.format("%.2f", recommendDailyIntake).toDouble()
     }
 
     private fun updateCalendarVisibility() {
@@ -199,6 +233,21 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                 textviewFeedaddeditIntakePeriodEnd,
                 checkboxFeedaddeditDoNotKnowEndDate
             )
+        }
+    }
+
+    private fun initInputMethodManager() {
+        thread {
+            SystemClock.sleep(1000)
+            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideSoftKeyboard()
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            requireActivity().currentFocus!!.clearFocus()
         }
     }
 
