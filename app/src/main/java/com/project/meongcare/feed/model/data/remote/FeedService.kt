@@ -6,6 +6,7 @@ import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
 import com.project.meongcare.feed.model.entities.FeedRecords
+import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,6 +17,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -66,5 +68,13 @@ interface FeedService {
     suspend fun patchFeed(
         @Header("AccessToken") accessToken: String,
         @Body requestBody: FeedPatchRequest,
+    ): Response<Int>
+
+    @Multipart
+    @PUT("feed")
+    suspend fun putFeed(
+        @Header("AccessToken") accessToken: String,
+        @Part("dto") dto: RequestBody,
+        @Part file: MultipartBody.Part,
     ): Response<Int>
 }
