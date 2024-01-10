@@ -1,6 +1,7 @@
 package com.project.meongcare.feed.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,7 @@ class FeedInfoFragment : Fragment() {
             feedId,
             feedRecordId
         )
+        initToolbar()
         fetchFeedInfo()
     }
 
@@ -65,6 +67,21 @@ class FeedInfoFragment : Fragment() {
                 // 형식 변환 필요 2024-01-10 -> 2024년 01월 10일
                 textviewFeedinfoIntakePeriodStart.text = response.startDate
                 textviewFeedinfoIntakePeriodEnd.text = response.endDate
+            }
+        }
+    }
+
+    private fun initToolbar() {
+        binding.toolbarFeedinfo.apply {
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+            setOnMenuItemClickListener { menu ->
+                when (menu.itemId) {
+                    R.id.menu_info_edit -> findNavController().navigate(R.id.action_feedInfoFragment_to_feedAddFragment)
+                    R.id.menu_info_delete -> Log.d("사료 정보 삭제", "사료 정보 삭제")
+                }
+                false
             }
         }
     }
