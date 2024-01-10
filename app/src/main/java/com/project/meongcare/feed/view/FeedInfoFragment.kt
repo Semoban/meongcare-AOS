@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FeedInfoFragment : Fragment() {
     private var _binding: FragmentFeedInfoBinding? = null
     private val binding get() = _binding!!
