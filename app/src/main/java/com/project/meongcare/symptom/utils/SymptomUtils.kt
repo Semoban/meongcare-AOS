@@ -55,7 +55,6 @@ class SymptomUtils {
 
         fun convertToDateToLocale(date: Date): LocalDateTime {
             val instant: Instant = date.toInstant()
-
             return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
         }
 
@@ -74,7 +73,7 @@ class SymptomUtils {
                 SymptomType.DIARRHEA.symptomName -> R.drawable.symptom_diarrhea
                 SymptomType.LOSS_OF_APPETITE.symptomName -> R.drawable.symptom_loss_appetite
                 SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
-                else -> R.drawable.symptom_stethoscope
+                else -> R.drawable.symptom_etc_record
             }
         }
 

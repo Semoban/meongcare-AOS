@@ -34,7 +34,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
 
     init {
         symptomList.value = mutableListOf()
-        symptomItemImgId.value = R.drawable.symptom_stethoscope
+        symptomItemImgId.value = R.drawable.symptom_etc_record
         textViewNoDataVisibility.value = false
     }
 
@@ -50,6 +50,34 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
                 Log.d("Symptom get Api 통신 성공", symptomList.value.toString())
             }.onFailure {
                 Log.d("Symptom get Api 통신 에러", it.toString())
+            }
+        }
+    }
+
+    fun addSymptomData(toAddSymptom: ToAddSymptom) {
+        viewModelScope.launch {
+            addSymptomCode.value = repository.addSymptom(toAddSymptom)
+        }
+    }
+
+    fun deleteSymptom(symptomIds: IntArray) {
+        viewModelScope.launch {
+            val delete = repository.deleteSymptom(symptomIds)
+            delete.onSuccess {
+                Log.d("이상증상 삭제 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("이상증상 삭제 Api 통신 에러", it.toString())
+            }
+        }
+    }
+
+    fun patchSymptom(toEditSymptom: ToEditSymptom) {
+        viewModelScope.launch {
+            val delete = repository.patchSymptom(toEditSymptom)
+            delete.onSuccess {
+                Log.d("이상증상 수정 Api 통신 성공", it.toString())
+            }.onFailure {
+                Log.d("이상증상 수정 Api 통신 에러", it.toString())
             }
         }
     }
@@ -72,7 +100,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
         symptomDateText.value = null
         symptomTimeHour = null
         symptomTimeMinute = null
-        symptomItemImgId.value = R.drawable.symptom_stethoscope
+        symptomItemImgId.value = R.drawable.symptom_etc_record
         symptomItemTitle.value = null
         symptomItemVisibility.value = View.GONE
     }
@@ -123,31 +151,8 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
         }
     }
 
-    fun deleteSymptom(symptomIds: IntArray) {
-        viewModelScope.launch {
-            val delete = repository.deleteSymptom(symptomIds)
-            delete.onSuccess {
-                Log.d("이상증상 삭제 Api 통신 성공", it.toString())
-            }.onFailure {
-                Log.d("이상증상 삭제 Api 통신 에러", it.toString())
-            }
-        }
+    fun readDogData() {
+
     }
 
-    fun patchSymptom(toEditSymptom: ToEditSymptom) {
-        viewModelScope.launch {
-            val delete = repository.patchSymptom(toEditSymptom)
-            delete.onSuccess {
-                Log.d("이상증상 수정 Api 통신 성공", it.toString())
-            }.onFailure {
-                Log.d("이상증상 수정 Api 통신 에러", it.toString())
-            }
-        }
-    }
-
-    fun addSymptomData(toAddSymptom: ToAddSymptom) {
-        viewModelScope.launch {
-            addSymptomCode.value = repository.addSymptom(toAddSymptom)
-        }
-    }
 }
