@@ -210,7 +210,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                     date.text = convertDateFormat(selectedStartDate)
                 }
-            }
+            },
         )
     }
 
@@ -243,7 +243,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         checkBox.isChecked = false
                     }
                 }
-            }
+            },
         )
     }
 
