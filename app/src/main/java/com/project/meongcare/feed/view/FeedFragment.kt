@@ -49,18 +49,19 @@ class FeedFragment : Fragment() {
         feedPartAdapter = FeedPartAdapter()
         feedGetViewModel.getFeed()
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
-            feedGetResponse = FeedGetResponse(
-                response.brand,
-                response.feedName,
-                response.protein,
-                response.fat,
-                response.crudeAsh,
-                response.moisture,
-                response.days,
-                response.recommendIntake,
-                response.feedId,
-                response.feedRecordId,
-            )
+            feedGetResponse =
+                FeedGetResponse(
+                    response.brand,
+                    response.feedName,
+                    response.protein,
+                    response.fat,
+                    response.crudeAsh,
+                    response.moisture,
+                    response.days,
+                    response.recommendIntake,
+                    response.feedId,
+                    response.feedRecordId,
+                )
             updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
             initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
             initNutrientPieChart(
@@ -99,7 +100,10 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun initFeedInfo(brand: String, feedName: String) {
+    private fun initFeedInfo(
+        brand: String,
+        feedName: String,
+    ) {
         binding.textviewFeedBrand.text = brand
         binding.textviewFeedName.text = feedName
     }
@@ -226,15 +230,11 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun convertNutrientPercentage(nutrientPercentage: Int) =
-        String.format("%d%%", nutrientPercentage)
+    private fun convertNutrientPercentage(nutrientPercentage: Int) = String.format("%d%%", nutrientPercentage)
 
-    private fun convertIntakePeriod(days: Long) =
-        String.format("%d일", days)
+    private fun convertIntakePeriod(days: Long) = String.format("%d일", days)
 
-    private fun convertDailyRecommendIntake(recommendIntake: Int) =
-        String.format("%dg", recommendIntake)
-
+    private fun convertDailyRecommendIntake(recommendIntake: Int) = String.format("%dg", recommendIntake)
 
     override fun onDestroyView() {
         super.onDestroyView()
