@@ -180,7 +180,8 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                     date.text = convertDateFormat(selectedStartDate)
                 }
-            })
+            },
+        )
     }
 
     private fun updateSelectedIntakePeriodEndDate(
@@ -188,30 +189,32 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         date: TextView,
         checkBox: CheckBox,
     ) {
-        calendar.setCalendarListener(object : CalendarListener {
-            override fun onDateRangeSelected(
-                startDate: Calendar,
-                endDate: Calendar,
-            ) {
-                calendar.resetAllSelectedViews()
-            }
-
-            override fun onFirstDateSelected(startDate: Calendar) {
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                selectedEndDate = dateFormat.format(startDate.time)
-                date.text = convertDateFormat(selectedEndDate)
-
-                checkBox.setOnClickListener {
+        calendar.setCalendarListener(
+            object : CalendarListener {
+                override fun onDateRangeSelected(
+                    startDate: Calendar,
+                    endDate: Calendar,
+                ) {
                     calendar.resetAllSelectedViews()
-                    selectedEndDate = null.toString()
-                    date.text = "모름"
                 }
 
-                if (date.text != "모름") {
-                    checkBox.isChecked = false
+                override fun onFirstDateSelected(startDate: Calendar) {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    selectedEndDate = dateFormat.format(startDate.time)
+                    date.text = convertDateFormat(selectedEndDate)
+
+                    checkBox.setOnClickListener {
+                        calendar.resetAllSelectedViews()
+                        selectedEndDate = null.toString()
+                        date.text = "모름"
+                    }
+
+                    if (date.text != "모름") {
+                        checkBox.isChecked = false
+                    }
                 }
-            }
-        })
+            },
+        )
     }
 
     private fun updateSelectedIntakePeriod() {
@@ -274,10 +277,11 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.buttonFeedaddeditCompletion.setOnClickListener {
             createFeedInfo()
             val dto = convertFeedPostDto(feedInfo)
-            val file = convertFeedFile(
-                requireContext(),
-                imageUri ?: Uri.EMPTY,
-            )
+            val file =
+                convertFeedFile(
+                    requireContext(),
+                    imageUri ?: Uri.EMPTY,
+                )
             val uploadRequest = FeedUploadRequest(dto, file)
 
             feedPostViewModel.postFeed(
