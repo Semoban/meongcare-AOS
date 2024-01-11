@@ -38,7 +38,7 @@ import kotlin.concurrent.thread
 @AndroidEntryPoint
 class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private lateinit var inputMethodManager: InputMethodManager
     private val feedPostViewModel: FeedPostViewModel by viewModels()
