@@ -248,7 +248,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAddDog.setOnClickListener {
-                // 강아지 정보 등록 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_dogAddOnBoardingFragment)
             }
 
             recyclerviewHomeDog.run {
