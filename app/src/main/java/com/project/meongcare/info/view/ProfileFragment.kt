@@ -25,6 +25,7 @@ import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.createMultipartBody
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,9 +36,16 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var profileUri: Uri
+    private lateinit var currentAccessToken: String
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        getAccessToken()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,10 +114,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NzY4MzU0fQ.cN4yZ3Ou9YcUHusdd8Z_IsmA7KF-gzZ3kVc5fljELTM"
-        profileViewModel.getUserProfile(accessToken)
-        profileViewModel.getDogList(accessToken)
-
         binding.run {
             imagebuttonProfileBack.setOnClickListener {
                 findNavController().popBackStack()
@@ -157,10 +161,21 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     }
 
     override fun onUriPassed(uri: Uri) {
-        val accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNzA0NzY4MzU0fQ.cN4yZ3Ou9YcUHusdd8Z_IsmA7KF-gzZ3kVc5fljELTM"
         profileUri = uri
         val multipartBody = createMultipartBody(requireContext(), uri)
-        profileViewModel.patchProfileImage(accessToken, multipartBody)
+        profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
+    }
+
+    private fun getAccessToken() {
+        lifecycleScope.launch {
+            userPreferences.accessToken.collectLatest { accessToken ->
+                if (accessToken != null) {
+                    currentAccessToken = accessToken
+                    profileViewModel.getUserProfile(accessToken)
+                    profileViewModel.getDogList(accessToken)
+                }
+            }
+        }
     }
 
     private fun kakaoLogout() {
