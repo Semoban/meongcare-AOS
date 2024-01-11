@@ -1,7 +1,6 @@
 package com.project.meongcare.feed.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OldFeedFragment : Fragment() {
     private var _binding: FragmentOldFeedBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val previousFeedGetViewModel: PreviousFeedGetViewModel by viewModels()
     private lateinit var previousFeedAdapter: PreviousFeedAdapter
