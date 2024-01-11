@@ -207,4 +207,27 @@ class FeedRemoteDataSource
                 return null
             }
         }
+
+        suspend fun deleteFeed(feedId: Long): Int? {
+            try {
+                val deleteFeedResponse =
+                    feedApiService.deleteFeed(
+                        accessToken,
+                        feedId,
+                    )
+
+                if (deleteFeedResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(deleteFeedResponse.errorBody()?.string()!!)
+                    Log.d("FeedDeleteFailure", deleteFeedResponse.code().toString())
+                    Log.d("FeedDeleteFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("FeedDeleteSuccess", deleteFeedResponse.code().toString())
+                return deleteFeedResponse.code()
+            } catch (e: Exception) {
+                Log.e("FeedDeleteException", e.toString())
+                return null
+            }
+        }
     }
