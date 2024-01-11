@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -23,7 +24,8 @@ import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -45,6 +47,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     lateinit var currentAccessToken: String
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getAccessToken()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,9 +59,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
-
-        currentAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyOTc0NzE4fQ.nkypezwWCEiomJSQz2t24cyijjtBtyBqoZsOyi2uudo"
-//        getAccessToken()
 
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { homeProfileResponse ->
             if (homeProfileResponse != null) {
@@ -227,8 +231,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         fragmentHomeBinding.run {
-            homeViewModel.getUserProfile(currentAccessToken)
-            homeViewModel.getDogList(currentAccessToken)
+
 
             imageviewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
@@ -289,10 +292,12 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     }
 
     private fun getAccessToken() {
-        runBlocking {
-            userPreferences.accessToken.collect { accessToken ->
+        lifecycleScope.launch {
+            userPreferences.accessToken.collectLatest { accessToken ->
                 if (accessToken != null) {
                     currentAccessToken = accessToken
+                    homeViewModel.getUserProfile(currentAccessToken)
+                    homeViewModel.getDogList(currentAccessToken)
                 }
             }
         }
