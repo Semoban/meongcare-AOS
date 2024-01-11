@@ -244,7 +244,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeProfile.setOnClickListener {
-                // 내정보 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
             }
 
             imageviewHomeAddDog.setOnClickListener {
