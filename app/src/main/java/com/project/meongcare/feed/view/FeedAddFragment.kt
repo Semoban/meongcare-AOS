@@ -165,21 +165,22 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         calendar: DateRangeCalendarView,
         date: TextView,
     ) {
-        calendar.setCalendarListener(object : CalendarListener {
-            override fun onDateRangeSelected(
-                startDate: Calendar,
-                endDate: Calendar,
-            ) {
-                calendar.resetAllSelectedViews()
-            }
+        calendar.setCalendarListener(
+            object : CalendarListener {
+                override fun onDateRangeSelected(
+                    startDate: Calendar,
+                    endDate: Calendar,
+                ) {
+                    calendar.resetAllSelectedViews()
+                }
 
-            override fun onFirstDateSelected(startDate: Calendar) {
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                selectedStartDate = dateFormat.format(startDate.time)
+                override fun onFirstDateSelected(startDate: Calendar) {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    selectedStartDate = dateFormat.format(startDate.time)
 
-                date.text = convertDateFormat(selectedStartDate)
-            }
-        })
+                    date.text = convertDateFormat(selectedStartDate)
+                }
+            })
     }
 
     private fun updateSelectedIntakePeriodEndDate(
@@ -217,12 +218,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             updateSelectedIntakePeriodStartDate(
                 calendarviewFeedaddeditStartDate,
-                textviewFeedaddeditIntakePeriodStart
+                textviewFeedaddeditIntakePeriodStart,
             )
             updateSelectedIntakePeriodEndDate(
                 calendarviewFeedaddeditEndDate,
                 textviewFeedaddeditIntakePeriodEnd,
-                checkboxFeedaddeditDoNotKnowEndDate
+                checkboxFeedaddeditDoNotKnowEndDate,
             )
         }
     }
@@ -251,19 +252,20 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
             val crudeAsh = edittextFeedaddeditCrudeAshPercent.text.toString()
             val moisture = edittextFeedaddeditMoisturePercent.text.toString()
             val kcal = edittextFeedaddeditKcalContent.text.toString()
-            feedInfo = FeedInfo(
-                2L,
-                brand,
-                feedName,
-                protein.toDouble(),
-                fat.toDouble(),
-                crudeAsh.toDouble(),
-                moisture.toDouble(),
-                kcal.toDouble(),
-                recommendIntake.toInt(),
-                selectedStartDate,
-                selectedEndDate,
-            )
+            feedInfo =
+                FeedInfo(
+                    2L,
+                    brand,
+                    feedName,
+                    protein.toDouble(),
+                    fat.toDouble(),
+                    crudeAsh.toDouble(),
+                    moisture.toDouble(),
+                    kcal.toDouble(),
+                    recommendIntake.toInt(),
+                    selectedStartDate,
+                    selectedEndDate,
+                )
             imageUri = feedPostViewModel.feedImage.value
         }
     }
@@ -273,12 +275,13 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
             createFeedInfo()
             val dto = convertFeedPostDto(feedInfo)
             val file = convertFeedFile(
-                requireContext(), imageUri ?: Uri.EMPTY
+                requireContext(),
+                imageUri ?: Uri.EMPTY,
             )
             val uploadRequest = FeedUploadRequest(dto, file)
 
             feedPostViewModel.postFeed(
-                uploadRequest
+                uploadRequest,
             )
             feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
                 if (response == SUCCESS) {
