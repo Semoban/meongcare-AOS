@@ -4,8 +4,8 @@ import android.util.Log
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
-import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
@@ -116,7 +116,7 @@ class FeedRemoteDataSource
                     feedApiService.getPreviousFeed(
                         accessToken,
                         2L,
-                        feedRecordId
+                        feedRecordId,
                     )
 
                 if (getPreviousFeedResponse.code() != SUCCESS) {
