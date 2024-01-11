@@ -12,6 +12,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -76,5 +77,11 @@ interface FeedService {
         @Header("AccessToken") accessToken: String,
         @Part("dto") dto: RequestBody,
         @Part file: MultipartBody.Part,
+    ): Response<Int>
+
+    @DELETE("feed/{feedId}")
+    suspend fun deleteFeed(
+        @Header("AccessToken") accessToken: String,
+        @Path("feedId") feedId: Long,
     ): Response<Int>
 }
