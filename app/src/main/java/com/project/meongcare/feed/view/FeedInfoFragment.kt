@@ -1,7 +1,6 @@
 package com.project.meongcare.feed.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FeedInfoFragment : Fragment() {
     private var _binding: FragmentFeedInfoBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val feedInfoFeedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
     private val feedDeleteViewModel: FeedDeleteViewModel by viewModels()
@@ -50,7 +49,7 @@ class FeedInfoFragment : Fragment() {
         feedRecordId = getFeedRecordId()
         feedInfoFeedDetailGetViewModel.getFeedDetail(
             feedId,
-            feedRecordId
+            feedRecordId,
         )
         initToolbar()
         fetchFeedInfo()
@@ -59,19 +58,20 @@ class FeedInfoFragment : Fragment() {
     private fun fetchFeedInfo() {
         feedInfoFeedDetailGetViewModel.feedDetailGet.observe(viewLifecycleOwner) { response ->
             binding.apply {
-                feedInfo = FeedDetailGetResponse(
-                    response.brand,
-                    response.feedName,
-                    response.protein,
-                    response.fat,
-                    response.crudeAsh,
-                    response.moisture,
-                    response.kcal,
-                    response.recommendIntake,
-                    response.imageURL,
-                    response.startDate,
-                    response.endDate,
-                )
+                feedInfo =
+                    FeedDetailGetResponse(
+                        response.brand,
+                        response.feedName,
+                        response.protein,
+                        response.fat,
+                        response.crudeAsh,
+                        response.moisture,
+                        response.kcal,
+                        response.recommendIntake,
+                        response.imageURL,
+                        response.startDate,
+                        response.endDate,
+                    )
                 if (response.imageURL.isNotEmpty()) {
                     Glide.with(this@FeedInfoFragment)
                         .load(response.imageURL)
@@ -115,11 +115,15 @@ class FeedInfoFragment : Fragment() {
                         // 삭제 다이얼로그 추가 필요
                         feedDeleteViewModel.deleteFeed(feedId)
                         feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
-                            if (response ==  SUCCESS) {
+                            if (response == SUCCESS) {
                                 findNavController().popBackStack()
                                 Snackbar.make(requireView(), "사료 정보를 삭제하였습니다!", Snackbar.LENGTH_SHORT).show()
                             } else {
-                                Snackbar.make(requireView(), "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    requireView(),
+                                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                                    Snackbar.LENGTH_SHORT,
+                                ).show()
                             }
                         }
                     }
