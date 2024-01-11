@@ -271,7 +271,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeFeces.setOnClickListener {
-                // 대소변 홈 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
             }
 
             constraintlayoutHomeNutrition.setOnClickListener {
