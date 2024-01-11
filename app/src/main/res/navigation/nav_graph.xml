@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_homeFragment_to_dogAddOnBoardingFragment"
             app:destination="@id/dogAddOnBoardingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_symptomFragment"
+            app:destination="@id/symptomFragment" />
     </fragment>
 
     <fragment
@@ -293,16 +296,19 @@
             android:id="@+id/action_supplement_to_supplementRoutineEdit"
             app:destination="@+id/supplementRoutineEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/supplementAddFragment"
         android:name="com.project.meongcare.supplement.view.SupplementAddFragment"
         android:label="fragment_supplement_add"
         tools:layout="@layout/fragment_supplement_add" />
+
     <fragment
         android:id="@+id/supplementInfoFragment"
         android:name="com.project.meongcare.supplement.view.SupplementInfoFragment"
         android:label="fragment_supplement_info"
         tools:layout="@layout/fragment_supplement_info" />
+
     <fragment
         android:id="@+id/supplementRoutineEditFragment"
         android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
