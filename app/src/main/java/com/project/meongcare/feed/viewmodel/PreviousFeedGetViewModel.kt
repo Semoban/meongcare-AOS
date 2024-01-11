@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PreviousFeedGetViewModel
     @Inject
     constructor(
-        private val feedRepositoryImpl: FeedRepositoryImpl
+        private val feedRepositoryImpl: FeedRepositoryImpl,
     ) : ViewModel() {
         private var _previousFeedGet = MutableLiveData<FeedRecords>()
         val previousFeedGet
