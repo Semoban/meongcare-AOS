@@ -63,7 +63,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         }
 
         profileViewModel.dogList.observe(viewLifecycleOwner) { dogList ->
-            if (dogList.isNotEmpty()) {
+            if (!dogList.isNullOrEmpty()) {
                 binding.textViewNoDog.visibility = View.GONE
                 binding.recyclerviewProfilePetList.visibility = View.VISIBLE
                 val adapter = binding.recyclerviewProfilePetList.adapter as ProfileDogAdapter
