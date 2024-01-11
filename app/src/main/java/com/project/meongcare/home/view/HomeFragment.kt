@@ -267,7 +267,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeSymptom.setOnClickListener {
-                // 이상 증상 홈 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_symptomFragment)
             }
 
             constraintlayoutHomeFeces.setOnClickListener {
