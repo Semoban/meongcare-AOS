@@ -123,7 +123,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         homeViewModel.homeDogList.observe(viewLifecycleOwner) { dogList ->
-            if (dogList != null) {
+            if (!dogList.isNullOrEmpty()) {
                 fragmentHomeBinding.recyclerviewHomeDog.visibility = View.VISIBLE
                 fragmentHomeBinding.linearlayoutDogExist.visibility = View.VISIBLE
                 fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.GONE
