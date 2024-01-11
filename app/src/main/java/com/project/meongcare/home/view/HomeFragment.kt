@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -231,8 +232,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         fragmentHomeBinding.run {
-
-
             imageviewHomeCalendar.setOnClickListener {
                 val modalBottomSheet = CalendarBottomSheetFragment()
                 modalBottomSheet.setDateSubmitListener(this@HomeFragment)
@@ -241,7 +240,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAlert.setOnClickListener {
-                // 알림 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_noticeFragment)
             }
 
             imageviewHomeProfile.setOnClickListener {
