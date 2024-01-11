@@ -29,9 +29,10 @@ class FeedsGetViewModel
         }
 
         fun filterFeeds(searchText: String) {
-            val filteredFeeds = allFeeds?.feeds?.filter { feed ->
-                feed.brandName.contains(searchText) || feed.feedName.contains(searchText)
-            }
+            val filteredFeeds =
+                allFeeds?.feeds?.filter { feed ->
+                    feed.brandName.contains(searchText) || feed.feedName.contains(searchText)
+                }
             _feedsGet.value = Feeds(filteredFeeds ?: listOf())
         }
     }
