@@ -37,7 +37,7 @@ import java.util.Locale
 import kotlin.concurrent.thread
 
 @AndroidEntryPoint
-class FeedEditFragment: Fragment(), FeedPhotoListener {
+class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
     private val binding
         get() = _binding!!
@@ -164,7 +164,12 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                     calendarviewFeedaddeditEndDate.visibility = View.GONE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.GONE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.GONE
-                    textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
+                    textviewFeedaddeditIntakePeriodEnd.setTextColor(
+                        resources.getColor(
+                            R.color.gray4,
+                            null,
+                        )
+                    )
                 }
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
@@ -174,7 +179,12 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                     calendarviewFeedaddeditStartDate.visibility = View.INVISIBLE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
-                    textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
+                    textviewFeedaddeditIntakePeriodStart.setTextColor(
+                        resources.getColor(
+                            R.color.gray4,
+                            null,
+                        )
+                    )
                 }
             }
         }
@@ -236,12 +246,12 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
         binding.apply {
             updateSelectedIntakePeriodStartDate(
                 calendarviewFeedaddeditStartDate,
-                textviewFeedaddeditIntakePeriodStart
+                textviewFeedaddeditIntakePeriodStart,
             )
             updateSelectedIntakePeriodEndDate(
                 calendarviewFeedaddeditEndDate,
                 textviewFeedaddeditIntakePeriodEnd,
-                checkboxFeedaddeditDoNotKnowEndDate
+                checkboxFeedaddeditDoNotKnowEndDate,
             )
         }
     }
@@ -271,6 +281,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
             )
         }
     }
+
     private fun editFeedInfo() {
         binding.apply {
             buttonFeedaddeditCompletion.setOnClickListener {
@@ -280,7 +291,7 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                 val dto = convertFeedPutDto(feedPutInfo)
                 val file = convertFeedFile(
                     requireContext(),
-                    imageUri ?: Uri.EMPTY
+                    imageUri ?: Uri.EMPTY,
                 )
 
                 val feedUploadRequest = FeedUploadRequest(
@@ -291,9 +302,14 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
                 feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
                         findNavController().popBackStack()
-                        Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
-                        Snackbar.make(requireView(), "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            requireView(),
+                            "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -303,14 +319,18 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
     private fun initInputMethodManager() {
         thread {
             SystemClock.sleep(1000)
-            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             hideSoftKeyboard()
         }
     }
 
     private fun hideSoftKeyboard() {
         if (requireActivity().currentFocus != null) {
-            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            inputMethodManager.hideSoftInputFromWindow(
+                requireActivity().currentFocus!!.windowToken,
+                0,
+            )
             requireActivity().currentFocus!!.clearFocus()
         }
     }
@@ -319,12 +339,11 @@ class FeedEditFragment: Fragment(), FeedPhotoListener {
 
     private fun getFeedRecordId() = arguments?.getLong("feedRecordId")!!
 
-    private fun getFeedInfo() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable("feedInfo", FeedDetailGetResponse::class.java)!!
-        } else {
-            arguments?.getParcelable("feedInfo")!!
-        }
+    private fun getFeedInfo() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arguments?.getParcelable("feedInfo", FeedDetailGetResponse::class.java)!!
+    } else {
+        arguments?.getParcelable("feedInfo")!!
+    }
 
     override fun onUriPassed(uri: Uri) {
         feedPutViewModel.getImageFeed(uri)
