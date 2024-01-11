@@ -39,14 +39,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     private lateinit var mainActivity: MainActivity
 
     private val homeViewModel: HomeViewModel by viewModels()
+    private lateinit var currentAccessToken: String
 
     @Inject
     lateinit var userPreferences: UserPreferences
 
     @Inject
     lateinit var dogPreferences: DogPreferences
-
-    lateinit var currentAccessToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
