@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedGetViewModel
-    @Inject constructor(
+    @Inject
+    constructor(
         private val feedRepositoryImpl: FeedRepositoryImpl,
     ) : ViewModel() {
         private var _feedGet = MutableLiveData<FeedGetResponse>()
