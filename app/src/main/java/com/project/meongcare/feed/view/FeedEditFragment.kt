@@ -210,7 +210,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                     date.text = convertDateFormat(selectedStartDate)
                 }
-        })
+            })
     }
 
     private fun updateSelectedIntakePeriodEndDate(
@@ -242,7 +242,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         checkBox.isChecked = false
                     }
                 }
-        })
+            })
     }
 
     private fun updateSelectedIntakePeriod() {
