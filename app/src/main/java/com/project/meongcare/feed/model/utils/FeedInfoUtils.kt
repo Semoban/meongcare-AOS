@@ -3,8 +3,6 @@ package com.project.meongcare.feed.model.utils
 import android.content.Context
 import android.net.Uri
 import com.google.gson.Gson
-import com.project.meongcare.excreta.model.entities.ExcretaInfo
-import com.project.meongcare.excreta.model.entities.ExcretaInfoPatch
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedPutInfo
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
