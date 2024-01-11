@@ -10,10 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
+import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +26,7 @@ class FeedInfoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val feedInfoFeedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
+    private val feedDeleteViewModel: FeedDeleteViewModel by viewModels()
 
     private var feedId = 0L
     private var feedRecordId = 0L
@@ -107,7 +111,18 @@ class FeedInfoFragment : Fragment() {
                             )
                         findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment, bundle)
                     }
-                    R.id.menu_info_delete -> Log.d("사료 정보 삭제", "사료 정보 삭제")
+                    R.id.menu_info_delete -> {
+                        // 삭제 다이얼로그 추가 필요
+                        feedDeleteViewModel.deleteFeed(feedId)
+                        feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
+                            if (response ==  SUCCESS) {
+                                findNavController().popBackStack()
+                                Snackbar.make(requireView(), "사료 정보를 삭제하였습니다!", Snackbar.LENGTH_SHORT).show()
+                            } else {
+                                Snackbar.make(requireView(), "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 }
                 false
             }
