@@ -279,7 +279,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeWeight.setOnClickListener {
-                // 체중 홈 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_weightFragment)
             }
 
             constraintlayoutHomeFeed.setOnClickListener {
