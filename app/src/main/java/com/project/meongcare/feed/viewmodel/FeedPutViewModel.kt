@@ -1,8 +1,6 @@
 package com.project.meongcare.feed.viewmodel
 
-import android.app.assist.AssistStructure.ViewNode
 import android.net.Uri
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
