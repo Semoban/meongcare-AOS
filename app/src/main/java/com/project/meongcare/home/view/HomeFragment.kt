@@ -275,7 +275,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeNutrition.setOnClickListener {
-                // 영양제 홈 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_supplementFragment)
             }
 
             constraintlayoutHomeWeight.setOnClickListener {
