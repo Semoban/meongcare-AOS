@@ -39,7 +39,7 @@ import kotlin.concurrent.thread
 @AndroidEntryPoint
 class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var _binding: FragmentFeedAddEditBinding? = null
-    private val binding
+    val binding
         get() = _binding!!
 
     private var feedId = 0L
@@ -101,11 +101,12 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 setTextColor(resources.getColor(R.color.black, null))
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
-                text = if (feedInfo.endDate != null) {
-                    convertDateFormat(feedInfo.endDate)
-                } else {
-                    "모름"
-                }
+                text =
+                    if (feedInfo.endDate != null) {
+                        convertDateFormat(feedInfo.endDate)
+                    } else {
+                        "모름"
+                    }
                 setTextColor(resources.getColor(R.color.black, null))
             }
         }
@@ -168,7 +169,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         resources.getColor(
                             R.color.gray4,
                             null,
-                        )
+                        ),
                     )
                 }
             }
@@ -183,7 +184,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         resources.getColor(
                             R.color.gray4,
                             null,
-                        )
+                        ),
                     )
                 }
             }
@@ -194,20 +195,21 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         calendar: DateRangeCalendarView,
         date: TextView,
     ) {
-        calendar.setCalendarListener(object : CalendarListener {
-            override fun onDateRangeSelected(
-                startDate: Calendar,
-                endDate: Calendar,
-            ) {
-                calendar.resetAllSelectedViews()
-            }
+        calendar.setCalendarListener(
+            object : CalendarListener {
+                override fun onDateRangeSelected(
+                    startDate: Calendar,
+                    endDate: Calendar,
+                ) {
+                    calendar.resetAllSelectedViews()
+                }
 
-            override fun onFirstDateSelected(startDate: Calendar) {
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                selectedStartDate = dateFormat.format(startDate.time)
+                override fun onFirstDateSelected(startDate: Calendar) {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    selectedStartDate = dateFormat.format(startDate.time)
 
-                date.text = convertDateFormat(selectedStartDate)
-            }
+                    date.text = convertDateFormat(selectedStartDate)
+                }
         })
     }
 
@@ -216,29 +218,30 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         date: TextView,
         checkBox: CheckBox,
     ) {
-        calendar.setCalendarListener(object : CalendarListener {
-            override fun onDateRangeSelected(
-                startDate: Calendar,
-                endDate: Calendar,
-            ) {
-                calendar.resetAllSelectedViews()
-            }
-
-            override fun onFirstDateSelected(startDate: Calendar) {
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                selectedEndDate = dateFormat.format(startDate.time)
-                date.text = convertDateFormat(selectedEndDate)
-
-                checkBox.setOnClickListener {
+        calendar.setCalendarListener(
+            object : CalendarListener {
+                override fun onDateRangeSelected(
+                    startDate: Calendar,
+                    endDate: Calendar,
+                ) {
                     calendar.resetAllSelectedViews()
-                    selectedEndDate = null.toString()
-                    date.text = "모름"
                 }
 
-                if (date.text != "모름") {
-                    checkBox.isChecked = false
+                override fun onFirstDateSelected(startDate: Calendar) {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    selectedEndDate = dateFormat.format(startDate.time)
+                    date.text = convertDateFormat(selectedEndDate)
+
+                    checkBox.setOnClickListener {
+                        calendar.resetAllSelectedViews()
+                        selectedEndDate = null.toString()
+                        date.text = "모름"
+                    }
+
+                    if (date.text != "모름") {
+                        checkBox.isChecked = false
+                    }
                 }
-            }
         })
     }
 
@@ -265,20 +268,21 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             val crudeAsh = edittextFeedaddeditCrudeAshPercent.text.toString()
             val moisture = edittextFeedaddeditMoisturePercent.text.toString()
             val kcal = edittextFeedaddeditKcalContent.text.toString()
-            feedPutInfo = FeedPutInfo(
-                feedId,
-                brand,
-                feedName,
-                protein.toDouble(),
-                fat.toDouble(),
-                crudeAsh.toDouble(),
-                moisture.toDouble(),
-                kcal.toDouble(),
-                recommendIntake.toInt(),
-                selectedStartDate,
-                selectedEndDate,
-                feedRecordId,
-            )
+            feedPutInfo =
+                FeedPutInfo(
+                    feedId,
+                    brand,
+                    feedName,
+                    protein.toDouble(),
+                    fat.toDouble(),
+                    crudeAsh.toDouble(),
+                    moisture.toDouble(),
+                    kcal.toDouble(),
+                    recommendIntake.toInt(),
+                    selectedStartDate,
+                    selectedEndDate,
+                    feedRecordId,
+                )
         }
     }
 
@@ -289,15 +293,17 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 val imageUri = feedPutViewModel.feedImage.value
 
                 val dto = convertFeedPutDto(feedPutInfo)
-                val file = convertFeedFile(
-                    requireContext(),
-                    imageUri ?: Uri.EMPTY,
-                )
+                val file =
+                    convertFeedFile(
+                        requireContext(),
+                        imageUri ?: Uri.EMPTY,
+                    )
 
-                val feedUploadRequest = FeedUploadRequest(
-                    dto,
-                    file,
-                )
+                val feedUploadRequest =
+                    FeedUploadRequest(
+                        dto,
+                        file,
+                    )
                 feedPutViewModel.putFeed(feedUploadRequest)
                 feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
@@ -308,7 +314,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         Snackbar.make(
                             requireView(),
                             "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                            Snackbar.LENGTH_SHORT
+                            Snackbar.LENGTH_SHORT,
                         ).show()
                     }
                 }
@@ -339,11 +345,12 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
     private fun getFeedRecordId() = arguments?.getLong("feedRecordId")!!
 
-    private fun getFeedInfo() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arguments?.getParcelable("feedInfo", FeedDetailGetResponse::class.java)!!
-    } else {
-        arguments?.getParcelable("feedInfo")!!
-    }
+    private fun getFeedInfo() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("feedInfo", FeedDetailGetResponse::class.java)!!
+        } else {
+            arguments?.getParcelable("feedInfo")!!
+        }
 
     override fun onUriPassed(uri: Uri) {
         feedPutViewModel.getImageFeed(uri)
