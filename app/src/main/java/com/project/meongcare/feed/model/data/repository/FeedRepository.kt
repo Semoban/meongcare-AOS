@@ -24,4 +24,6 @@ interface FeedRepository {
     suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int?
 
     suspend fun putFeed(feedUploadRequest: FeedUploadRequest): Int?
+
+    suspend fun deleteFeed(feedId: Long): Int?
 }

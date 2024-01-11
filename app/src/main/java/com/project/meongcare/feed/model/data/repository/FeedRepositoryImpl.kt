@@ -26,4 +26,6 @@ class FeedRepositoryImpl
         override suspend fun patchFeed(feedPatchRequest: FeedPatchRequest) = feedRemoteDataSource.patchFeed(feedPatchRequest)
 
         override suspend fun putFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.putFeed(feedUploadRequest)
+
+        override suspend fun deleteFeed(feedId: Long) = feedRemoteDataSource.deleteFeed(feedId)
     }
