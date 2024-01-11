@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchFeedFragment : Fragment() {
     private var _binding: FragmentSearchFeedBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
     private val feedPatchViewModel: FeedPatchViewModel by viewModels()
@@ -47,7 +47,7 @@ class SearchFeedFragment : Fragment() {
                     override fun onItemSelection(feedId: Long) {
                         patchFeed(feedId)
                     }
-                }
+                },
             )
 
         initToolbar()
