@@ -225,9 +225,19 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.project.meongcare.FeedFragment"
+        android:name="com.project.meongcare.feed.view.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_searchFeedFragment"
+            app:destination="@id/searchFeedFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
@@ -309,4 +319,66 @@
             android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
             app:destination="@+id/supplementInfoFragment" />
      </fragment>
+
+    <fragment
+        android:id="@+id/feedAddFragment"
+        android:name="com.project.meongcare.feed.view.FeedAddFragment"
+        android:label="fragment_feed_add_edit"
+        tools:layout="@layout/fragment_feed_add_edit" >
+        <action
+            android:id="@+id/action_feedAddFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_feedAddFragment_to_searchFeedFragment"
+            app:destination="@id/searchFeedFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/oldFeedFragment"
+        android:name="com.project.meongcare.feed.view.OldFeedFragment"
+        android:label="fragment_old_feed"
+        tools:layout="@layout/fragment_old_feed" >
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFeedFragment"
+        android:name="com.project.meongcare.feed.view.SearchFeedFragment"
+        android:label="fragment_search_feed"
+        tools:layout="@layout/fragment_search_feed" >
+        <action
+            android:id="@+id/action_searchFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_searchFeedFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedInfoFragment"
+        android:name="com.project.meongcare.feed.view.FeedInfoFragment"
+        android:label="fragment_feed_info"
+        tools:layout="@layout/fragment_feed_info" >
+        <action
+            android:id="@+id/action_feedInfoFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedInfoFragment_to_feedEditFragment"
+            app:destination="@id/feedEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedEditFragment"
+        android:name="com.project.meongcare.feed.view.FeedEditFragment"
+        android:label="FeedEditFragment" >
+        <action
+            android:id="@+id/action_feedEditFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
+    </fragment>
+
 </navigation>
