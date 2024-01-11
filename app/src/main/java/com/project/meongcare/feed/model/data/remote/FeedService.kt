@@ -1,12 +1,10 @@
 package com.project.meongcare.feed.model.data.remote
 
-import com.project.meongcare.feed.model.entities.Feed
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
-import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPartRecords
+import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
