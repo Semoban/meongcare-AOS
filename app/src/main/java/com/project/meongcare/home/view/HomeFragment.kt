@@ -283,7 +283,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeFeed.setOnClickListener {
-                // 사료 홈 화면으로 전환
+                findNavController().navigate(R.id.action_homeFragment_to_feedFragment)
             }
         }
 
