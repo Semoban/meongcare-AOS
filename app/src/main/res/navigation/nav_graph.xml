@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_homeFragment_to_symptomFragment"
             app:destination="@id/symptomFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
     </fragment>
 
     <fragment
