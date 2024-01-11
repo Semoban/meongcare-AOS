@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".PhotoSelectBottomSheetFragment" >
+    android:paddingBottom="30dp"
+    tools:context=".onboarding.view.PhotoSelectBottomSheetFragment">
 
     <TextView
         android:id="@+id/textView25"
@@ -50,12 +51,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="30dp"
         android:letterSpacing="-0.02"
         android:text="앨범 선택"
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/gray5"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider2"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="gone"
+        app:dividerColor="@color/gray2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_select_album" />
+
+    <TextView
+        android:id="@+id/textview_select_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="16dp"
+        android:letterSpacing="-0.02"
+        android:text="기본 이미지로 변경"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/gray5"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

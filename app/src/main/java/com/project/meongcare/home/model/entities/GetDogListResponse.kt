@@ -1,6 +1,6 @@
 package com.project.meongcare.home.model.entities
 
-data class HomeGetDogListResponse(
+data class GetDogListResponse(
     val dogs: MutableList<DogProfile>,
 )
 

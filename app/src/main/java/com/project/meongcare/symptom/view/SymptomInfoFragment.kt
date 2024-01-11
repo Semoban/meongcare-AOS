@@ -1,7 +1,6 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,9 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomInfoBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToMonthDate
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.convertDateToTime
-import com.project.meongcare.symptom.view.SymptomUtils.Companion.getSymptomImg
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToMonthDate
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 
@@ -48,10 +47,10 @@ class SymptomInfoFragment : Fragment() {
                         R.id.menu_info_delete -> {
                             includeSymptomDeleteDialog.root.visibility = View.VISIBLE
                             includeSymptomDeleteDialog.run {
-                                buttonSymptomDeleteDialogCancel.setOnClickListener {
+                                buttonDeleteDialogCancel.setOnClickListener {
                                     includeSymptomDeleteDialog.root.visibility = View.GONE
                                 }
-                                buttonSymptomDeleteDialogDelete.setOnClickListener {
+                                buttonDeleteDialogDelete.setOnClickListener {
                                     navController.navigate(R.id.action_symptomInfo_to_symptom)
                                     val symptomIdsArray = intArrayOf(symptomData!!.symptomId)
                                     deleteSymptomData(symptomIdsArray)

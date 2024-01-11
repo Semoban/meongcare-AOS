@@ -10,14 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SettingFragment">
+        tools:context=".Information.view.SettingFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_setting_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="18dp" />
+            app:layout_constraintGuide_begin="19dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_setting_start"
@@ -49,6 +49,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/all_setting"
             android:textAppearance="@style/Typography.Title2.SemiBold"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/imagebutton_setting_back"
             app:layout_constraintStart_toEndOf="@id/imagebutton_setting_back"
@@ -57,16 +58,15 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_setting_notification"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="54dp"
             android:layout_marginTop="38dp"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
-            android:paddingStart="36dp"
+            android:paddingStart="28dp"
             android:text="@string/setting_notification"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/divider_setting_notification"
-            app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
+            app:layout_constraintEnd_toStartOf="@+id/switch_setting_notification"
             app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
             app:layout_constraintTop_toBottomOf="@id/imagebutton_setting_back" />
 
@@ -74,48 +74,13 @@
             android:id="@+id/switch_setting_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:enabled="true"
             android:thumb="@drawable/all_switch_thumb"
             app:layout_constraintBottom_toBottomOf="@id/button_setting_notification"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_setting_end"
             app:layout_constraintTop_toTopOf="@id/button_setting_notification"
-            app:thumbTint="@color/white"
-            app:track="@drawable/all_switch_track"
-            app:trackTint="@color/color_switch_background" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_setting_notification"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:dividerColor="#D9D9D9"
-            app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
-            app:layout_constraintTop_toBottomOf="@id/button_setting_notification" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_setting_urine_feces_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:paddingStart="36dp"
-            android:text="@string/setting_urine_feces_image"
-            android:textAppearance="@style/Typography.Body1.Medium"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/divider_setting_urine_feces_image"
-            app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
-            app:layout_constraintTop_toBottomOf="@id/divider_setting_notification" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_setting_urine_feces_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:thumb="@drawable/all_switch_thumb"
-            app:layout_constraintBottom_toBottomOf="@id/button_setting_urine_feces_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/button_setting_urine_feces_image"
             app:thumbTint="@color/white"
             app:track="@drawable/all_switch_track"
             app:trackTint="@color/color_switch_background" />
@@ -126,8 +91,9 @@
             android:layout_height="wrap_content"
             app:dividerColor="#D9D9D9"
             app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
-            app:layout_constraintTop_toBottomOf="@id/button_setting_urine_feces_image" />
+            app:layout_constraintTop_toBottomOf="@+id/button_setting_notification" />
 
         <TextView
             android:id="@+id/textview_setting_membership_withdrawal"
@@ -136,13 +102,24 @@
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:paddingVertical="18dp"
-            android:paddingStart="36dp"
+            android:paddingStart="28dp"
             android:text="@string/setting_membership_withdrawal"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_setting_end"
             app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
             app:layout_constraintTop_toBottomOf="@id/divider_setting_urine_feces_image" />
+
+        <include
+            android:id="@+id/include_delete_account_dialog"
+            layout="@layout/layout_delete_account_dialog"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

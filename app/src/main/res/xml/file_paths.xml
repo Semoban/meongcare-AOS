@@ -11,4 +11,12 @@
     <external-files-path
         name="feed"
         path="Pictures/Feed"/>
+
+    <external-files-path
+        name="userprofiles"
+        path="Pictures/UserProfile"/>
+
+    <external-files-path
+        name="supplement"
+        path="Pictures/Supplement"/>
 </paths>

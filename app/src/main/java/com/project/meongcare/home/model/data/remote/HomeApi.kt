@@ -1,9 +1,9 @@
 package com.project.meongcare.home.model.data.remote
 
-import com.project.meongcare.home.model.entities.HomeGetDogListResponse
+import com.project.meongcare.home.model.entities.GetDogListResponse
+import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
-import com.project.meongcare.home.model.entities.HomeGetProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
@@ -21,13 +21,13 @@ interface HomeApi {
     @GET("/member/profile")
     suspend fun getUserProfile(
         @Header("AccessToken") accessToken: String,
-    ): Response<HomeGetProfileResponse>
+    ): Response<GetUserProfileResponse>
 
     // 강아지 목록 받아오는 api
     @GET("/dog")
     suspend fun getDogList(
         @Header("AccessToken") accessToken: String,
-    ): Response<HomeGetDogListResponse>
+    ): Response<GetDogListResponse>
 
     // 체중 Post api
     @POST("/weight")

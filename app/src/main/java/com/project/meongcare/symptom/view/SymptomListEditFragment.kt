@@ -16,6 +16,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomListEditBinding
 import com.project.meongcare.databinding.ItemSymptomListEditBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
+import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 
@@ -91,10 +92,10 @@ class SymptomListEditFragment : Fragment() {
                 if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any { it.value } == true) {
                     includeSymptomListEditDeleteDialog.run {
                         root.visibility = View.VISIBLE
-                        buttonSymptomDeleteDialogCancel.setOnClickListener {
+                        buttonDeleteDialogCancel.setOnClickListener {
                             includeSymptomListEditDeleteDialog.root.visibility = View.GONE
                         }
-                        buttonSymptomDeleteDialogDelete.setOnClickListener {
+                        buttonDeleteDialogDelete.setOnClickListener {
                             navController.navigate(R.id.action_symptomListEdit_to_symptom)
                             deleteCheckSymptom()
                         }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.ItemHomeDogProfileBinding
+import com.project.meongcare.home.model.data.local.DogProfileClickListener
 import com.project.meongcare.home.model.entities.DogProfile
 import de.hdodenhof.circleimageview.CircleImageView
 

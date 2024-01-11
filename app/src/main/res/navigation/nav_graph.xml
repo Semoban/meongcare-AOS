@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -237,10 +240,86 @@
     </fragment>
 
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.project.meongcare.info.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_petAddFragment"
+            app:destination="@id/petInfoFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petInfoFragment"
+        android:name="com.project.meongcare.info.view.PetInfoFragment"
+        android:label="fragment_pet_add_edit"
+        tools:layout="@layout/fragment_pet_add_edit">
+        <action
+            android:id="@+id/action_petInfoFragment_to_petEditFragment"
+            app:destination="@id/petEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petEditFragment"
+        android:name="com.project.meongcare.info.view.PetEditFragment"
+        android:label="fragment_pet_edit"
+        tools:layout="@layout/fragment_pet_edit">
+        <action
+            android:id="@+id/action_petEditFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.project.meongcare.info.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+  
+  <fragment
         android:id="@+id/supplementFragment"
         android:name="com.project.meongcare.supplement.view.SupplementFragment"
         android:label="fragment_supplement"
-        tools:layout="@layout/fragment_supplement" />
+        tools:layout="@layout/fragment_supplement" >
+        <action
+            android:id="@+id/action_supplement_to_supplementAdd"
+            app:destination="@+id/supplementAddFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementRoutineEdit"
+            app:destination="@+id/supplementRoutineEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/supplementAddFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementAddFragment"
+        android:label="fragment_supplement_add"
+        tools:layout="@layout/fragment_supplement_add" />
+    <fragment
+        android:id="@+id/supplementInfoFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementInfoFragment"
+        android:label="fragment_supplement_info"
+        tools:layout="@layout/fragment_supplement_info" />
+    <fragment
+        android:id="@+id/supplementRoutineEditFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
+        android:label="fragment_supplement_routine_edit"
+        tools:layout="@layout/fragment_supplement_routine_edit" >
+        <action
+            android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+     </fragment>
+
     <fragment
         android:id="@+id/feedAddFragment"
         android:name="com.project.meongcare.feed.view.FeedAddFragment"
@@ -266,6 +345,7 @@
             android:id="@+id/action_oldFeedFragment_to_feedInfoFragment"
             app:destination="@id/feedInfoFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/searchFeedFragment"
         android:name="com.project.meongcare.feed.view.SearchFeedFragment"
@@ -278,6 +358,7 @@
             android:id="@+id/action_searchFeedFragment_to_feedAddFragment"
             app:destination="@id/feedAddFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/feedInfoFragment"
         android:name="com.project.meongcare.feed.view.FeedInfoFragment"
@@ -290,6 +371,7 @@
             android:id="@+id/action_feedInfoFragment_to_feedEditFragment"
             app:destination="@id/feedEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/feedEditFragment"
         android:name="com.project.meongcare.feed.view.FeedEditFragment"

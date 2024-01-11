@@ -5,7 +5,7 @@ import com.project.meongcare.home.model.data.remote.HomeRetrofitClient
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
-import com.project.meongcare.home.model.entities.HomeGetProfileResponse
+import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.home.model.entities.HomeGetSupplementsResponse
 import com.project.meongcare.home.model.entities.HomeGetSymptomResponse
 import com.project.meongcare.home.model.entities.HomeGetWeightResponse
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class HomeRepositoryImpl
     @Inject
     constructor(private val homeRetrofitClient: HomeRetrofitClient) : HomeRepository {
-        override suspend fun getUserProfile(accessToken: String): HomeGetProfileResponse? {
+        override suspend fun getUserProfile(accessToken: String): GetUserProfileResponse? {
             try {
                 val response = homeRetrofitClient.homeApi.getUserProfile(accessToken)
                 if (response.isSuccessful) {

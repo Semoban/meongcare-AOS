@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.onboarding.view
 
 import android.app.Activity
 import android.content.Context
@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.project.meongcare.MainActivity
 import com.project.meongcare.databinding.FragmentPhotoSelectBottomSheetBinding
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +66,12 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     // 사진 저장할 파일 만들기
     fun makeFile(context: Context): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "DogProfile")
+
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+
         val file =
             File.createTempFile(
                 "DOGPROFILE_${timeStamp}_",
@@ -124,7 +130,7 @@ class PhotoSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun sendUri(uri: Uri) {
-        photoMenuListener?.onBitmapPassed(uri)
+        photoMenuListener?.onUriPassed(uri)
     }
 
     fun setPhotoMenuListener(listener: PhotoMenuListener) {
