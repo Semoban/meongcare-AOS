@@ -55,9 +55,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         binding = FragmentProfileBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        // 임시 설정
-        userPreferences.setProvider("kakao")
-
         profileViewModel.userProfile.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 binding.run {
