@@ -9,12 +9,10 @@ import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import okhttp3.ResponseBody
 
 class SymptomRepository {
-
     companion object {
         private val symptomAPI: SymptomAPI =
             SymptomRetrofitInstance.getInstance().create(SymptomAPI::class.java)
     }
-
 
     suspend fun getSymptomByDogId(
         dogId: Int,
@@ -59,7 +57,7 @@ class SymptomRepository {
             val response =
                 symptomAPI.patchSymptom(
                     MainActivity.ACCESS_TOKEN,
-                    toEditSymptom
+                    toEditSymptom,
                 )
 
             if (response.isSuccessful) {
@@ -72,5 +70,3 @@ class SymptomRepository {
             }
         }
 }
-
-

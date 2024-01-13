@@ -1,4 +1,4 @@
-package com.project.meongcare.symptom.view
+package com.project.meongcare.symptom.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle
@@ -70,6 +70,6 @@ class SymptomBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     fun setOnDateSelecetedListener(listener: OnDateSelectedListener) {
-        this.onDateSelectedListener= listener
+        this.onDateSelectedListener = listener
     }
 }

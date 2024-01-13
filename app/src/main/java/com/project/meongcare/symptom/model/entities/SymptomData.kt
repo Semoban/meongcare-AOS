@@ -26,7 +26,7 @@ data class Symptom(
     val symptomId: Int,
     val dateTime: String,
     val symptomString: String,
-    val note: String
+    val note: String,
 ) : Parcelable
 
 data class SymptomItem(

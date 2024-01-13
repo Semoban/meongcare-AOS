@@ -67,7 +67,7 @@ class SymptomListEditFragment : Fragment() {
                     CustomSnackBar.make(
                         requireView(),
                         R.drawable.snackbar_success_16dp,
-                        "삭제가 완료되었습니다."
+                        "삭제가 완료되었습니다.",
                     ).show()
                     navController.popBackStack()
                 }
@@ -114,7 +114,7 @@ class SymptomListEditFragment : Fragment() {
                     CustomSnackBar.make(
                         requireView(),
                         R.drawable.snackbar_error_16dp,
-                        "선택된 항목이 없습니다.\n항목을 선택하고 삭제해주세요."
+                        "선택된 항목이 없습니다.\n항목을 선택하고 삭제해주세요.",
                     ).show()
                 } else {
                     includeSymptomListEditDeleteDialog.run {

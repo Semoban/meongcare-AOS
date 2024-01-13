@@ -28,6 +28,7 @@ import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.hideKeyboard
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
+import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
@@ -62,7 +63,7 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         symptomViewModel.run {
             if (sharedPreferences.getInt("symptomItemImgId", 0) != 0 && sharedPreferences.getString(
                     "symptomItemTitle",
-                    ""
+                    "",
                 ) != ""
             ) {
                 symptomItemImgId.value = sharedPreferences.getInt("symptomItemImgId", 0)
@@ -114,7 +115,6 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
             buttonSymptomEditComplete.setOnClickListener {
                 addSymptom()
             }
-
         }
         return fragmentSymptomEditBinding.root
     }
@@ -133,8 +133,12 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
     private fun getItemCustom() {
         val editTextItemCustom = fragmentSymptomEditBinding.editTextSymptomEditCustom
         editTextItemCustom.setOnEditorActionListener { t, a, k ->
-            if ((a == EditorInfo.IME_ACTION_DONE || (k != null && k.action == KeyEvent.ACTION_DOWN && k.keyCode == KeyEvent.KEYCODE_ENTER)) && t.text.trim()
-                    .isNotEmpty()
+            if ((a == EditorInfo.IME_ACTION_DONE ||
+                (
+                    k != null &&
+                    k.action == KeyEvent.ACTION_DOWN &&
+                    k.keyCode == KeyEvent.KEYCODE_ENTER
+                )) && t.text.trim().isNotEmpty()
             ) {
                 fragmentSymptomEditBinding.layoutItemSymptomEdit.visibility = View.VISIBLE
                 setItemCustom()
@@ -178,14 +182,14 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
             CustomSnackBar(
                 requireView(),
                 R.drawable.snackbar_success_16dp,
-                "수정이 완료되었습니다."
+                "수정이 완료되었습니다.",
             )
             findNavController().popBackStack(R.id.symptomFragment, false)
         } else {
             CustomSnackBar(
                 requireView(),
                 R.drawable.snackbar_error_16dp,
-                "서버 에러입니다.\n잠시 후에 다시 시도해주세요."
+                "서버 에러입니다.\n잠시 후에 다시 시도해주세요.",
             )
         }
     }
@@ -229,26 +233,27 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         } else {
             checkNullInput(
                 fragmentSymptomEditBinding.textViewSymptomEditSelectSymptom,
-                fragmentSymptomEditBinding.buttonSymptomEditSelectSymptom
+                fragmentSymptomEditBinding.buttonSymptomEditSelectSymptom,
             )
             null
         }
 
-    private fun getDateTimeString() = if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-        "${symptomViewModel.symptomDateText.value}T${
-            String.format(
-                "%02d:%02d",
-                fragmentSymptomEditBinding.timepickerSymptomEdit.hour,
-                fragmentSymptomEditBinding.timepickerSymptomEdit.minute,
+    private fun getDateTimeString() =
+        if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
+            "${symptomViewModel.symptomDateText.value}T${
+                String.format(
+                    "%02d:%02d",
+                    fragmentSymptomEditBinding.timepickerSymptomEdit.hour,
+                    fragmentSymptomEditBinding.timepickerSymptomEdit.minute,
+                )
+            }:00"
+        } else {
+            checkNullInput(
+                fragmentSymptomEditBinding.textViewSymptomEditDate,
+                fragmentSymptomEditBinding.buttonSymptomEditDate,
             )
-        }:00"
-    } else {
-        checkNullInput(
-            fragmentSymptomEditBinding.textViewSymptomEditDate,
-            fragmentSymptomEditBinding.buttonSymptomEditDate
-        )
-        null
-    }
+            null
+        }
 
     private fun checkNullEditItem() {
         fragmentSymptomEditBinding.run {
@@ -309,12 +314,13 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         addItemTitle: String?,
     ) {
         if (dateTimeString != null && addItemName != null && addItemTitle != null) {
-            val toEditSymptom = ToEditSymptom(
-                symptomViewModel.infoSymptomData.value!!.symptomId,
-                dateTimeString,
-                addItemName,
-                addItemTitle,
-            )
+            val toEditSymptom =
+                ToEditSymptom(
+                    symptomViewModel.infoSymptomData.value!!.symptomId,
+                    dateTimeString,
+                    addItemName,
+                    addItemTitle,
+                )
             Log.d("이상증상 편집 확인", toEditSymptom.toString())
             symptomViewModel.patchSymptom(toEditSymptom)
         }

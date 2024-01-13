@@ -11,10 +11,8 @@ import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
-import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToDateToMiliSec
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -99,7 +97,10 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
         symptomItemVisibility.value = View.GONE
     }
 
-    fun updateSymptomDate(date: LocalDate, isEditSymptom: Boolean) {
+    fun updateSymptomDate(
+        date: LocalDate,
+        isEditSymptom: Boolean,
+    ) {
         if (isEditSymptom) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
             symptomDateText.value = date.format(formatter)

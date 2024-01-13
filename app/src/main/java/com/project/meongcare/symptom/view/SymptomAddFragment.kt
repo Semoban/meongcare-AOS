@@ -23,6 +23,7 @@ import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.hideKeyboard
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
+import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
@@ -55,10 +56,9 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         getBundleOfSymptomSelectData()
 
         symptomViewModel.run {
-
             if (sharedPreferences.getInt("symptomItemImgId", 0) != 0 && sharedPreferences.getString(
                     "symptomItemTitle",
-                    ""
+                    "",
                 ) != ""
             ) {
                 symptomItemImgId.value = sharedPreferences.getInt("symptomItemImgId", 0)
@@ -107,7 +107,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
             buttonSymptomAddToSymptom.setOnClickListener {
                 addSymptom()
             }
-
         }
         return fragmentSymptomAddBinding.root
     }
@@ -115,8 +114,12 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
     private fun getItemCustom() {
         val editTextItemCustom = fragmentSymptomAddBinding.editTextSymptomAddCustom
         editTextItemCustom.setOnEditorActionListener { t, a, k ->
-            if ((a == EditorInfo.IME_ACTION_DONE || (k != null && k.action == KeyEvent.ACTION_DOWN && k.keyCode == KeyEvent.KEYCODE_ENTER)) && t.text.trim()
-                    .isNotEmpty()
+            if ((a == EditorInfo.IME_ACTION_DONE ||
+                (
+                    k != null &&
+                    k.action == KeyEvent.ACTION_DOWN &&
+                    k.keyCode == KeyEvent.KEYCODE_ENTER
+                )) && t.text.trim().isNotEmpty()
             ) {
                 fragmentSymptomAddBinding.layoutSymptomAddList.visibility = View.VISIBLE
                 setItemCustom()
@@ -209,7 +212,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         } else {
             checkNullInput(
                 fragmentSymptomAddBinding.textViewSymptomAddSelectSymptom,
-                fragmentSymptomAddBinding.buttonSymptomAddSelectSymptom
+                fragmentSymptomAddBinding.buttonSymptomAddSelectSymptom,
             )
             null
         }
@@ -225,7 +228,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
     } else {
         checkNullInput(
             fragmentSymptomAddBinding.textViewSymptomAddDate,
-            fragmentSymptomAddBinding.buttonSymptomAddDate
+            fragmentSymptomAddBinding.buttonSymptomAddDate,
         )
         null
     }

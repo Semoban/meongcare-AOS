@@ -84,7 +84,6 @@ class SymptomSelectFragment : Fragment() {
         }
     }
 
-
     private fun setAddItemCheck() {
         getSymptomNameFromCheck(symptomViewModel.selectCheckedImg.value!!)
         navController.popBackStack()

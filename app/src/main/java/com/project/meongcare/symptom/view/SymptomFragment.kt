@@ -68,7 +68,7 @@ class SymptomFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putParcelableArrayList(
                     "symptomList",
-                    symptomViewModel.symptomList.value!! as ArrayList<out Parcelable>
+                    symptomViewModel.symptomList.value!! as ArrayList<out Parcelable>,
                 )
                 navController.navigate(R.id.action_symptom_to_symptomListEdit, bundle)
             }
@@ -78,12 +78,13 @@ class SymptomFragment : Fragment() {
 
     private fun setRecyclerViewAdapter() {
         fragmentSymptomBinding.recyclerViewSymptom.run {
-            adapter = SymptomRecyclerViewAdapter(symptomViewModel) {
-                val bundle = Bundle()
-                symptomViewModel.updateSymptomData(it)
-                bundle.putParcelable("symptomData", symptomViewModel.infoSymptomData.value)
-                navController.navigate(R.id.action_symptom_to_symptomInfo, bundle)
-            }
+            adapter =
+                SymptomRecyclerViewAdapter(symptomViewModel) {
+                    val bundle = Bundle()
+                    symptomViewModel.updateSymptomData(it)
+                    bundle.putParcelable("symptomData", symptomViewModel.infoSymptomData.value)
+                    navController.navigate(R.id.action_symptom_to_symptomInfo, bundle)
+                }
 
             layoutManager = LinearLayoutManager(context)
         }
@@ -101,10 +102,12 @@ class SymptomFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         symptomViewModel.getSymptomList(1, toolbarViewModel.selectedDate.value!!)
     }
-
 }
 

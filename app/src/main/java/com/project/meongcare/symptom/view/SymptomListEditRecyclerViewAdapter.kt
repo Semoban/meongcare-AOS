@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemSymptomListEditBinding
-import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 
@@ -27,7 +26,6 @@ class SymptomListEditRecyclerViewAdapter(private val symptomViewModel: SymptomVi
             itemSymptomCheck = itemSymptomListEditBinding.imageViewItemSymptomListEditCheck
 
             Log.d("증상 리스트3", symptomViewModel.symptomList.value!!.toString())
-
         }
     }
 
@@ -64,12 +62,13 @@ class SymptomListEditRecyclerViewAdapter(private val symptomViewModel: SymptomVi
         val symptomsId =
             symptomViewModel.symptomList.value!![position].symptomId
 
-        holder.itemSymptomCheck.isSelected = symptomViewModel.symptomIdList.value!!.contains(symptomsId)
+        holder.itemSymptomCheck.isSelected =
+            symptomViewModel.symptomIdList.value!!.contains(symptomsId)
 
         holder.itemView.setOnClickListener {
             holder.itemSymptomCheck.isSelected = !holder.itemSymptomCheck.isSelected
             val temp2 = symptomViewModel.symptomIdList.value!!
-            if (temp2.contains(symptomsId)){
+            if (temp2.contains(symptomsId)) {
                 temp2.remove(symptomsId)
                 symptomViewModel.symptomIdList.value = temp2
             } else {
@@ -78,4 +77,5 @@ class SymptomListEditRecyclerViewAdapter(private val symptomViewModel: SymptomVi
             }
         }
     }
+
 }

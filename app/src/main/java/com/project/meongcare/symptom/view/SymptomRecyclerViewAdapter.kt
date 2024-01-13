@@ -1,4 +1,4 @@
-package com.project.meongcare.symptom.view// SymptomRecyclerViewAdapter.kt
+package com.project.meongcare.symptom.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,13 +9,11 @@ import com.project.meongcare.databinding.ItemSymptomBinding
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
-import java.util.*
 
 class SymptomRecyclerViewAdapter(
     private val symptomViewModel: SymptomViewModel,
     private val onItemClick: (Int) -> Unit,
 ) : RecyclerView.Adapter<SymptomRecyclerViewAdapter.SymptomViewHolder>() {
-
     inner class SymptomViewHolder(itemSymptomBinding: ItemSymptomBinding) :
         RecyclerView.ViewHolder(itemSymptomBinding.root) {
         val itemSymptomName: TextView
@@ -61,5 +59,4 @@ class SymptomRecyclerViewAdapter(
             onItemClick.invoke(position)
         }
     }
-
 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
-import com.project.meongcare.symptom.view.SymptomBottomSheetDialogFragment
+import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -95,7 +95,10 @@ class SymptomUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        fun showCalendarBottomSheet(parentFragmentManager: FragmentManager, onDateSelectedListener: SymptomBottomSheetDialogFragment.OnDateSelectedListener) {
+        fun showCalendarBottomSheet(
+            parentFragmentManager: FragmentManager,
+            onDateSelectedListener: SymptomBottomSheetDialogFragment.OnDateSelectedListener,
+        ) {
             val bottomSheetDialogFragment = SymptomBottomSheetDialogFragment()
             bottomSheetDialogFragment.setOnDateSelecetedListener(onDateSelectedListener)
             bottomSheetDialogFragment.show(parentFragmentManager, "SymptomBottomSheetDialogFragment")

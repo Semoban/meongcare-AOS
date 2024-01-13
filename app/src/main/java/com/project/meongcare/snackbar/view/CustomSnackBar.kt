@@ -7,10 +7,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.databinding.LayoutSnackbarBinding
 
 class CustomSnackBar(view: View, private val drawable: Int, private val message: String) {
-
     companion object {
-        fun make(view: View, drawable: Int, message: String) =
-            CustomSnackBar(view, drawable, message)
+        fun make(
+            view: View,
+            drawable: Int,
+            message: String,
+        ) = CustomSnackBar(view, drawable, message)
     }
 
     private val context = view.context
@@ -43,4 +45,5 @@ class CustomSnackBar(view: View, private val drawable: Int, private val message:
     fun show() {
         snackbar.show()
     }
+
 }
