@@ -45,5 +45,4 @@ class CustomSnackBar(view: View, private val drawable: Int, private val message:
     fun show() {
         snackbar.show()
     }
-
 }

@@ -114,12 +114,14 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
     private fun getItemCustom() {
         val editTextItemCustom = fragmentSymptomAddBinding.editTextSymptomAddCustom
         editTextItemCustom.setOnEditorActionListener { t, a, k ->
-            if ((a == EditorInfo.IME_ACTION_DONE ||
-                (
-                    k != null &&
-                    k.action == KeyEvent.ACTION_DOWN &&
-                    k.keyCode == KeyEvent.KEYCODE_ENTER
-                )) && t.text.trim().isNotEmpty()
+            if (
+                (a == EditorInfo.IME_ACTION_DONE ||
+                    (
+                        k != null &&
+                            k.action == KeyEvent.ACTION_DOWN &&
+                                k.keyCode == KeyEvent.KEYCODE_ENTER
+                    )
+                ) && t.text.trim().isNotEmpty()
             ) {
                 fragmentSymptomAddBinding.layoutSymptomAddList.visibility = View.VISIBLE
                 setItemCustom()
@@ -217,21 +219,22 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
             null
         }
 
-    private fun getDateTimeString() = if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-        "${symptomViewModel.symptomDateText.value}T${
-            String.format(
-                "%02d:%02d",
-                fragmentSymptomAddBinding.timepickerSymptomAdd.hour,
-                fragmentSymptomAddBinding.timepickerSymptomAdd.minute,
+    private fun getDateTimeString() =
+        if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
+            "${symptomViewModel.symptomDateText.value}T${
+                String.format(
+                    "%02d:%02d",
+                    fragmentSymptomAddBinding.timepickerSymptomAdd.hour,
+                    fragmentSymptomAddBinding.timepickerSymptomAdd.minute,
+                )
+            }:00"
+        } else {
+            checkNullInput(
+                fragmentSymptomAddBinding.textViewSymptomAddDate,
+                fragmentSymptomAddBinding.buttonSymptomAddDate,
             )
-        }:00"
-    } else {
-        checkNullInput(
-            fragmentSymptomAddBinding.textViewSymptomAddDate,
-            fragmentSymptomAddBinding.buttonSymptomAddDate,
-        )
-        null
-    }
+            null
+        }
 
     private fun checkNullAddItem() {
         fragmentSymptomAddBinding.run {
