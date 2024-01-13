@@ -6,6 +6,7 @@
     android:background="@color/black30">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -79,7 +80,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
