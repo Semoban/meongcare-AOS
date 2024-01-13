@@ -16,7 +16,7 @@ class SymptomRepository {
     }
 
 
-    suspend fun getSupplementByDogId(
+    suspend fun getSymptomByDogId(
         dogId: Int,
         dateTime: String,
     ): Result<ResultSymptom> =
@@ -44,23 +44,15 @@ class SymptomRepository {
         return response.code()
     }
 
-    suspend fun deleteSymptom(symptomIds: IntArray): Result<ResponseBody> =
-        kotlin.runCatching {
-            val response =
-                symptomAPI.deleteSymptom(
-                    MainActivity.ACCESS_TOKEN,
-                    symptomIds,
-                )
+    suspend fun deleteSymptom(symptomIds: IntArray): Int {
+        val response =
+            symptomAPI.deleteSymptom(
+                MainActivity.ACCESS_TOKEN,
+                symptomIds,
+            )
 
-            if (response.isSuccessful) {
-                response.body() ?: throw RuntimeException("이상증상 삭제 API 통신 에러")
-            } else {
-                val errorBody = response.errorBody()?.string()
-                val errorMessage =
-                    "이상증상 삭제 API 통신 에러 코드 ${response.code()}, 전문: $errorBody"
-                throw RuntimeException(errorMessage)
-            }
-        }
+        return response.code()
+    }
 
     suspend fun patchSymptom(toEditSymptom: ToEditSymptom): Result<ResponseBody> =
         kotlin.runCatching {
