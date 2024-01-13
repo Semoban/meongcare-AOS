@@ -112,23 +112,36 @@ class FeedInfoFragment : Fragment() {
                         findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment, bundle)
                     }
                     R.id.menu_info_delete -> {
-                        // 삭제 다이얼로그 추가 필요
-                        feedDeleteViewModel.deleteFeed(feedId)
-                        feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
-                            if (response == SUCCESS) {
-                                findNavController().popBackStack()
-                                Snackbar.make(requireView(), "사료 정보를 삭제하였습니다!", Snackbar.LENGTH_SHORT).show()
-                            } else {
-                                Snackbar.make(
-                                    requireView(),
-                                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                                    Snackbar.LENGTH_SHORT,
-                                ).show()
+                        binding.apply {
+                            includeFeedInfoDeleteDialog.root.visibility = View.VISIBLE
+                            includeFeedInfoDeleteDialog.apply {
+                                buttonDeleteDialogCancel.setOnClickListener {
+                                    includeFeedInfoDeleteDialog.root.visibility = View.GONE
+                                }
+                                buttonDeleteDialogDelete.setOnClickListener {
+                                    deleteFeedInfo()
+                                }
                             }
                         }
                     }
                 }
                 false
+            }
+        }
+    }
+
+    private fun deleteFeedInfo() {
+        feedDeleteViewModel.deleteFeed(feedId)
+        feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+                Snackbar.make(requireView(), "사료 정보를 삭제하였습니다!", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    Snackbar.LENGTH_SHORT,
+                ).show()
             }
         }
     }
