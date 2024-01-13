@@ -134,11 +134,12 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         val editTextItemCustom = fragmentSymptomEditBinding.editTextSymptomEditCustom
         editTextItemCustom.setOnEditorActionListener { t, a, k ->
             if (
-                (a == EditorInfo.IME_ACTION_DONE ||
+                (
+                    a == EditorInfo.IME_ACTION_DONE ||
                     (
                         k != null &&
                             k.action == KeyEvent.ACTION_DOWN &&
-                                k.keyCode == KeyEvent.KEYCODE_ENTER
+                            k.keyCode == KeyEvent.KEYCODE_ENTER
                     )
                 ) && t.text.trim().isNotEmpty()
             ) {
