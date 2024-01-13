@@ -32,6 +32,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
     var infoSymptomData = MutableLiveData<Symptom>()
     var addSymptomCode = MutableLiveData<Int?>()
     var deleteSymptomCode = MutableLiveData<Int?>()
+    var patchSymptomIsSuccess = MutableLiveData<Boolean>()
     var symptomIdList = MutableLiveData<MutableList<Int>>()
     var symptomIdListAllCheck = MutableLiveData<Boolean>()
 
@@ -41,6 +42,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
         symptomItemImgId.value = R.drawable.symptom_etc_record
         textViewNoDataVisibility.value = false
         symptomIdListAllCheck.value = false
+        patchSymptomIsSuccess.value = false
     }
 
     fun getSymptomList(
@@ -73,10 +75,12 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
 
     fun patchSymptom(toEditSymptom: ToEditSymptom) {
         viewModelScope.launch {
-            val delete = repository.patchSymptom(toEditSymptom)
-            delete.onSuccess {
+            val patch = repository.patchSymptom(toEditSymptom)
+            patch.onSuccess {
+                patchSymptomIsSuccess.value = true
                 Log.d("이상증상 수정 Api 통신 성공", it.toString())
             }.onFailure {
+                patchSymptomIsSuccess.value = false
                 Log.d("이상증상 수정 Api 통신 에러", it.toString())
             }
         }
@@ -84,16 +88,6 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
 
     fun updateSymptomData(position: Int) {
         infoSymptomData.value = symptomList.value?.get(position)
-    }
-
-    fun updateSymptomDataAll() {
-        val symptom = infoSymptomData.value
-        if (symptom != null) {
-            symptomDateText.value = symptom.dateTime
-            symptomItemImgId.value = SymptomUtils.getSymptomImg(symptom)
-            symptomItemTitle.value = symptom.note
-            symptomItemVisibility.value = View.VISIBLE
-        }
     }
 
     fun clearLiveData() {

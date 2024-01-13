@@ -1,6 +1,8 @@
 package com.project.meongcare.symptom.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,8 @@ class SymptomInfoFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
     lateinit var toolbarViewModel: ToolbarViewModel
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +38,8 @@ class SymptomInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         toolbarViewModel = mainActivity.toolbarViewModel
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        editor = sharedPreferences.edit()
 
         val factory = SymptomViewModelFactory(SymptomRepository())
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
@@ -62,8 +68,12 @@ class SymptomInfoFragment : Fragment() {
                         }
 
                         R.id.menu_info_edit -> {
-                            symptomViewModel.updateSymptomDataAll()
-                            findNavController().navigate(R.id.action_symptomInfo_to_symptomEdit)
+                            editor.remove("symptomItemTitle")
+                            editor.remove("symptomItemImgID")
+                            editor.apply()
+                            val bundle = Bundle()
+                            bundle.putParcelable("symptomData", symptomData)
+                            findNavController().navigate(R.id.action_symptomInfo_to_symptomEdit, bundle)
                         }
                     }
                     true
