@@ -8,9 +8,7 @@ import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertDateToTime
 
-class SupplementInfoTimeRecyclerViewAdapter(
-    private val supplementViewModel: SupplementViewModel,
-) :
+class SupplementInfoTimeRecyclerViewAdapter(private val supplementViewModel: SupplementViewModel) :
     RecyclerView.Adapter<SupplementInfoTimeRecyclerViewAdapter.SupplementInfoTimeViewHolder>() {
     val intakeList =
         supplementViewModel.supplementDetail.value!!.intakeInfos.sortedBy { it.intakeTime }

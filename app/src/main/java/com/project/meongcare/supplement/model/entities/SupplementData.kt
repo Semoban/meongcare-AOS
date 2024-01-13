@@ -18,6 +18,7 @@ data class DogSupplement(
 
 data class Supplement(
     val supplementsRecordId: Int,
+    val supplementsId: Int,
     val name: String,
     val intakeTime: String,
     val intakeCount: Int,
