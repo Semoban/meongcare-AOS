@@ -14,6 +14,7 @@ import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToDateToMiliSec
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -29,13 +30,17 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
     var selectCheckedImg = MutableLiveData<ImageView>()
     var textViewNoDataVisibility = MutableLiveData<Boolean>()
     var infoSymptomData = MutableLiveData<Symptom>()
-    val listEditSymptomCheckedStatusMap = MutableLiveData<MutableMap<Int, Boolean>>()
     var addSymptomCode = MutableLiveData<Int?>()
+    var deleteSymptomCode = MutableLiveData<Int?>()
+    var symptomIdList = MutableLiveData<MutableList<Int>>()
+    var symptomIdListAllCheck = MutableLiveData<Boolean>()
 
     init {
         symptomList.value = mutableListOf()
+        symptomIdList.value = mutableListOf()
         symptomItemImgId.value = R.drawable.symptom_etc_record
         textViewNoDataVisibility.value = false
+        symptomIdListAllCheck.value = false
     }
 
     fun getSymptomList(
@@ -44,7 +49,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
     ) {
         val localDate = convertToDateToMiliSec(date)
         viewModelScope.launch {
-            val symptoms = repository.getSupplementByDogId(dogId, localDate)
+            val symptoms = repository.getSymptomByDogId(dogId, localDate)
             symptoms.onSuccess {
                 symptomList.value = it.records.sortedBy { s -> s.dateTime }.toMutableList()
                 Log.d("Symptom get Api 통신 성공", symptomList.value.toString())
@@ -62,12 +67,7 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
 
     fun deleteSymptom(symptomIds: IntArray) {
         viewModelScope.launch {
-            val delete = repository.deleteSymptom(symptomIds)
-            delete.onSuccess {
-                Log.d("이상증상 삭제 Api 통신 성공", it.toString())
-            }.onFailure {
-                Log.d("이상증상 삭제 Api 통신 에러", it.toString())
-            }
+            deleteSymptomCode.value = repository.deleteSymptom(symptomIds)
         }
     }
 
@@ -113,46 +113,4 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
             symptomDateText.value = date.toString()
         }
     }
-
-    fun createCheckedStatusMap() {
-        if (!symptomList.value.isNullOrEmpty()) {
-            val currentSymptomList = symptomList.value
-            val map = mutableMapOf<Int, Boolean>()
-            currentSymptomList?.forEach { symptom ->
-                map[symptom.symptomId] = false
-            }
-            listEditSymptomCheckedStatusMap.value = map
-            (listEditSymptomCheckedStatusMap.value as MutableMap<Int, Boolean>).forEach { (symptomId, isSelected) ->
-                Log.d("체크", "Symptom ID: $symptomId, Is Selected: $isSelected")
-            }
-        }
-    }
-
-    fun updateCheckedStatusMap(position: Int) {
-        val currentMap = listEditSymptomCheckedStatusMap.value ?: mutableMapOf()
-        val isSelected = currentMap[position] ?: false
-        currentMap[position] = !isSelected
-        listEditSymptomCheckedStatusMap.value = currentMap
-    }
-
-    fun updateAllCheckedStatus() {
-        val currentMap = listEditSymptomCheckedStatusMap.value ?: mutableMapOf()
-
-        if (currentMap.any { it.value }) {
-            currentMap.forEach { (symptomId, _) ->
-                currentMap[symptomId] = false
-            }
-            listEditSymptomCheckedStatusMap.value = currentMap
-        } else {
-            currentMap.forEach { (symptomId, _) ->
-                currentMap[symptomId] = true
-            }
-            listEditSymptomCheckedStatusMap.value = currentMap
-        }
-    }
-
-    fun readDogData() {
-
-    }
-
 }

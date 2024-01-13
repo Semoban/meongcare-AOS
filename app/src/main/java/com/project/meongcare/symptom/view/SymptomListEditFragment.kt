@@ -1,23 +1,24 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomListEditBinding
-import com.project.meongcare.databinding.ItemSymptomListEditBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
-import com.project.meongcare.symptom.utils.SymptomUtils
+import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 
 class SymptomListEditFragment : Fragment() {
@@ -33,7 +34,10 @@ class SymptomListEditFragment : Fragment() {
     ): View {
         fragmentSymptomListEditBinding = FragmentSymptomListEditBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        symptomViewModel = mainActivity.symptomViewModel
+
+        val factory = SymptomViewModelFactory(SymptomRepository())
+        symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
+
         toolbarViewModel = mainActivity.toolbarViewModel
 
         navController = findNavController()
@@ -41,25 +45,31 @@ class SymptomListEditFragment : Fragment() {
         // TODO : 강아지 이름 연결 필요
         val dogName = "김대박"
 
+        symptomViewModel.symptomList.value =
+            arguments?.getParcelableArrayList<Parcelable>("symptomList") as MutableList<Symptom>
+        Log.d("증상 리스트", symptomViewModel.symptomList.value.toString())
+
         symptomViewModel.run {
-            createCheckedStatusMap()
-
-            listEditSymptomCheckedStatusMap.observe(viewLifecycleOwner) { map ->
-                if (map.values.all { it }) {
-                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
-                        R.drawable.all_check_20dp,
-                    )
-                } else {
-                    fragmentSymptomListEditBinding.imageViewSymptomListEditDeleteAllCheck.setImageResource(
-                        R.drawable.all_un_check_20dp,
-                    )
-                }
-
+            symptomIdList.observe(viewLifecycleOwner) {
+                Log.d("이상증상 변화", it.toString())
                 fragmentSymptomListEditBinding.run {
+                    if (it.isNotEmpty() && it.size == symptomList.value!!.size) {
+                        imageViewSymptomListEditDeleteAllCheck.isSelected = true
+                    }
                     recyclerViewSymptomListEdit.run {
-                        adapter = SymptomListEditRecyclerViewAdapter()
+                        adapter = SymptomListEditRecyclerViewAdapter(symptomViewModel)
                         layoutManager = LinearLayoutManager(context)
                     }
+                }
+            }
+            symptomViewModel.deleteSymptomCode.observe(viewLifecycleOwner) { code ->
+                if (code == 200) {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_success_16dp,
+                        "삭제가 완료되었습니다."
+                    ).show()
+                    navController.popBackStack()
                 }
             }
         }
@@ -78,29 +88,50 @@ class SymptomListEditFragment : Fragment() {
                 }
             }
 
-            imageViewSymptomListEditDeleteAllCheck.setOnClickListener {
-                symptomViewModel.run {
-                    updateAllCheckedStatus()
+            if (symptomViewModel.symptomIdListAllCheck.value!!) {
+                imageViewSymptomListEditDeleteAllCheck.isSelected = false
+            }
+
+            imageViewSymptomListEditDeleteAllCheck.run {
+                val temp =
+                    symptomViewModel.symptomList.value!!.map { it.symptomId }.toMutableList()
+                setOnClickListener { view ->
+                    view.isSelected = !view.isSelected
+                    if (view.isSelected) {
+                        symptomViewModel.symptomIdList.value = temp
+                    } else {
+                        symptomViewModel.symptomIdList.value = mutableListOf()
+                    }
                 }
             }
 
             buttonSymptomListEditCancel.setOnClickListener {
-                navController.navigate(R.id.action_symptomListEdit_to_symptom)
+                navController.popBackStack()
             }
 
             buttonSymptomListEditComplete.setOnClickListener {
-                if (symptomViewModel.listEditSymptomCheckedStatusMap.value?.any { it.value } == true) {
+                if (symptomViewModel.symptomIdList.value.isNullOrEmpty()) {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_error_16dp,
+                        "선택된 항목이 없습니다.\n항목을 선택하고 삭제해주세요."
+                    ).show()
+                } else {
                     includeSymptomListEditDeleteDialog.run {
                         root.visibility = View.VISIBLE
                         buttonDeleteDialogCancel.setOnClickListener {
                             includeSymptomListEditDeleteDialog.root.visibility = View.GONE
                         }
                         buttonDeleteDialogDelete.setOnClickListener {
-                            navController.navigate(R.id.action_symptomListEdit_to_symptom)
                             deleteCheckSymptom()
                         }
                     }
                 }
+            }
+
+            recyclerViewSymptomListEdit.run {
+                adapter = SymptomListEditRecyclerViewAdapter(symptomViewModel)
+                layoutManager = LinearLayoutManager(context)
             }
         }
         return fragmentSymptomListEditBinding.root
@@ -108,68 +139,7 @@ class SymptomListEditFragment : Fragment() {
 
     private fun deleteCheckSymptom() {
         val deleteArr =
-            symptomViewModel.listEditSymptomCheckedStatusMap.value!!.filter { it.value }.keys.toIntArray()
-        SymptomRepository.deleteSymptom(deleteArr)
-        symptomViewModel.updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
-    }
-
-    inner class SymptomListEditRecyclerViewAdapter :
-        RecyclerView.Adapter<SymptomListEditRecyclerViewAdapter.SymptomListEditViewHolder>() {
-        inner class SymptomListEditViewHolder(itemSymptomListEditBinding: ItemSymptomListEditBinding) :
-            RecyclerView.ViewHolder(itemSymptomListEditBinding.root) {
-            val itemSymptomName: TextView
-            val itemSymptomTime: TextView
-            val itemSymptomImg: ImageView
-            val itemSymptomCheck: ImageView
-
-            init {
-                itemSymptomName = itemSymptomListEditBinding.textViewItemSymptomListEdit
-                itemSymptomTime = itemSymptomListEditBinding.textViewItemSymptomListEditTime
-                itemSymptomImg = itemSymptomListEditBinding.imageViewItemSymptomListEdit
-                itemSymptomCheck = itemSymptomListEditBinding.imageViewItemSymptomListEditCheck
-
-                itemSymptomListEditBinding.root.setOnClickListener {
-                    symptomViewModel.updateCheckedStatusMap(symptomViewModel.symptomList.value!![adapterPosition].symptomId)
-                }
-            }
-        }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): SymptomListEditViewHolder {
-            val itemSymptomListEditBinding = ItemSymptomListEditBinding.inflate(layoutInflater)
-            val allViewHolder = SymptomListEditViewHolder(itemSymptomListEditBinding)
-
-            itemSymptomListEditBinding.root.layoutParams =
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                )
-
-            return allViewHolder
-        }
-
-        override fun getItemCount(): Int {
-            return symptomViewModel.symptomList.value!!.size
-        }
-
-        override fun onBindViewHolder(
-            holder: SymptomListEditViewHolder,
-            position: Int,
-        ) {
-            holder.itemSymptomName.text = symptomViewModel.symptomList.value!![position].note
-            holder.itemSymptomTime.text =
-                SymptomUtils.convertDateToTime(symptomViewModel.symptomList.value!![position].dateTime)
-            holder.itemSymptomImg.setImageResource(SymptomUtils.getSymptomImg(symptomViewModel.symptomList.value!![position]))
-
-            val isSelected =
-                symptomViewModel.listEditSymptomCheckedStatusMap.value?.get(symptomViewModel.symptomList.value!![position].symptomId)
-            if (isSelected == true) {
-                holder.itemSymptomCheck.setImageResource(R.drawable.all_check_20dp)
-            } else {
-                holder.itemSymptomCheck.setImageResource(R.drawable.all_un_check_20dp)
-            }
-        }
+            symptomViewModel.symptomIdList.value!!.toIntArray()
+        symptomViewModel.deleteSymptom(deleteArr)
     }
 }

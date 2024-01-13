@@ -10,7 +10,7 @@
         android:id="@+id/imageView_item_symptomListEdit_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/all_un_check_20dp" />
+        app:srcCompat="@drawable/all_check_toggle_20dp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:id="@+id/textView_item_symptomListEdit_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_medium"
+                android:textAppearance="@style/Typography.Body2.Medium"
                 android:text="오전 08:00"
                 android:textColor="@color/black" />
 
@@ -64,10 +64,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="13dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pretendard_medium"
+                    android:textAppearance="@style/Typography.Body1.Medium"
                     android:text="증상 타이틀"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black"/>
 
             </LinearLayout>
         </LinearLayout>
