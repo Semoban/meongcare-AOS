@@ -68,4 +68,8 @@ class SymptomBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 View.GONE
         }
     }
+
+    fun setOnDateSelecetedListener(listener: OnDateSelectedListener) {
+        this.onDateSelectedListener= listener
+    }
 }
