@@ -444,4 +444,14 @@
 
     </ScrollView>
 
+    <include
+        android:id="@+id/include_feed_info_delete_dialog"
+        layout="@layout/layout_delete_dialog"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
