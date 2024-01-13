@@ -19,7 +19,6 @@ class ToolbarFragment : Fragment() {
     lateinit var fragmentToolbarBinding: ToolbarCalendarWeekBinding
     lateinit var mainActivity: MainActivity
     lateinit var toolbarViewModel: ToolbarViewModel
-    lateinit var symptomViewModel: SymptomViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +29,6 @@ class ToolbarFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         toolbarViewModel = mainActivity.toolbarViewModel
-        symptomViewModel = mainActivity.symptomViewModel
 
         toolbarViewModel.run {
             selectedDate.observe(viewLifecycleOwner) {
@@ -38,7 +36,6 @@ class ToolbarFragment : Fragment() {
                 Log.d("클릭4", localDateTime.toString())
                 fragmentToolbarBinding.textViewToolbarCalendarWeekTitleDay.text =
                     getMonthDateDay(it)
-                symptomViewModel.updateSymptomList(1, it)
             }
 
             dateList.observe(viewLifecycleOwner) { dateList ->

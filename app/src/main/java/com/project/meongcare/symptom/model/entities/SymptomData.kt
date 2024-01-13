@@ -1,12 +1,10 @@
 package com.project.meongcare.symptom.model.entities
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 data class ResultSymptom(
     val records: List<Symptom>,
-)
-
-data class ResponseSymptom(
-    val success: Boolean,
-    val message: String,
 )
 
 data class ToAddSymptom(
@@ -23,12 +21,13 @@ data class ToEditSymptom(
     val note: String,
 )
 
+@Parcelize
 data class Symptom(
     val symptomId: Int,
     val dateTime: String,
     val symptomString: String,
     val note: String,
-)
+) : Parcelable
 
 data class SymptomItem(
     val type: SymptomType,

@@ -1,20 +1,24 @@
 package com.project.meongcare.symptom.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomInfoBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
+import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToMonthDate
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 
 class SymptomInfoFragment : Fragment() {
@@ -22,7 +26,9 @@ class SymptomInfoFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var symptomViewModel: SymptomViewModel
     lateinit var toolbarViewModel: ToolbarViewModel
-    lateinit var navController: NavController
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,16 +36,19 @@ class SymptomInfoFragment : Fragment() {
     ): View {
         fragmentSymptomInfoBinding = FragmentSymptomInfoBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        symptomViewModel = mainActivity.symptomViewModel
-        toolbarViewModel = mainActivity.toolbarViewModel
 
-        navController = findNavController()
+        toolbarViewModel = mainActivity.toolbarViewModel
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        editor = sharedPreferences.edit()
+
+        val factory = SymptomViewModelFactory(SymptomRepository())
+        symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
         fragmentSymptomInfoBinding.run {
-            val symptomData = symptomViewModel.infoSymptomData.value
+            val symptomData = arguments?.getParcelable<Symptom>("symptomData")
             toolbarSymptominfo.run {
                 setNavigationOnClickListener {
-                    navController.navigate(R.id.action_symptomInfo_to_symptom)
+                    findNavController().popBackStack()
                 }
 
                 setOnMenuItemClickListener {
@@ -51,20 +60,20 @@ class SymptomInfoFragment : Fragment() {
                                     includeSymptomDeleteDialog.root.visibility = View.GONE
                                 }
                                 buttonDeleteDialogDelete.setOnClickListener {
-                                    navController.navigate(R.id.action_symptomInfo_to_symptom)
                                     val symptomIdsArray = intArrayOf(symptomData!!.symptomId)
-                                    deleteSymptomData(symptomIdsArray)
+                                    symptomViewModel.deleteSymptom(symptomIdsArray)
+                                    findNavController().popBackStack()
                                 }
                             }
                         }
 
                         R.id.menu_info_edit -> {
-                            symptomViewModel.updateSymptomDataAll()
-                            navController.navigate(R.id.action_symptomInfo_to_symptomEdit)
-                        }
-
-                        else -> {
-                            false
+                            editor.remove("symptomItemTitle")
+                            editor.remove("symptomItemImgID")
+                            editor.apply()
+                            val bundle = Bundle()
+                            bundle.putParcelable("symptomData", symptomData)
+                            findNavController().navigate(R.id.action_symptomInfo_to_symptomEdit, bundle)
                         }
                     }
                     true
@@ -79,11 +88,6 @@ class SymptomInfoFragment : Fragment() {
             }
         }
         return fragmentSymptomInfoBinding.root
-    }
-
-    fun deleteSymptomData(symptomIds: IntArray) {
-        SymptomRepository.deleteSymptom(symptomIds)
-        symptomViewModel.updateSymptomList(1, toolbarViewModel.selectedDate.value!!)
     }
 }
 

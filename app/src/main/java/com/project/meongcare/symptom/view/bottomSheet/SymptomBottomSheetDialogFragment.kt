@@ -1,4 +1,4 @@
-package com.project.meongcare.symptom.view
+package com.project.meongcare.symptom.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle
@@ -67,5 +67,9 @@ class SymptomBottomSheetDialogFragment : BottomSheetDialogFragment() {
             fragmentSymptomBottomSheetBinding.root.findViewById<View>(datePickerHeaderId).visibility =
                 View.GONE
         }
+    }
+
+    fun setOnDateSelecetedListener(listener: OnDateSelectedListener) {
+        this.onDateSelectedListener = listener
     }
 }

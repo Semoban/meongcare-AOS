@@ -1,4 +1,4 @@
-package com.project.meongcare.supplement.model.data.remote
+package com.project.meongcare.symptom.model.data.remote
 
 import com.project.meongcare.MainActivity
 import okhttp3.ResponseBody
@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
-object RetrofitInstance {
+object SymptomRetrofitInstance {
     val BASE_URL = MainActivity.BASE_URL
 
     val nullOnEmptyConverterFactory =

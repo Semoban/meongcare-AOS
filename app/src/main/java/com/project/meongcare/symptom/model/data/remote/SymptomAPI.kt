@@ -1,10 +1,10 @@
 package com.project.meongcare.symptom.model.data.remote
 
-import com.project.meongcare.symptom.model.entities.ResponseSymptom
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
-import retrofit2.Call
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -16,28 +16,28 @@ import retrofit2.http.Query
 
 interface SymptomAPI {
     @GET("/symptom/{dogId}")
-    fun getResultSymptom(
+    suspend fun getSymptomList(
         @Header("AccessToken") accessToken: String,
         @Path("dogId") dogId: Int,
         @Query("dateTime") dateTime: String,
-    ): Call<ResultSymptom>
+    ): Response<ResultSymptom>
 
     @POST("/symptom")
-    fun addSymptom(
+    suspend fun addSymptom(
         @Header("AccessToken") accessToken: String,
         @Body requestBody: ToAddSymptom,
-    ): Call<ResponseSymptom>
+    ): Response<ResponseBody>
 
     @DELETE("/symptom")
-    fun deleteSymptom(
+    suspend fun deleteSymptom(
         @Header("AccessToken") accessToken: String,
         @Query("symptomIds") symtomIds: IntArray,
-    ): Call<ResponseSymptom>
+    ): Response<ResponseBody>
 
     @PATCH("/symptom")
-    fun editSymptom(
+    suspend fun patchSymptom(
         @Header("AccessToken") accessToken: String,
         @Body requestBody: ToEditSymptom,
-    ): Call<ResponseSymptom>
+    ): Response<ResponseBody>
 }
 
