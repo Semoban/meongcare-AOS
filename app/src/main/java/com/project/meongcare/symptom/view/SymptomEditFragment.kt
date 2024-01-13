@@ -137,10 +137,10 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
                 (
                     a == EditorInfo.IME_ACTION_DONE ||
                     (
-                        k != null &&
-                            k.action == KeyEvent.ACTION_DOWN &&
-                            k.keyCode == KeyEvent.KEYCODE_ENTER
-                    )
+                            k != null &&
+                                k.action == KeyEvent.ACTION_DOWN &&
+                                k.keyCode == KeyEvent.KEYCODE_ENTER
+                        )
                 ) && t.text.trim().isNotEmpty()
             ) {
                 fragmentSymptomEditBinding.layoutItemSymptomEdit.visibility = View.VISIBLE
