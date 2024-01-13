@@ -1,7 +1,7 @@
 package com.project.meongcare.symptom.view
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +65,12 @@ class SymptomFragment : Fragment() {
                 navController.navigate(R.id.action_symptom_to_symptomAdd)
             }
             textViewSymptomEdit.setOnClickListener {
-                navController.navigate(R.id.action_symptom_to_symptomListEdit)
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(
+                    "symptomList",
+                    symptomViewModel.symptomList.value!! as ArrayList<out Parcelable>
+                )
+                navController.navigate(R.id.action_symptom_to_symptomListEdit, bundle)
             }
         }
         return fragmentSymptomBinding.root
@@ -76,7 +81,7 @@ class SymptomFragment : Fragment() {
             adapter = SymptomRecyclerViewAdapter(symptomViewModel) {
                 val bundle = Bundle()
                 symptomViewModel.updateSymptomData(it)
-                bundle.putSerializable("symptomData",symptomViewModel.infoSymptomData.value)
+                bundle.putParcelable("symptomData", symptomViewModel.infoSymptomData.value)
                 navController.navigate(R.id.action_symptom_to_symptomInfo, bundle)
             }
 
