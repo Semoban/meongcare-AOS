@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
-import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertDateToTime
+import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 
 class SupplementInfoTimeRecyclerViewAdapter(private val supplementViewModel: SupplementViewModel) :
     RecyclerView.Adapter<SupplementInfoTimeRecyclerViewAdapter.SupplementInfoTimeViewHolder>() {

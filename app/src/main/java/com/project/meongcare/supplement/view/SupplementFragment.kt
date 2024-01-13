@@ -232,8 +232,8 @@ class SupplementFragment : Fragment() {
             holder.itemSupplementLayout.setOnClickListener {
                 val supplementsId = supplementViewModel.supplementList.value!![position].supplementsId
                 val bundle = Bundle()
-                bundle.putInt("supplementsId",supplementsId)
-                navController.navigate(R.id.action_supplement_to_supplementInfo,bundle)
+                bundle.putInt("supplementsId", supplementsId)
+                navController.navigate(R.id.action_supplement_to_supplementInfo, bundle)
             }
         }
 
