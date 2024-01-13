@@ -77,5 +77,4 @@ class SymptomListEditRecyclerViewAdapter(private val symptomViewModel: SymptomVi
             }
         }
     }
-
 }
