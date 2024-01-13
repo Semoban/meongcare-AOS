@@ -1,13 +1,11 @@
 package com.project.meongcare.symptom.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -41,7 +39,7 @@ class SymptomInfoFragment : Fragment() {
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
         fragmentSymptomInfoBinding.run {
-            val symptomData = arguments?.getSerializable("symptomData") as Symptom
+            val symptomData = arguments?.getParcelable<Symptom>("symptomData")
             toolbarSymptominfo.run {
                 setNavigationOnClickListener {
                     findNavController().popBackStack()
