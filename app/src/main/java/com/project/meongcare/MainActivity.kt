@@ -80,6 +80,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            includeMedicalRecordDialog.run {
+                constraintlayoutBg.setOnClickListener {
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+                }
+                buttonOk.setOnClickListener {
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+                }
+            }
+
             fabMain.setOnClickListener {
                 if (overlayLayout.visibility == View.GONE) {
                     overlayLayout.visibility = View.VISIBLE
