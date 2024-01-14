@@ -106,6 +106,51 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            menuWeightEdit.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.weightFragment)
+                }
+            }
+
+            menuNutritionAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.supplementFragment)
+                }
+            }
+
+            menuSymptomAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.symptomFragment)
+                }
+            }
+
+            menuFecesAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                }
+            }
+
+            menuDogFoodAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.feedFragment)
+                }
+            }
+
             overlayLayout.setOnClickListener {
                 it.visibility = View.GONE
             }
