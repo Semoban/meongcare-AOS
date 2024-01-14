@@ -88,7 +88,7 @@ class SettingFragment : Fragment() {
                     includeDeleteAccountDialog.root.visibility = View.GONE
                 }
                 buttonDeleteAccountDialogDelete.setOnClickListener {
-                    settingViewModel.deleteUser(accessToken)
+                    settingViewModel.deleteUser(currentAccessToken)
                 }
             }
 
