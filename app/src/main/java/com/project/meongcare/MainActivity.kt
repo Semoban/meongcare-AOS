@@ -4,11 +4,11 @@ import android.Manifest
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -69,14 +69,11 @@ class MainActivity : AppCompatActivity() {
 
                     when (it.itemId) {
                         R.id.menuMainBottomNavHome -> {
-                            Log.d("Test", "Home")
+                            fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                         }
-
-                        R.id.menuMainBottomNavMedicalRecord -> {
-                            Log.d("Test", "Record")
+                        else -> {
+                            includeMedicalRecordDialog.root.visibility = View.VISIBLE
                         }
-
-                        else -> Log.d("Test", "else")
                     }
 
                     true
