@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -22,6 +23,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
@@ -33,21 +35,34 @@ import com.project.meongcare.onboarding.view.dateFormat
 import com.project.meongcare.onboarding.view.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var binding: FragmentPetEditBinding
     private lateinit var mainActivity: MainActivity
     private lateinit var dogInfo: GetDogInfoResponse
+    private lateinit var currentAccessToken: String
 
     private val petEditViewModel: ProfileViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
     private var isCbxChecked = false
     private var isInitialized = false
+
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dogInfo = getDogInfo()
+        getAccessToken()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +71,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     ): View? {
         binding = FragmentPetEditBinding.inflate(inflater)
         mainActivity = activity as MainActivity
-
-        dogInfo = getDogInfo()
 
         if (!isInitialized) {
             initDogInfo(dogInfo)
@@ -166,12 +179,21 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
 
-                val accessToken = ""
-                petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+                petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
             }
         }
 
         return binding.root
+    }
+
+    private fun getAccessToken() {
+        lifecycleScope.launch {
+            userPreferences.accessToken.collectLatest { accessToken ->
+                if (accessToken != null) {
+                    currentAccessToken = accessToken
+                }
+            }
+        }
     }
 
     private fun editTextWatcher(

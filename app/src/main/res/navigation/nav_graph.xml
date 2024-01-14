@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/profileFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -68,6 +68,21 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dogAddOnBoardingFragment"
+            app:destination="@id/dogAddOnBoardingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_symptomFragment"
+            app:destination="@id/symptomFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_supplementFragment"
+            app:destination="@id/supplementFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 
     <fragment
@@ -252,7 +267,8 @@
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
     </fragment>
 
     <fragment
@@ -300,16 +316,19 @@
             android:id="@+id/action_supplement_to_supplementRoutineEdit"
             app:destination="@+id/supplementRoutineEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/supplementAddFragment"
         android:name="com.project.meongcare.supplement.view.SupplementAddFragment"
         android:label="fragment_supplement_add"
         tools:layout="@layout/fragment_supplement_add" />
+
     <fragment
         android:id="@+id/supplementInfoFragment"
         android:name="com.project.meongcare.supplement.view.SupplementInfoFragment"
         android:label="fragment_supplement_info"
         tools:layout="@layout/fragment_supplement_info" />
+
     <fragment
         android:id="@+id/supplementRoutineEditFragment"
         android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
