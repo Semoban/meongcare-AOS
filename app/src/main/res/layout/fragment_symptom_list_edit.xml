@@ -43,7 +43,7 @@
             android:textColor="@color/gray5" />
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView_symptomListEdit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -71,7 +71,7 @@
                     android:id="@+id/imageView_symptomListEdit_delete_all_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/all_un_check_20dp" />
+                    android:src="@drawable/all_check_toggle_20dp" />
 
                 <TextView
                     android:id="@+id/textView_symptomListEdit_delete_all"
@@ -86,7 +86,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_symptomListEdit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -95,7 +95,7 @@
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/layout_symptomListEdit_button"
@@ -121,11 +121,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/pretendard_semi_bold"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:gravity="center"
                 android:text="취소"
-                android:textColor="@color/gray5"
-                android:textSize="18sp" />
+                android:textColor="@color/gray5"/>
         </LinearLayout>
 
         <LinearLayout
@@ -140,11 +139,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/pretendard_semi_bold"
+                android:textAppearance="@style/Typography.Title3.SemiBold"
                 android:gravity="center"
-                android:text="완료"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:text="삭제"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

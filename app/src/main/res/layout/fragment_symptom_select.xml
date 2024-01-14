@@ -37,7 +37,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -292,7 +292,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -356,7 +356,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/all_un_check_20dp" />
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

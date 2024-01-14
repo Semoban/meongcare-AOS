@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementInfoBinding
-import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
-import com.project.meongcare.supplement.utils.SupplementUtils
+import com.project.meongcare.supplement.view.adapter.SupplementInfoTimeRecyclerViewAdapter
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
 
@@ -45,7 +43,15 @@ class SupplementInfoFragment : Fragment() {
             getSupplementDetail(supplementId!!)
             supplementDetail.observe(viewLifecycleOwner) {
                 fragmentSupplementInfoBinding.run {
-                    textViewSupplementInfoName.text = it.name
+                    if (!it.imageUrl.isNullOrBlank()) {
+                        layoutSupplementInfoDefault.visibility = View.GONE
+                        imageViewSupplementInfo.visibility = View.VISIBLE
+                        Glide.with(this@SupplementInfoFragment)
+                            .load(it.imageUrl)
+                            .into(imageViewSupplementInfo)
+                        textViewSupplementInfoName.text = it.name
+                    }
+
                     textViewSupplementInfoBrandName.text = it.brand
                     textViewSupplementInfoCycleCount.text = it.intakeCycle.toString()
                     textViewSupplementInfoTimeListCount.text = "${it.intakeInfos.size}회"
@@ -53,7 +59,7 @@ class SupplementInfoFragment : Fragment() {
                     setButtonSelected(it)
 
                     recyclerViewSupplementInfoTimeList.run {
-                        adapter = SupplementInfoTimeRecyclerViewAdapter()
+                        adapter = SupplementInfoTimeRecyclerViewAdapter(supplementViewModel)
                         layoutManager = LinearLayoutManager(context)
                     }
                 }
@@ -113,56 +119,6 @@ class SupplementInfoFragment : Fragment() {
         }
 
         return fragmentSupplementInfoBinding.root
-    }
-
-    inner class SupplementInfoTimeRecyclerViewAdapter :
-        RecyclerView.Adapter<SupplementInfoTimeRecyclerViewAdapter.SupplementInfoTimeViewHolder>() {
-        val intakeList =
-            supplementViewModel.supplementDetail.value!!.intakeInfos.sortedBy { it.intakeTime }
-
-        inner class SupplementInfoTimeViewHolder(itemSupplementInfoTimeBinding: ItemSupplementAddTimeBinding) :
-            RecyclerView.ViewHolder(itemSupplementInfoTimeBinding.root) {
-            val itemSupplementInfoTimeTime: TextView
-            val itemSupplementInfoTimeAmount: TextView
-
-            init {
-                itemSupplementInfoTimeTime =
-                    itemSupplementInfoTimeBinding.textViewItemSupplementAddTime
-                itemSupplementInfoTimeAmount =
-                    itemSupplementInfoTimeBinding.textViewItemSupplementAddTimeAmount
-            }
-        }
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): SupplementInfoTimeViewHolder {
-            val itemSupplementInfoTimeBinding = ItemSupplementAddTimeBinding.inflate(layoutInflater)
-            val allViewHolder = SupplementInfoTimeViewHolder(itemSupplementInfoTimeBinding)
-
-            itemSupplementInfoTimeBinding.root.layoutParams =
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                )
-
-            return allViewHolder
-        }
-
-        override fun getItemCount(): Int {
-            return intakeList.size
-        }
-
-        override fun onBindViewHolder(
-            holder: SupplementInfoTimeViewHolder,
-            position: Int,
-        ) {
-            val intakeCountString = intakeList[position].intakeCount
-            val intakeUnitString = supplementViewModel.supplementDetail.value!!.intakeUnit
-            holder.itemSupplementInfoTimeTime.text =
-                SupplementUtils.convertDateToTime(intakeList[position].intakeTime)
-            holder.itemSupplementInfoTimeAmount.text = "$intakeCountString$intakeUnitString"
-        }
     }
 
     private fun FragmentSupplementInfoBinding.setButtonSelected(it: DetailSupplement) {
