@@ -27,7 +27,7 @@ class PetInfoFragment : Fragment() {
 
     private val petInfoViewModel: ProfileViewModel by viewModels()
     private lateinit var currentAccessToken: String
-    private var dogId: Long= 0
+    private var dogId: Long = 0
 
     @Inject
     lateinit var userPreferences: UserPreferences
