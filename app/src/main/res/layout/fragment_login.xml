@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="270dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="120dp"
-        android:src="@drawable/meongcare_logo_login"
+        android:layout_width="185dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="156dp"
+        android:src="@drawable/semoban_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +21,7 @@
         style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="#FEE500"
         android:drawableLeft="@drawable/login_kakao_talk"
         android:letterSpacing="-0.02"
@@ -29,16 +29,16 @@
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/black"
         app:cornerRadius="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNaverLogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonNaverLogin"
         style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="#03C75A"
         android:drawableLeft="@drawable/login_naver"
         android:letterSpacing="-0.02"
@@ -46,16 +46,16 @@
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/white"
         app:cornerRadius="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGoogleLogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonKakaoLogin" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonGoogleLogin"
         style="@style/Widget.Material3.Button"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="#F4F4F4"
         android:drawableLeft="@drawable/login_google"
         android:letterSpacing="-0.02"
@@ -63,7 +63,7 @@
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/black"
         app:cornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNaverLogin" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
