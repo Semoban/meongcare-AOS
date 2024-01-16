@@ -111,6 +111,21 @@
                 app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_brand" />
 
             <TextView
+                android:id="@+id/textview_feedaddedit_brand_error"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/all_rect_gray1_r5_outline_sub1"
+                android:padding="13dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/sub1"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_brand"
+                app:layout_constraintEnd_toEndOf="@id/edittext_feedaddedit_brand"
+                app:layout_constraintStart_toStartOf="@id/edittext_feedaddedit_brand"
+                app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_brand" />
+
+            <TextView
                 android:id="@+id/textview_feedaddedit_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,6 +162,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_name" />
+
+            <TextView
+                android:id="@+id/textview_feedaddedit_name_error"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/all_rect_gray1_r5_outline_sub1"
+                android:padding="13dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/sub1"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_feedaddedit_name"
+                app:layout_constraintEnd_toEndOf="@id/edittext_feedaddedit_name"
+                app:layout_constraintStart_toStartOf="@id/edittext_feedaddedit_name"
+                app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_name" />
 
             <TextView
                 android:id="@+id/textview_feedaddedit_ingredient"
