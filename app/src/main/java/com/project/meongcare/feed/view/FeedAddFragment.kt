@@ -26,6 +26,11 @@ import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -49,6 +54,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private lateinit var feedInfo: FeedInfo
     private var imageUri: Uri? = null
 
+    private var proteinValue = 0.0
+    private var fatValue = 0.0
+    private var ashValue = 0.0
+    private var moistureValue = 0.0
+    private var kcalValue = 0.0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,8 +81,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
-        createFeedInfo()
-        postFeedInfo()
+        validationFeedInfo()
     }
 
     private fun applyKcalContentEditorBehavior() {
@@ -140,22 +150,32 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             textviewFeedaddeditIntakePeriodStart.apply {
                 setOnClickListener {
+                    text = "시작 일자"
+                    setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     setTextColor(resources.getColor(R.color.black, null))
                     calendarviewFeedaddeditStartDate.visibility = View.VISIBLE
                     calendarviewFeedaddeditEndDate.visibility = View.GONE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.GONE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.GONE
-                    textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
+                    if (textviewFeedaddeditIntakePeriodEnd.text != "필수 입력 값입니다") {
+                        textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
+                    }
+                    scrollviewFeedadd.smoothScrollTo(0, buttonFeedaddeditCompletion.bottom)
                 }
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
                 setOnClickListener {
+                    text = "종료 일자"
+                    setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     setTextColor(resources.getColor(R.color.black, null))
                     calendarviewFeedaddeditEndDate.visibility = View.VISIBLE
                     calendarviewFeedaddeditStartDate.visibility = View.INVISIBLE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
-                    textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
+                    if (textviewFeedaddeditIntakePeriodEnd.text != "필수 입력 값입니다") {
+                        textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
+                    }
+                    scrollviewFeedadd.smoothScrollTo(0, buttonFeedaddeditCompletion.bottom)
                 }
             }
         }
@@ -233,7 +253,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
     private fun initInputMethodManager() {
         thread {
-            SystemClock.sleep(1000)
+            SystemClock.sleep(300)
             inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             hideSoftKeyboard()
         }
@@ -250,21 +270,16 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
-            val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
-            val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
-            val crudeAsh = edittextFeedaddeditCrudeAshPercent.text.toString()
-            val moisture = edittextFeedaddeditMoisturePercent.text.toString()
-            val kcal = edittextFeedaddeditKcalContent.text.toString()
             feedInfo =
                 FeedInfo(
                     2L,
                     brand,
                     feedName,
-                    protein.toDouble(),
-                    fat.toDouble(),
-                    crudeAsh.toDouble(),
-                    moisture.toDouble(),
-                    kcal.toDouble(),
+                    proteinValue,
+                    fatValue,
+                    ashValue,
+                    moistureValue,
+                    kcalValue,
                     recommendIntake.toInt(),
                     selectedStartDate,
                     selectedEndDate,
@@ -273,25 +288,131 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         }
     }
 
-    private fun postFeedInfo() {
-        binding.buttonFeedaddeditCompletion.setOnClickListener {
-            createFeedInfo()
-            val dto = convertFeedPostDto(feedInfo)
-            val file =
-                convertFeedFile(
-                    requireContext(),
-                    imageUri ?: Uri.EMPTY,
-                )
-            val uploadRequest = FeedUploadRequest(dto, file)
-
-            feedPostViewModel.postFeed(
-                uploadRequest,
-            )
-            feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
-                if (response == SUCCESS) {
-                    findNavController().popBackStack()
-                    Snackbar.make(requireView(), "사료가 등록되었습니다!", Snackbar.LENGTH_SHORT).show()
+    private fun validationFeedInfo() {
+        binding.apply {
+            buttonFeedaddeditCompletion.setOnClickListener {
+                if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
+                    validationIntakePeriod(
+                        textviewFeedaddeditIntakePeriodEnd,
+                    )
                 }
+
+                if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
+                    validationIntakePeriod(
+                        textviewFeedaddeditIntakePeriodStart,
+                    )
+                }
+
+                val kcal = edittextFeedaddeditKcalContent.text.toString()
+                if (kcal.isEmpty() || kcal == "000.00") {
+                    validationKcal(
+                        edittextFeedaddeditKcalContent,
+                        textviewFeedaddeditIngredientAndKcalError,
+                    )
+                }
+
+                val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
+                val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
+                val ash = edittextFeedaddeditCrudeAshPercent.text.toString()
+                val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+
+                proteinValue = protein.toDoubleOrNull() ?: 0.0
+                fatValue = fat.toDoubleOrNull() ?: 0.0
+                ashValue = ash.toDoubleOrNull() ?: 0.0
+                moistureValue = moisture.toDoubleOrNull() ?: 0.0
+
+                if (protein.isEmpty() || protein == "0.00") {
+                    validationIngredient(
+                        edittextFeedaddeditCrudeProteinPercentage,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                }
+
+                if (fat.isEmpty() || fat == "0.00") {
+                    validationIngredient(
+                        edittextFeedaddeditCrudeFatPercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                }
+
+                if (ash.isEmpty() || ash == "0.00") {
+                    validationIngredient(
+                        edittextFeedaddeditCrudeAshPercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                }
+
+                if (moisture.isEmpty() || moisture == "0.00") {
+                    validationIngredient(
+                        edittextFeedaddeditMoisturePercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                }
+
+                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
+
+                if (totalIngredient > 100) {
+                    validationTotalIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                }
+
+                if (edittextFeedaddeditName.text.toString().isEmpty()) {
+                    validationBrandAndFeedName(
+                        edittextFeedaddeditName,
+                        textviewFeedaddeditNameError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditName,
+                        inputMethodManager,
+                    )
+                }
+
+                if (edittextFeedaddeditBrand.text.toString().isEmpty()) {
+                    validationBrandAndFeedName(
+                        edittextFeedaddeditBrand,
+                        textviewFeedaddeditBrandError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditBrand,
+                        inputMethodManager
+                    )
+                }
+
+                else {
+                    postFeedInfo()
+                }
+            }
+        }
+    }
+
+    private fun postFeedInfo() {
+        createFeedInfo()
+        val dto = convertFeedPostDto(feedInfo)
+        val file =
+            convertFeedFile(
+                requireContext(),
+                imageUri ?: Uri.EMPTY,
+            )
+        val uploadRequest = FeedUploadRequest(dto, file)
+
+        feedPostViewModel.postFeed(
+            uploadRequest,
+        )
+        feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+                Snackbar.make(requireView(), "사료가 등록되었습니다!", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    "서버가 불안정 하여 사료 정보 등록에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    Snackbar.LENGTH_SHORT,
+                ).show()
             }
         }
     }
