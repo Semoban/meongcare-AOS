@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedFragment">
+    tools:context=".feed.view.FeedFragment">
 
     <ScrollView
         android:id="@+id/scrollview_feed"
@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="79dp"
                 android:src="@drawable/feed_bowl_light"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/button_feed_input_guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +43,6 @@
                 android:text="사료를 입력해주세요"
                 android:textAppearance="@style/Typography.Bottom2.SemiBold"
                 android:textColor="@color/gray5"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageview_feed_bowl_illustration" />

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginEnd="16dp"
-    tools:context=".SearchFeedFragment">
+    tools:context=".feed.view.SearchFeedFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_searchfeed"

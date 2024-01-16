@@ -4,11 +4,11 @@ import android.Manifest
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -69,17 +69,25 @@ class MainActivity : AppCompatActivity() {
 
                     when (it.itemId) {
                         R.id.menuMainBottomNavHome -> {
-                            Log.d("Test", "Home")
+                            fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                         }
-
-                        R.id.menuMainBottomNavMedicalRecord -> {
-                            Log.d("Test", "Record")
+                        else -> {
+                            includeMedicalRecordDialog.root.visibility = View.VISIBLE
                         }
-
-                        else -> Log.d("Test", "else")
                     }
 
                     true
+                }
+            }
+
+            includeMedicalRecordDialog.run {
+                constraintlayoutBg.setOnClickListener {
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+                }
+                buttonOk.setOnClickListener {
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
@@ -95,6 +103,51 @@ class MainActivity : AppCompatActivity() {
                     floatingButtonMenuIn(activityMainBinding)
                     delay(550L)
                     overlayLayout.visibility = View.GONE
+                }
+            }
+
+            menuWeightEdit.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.weightFragment)
+                }
+            }
+
+            menuNutritionAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.supplementFragment)
+                }
+            }
+
+            menuSymptomAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.symptomFragment)
+                }
+            }
+
+            menuFecesAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                }
+            }
+
+            menuDogFoodAdd.setOnClickListener {
+                CoroutineScope(Main).launch {
+                    floatingButtonMenuIn(activityMainBinding)
+                    delay(550L)
+                    overlayLayout.visibility = View.GONE
+                    fragmentContainerView.findNavController().navigate(R.id.feedFragment)
                 }
             }
 

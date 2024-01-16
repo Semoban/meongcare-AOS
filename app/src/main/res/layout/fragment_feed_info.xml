@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedInfoFragment">
+    tools:context=".feed.view.FeedInfoFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_feedinfo"
@@ -142,13 +142,24 @@
                         android:id="@+id/textview_feedinfo_crude_protein_ratio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="0.00%"
+                        android:text="0.00"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_protein"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_crude_protein_percent"
                         app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_protein" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_crude_protein_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_protein_ratio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_protein_ratio" />
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/divider_feedinfo_ingredient_one"
@@ -174,13 +185,24 @@
                         android:id="@+id/textview_feedinfo_crude_fat_ratio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="0.00%"
+                        android:text="0.00"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_fat"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_crude_fat_percent"
                         app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_fat" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_crude_fat_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_fat_ratio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_fat_ratio" />
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/divider_feedinfo_ingredient_two"
@@ -206,13 +228,24 @@
                         android:id="@+id/textview_feedinfo_crude_ash_ratio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="0.00%"
+                        android:text="0.00"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_ash"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_crude_ash_percent"
                         app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_ash" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_crude_ash_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_crude_ash_ratio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_crude_ash_ratio" />
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/divider_feedinfo_ingredient_three"
@@ -239,13 +272,24 @@
                         android:id="@+id/textview_feedinfo_moisture_ratio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="0.00%"
+                        android:text="0.00"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_moisture"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_moisture_percent"
                         app:layout_constraintTop_toTopOf="@id/textview_feedinfo_moisture" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_moisture_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_moisture_ratio"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_moisture_ratio" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -280,7 +324,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:background="@drawable/all_rect_gray3_r5"
+                android:background="@drawable/feed_rect_gray3_r5"
                 android:paddingHorizontal="7dp"
                 android:paddingVertical="6dp"
                 android:text="000.00"
@@ -295,7 +339,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="95dp"
-                android:text="Kcal"
+                android:text="kcal/kg"
                 android:textAppearance="@style/Typography.Body2.Regular"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_kcal_content"
                 app:layout_constraintEnd_toEndOf="@id/view_feedinfo_kcal"
@@ -331,11 +375,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="0mg"
+                android:text="0"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/main4"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_daily_intake_title"
                 app:layout_constraintStart_toEndOf="@id/textview_feedinfo_daily_intake_title"
+                app:layout_constraintTop_toTopOf="@id/textview_feedinfo_daily_intake_title" />
+
+            <TextView
+                android:id="@+id/textview_feedinfo_daily_intake_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="g"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/main4"
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_daily_intake_title"
+                app:layout_constraintStart_toEndOf="@id/textview_feedinfo_daily_intake_content"
                 app:layout_constraintTop_toTopOf="@id/textview_feedinfo_daily_intake_title" />
 
             <TextView

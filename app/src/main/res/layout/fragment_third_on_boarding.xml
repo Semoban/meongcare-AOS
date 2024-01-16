@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:letterSpacing="-0.02"
-        android:text="그럼 나만의\n멍케어를 시작해볼까요?"
+        android:text="그럼 나만의\n세모반을 시작해볼까요?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
