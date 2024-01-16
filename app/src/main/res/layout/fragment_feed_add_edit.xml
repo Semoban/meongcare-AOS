@@ -464,6 +464,20 @@
                 app:layout_constraintEnd_toEndOf="@id/view_feedaddedit_kcal"
                 app:layout_constraintTop_toTopOf="@id/edittext_feedaddedit_kcal_content" />
 
+            <TextView
+                android:id="@+id/textview_feedaddedit_ingredient_and_kcal_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="사료 성분 비율과 칼로리는 필수 항목입니다."
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/sub1"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/view_feedaddedit_kcal"
+                app:layout_constraintTop_toBottomOf="@id/view_feedaddedit_kcal" />
+
             <View
                 android:id="@+id/view_feedaddedit_daily_intake"
                 android:layout_width="match_parent"
@@ -474,7 +488,7 @@
                 android:backgroundTint="@color/main1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_feedaddedit_kcal" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_ingredient_and_kcal_error" />
 
             <TextView
                 android:id="@+id/textview_feedaddedit_daily_intake_title"
