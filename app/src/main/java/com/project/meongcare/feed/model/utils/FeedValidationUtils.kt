@@ -27,10 +27,12 @@ object FeedValidationUtils {
     }
 
     fun validationIngredient(
+        errorMessage: TextView,
         editText: EditText,
         scrollview: ScrollView,
         ingredientTitle: TextView,
     ) {
+        errorMessage.visibility = View.VISIBLE
         editText.apply {
             setTextColor(resources.getColor(R.color.sub1, null))
             setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
