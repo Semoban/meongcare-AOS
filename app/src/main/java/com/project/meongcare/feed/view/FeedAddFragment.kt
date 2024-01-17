@@ -49,7 +49,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
     private var recommendIntake = 0.0
     var selectedStartDate = ""
-    var selectedEndDate = ""
+    private var selectedEndDate: String? = null
     private lateinit var feedInfo: FeedInfo
     private var imageUri: Uri? = null
 
@@ -224,7 +224,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                     checkBox.setOnClickListener {
                         calendar.resetAllSelectedViews()
-                        selectedEndDate = null.toString()
+                        selectedEndDate = null
                         date.text = "모름"
                     }
 
@@ -276,6 +276,16 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             buttonFeedaddeditCompletion.setOnClickListener {
                 var isValid = true
+
+                if (selectedEndDate != null) {
+                    val startDate = selectedStartDate.replace("-", "").toInt()
+                    val endDate = selectedEndDate?.replace("-","")?.toInt()!!
+
+                    if (startDate > endDate) {
+                        textviewFeedaddeditIntakePeriodError.visibility = View.VISIBLE
+                        isValid = false
+                    }
+                }
 
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
                     validationIntakePeriod(
