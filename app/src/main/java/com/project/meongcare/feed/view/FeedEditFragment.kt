@@ -303,6 +303,16 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             buttonFeedaddeditCompletion.setOnClickListener {
                 var isValid = true
 
+                if (selectedEndDate != null) {
+                    val startDate = selectedStartDate.replace("-", "").toInt()
+                    val endDate = selectedEndDate?.replace("-","")?.toInt()!!
+
+                    if (startDate > endDate) {
+                        textviewFeedaddeditIntakePeriodError.visibility = View.VISIBLE
+                        isValid = false
+                    }
+                }
+
                 if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
