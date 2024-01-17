@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,21 +35,33 @@ class UserPreferences
             }
         }
 
-        private suspend fun editEmail(email: String) {
+        private suspend fun editEmail(email: String?) {
             context.userDataStore.edit { preferences ->
-                preferences[preferenceKeyEmail] = email
+                if (email == null) {
+                    preferences.remove(preferenceKeyEmail)
+                } else {
+                    preferences[preferenceKeyEmail] = email
+                }
             }
         }
 
-        private suspend fun editAccessToken(accessToken: String) {
+        private suspend fun editAccessToken(accessToken: String?) {
             context.userDataStore.edit { preferences ->
-                preferences[preferenceKeyAccessToken] = accessToken
+                if (accessToken == null) {
+                    preferences.remove(preferenceKeyAccessToken)
+                } else {
+                    preferences[preferenceKeyAccessToken] = accessToken
+                }
             }
         }
 
-        private suspend fun editRefreshToken(refreshToken: String) {
+        private suspend fun editRefreshToken(refreshToken: String?) {
             context.userDataStore.edit { preferences ->
-                preferences[preferenceKeyRefreshToken] = refreshToken
+                if (refreshToken == null) {
+                    preferences.remove(preferenceKeyRefreshToken)
+                } else {
+                    preferences[preferenceKeyRefreshToken] = refreshToken
+                }
             }
         }
 
@@ -58,19 +71,19 @@ class UserPreferences
             }
         }
 
-        fun setEmail(email: String) {
+        fun setEmail(email: String?) {
             CoroutineScope(Dispatchers.IO).launch {
                 editEmail(email)
             }
         }
 
-        fun setAccessToken(accessToken: String) {
+        fun setAccessToken(accessToken: String?) {
             CoroutineScope(Dispatchers.IO).launch {
                 editAccessToken(accessToken)
             }
         }
 
-        fun setRefreshToken(refreshToken: String) {
+        fun setRefreshToken(refreshToken: String?) {
             CoroutineScope(Dispatchers.IO).launch {
                 editRefreshToken(refreshToken)
             }
@@ -96,4 +109,13 @@ class UserPreferences
             context.userDataStore.data.map { preferences ->
                 preferences[preferenceKeyRefreshToken]
             }
+
+        // first() : 저장된 데이터 중 가장 최신 시점의 데이터를 반환
+        suspend fun getAccessToken(): String {
+            return context.userDataStore.data.first()[preferenceKeyAccessToken] ?: ""
+        }
+
+        suspend fun getRefreshToken(): String {
+            return context.userDataStore.data.first()[preferenceKeyRefreshToken] ?: ""
+        }
     }
