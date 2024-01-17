@@ -9,15 +9,18 @@ import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 
 interface FeedRepository {
-    suspend fun getFeed(): FeedGetResponse?
+    suspend fun getFeed(dogId: Long): FeedGetResponse?
 
     suspend fun postFeed(feedUploadRequest: FeedUploadRequest): Int?
 
     suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords?
 
-    suspend fun getFeeds(): Feeds?
+    suspend fun getFeeds(dogId: Long): Feeds?
 
-    suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords?
+    suspend fun getPreviousFeed(
+        dogId: Long,
+        feedRecordId: Long
+    ): FeedRecords?
 
     suspend fun getDetailFeed(
         feedId: Long,

@@ -10,15 +10,18 @@ class FeedRepositoryImpl
     constructor(
         private val feedRemoteDataSource: FeedRemoteDataSource,
     ) : FeedRepository {
-        override suspend fun getFeed() = feedRemoteDataSource.getFeed()
+        override suspend fun getFeed(dogId: Long) = feedRemoteDataSource.getFeed(dogId)
 
         override suspend fun postFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.postFeed(feedUploadRequest)
 
         override suspend fun getFeedPart(feedRecordId: Long) = feedRemoteDataSource.getFeedPart(feedRecordId)
 
-        override suspend fun getFeeds() = feedRemoteDataSource.getFeeds()
+        override suspend fun getFeeds(dogId: Long) = feedRemoteDataSource.getFeeds(dogId)
 
-        override suspend fun getPreviousFeed(feedRecordId: Long) = feedRemoteDataSource.getPreviousFeed(feedRecordId)
+        override suspend fun getPreviousFeed(
+            dogId: Long,
+            feedRecordId: Long
+        ) = feedRemoteDataSource.getPreviousFeed(dogId, feedRecordId)
 
         override suspend fun getDetailFeed(
             feedId: Long,
