@@ -32,6 +32,7 @@ import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedValidationUtils
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
@@ -305,14 +306,14 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 var isValid = true
 
                 if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
-                    FeedValidationUtils.validationIntakePeriod(
+                    validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
                     )
                     isValid = false
                 }
 
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
-                    FeedValidationUtils.validationIntakePeriod(
+                    validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
                     )
                     isValid = false
