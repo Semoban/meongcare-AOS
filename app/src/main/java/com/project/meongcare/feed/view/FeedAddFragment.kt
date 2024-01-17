@@ -24,7 +24,6 @@ import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
