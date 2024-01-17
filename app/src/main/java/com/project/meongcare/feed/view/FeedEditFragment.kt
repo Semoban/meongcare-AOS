@@ -29,6 +29,11 @@ import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
+import com.project.meongcare.feed.model.utils.FeedValidationUtils
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
+import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -52,6 +57,12 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
     private val feedPutViewModel: FeedPutViewModel by viewModels()
     private lateinit var inputMethodManager: InputMethodManager
+
+    private var proteinValue = 0.0
+    private var fatValue = 0.0
+    private var ashValue = 0.0
+    private var moistureValue = 0.0
+    private var kcalValue = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,7 +88,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
-        editFeedInfo()
+        validationFeedInfo()
     }
 
     private fun fetchFeedInfo() {
@@ -137,7 +148,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private fun applyKcalContentEditorBehavior() {
         binding.edittextFeedaddeditKcalContent.apply {
             setOnEditorActionListener { _, _, _ ->
-                initRecommendDailyIntake(text.toString().toDouble())
+                initRecommendDailyIntake(text.toString().toDoubleOrNull()?: 0.0)
                 hideSoftKeyboard()
                 true
             }
@@ -268,20 +279,16 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
-            val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
-            val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
-            val crudeAsh = edittextFeedaddeditCrudeAshPercent.text.toString()
-            val moisture = edittextFeedaddeditMoisturePercent.text.toString()
             val kcal = edittextFeedaddeditKcalContent.text.toString()
             feedPutInfo =
                 FeedPutInfo(
                     feedId,
                     brand,
                     feedName,
-                    protein.toDouble(),
-                    fat.toDouble(),
-                    crudeAsh.toDouble(),
-                    moisture.toDouble(),
+                    proteinValue,
+                    fatValue,
+                    ashValue,
+                    moistureValue,
                     kcal.toDouble(),
                     recommendIntake.toInt(),
                     selectedStartDate,
@@ -291,37 +298,153 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         }
     }
 
+    private fun validationFeedInfo() {
+        binding.run {
+            buttonFeedaddeditCompletion.setOnClickListener {
+                var isValid = true
+
+                if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
+                    FeedValidationUtils.validationIntakePeriod(
+                        textviewFeedaddeditIntakePeriodStart,
+                    )
+                    isValid = false
+                }
+
+                if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
+                    FeedValidationUtils.validationIntakePeriod(
+                        textviewFeedaddeditIntakePeriodEnd,
+                    )
+                    isValid = false
+                }
+
+                val kcal = edittextFeedaddeditKcalContent.text.toString()
+                if (kcal.isEmpty() || kcal == "000.00") {
+                    validationKcal(
+                        edittextFeedaddeditKcalContent,
+                        textviewFeedaddeditIngredientAndKcalError,
+                    )
+                    isValid = false
+                }
+
+                val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
+                val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
+                val ash = edittextFeedaddeditCrudeAshPercent.text.toString()
+                val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+
+                if (protein.isEmpty() || protein == "0.00") {
+                    validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        edittextFeedaddeditCrudeProteinPercentage,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                    isValid = false
+                }
+
+                if (fat.isEmpty() || fat == "0.00") {
+                    validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        edittextFeedaddeditCrudeFatPercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                    isValid = false
+                }
+
+                if (ash.isEmpty() || ash == "0.00") {
+                    validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        edittextFeedaddeditCrudeAshPercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                    isValid = false
+                }
+
+                if (moisture.isEmpty() || moisture == "0.00") {
+                    validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        edittextFeedaddeditMoisturePercent,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                    isValid = false
+                }
+
+                proteinValue = protein.toDoubleOrNull() ?: 0.0
+                fatValue = fat.toDoubleOrNull() ?: 0.0
+                ashValue = ash.toDoubleOrNull() ?: 0.0
+                moistureValue = moisture.toDoubleOrNull() ?: 0.0
+
+                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
+
+                if (totalIngredient > 100) {
+                    validationTotalIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditIngredient,
+                    )
+                    isValid = false
+                }
+
+                if (edittextFeedaddeditName.text.toString().isEmpty()) {
+                    validationBrandAndFeedName(
+                        edittextFeedaddeditName,
+                        textviewFeedaddeditNameError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditName,
+                        inputMethodManager,
+                    )
+                    isValid = false
+                }
+
+                if (edittextFeedaddeditBrand.text.toString().isEmpty()) {
+                    validationBrandAndFeedName(
+                        edittextFeedaddeditBrand,
+                        textviewFeedaddeditBrandError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditBrand,
+                        inputMethodManager
+                    )
+                    isValid = false
+                }
+
+                if (isValid) {
+                    editFeedInfo()
+                }
+            }
+        }
+    }
+
     private fun editFeedInfo() {
         binding.apply {
-            buttonFeedaddeditCompletion.setOnClickListener {
-                createFeedInfo()
-                val imageUri = feedPutViewModel.feedImage.value
+            createFeedInfo()
+            val imageUri = feedPutViewModel.feedImage.value
 
-                val dto = convertFeedPutDto(feedPutInfo)
-                val file =
-                    convertFeedFile(
-                        requireContext(),
-                        imageUri ?: Uri.EMPTY,
-                    )
+            val dto = convertFeedPutDto(feedPutInfo)
+            val file =
+                convertFeedFile(
+                    requireContext(),
+                    imageUri ?: Uri.EMPTY,
+                )
 
-                val feedUploadRequest =
-                    FeedUploadRequest(
-                        dto,
-                        file,
-                    )
-                feedPutViewModel.putFeed(feedUploadRequest)
-                feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        findNavController().popBackStack()
-                        Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Snackbar.make(
-                            requireView(),
-                            "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                            Snackbar.LENGTH_SHORT,
-                        ).show()
-                    }
+            val feedUploadRequest =
+                FeedUploadRequest(
+                    dto,
+                    file,
+                )
+            feedPutViewModel.putFeed(feedUploadRequest)
+            feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
+                if (response == SUCCESS) {
+                    findNavController().popBackStack()
+                    Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Snackbar.make(
+                        requireView(),
+                        "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                        Snackbar.LENGTH_SHORT,
+                    ).show()
                 }
             }
         }
