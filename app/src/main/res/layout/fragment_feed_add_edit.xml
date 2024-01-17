@@ -557,6 +557,19 @@
                 app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_intake_period_title" />
 
             <TextView
+                android:id="@+id/textview_feedaddedit_intake_period_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:text="시작 일자가 종료 일자 이후 일 수 없습니다."
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/sub1"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/textview_feedaddedit_intake_period_start"
+                app:layout_constraintTop_toBottomOf="@id/textview_feedaddedit_intake_period_start" />
+
+            <TextView
                 android:id="@+id/textview_feedaddedit_intake_period_end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -585,7 +598,7 @@
                 custom:disable_date_color="@color/gray4"
                 custom:layout_constraintEnd_toEndOf="parent"
                 custom:layout_constraintStart_toStartOf="parent"
-                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_start"
+                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_error"
                 custom:range_color="@color/main1"
                 custom:range_date_color="@color/main4"
                 custom:selected_date_circle_color="@color/main4"
@@ -607,7 +620,7 @@
                 custom:disable_date_color="@color/gray4"
                 custom:layout_constraintEnd_toEndOf="parent"
                 custom:layout_constraintStart_toStartOf="parent"
-                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_start"
+                custom:layout_constraintTop_toBottomOf="@+id/textview_feedaddedit_intake_period_error"
                 custom:range_color="@color/main1"
                 custom:range_date_color="@color/main4"
                 custom:selected_date_circle_color="@color/main4"
