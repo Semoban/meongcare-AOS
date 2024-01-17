@@ -62,7 +62,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var fatValue = 0.0
     private var ashValue = 0.0
     private var moistureValue = 0.0
-    private var kcalValue = 0.0
+    private var kcal = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -279,7 +279,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
-            val kcal = edittextFeedaddeditKcalContent.text.toString()
+            kcal = edittextFeedaddeditKcalContent.text.toString()
             feedPutInfo =
                 FeedPutInfo(
                     feedId,
@@ -327,7 +327,6 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                val kcal = edittextFeedaddeditKcalContent.text.toString()
                 if (kcal.isEmpty() || kcal == "000.00") {
                     validationKcal(
                         edittextFeedaddeditKcalContent,
