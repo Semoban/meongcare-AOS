@@ -46,6 +46,12 @@ class OldFeedFragment : Fragment() {
         previousFeedAdapter = PreviousFeedAdapter()
         previousFeedGetViewModel.getPreviousFeed(dogId, feedRecordId)
         previousFeedGetViewModel.previousFeedGet.observe(viewLifecycleOwner) { response ->
+            if (response.feedRecords.isEmpty()) {
+                binding.apply {
+                    imageviewOldfeedBowlIllustration.visibility = View.VISIBLE
+                    textviewOldfeedMessage.visibility = View.VISIBLE
+                }
+            }
             previousFeedAdapter.submitList(response.feedRecords)
         }
         initToolbar()
