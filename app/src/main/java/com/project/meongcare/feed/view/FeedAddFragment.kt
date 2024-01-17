@@ -137,18 +137,6 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         }
     }
 
-//    private fun initRecommendDailyIntake(feedKcal: Double) {
-//        val weight = 15.0
-//        recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
-//        binding.textviewFeedaddeditDailyIntakeContent.apply {
-//            text = if (recommendIntake == Double.POSITIVE_INFINITY) {
-//                "0g"
-//            }  else {
-//                "${recommendIntake}g"
-//            }
-//        }
-//    }
-
     private fun updateCalendarVisibility() {
         binding.apply {
             textviewFeedaddeditIntakePeriodStart.apply {
