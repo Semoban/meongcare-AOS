@@ -43,12 +43,12 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeed(): FeedGetResponse? {
+        suspend fun getFeed(dogId: Long): FeedGetResponse? {
             try {
                 val getFeedResponse =
                     feedApiService.getFeed(
                         accessToken,
-                        2L,
+                        dogId,
                     )
                 return if (getFeedResponse.code() == SUCCESS) {
                     Log.d("FeedGetSuccess", getFeedResponse.code().toString())
@@ -88,12 +88,12 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeeds(): Feeds? {
+        suspend fun getFeeds(dogId: Long): Feeds? {
             try {
                 val getFeedsResponse =
                     feedApiService.getFeeds(
                         accessToken,
-                        2L,
+                        dogId,
                     )
                 return if (getFeedsResponse.code() == SUCCESS) {
                     Log.d("FeedsGetSuccess", getFeedsResponse.code().toString())
@@ -110,12 +110,15 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords? {
+        suspend fun getPreviousFeed(
+            dogId: Long,
+            feedRecordId: Long,
+        ): FeedRecords? {
             try {
                 val getPreviousFeedResponse =
                     feedApiService.getPreviousFeed(
                         accessToken,
-                        2L,
+                        dogId,
                         feedRecordId,
                     )
 
