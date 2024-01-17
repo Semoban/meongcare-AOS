@@ -47,8 +47,8 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private lateinit var feedInfo: FeedDetailGetResponse
     private lateinit var feedPutInfo: FeedPutInfo
     private var recommendIntake = 0.0
-    var selectedStartDate = ""
-    var selectedEndDate = ""
+    private var selectedStartDate = ""
+    private var selectedEndDate: String? = null
 
     private val feedPutViewModel: FeedPutViewModel by viewModels()
     private lateinit var inputMethodManager: InputMethodManager
@@ -82,6 +82,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
     private fun fetchFeedInfo() {
         binding.apply {
+            recommendIntake = feedInfo.recommendIntake.toDouble()
             if (feedInfo.imageURL.isNotEmpty()) {
                 Glide.with(this@FeedEditFragment)
                     .load(feedInfo.imageURL)
@@ -95,14 +96,16 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             edittextFeedaddeditCrudeAshPercent.setText(feedInfo.crudeAsh.toString())
             edittextFeedaddeditMoisturePercent.setText(feedInfo.moisture.toString())
             edittextFeedaddeditKcalContent.setText(feedInfo.kcal.toString())
-            textviewFeedaddeditDailyIntakeContent.text = "${feedInfo.recommendIntake}g"
+            textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
             textviewFeedaddeditIntakePeriodStart.apply {
+                selectedStartDate = feedInfo.startDate
                 text = convertDateFormat(feedInfo.startDate)
                 setTextColor(resources.getColor(R.color.black, null))
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
                 text =
                     if (feedInfo.endDate != null) {
+                        selectedEndDate = feedInfo.endDate
                         convertDateFormat(feedInfo.endDate)
                     } else {
                         "모름"
@@ -235,7 +238,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                     checkBox.setOnClickListener {
                         calendar.resetAllSelectedViews()
-                        selectedEndDate = null.toString()
+                        selectedEndDate = null
                         date.text = "모름"
                     }
 
@@ -326,7 +329,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
     private fun initInputMethodManager() {
         thread {
-            SystemClock.sleep(1000)
+            SystemClock.sleep(300)
             inputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             hideSoftKeyboard()

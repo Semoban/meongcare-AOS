@@ -25,9 +25,7 @@ class FeedPutViewModel
             get() = _feedPut
 
         fun getImageFeed(uri: Uri) {
-            viewModelScope.launch {
-                _feedImage.value = uri
-            }
+            _feedImage.value = uri
         }
 
         fun putFeed(feedUploadRequest: FeedUploadRequest) {
