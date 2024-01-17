@@ -291,16 +291,20 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private fun validationFeedInfo() {
         binding.apply {
             buttonFeedaddeditCompletion.setOnClickListener {
+                var isValid = true
+
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
                     )
+                    isValid = false
                 }
 
                 if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
                     )
+                    isValid = false
                 }
 
                 val kcal = edittextFeedaddeditKcalContent.text.toString()
@@ -309,6 +313,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         edittextFeedaddeditKcalContent,
                         textviewFeedaddeditIngredientAndKcalError,
                     )
+                    isValid = false
                 }
 
                 val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString()
@@ -323,34 +328,42 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                 if (protein.isEmpty() || protein == "0.00") {
                     validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeProteinPercentage,
                         scrollviewFeedadd,
                         textviewFeedaddeditIngredient,
                     )
+                    isValid = false
                 }
 
                 if (fat.isEmpty() || fat == "0.00") {
                     validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeFatPercent,
                         scrollviewFeedadd,
                         textviewFeedaddeditIngredient,
                     )
+                    isValid = false
                 }
 
                 if (ash.isEmpty() || ash == "0.00") {
                     validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeAshPercent,
                         scrollviewFeedadd,
                         textviewFeedaddeditIngredient,
                     )
+                    isValid = false
                 }
 
                 if (moisture.isEmpty() || moisture == "0.00") {
                     validationIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditMoisturePercent,
                         scrollviewFeedadd,
                         textviewFeedaddeditIngredient,
                     )
+                    isValid = false
                 }
 
                 val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
@@ -361,6 +374,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         scrollviewFeedadd,
                         textviewFeedaddeditIngredient,
                     )
+                    isValid = false
                 }
 
                 if (edittextFeedaddeditName.text.toString().isEmpty()) {
@@ -371,6 +385,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         textviewFeedaddeditName,
                         inputMethodManager,
                     )
+                    isValid = false
                 }
 
                 if (edittextFeedaddeditBrand.text.toString().isEmpty()) {
@@ -381,9 +396,10 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         textviewFeedaddeditBrand,
                         inputMethodManager
                     )
+                    isValid = false
                 }
 
-                else {
+                if (isValid) {
                     postFeedInfo()
                 }
             }
