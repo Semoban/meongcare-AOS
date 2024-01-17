@@ -57,7 +57,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var fatValue = 0.0
     private var ashValue = 0.0
     private var moistureValue = 0.0
-    private var kcalValue = 0.0
+    private var kcal = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,7 +86,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private fun applyKcalContentEditorBehavior() {
         binding.edittextFeedaddeditKcalContent.apply {
             setOnEditorActionListener { _, _, _ ->
-                initRecommendDailyIntake(text.toString().toDouble())
+                initRecommendDailyIntake(text.toString().toDoubleOrNull()?: 0.0)
                 hideSoftKeyboard()
                 true
             }
@@ -254,6 +254,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
+            kcal = edittextFeedaddeditKcalContent.text.toString()
             feedInfo =
                 FeedInfo(
                     2L,
@@ -263,7 +264,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     fatValue,
                     ashValue,
                     moistureValue,
-                    kcalValue,
+                    kcal.toDouble(),
                     recommendIntake.toInt(),
                     selectedStartDate,
                     selectedEndDate,
@@ -301,7 +302,6 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                val kcal = edittextFeedaddeditKcalContent.text.toString()
                 if (kcal.isEmpty() || kcal == "000.00") {
                     validationKcal(
                         edittextFeedaddeditKcalContent,
