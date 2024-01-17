@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentOldFeedBinding
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.PreviousFeedGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +19,10 @@ class OldFeedFragment : Fragment() {
     val binding get() = _binding!!
 
     private val previousFeedGetViewModel: PreviousFeedGetViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
     private lateinit var previousFeedAdapter: PreviousFeedAdapter
+
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,9 +38,13 @@ class OldFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
         val feedRecordId = getFeedRecordId()
         previousFeedAdapter = PreviousFeedAdapter()
-        previousFeedGetViewModel.getPreviousFeed(feedRecordId)
+        previousFeedGetViewModel.getPreviousFeed(dogId, feedRecordId)
         previousFeedGetViewModel.previousFeedGet.observe(viewLifecycleOwner) { response ->
             previousFeedAdapter.submitList(response.feedRecords)
         }

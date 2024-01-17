@@ -14,6 +14,7 @@ import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPatchViewModel
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,10 @@ class SearchFeedFragment : Fragment() {
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
     private val feedPatchViewModel: FeedPatchViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
     private lateinit var feedsAdapter: FeedsAdapter
+
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +45,10 @@ class SearchFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
         feedsAdapter =
             FeedsAdapter(
                 object : FeedItemSelectionListener {
@@ -54,7 +62,7 @@ class SearchFeedFragment : Fragment() {
         initFeedsRecyclerView()
         initDirectInputButton()
         updateSearchResult()
-        feedsGetViewModel.getFeeds()
+        feedsGetViewModel.getFeeds(dogId)
         feedsGetViewModel.feedsGet.observe(viewLifecycleOwner) { response ->
             feedsAdapter.submitList(response.feeds)
         }
@@ -83,7 +91,7 @@ class SearchFeedFragment : Fragment() {
     private fun patchFeed(newFeedId: Long) {
         val feedPatchRequest =
             FeedPatchRequest(
-                2L,
+                dogId,
                 newFeedId,
             )
         feedPatchViewModel.patchFeed(feedPatchRequest)

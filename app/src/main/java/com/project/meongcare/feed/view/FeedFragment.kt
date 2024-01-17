@@ -17,6 +17,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedGetViewModel
 import com.project.meongcare.feed.viewmodel.FeedPartGetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,8 +30,11 @@ class FeedFragment : Fragment() {
 
     private val feedGetViewModel: FeedGetViewModel by viewModels()
     private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
     private lateinit var feedPartAdapter: FeedPartAdapter
     private lateinit var feedGetResponse: FeedGetResponse
+
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +50,13 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
+
         feedPartAdapter = FeedPartAdapter()
-        feedGetViewModel.getFeed()
+        feedGetViewModel.getFeed(dogId)
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
             feedGetResponse =
                 FeedGetResponse(
@@ -62,20 +71,34 @@ class FeedFragment : Fragment() {
                     response.feedId,
                     response.feedRecordId,
                 )
-            updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
-            initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
-            initNutrientPieChart(
-                feedGetResponse.protein,
-                feedGetResponse.fat,
-                feedGetResponse.crudeAsh,
-                feedGetResponse.moisture,
-            )
+
+            if (feedGetResponse.brand == null) {
+                binding.apply {
+                    imageviewFeedBowlIllustration.visibility = View.VISIBLE
+                    buttonFeedInputGuide.visibility = View.VISIBLE
+                    textviewFeedBrand.visibility = View.GONE
+                    textviewFeedName.visibility = View.GONE
+                    piechartFeedNutrient.visibility = View.GONE
+                    buttonFeedChange.visibility = View.GONE
+                }
+            } else {
+                updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
+                initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
+                initNutrientPieChart(
+                    feedGetResponse.protein,
+                    feedGetResponse.fat,
+                    feedGetResponse.crudeAsh,
+                    feedGetResponse.moisture,
+                )
+                initIntakePeriod(feedGetResponse.days)
+                initDailyRecommendIntake(feedGetResponse.recommendIntake)
+                updateViewVisibilityBasedOnOldFeedPartExist(feedGetResponse.feedRecordId)
+            }
+
             initNutrientTable(feedGetResponse)
-            initIntakePeriod(feedGetResponse.days)
-            initDailyRecommendIntake(feedGetResponse.recommendIntake)
-            updateViewVisibilityBasedOnOldFeedPartExist(feedGetResponse.feedRecordId)
             initOldFeedSeeMoreButton(feedGetResponse.feedRecordId)
         }
+
         initFeedAddButton()
         initOldFeedPartRecyclerView()
         initChangeButton()
