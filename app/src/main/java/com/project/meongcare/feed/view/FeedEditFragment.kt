@@ -35,6 +35,7 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngr
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -437,13 +438,13 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
                 if (response == SUCCESS) {
                     findNavController().popBackStack()
-                    Snackbar.make(requireView(), "사료 정보가 수정되었습니다!", Snackbar.LENGTH_SHORT)
+                    CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보가 수정되었습니다!")
                         .show()
                 } else {
-                    Snackbar.make(
+                    CustomSnackBar.make(
                         requireView(),
+                        R.drawable.snackbar_error_16dp,
                         "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                        Snackbar.LENGTH_SHORT,
                     ).show()
                 }
             }

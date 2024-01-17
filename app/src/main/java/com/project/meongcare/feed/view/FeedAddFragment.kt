@@ -33,6 +33,7 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationInta
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -408,12 +409,13 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()
-                Snackbar.make(requireView(), "사료가 등록되었습니다!", Snackbar.LENGTH_SHORT).show()
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료가 등록되었습니다!",)
+                    .show()
             } else {
-                Snackbar.make(
+                CustomSnackBar.make(
                     requireView(),
+                    R.drawable.snackbar_error_16dp,
                     "서버가 불안정 하여 사료 정보 등록에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                    Snackbar.LENGTH_SHORT,
                 ).show()
             }
         }
