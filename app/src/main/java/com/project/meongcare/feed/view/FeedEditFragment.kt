@@ -29,6 +29,7 @@ import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
@@ -147,19 +148,18 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     }
 
     private fun applyKcalContentEditorBehavior() {
-        binding.edittextFeedaddeditKcalContent.apply {
-            setOnEditorActionListener { _, _, _ ->
-                initRecommendDailyIntake(text.toString().toDoubleOrNull()?: 0.0)
-                hideSoftKeyboard()
-                true
+        binding.apply {
+            edittextFeedaddeditKcalContent.apply {
+                setOnEditorActionListener { _, _, _ ->
+                    initRecommendDailyIntake(
+                        text.toString().toDoubleOrNull()?: 0.0,
+                        textviewFeedaddeditDailyIntakeContent,
+                    )
+                    hideSoftKeyboard()
+                    true
+                }
             }
         }
-    }
-
-    private fun initRecommendDailyIntake(feedKcal: Double) {
-        val weight = 15.0
-        recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
-        binding.textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
     }
 
     private fun updateCalendarVisibility() {
