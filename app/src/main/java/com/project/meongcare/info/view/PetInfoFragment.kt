@@ -6,21 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetAddEditBinding
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.view.Gender
 import com.project.meongcare.onboarding.view.dateFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PetInfoFragment : Fragment() {
     private lateinit var binding: FragmentPetAddEditBinding
 
     private val petInfoViewModel: ProfileViewModel by viewModels()
+    private lateinit var currentAccessToken: String
+    private var dogId: Long = 0
+
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dogId = arguments?.getLong("dogId")!!
+        getAccessToken()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,10 +50,6 @@ class PetInfoFragment : Fragment() {
                 initDogInfo(response)
             }
         }
-
-        val accessToken = ""
-        val dogId = arguments?.getLong("dogId")!!
-        petInfoViewModel.getDogInfo(dogId, accessToken)
 
         binding.run {
             imagebuttonPetaddBack.setOnClickListener {
@@ -61,7 +73,7 @@ class PetInfoFragment : Fragment() {
                         includeDeleteDialog.root.visibility = View.GONE
                     }
                     buttonDeleteDialogDelete.setOnClickListener {
-                        petInfoViewModel.deleteDog(dogId, accessToken)
+                        petInfoViewModel.deleteDog(dogId, currentAccessToken)
                         petInfoViewModel.dogDeleteResponse.observe(viewLifecycleOwner) { response ->
                             if (response == 200) findNavController().popBackStack()
                         }
@@ -71,6 +83,17 @@ class PetInfoFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun getAccessToken() {
+        lifecycleScope.launch {
+            userPreferences.accessToken.collectLatest { accessToken ->
+                if (accessToken != null) {
+                    currentAccessToken = accessToken
+                    petInfoViewModel.getDogInfo(dogId, accessToken)
+                }
+            }
+        }
     }
 
     private fun initDogInfo(dogInfo: GetDogInfoResponse) {

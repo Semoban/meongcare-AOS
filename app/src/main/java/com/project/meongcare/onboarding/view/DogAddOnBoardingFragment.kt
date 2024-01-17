@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
@@ -21,12 +22,12 @@ import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.model.data.repository.DogAddRepository
 import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,9 +44,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
-
-    @Inject
-    lateinit var dogAddRepository: DogAddRepository
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -77,6 +75,12 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                     text = dogType
                     setTextAppearance(R.style.Typography_Body1_Medium)
                 }
+            }
+        }
+
+        dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
             }
         }
 
@@ -175,16 +179,15 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(mainActivity, dogAddViewModel.dogProfileImage.value)
 
-                // 서버로 전송
-                runBlocking {
-                    val dogAddResponse =
-                        dogAddRepository.postDogInfo(
-                            "",
-                            filePart,
-                            requestBody,
-                        )
-                    if (dogAddResponse == 200) {
-                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
+                lifecycleScope.launch {
+                    userPreferences.accessToken.collectLatest { accessToken ->
+                        if (accessToken != null) {
+                            dogAddViewModel.postDogInfo(
+                                accessToken,
+                                filePart,
+                                requestBody,
+                            )
+                        }
                     }
                 }
             }

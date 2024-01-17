@@ -7,8 +7,7 @@ import androidx.fragment.app.FragmentManager
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
-import com.project.meongcare.symptom.view.SymptomBottomSheetDialogFragment
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
+import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -55,11 +54,15 @@ class SymptomUtils {
         }
 
         fun convertToDateToLocale(date: Date): LocalDateTime {
-            // Date를 Instant로 변환
             val instant: Instant = date.toInstant()
-
-            // Instant를 ZoneId를 사용하여 LocalDateTime으로 변환
             return instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+        }
+
+        fun convertToDateToMiliSec(date: Date): String {
+            val instant: Instant = date.toInstant()
+            val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            return localDateTime.format(formatter)
         }
 
         fun getSymptomImg(symptomData: Symptom): Int {
@@ -70,7 +73,7 @@ class SymptomUtils {
                 SymptomType.DIARRHEA.symptomName -> R.drawable.symptom_diarrhea
                 SymptomType.LOSS_OF_APPETITE.symptomName -> R.drawable.symptom_loss_appetite
                 SymptomType.ACTIVITY_DECREASE.symptomName -> R.drawable.symptom_amount_activity
-                else -> R.drawable.symptom_stethoscope
+                else -> R.drawable.symptom_etc_record
             }
         }
 
@@ -94,17 +97,10 @@ class SymptomUtils {
 
         fun showCalendarBottomSheet(
             parentFragmentManager: FragmentManager,
-            symptomViewModel: SymptomViewModel,
+            onDateSelectedListener: SymptomBottomSheetDialogFragment.OnDateSelectedListener,
         ) {
-            val bottomSheetDialogFragment =
-                SymptomBottomSheetDialogFragment().apply {
-                    onDateSelectedListener =
-                        object : SymptomBottomSheetDialogFragment.OnDateSelectedListener {
-                            override fun onDateSelected(date: LocalDate) {
-                                symptomViewModel.updateSymptomDate(date)
-                            }
-                        }
-                }
+            val bottomSheetDialogFragment = SymptomBottomSheetDialogFragment()
+            bottomSheetDialogFragment.setOnDateSelecetedListener(onDateSelectedListener)
             bottomSheetDialogFragment.show(parentFragmentManager, "SymptomBottomSheetDialogFragment")
         }
     }

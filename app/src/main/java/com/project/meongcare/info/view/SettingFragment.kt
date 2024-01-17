@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.R
@@ -18,16 +19,27 @@ import com.project.meongcare.databinding.FragmentSettingBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
+    private lateinit var currentAccessToken: String
 
     private val settingViewModel: ProfileViewModel by viewModels()
+    private var pushAgreement = false
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        pushAgreement = arguments?.getBoolean("pushAgreement")!!
+        getAccessToken()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +51,9 @@ class SettingFragment : Fragment() {
         settingViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
             if (response != null && response == 200) {
                 userPreferences.setProvider(null)
+                userPreferences.setEmail(null)
+                userPreferences.setAccessToken(null)
+                userPreferences.setRefreshToken(null)
                 findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
             }
         }
@@ -52,8 +67,6 @@ class SettingFragment : Fragment() {
             }
         }
 
-        val accessToken = ""
-        val pushAgreement = arguments?.getBoolean("pushAgreement")!!
         binding.run {
             switchSettingNotification.run {
                 isChecked = pushAgreement
@@ -78,7 +91,7 @@ class SettingFragment : Fragment() {
                     includeDeleteAccountDialog.root.visibility = View.GONE
                 }
                 buttonDeleteAccountDialogDelete.setOnClickListener {
-                    settingViewModel.deleteUser(accessToken)
+                    settingViewModel.deleteUser(currentAccessToken)
                 }
             }
 
@@ -87,11 +100,21 @@ class SettingFragment : Fragment() {
             }
 
             switchSettingNotification.setOnCheckedChangeListener { buttonView, isChecked ->
-                settingViewModel.patchPushAgreement(isChecked, accessToken)
+                settingViewModel.patchPushAgreement(isChecked, currentAccessToken)
             }
         }
 
         return binding.root
+    }
+
+    private fun getAccessToken() {
+        lifecycleScope.launch {
+            userPreferences.accessToken.collectLatest { accessToken ->
+                if (accessToken != null) {
+                    currentAccessToken = accessToken
+                }
+            }
+        }
     }
 }
 
