@@ -24,6 +24,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
@@ -441,13 +442,6 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 .into(imageviewFeedaddeditPicture)
             layoutFeedaddeditImage.root.visibility = View.INVISIBLE
         }
-    }
-
-    fun convertDateFormat(date: String): String {
-        val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-
-        val parsedDate = LocalDate.parse(date)
-        return outputFormat.format(parsedDate)
     }
 
     override fun onDestroyView() {
