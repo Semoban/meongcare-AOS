@@ -508,7 +508,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="0mg"
+                android:text="0g"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/main4"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_daily_intake_title"
