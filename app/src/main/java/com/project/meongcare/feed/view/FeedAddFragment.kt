@@ -252,21 +252,6 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         }
     }
 
-    private fun initInputMethodManager() {
-        thread {
-            SystemClock.sleep(300)
-            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            hideSoftKeyboard()
-        }
-    }
-
-    private fun hideSoftKeyboard() {
-        if (requireActivity().currentFocus != null) {
-            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
-            requireActivity().currentFocus!!.clearFocus()
-        }
-    }
-
     private fun createFeedInfo() {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
@@ -431,6 +416,21 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     Snackbar.LENGTH_SHORT,
                 ).show()
             }
+        }
+    }
+
+    private fun initInputMethodManager() {
+        thread {
+            SystemClock.sleep(300)
+            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideSoftKeyboard()
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            requireActivity().currentFocus!!.clearFocus()
         }
     }
 
