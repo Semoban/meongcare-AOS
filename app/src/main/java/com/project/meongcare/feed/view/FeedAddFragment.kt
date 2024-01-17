@@ -33,6 +33,7 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngr
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +49,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
     private lateinit var inputMethodManager: InputMethodManager
     private val feedPostViewModel: FeedPostViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
 
     private var recommendIntake = 0.0
     var selectedStartDate = ""
@@ -60,6 +62,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var ashValue = 0.0
     private var moistureValue = 0.0
     private var kcal = ""
+    private var weight = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +78,10 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogWeight()
+        dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
+            weight = response
+        }
         initInputMethodManager()
         initToolbar()
         initPhotoAttachModalBottomSheet()
@@ -90,6 +97,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
             edittextFeedaddeditKcalContent.apply {
                 setOnEditorActionListener { _, _, _ ->
                     initRecommendDailyIntake(
+                            weight,
                             text.toString().toDoubleOrNull()?: 0.0,
                             textviewFeedaddeditDailyIntakeContent,
                         )
