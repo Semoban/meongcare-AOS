@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS
@@ -29,7 +28,6 @@ import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
-import com.project.meongcare.feed.model.utils.FeedValidationUtils
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
