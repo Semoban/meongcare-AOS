@@ -182,6 +182,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             } else {
                 Log.i("Logout-kakao", "로그아웃 성공, SDK에서 토큰 삭제됨")
                 userPreferences.setProvider(null)
+                userPreferences.setAccessToken(null)
                 findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
             }
         }
@@ -190,6 +191,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private fun naverLogout() {
         NaverIdLoginSDK.logout()
         userPreferences.setProvider(null)
+        userPreferences.setAccessToken(null)
         findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
     }
 
@@ -208,6 +210,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 if (task.isSuccessful) {
                     Log.d("Logout-google", "로그아웃 성공")
                     userPreferences.setProvider(null)
+                    userPreferences.setAccessToken(null)
                     findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
                 } else {
                     Log.e("Logout-google", "로그아웃 실패")
