@@ -44,4 +44,13 @@ object FeedInfoUtils {
 
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
+
+    fun calculateRecommendDailyIntake(
+        weight: Double,
+        feedKcal: Double,
+    ): Double {
+        val dailyEnergyRequirement = 1.6 * (30 * weight + 70)
+        val recommendDailyIntake = dailyEnergyRequirement * 1000 / feedKcal
+        return String.format("%.2f", recommendDailyIntake).toDouble()
+    }
 }

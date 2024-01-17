@@ -26,6 +26,7 @@ import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedPutInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
@@ -159,15 +160,6 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         val weight = 15.0
         recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
         binding.textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
-    }
-
-    private fun calculateRecommendDailyIntake(
-        weight: Double,
-        feedKcal: Double,
-    ): Double {
-        val dailyEnergyRequirement = 1.6 * (30 * weight + 70)
-        val recommendDailyIntake = dailyEnergyRequirement * 1000 / feedKcal
-        return String.format("%.2f", recommendDailyIntake).toDouble()
     }
 
     private fun updateCalendarVisibility() {
