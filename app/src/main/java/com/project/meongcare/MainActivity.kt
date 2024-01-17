@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding.run {
-//            autoLogin()
+            autoLogin()
 
             bottomNavigationViewMain.background = null
             bottomNavigationViewMain.menu.getItem(1).isEnabled = false
@@ -219,11 +219,16 @@ class MainActivity : AppCompatActivity() {
 
     fun autoLogin() {
         lifecycleScope.launch {
-            userPreferences.email.collect { email ->
-                if (email == null) {
-                    // OnBoardingFragment로 교체
+            lifecycleScope.launch {
+                val accessToken = userPreferences.getAccessToken()
+                val refreshToken = userPreferences.getRefreshToken()
+
+                if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
+                } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
                 } else {
-                    // HomeFragment로 교체
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                 }
             }
         }
