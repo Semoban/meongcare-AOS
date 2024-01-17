@@ -51,6 +51,9 @@ class SettingFragment : Fragment() {
         settingViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
             if (response != null && response == 200) {
                 userPreferences.setProvider(null)
+                userPreferences.setEmail(null)
+                userPreferences.setAccessToken(null)
+                userPreferences.setRefreshToken(null)
                 findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
             }
         }
