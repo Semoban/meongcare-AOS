@@ -33,7 +33,7 @@ interface FeedRepository {
     suspend fun getPreviousFeed(
         accessToken: String,
         dogId: Long,
-        feedRecordId: Long
+        feedRecordId: Long,
     ): FeedRecords?
 
     suspend fun getDetailFeed(
