@@ -13,8 +13,8 @@ import javax.inject.Inject
 class DogViewModel
     @Inject
     constructor(
-        private val dogPreferences: DogPreferences
-    ): ViewModel() {
+        private val dogPreferences: DogPreferences,
+    ) : ViewModel() {
         private var _dogId = MutableLiveData<Long>()
         val dogId
             get() = _dogId
