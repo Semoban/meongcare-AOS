@@ -17,6 +17,7 @@ class UserViewModel
         private var _accessToken = MutableLiveData<String>()
         val accessToken
             get() = _accessToken
+
         fun fetchAccessToken() {
             viewModelScope.launch {
                 userPreferences.accessToken.collect { accessToken ->
