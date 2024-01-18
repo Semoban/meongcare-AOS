@@ -26,9 +26,9 @@ class WeightViewModel
         val weightPosted
             get() = _weightPosted
 
-        private var weightPatched = MutableLiveData<Boolean>()
-        private val _weightPatched
-            get() = weightPatched
+        private var _weightPatched = MutableLiveData<Int>()
+        val weightPatched
+            get() = _weightPatched
 
         private var _weeklyWeightGet = MutableLiveData<WeightWeeksResponse>()
         val weeklyWeightGet: LiveData<WeightWeeksResponse>
@@ -57,25 +57,14 @@ class WeightViewModel
 
         fun patchWeight(
             accessToken: String,
-            dogId: Long,
-            kg: Double,
-            date: String,
+            weightPatchRequest: WeightPatchRequest,
         ) {
             viewModelScope.launch {
-                val weightPatchRequest =
-                    WeightPatchRequest(
-                        dogId,
-                        kg,
-                        date,
+                _weightPatched.value =
+                    weightRepositoryImpl.patchWeight(
+                        accessToken,
+                        weightPatchRequest,
                     )
-
-                weightRepositoryImpl.patchWeight(
-                    accessToken,
-                    weightPatchRequest,
-                )
-                _weightPatched.value = true
-
-                Log.d("hye", weightPatchRequest.toString())
             }
         }
 

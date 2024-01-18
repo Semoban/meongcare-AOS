@@ -54,15 +54,15 @@ class WeightRemoteDataSource
                         weightPatchRequest.date,
                     )
 
-                return if (patchResponse.code() == SUCCESS) {
-                    Log.d("WeightPatchSuccess", patchResponse.code().toString())
-                    patchResponse.body()
-                } else {
+                if (patchResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(patchResponse.errorBody()?.string()!!)
                     Log.d("WeightPatchFailure", patchResponse.code().toString())
                     Log.d("WeightPatchFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("WeightPatchSuccess", patchResponse.code().toString())
+                return patchResponse.code()
             } catch (e: Exception) {
                 Log.e("WeightPatchException", e.toString())
                 return null

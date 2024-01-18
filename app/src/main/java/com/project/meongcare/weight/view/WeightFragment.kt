@@ -24,7 +24,9 @@ import com.project.meongcare.databinding.FragmentWeightBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
+import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import com.project.meongcare.weight.viewmodel.WeightViewModel
@@ -169,11 +171,32 @@ class WeightFragment : Fragment() {
         val weightText = binding.layoutWeightEdit.edittextWeighteditdialog.text.toString()
         val weight = weightText.toDoubleOrNull() ?: return
 
-        weightViewModel.patchWeight(accessToken, dogId, weight, date)
-        hideSoftKeyboard()
-        binding.layoutWeightEdit.run {
-            edittextWeighteditdialog.text.clear()
-            root.visibility = View.GONE
+        val weightPatchRequest =
+            WeightPatchRequest(
+                dogId,
+                weight,
+                date,
+            )
+
+        weightViewModel.patchWeight(accessToken, weightPatchRequest)
+        weightViewModel.weightPatched.observe(viewLifecycleOwner) { response ->
+            hideSoftKeyboard()
+            binding.layoutWeightEdit.run {
+                edittextWeighteditdialog.text.clear()
+                root.visibility = View.GONE
+            }
+            if (response == SUCCESS) {
+                fetchDailyWeight()
+                fetchWeeklyWeight()
+                fetchMonthlyWeight()
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "체중이 수정되었습니다!").show()
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    "서버가 불안정 하여 체중 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                ).show()
+            }
         }
     }
 
