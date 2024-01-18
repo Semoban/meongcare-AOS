@@ -22,7 +22,7 @@ class WeightViewModel
     constructor(
         private val weightRepositoryImpl: WeightRepositoryImpl,
     ) : ViewModel() {
-        private var _weightPosted = MutableLiveData<Boolean>()
+        private var _weightPosted = MutableLiveData<Int>()
         val weightPosted
             get() = _weightPosted
 
@@ -44,25 +44,14 @@ class WeightViewModel
 
         fun postWeight(
             accessToken: String,
-            dogId: Long,
-            dateTime: String,
-            weight: Double? = null,
+            weightPostRequest: WeightPostRequest,
         ) {
             viewModelScope.launch {
-                val weightPostRequest =
-                    WeightPostRequest(
-                        dogId,
-                        dateTime,
-                        weight,
+                _weightPosted.value =
+                    weightRepositoryImpl.postWeight(
+                        accessToken,
+                        weightPostRequest,
                     )
-
-                weightRepositoryImpl.postWeight(
-                    accessToken,
-                    weightPostRequest,
-                )
-                _weightPosted.value = true
-
-                Log.d("hye", weightPostRequest.toString())
             }
         }
 

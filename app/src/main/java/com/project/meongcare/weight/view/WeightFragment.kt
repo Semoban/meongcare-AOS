@@ -21,9 +21,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
+import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import com.project.meongcare.weight.viewmodel.WeightViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +45,7 @@ class WeightFragment : Fragment() {
     private val dogViewModel: DogViewModel by viewModels()
     private var accessToken = ""
     private var dogId = 0L
+    private var weight: Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,10 +72,20 @@ class WeightFragment : Fragment() {
             showWeightEditDialog()
             fetchWeeklyWeight()
             fetchMonthlyWeight()
+            postWeight()
         }
-        weightViewModel.postWeight(accessToken, dogId, LocalDate.now().toString())
+    }
+
+    private fun postWeight() {
+        val weightPostRequest =
+            WeightPostRequest(
+                dogId,
+                LocalDate.now().toString(),
+                weight,
+            )
+        weightViewModel.postWeight(accessToken, weightPostRequest)
         weightViewModel.weightPosted.observe(viewLifecycleOwner) { response ->
-            if (response == true) {
+            if (response == SUCCESS) {
                 fetchDailyWeight()
                 initWeightEditDialog()
             }

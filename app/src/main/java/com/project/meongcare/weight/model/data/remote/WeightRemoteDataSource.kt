@@ -26,15 +26,15 @@ class WeightRemoteDataSource
                         weightPostRequest,
                     )
 
-                return if (postResponse.code() == SUCCESS) {
-                    Log.d("WeightSuccess", postResponse.code().toString())
-                    postResponse.body()
-                } else {
-                    Log.d("WeightFailure", postResponse.code().toString())
+                if (postResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(postResponse.errorBody()?.string()!!)
+                    Log.d("WeightFailure", postResponse.code().toString())
                     Log.d("WeightFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("WeightSuccess", postResponse.code().toString())
+                return postResponse.code()
             } catch (e: Exception) {
                 Log.e("WeightException", e.toString())
                 return null
