@@ -70,48 +70,27 @@ class WeightViewModel
 
         fun getWeeklyWeight(
             accessToken: String,
-            dogId: Long,
-            date: String,
+            weightGetRequest: WeightGetRequest,
         ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        dogId,
-                        date,
-                    )
-
                 _weeklyWeightGet.value = weightRepositoryImpl.getWeeklyWeight(accessToken, weightGetRequest)
             }
         }
 
         fun getMonthlyWeight(
             accessToken: String,
-            dogId: Long,
-            date: String,
+            weightGetRequest: WeightGetRequest,
         ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        dogId,
-                        date,
-                    )
-
                 _monthlyWeightGet.value = weightRepositoryImpl.getMonthlyWeight(accessToken, weightGetRequest)
             }
         }
 
         fun getDailyWeight(
             accessToken: String,
-            dogId: Long,
-            date: String,
+            weightGetRequest: WeightGetRequest
         ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        dogId,
-                        date,
-                    )
-
                 _dayWeightGet.value = weightRepositoryImpl.getDayWeight(accessToken, weightGetRequest)
             }
         }

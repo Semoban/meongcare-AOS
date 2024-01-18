@@ -25,6 +25,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
@@ -48,6 +49,7 @@ class WeightFragment : Fragment() {
     private var accessToken = ""
     private var dogId = 0L
     private var weight: Double? = null
+    private lateinit var weightGetRequest: WeightGetRequest
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +70,11 @@ class WeightFragment : Fragment() {
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
+            weightGetRequest =
+                WeightGetRequest(
+                    dogId,
+                    "2024-01-19"
+                )
         }
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
@@ -95,7 +102,7 @@ class WeightFragment : Fragment() {
     }
 
     private fun fetchDailyWeight() {
-        weightViewModel.getDailyWeight(accessToken, dogId, "2024-01-19")
+        weightViewModel.getDailyWeight(accessToken, weightGetRequest)
         weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 binding.textviewWeightRecordContent.text = response.weight.toString()
@@ -104,14 +111,14 @@ class WeightFragment : Fragment() {
     }
 
     private fun fetchWeeklyWeight() {
-        weightViewModel.getWeeklyWeight(accessToken, dogId,"2024-01-19")
+        weightViewModel.getWeeklyWeight(accessToken, weightGetRequest)
         weightViewModel.weeklyWeightGet.observe(viewLifecycleOwner) { response ->
             initWeeklyRecordChart(response)
         }
     }
 
     private fun fetchMonthlyWeight() {
-        weightViewModel.getMonthlyWeight(accessToken, dogId, "2024-01-19")
+        weightViewModel.getMonthlyWeight(accessToken, weightGetRequest)
         weightViewModel.monthlyWeightGet.observe(viewLifecycleOwner) { response ->
             initMonthlyRecordChart(response)
             showMonthlyWeightVariation(response)
