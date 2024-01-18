@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -33,6 +34,7 @@ import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingS
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -63,10 +65,16 @@ class LoginFragment : Fragment() {
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                userPreferences.setAccessToken(loginResponse.accessToken)
-                userPreferences.setRefreshToken(loginResponse.refreshToken)
-
-                findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    userPreferences.setAccessToken(loginResponse.accessToken)
+                    userPreferences.setRefreshToken(loginResponse.refreshToken)
+                    if (refreshToken.isNullOrEmpty()) {
+                        findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                    } else {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    }
+                }
             } else {
                 Log.d("Login-viewmodel", "통신 실패")
             }
