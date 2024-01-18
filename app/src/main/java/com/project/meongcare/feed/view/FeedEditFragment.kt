@@ -116,7 +116,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             edittextFeedaddeditCrudeAshPercent.setText(feedInfo.crudeAsh.toString())
             edittextFeedaddeditMoisturePercent.setText(feedInfo.moisture.toString())
             edittextFeedaddeditKcalContent.setText(feedInfo.kcal.toString())
-            textviewFeedaddeditDailyIntakeContent.text = "${recommendIntake}g"
+            textviewFeedaddeditDailyIntakeContent.text = "$recommendIntake"
             textviewFeedaddeditIntakePeriodStart.apply {
                 selectedStartDate = feedInfo.startDate
                 text = convertDateFormat(feedInfo.startDate)
