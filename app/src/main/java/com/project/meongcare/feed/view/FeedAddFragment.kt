@@ -24,6 +24,7 @@ import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
@@ -95,11 +96,15 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             edittextFeedaddeditKcalContent.apply {
                 setOnEditorActionListener { _, _, _ ->
-                    initRecommendDailyIntake(
+                    recommendIntake =
+                        calculateRecommendDailyIntake(
                             weight,
                             text.toString().toDoubleOrNull()?: 0.0,
-                            textviewFeedaddeditDailyIntakeContent,
                         )
+                    initRecommendDailyIntake(
+                        recommendIntake,
+                        textviewFeedaddeditDailyIntakeContent,
+                    )
                     hideSoftKeyboard()
                     true
                 }

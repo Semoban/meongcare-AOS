@@ -56,16 +56,14 @@ object FeedInfoUtils {
     }
 
     fun initRecommendDailyIntake(
-        weight: Double,
-        feedKcal: Double,
+        recommendIntake: Double,
         textView: TextView,
     ) {
-        val recommendIntake = calculateRecommendDailyIntake(weight, feedKcal)
         textView.apply {
             text = if (recommendIntake == Double.POSITIVE_INFINITY) {
-                "0g"
+                "0"
             }  else {
-                "${recommendIntake}g"
+                "$recommendIntake"
             }
         }
     }
