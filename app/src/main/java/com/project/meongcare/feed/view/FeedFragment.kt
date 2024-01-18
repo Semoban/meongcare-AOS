@@ -228,12 +228,6 @@ class FeedFragment : Fragment() {
             feedRecordId,
         )
         feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
-            if (response.feedPartRecords.isEmpty()) {
-                binding.apply {
-                    textviewFeedOldFeedSeeMore.visibility = View.GONE
-                    buttonFeedChange.visibility = View.GONE
-                }
-            }
             feedPartAdapter.submitList(response.feedPartRecords)
         }
     }
