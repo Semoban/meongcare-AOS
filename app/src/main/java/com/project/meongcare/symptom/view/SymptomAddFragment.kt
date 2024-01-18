@@ -53,7 +53,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         val factory = SymptomViewModelFactory(SymptomRepository())
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
-        getBundleOfSymptomSelectData()
+//        getBundleOfSymptomSelectData()
 
         symptomViewModel.run {
             if (sharedPreferences.getInt("symptomItemImgId", 0) != 0 && sharedPreferences.getString(
@@ -188,14 +188,14 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         }
     }
 
-    private fun getBundleOfSymptomSelectData() {
-        if (arguments?.getInt("symptomItemImgId") != null) {
-            Log.d("번들 확인1", arguments?.getInt("symptomItemImgId").toString())
-            Log.d("번들 확인2", arguments?.getString("symptomItemTitle").toString())
-            symptomViewModel.symptomItemImgId.value = arguments?.getInt("symptomItemImgId")
-            symptomViewModel.symptomItemTitle.value = arguments?.getString("symptomItemTitle")
-        }
-    }
+//    private fun getBundleOfSymptomSelectData() {
+//        if (arguments?.getInt("symptomItemImgId") != null) {
+//            Log.d("번들 확인1", arguments?.getInt("symptomItemImgId").toString())
+//            Log.d("번들 확인2", arguments?.getString("symptomItemTitle").toString())
+//            symptomViewModel.symptomItemImgId.value = arguments?.getInt("symptomItemImgId")
+//            symptomViewModel.symptomItemTitle.value = arguments?.getString("symptomItemTitle")
+//        }
+//    }
 
     private fun setClearEditTextSymptomAddCustom() {
         fragmentSymptomAddBinding.editTextSymptomAddCustom.text.clear()
@@ -206,7 +206,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         val dateTimeString = getDateTimeString()
         val addItemName = getAddItemName()
         val addItemTitle = symptomViewModel.symptomItemTitle.value
-        checkNullAndAddData(dateTimeString, addItemName, addItemTitle)
+        checkNullAndAddData( addItemName, addItemTitle, dateTimeString,)
     }
 
     private fun getAddItemName() =
@@ -304,8 +304,8 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         symptomViewModel.updateSymptomDate(date, isEditSymptom)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         editor.remove("symptomItemTitle")
         editor.remove("symptomItemImgID")
         editor.apply()

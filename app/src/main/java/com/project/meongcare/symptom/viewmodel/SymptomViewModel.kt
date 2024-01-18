@@ -79,8 +79,10 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
             val dogId:Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
             Log.d("Symptom add Api accessToken", "${accessToken}")
             Log.d("Symptom add Api dogId", "${dogId}")
-            val toAddSymptom = ToAddSymptom(dogId!!, addItemName, addItemTitle, dateTimeString)
+            val toAddSymptom = ToAddSymptom(dogId!!.toInt(), addItemName, addItemTitle,dateTimeString )
+            Log.d("Symptom add Api toAddSymptom", "$toAddSymptom")
             addSymptomCode.value = repository.addSymptom(accessToken,toAddSymptom)
+            Log.d("Symptom add Api addSymptomCode", "${addSymptomCode.value}")
         }
     }
 

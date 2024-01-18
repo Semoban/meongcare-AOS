@@ -8,7 +8,7 @@ data class ResultSymptom(
 )
 
 data class ToAddSymptom(
-    val dogId: Long,
+    val dogId: Int,
     val symptomString: String,
     val note: String,
     val dateTime: String,
