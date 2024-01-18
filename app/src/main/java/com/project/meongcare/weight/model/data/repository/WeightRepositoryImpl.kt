@@ -11,13 +11,28 @@ class WeightRepositoryImpl
     constructor(
         private val weightDataSource: WeightRemoteDataSource,
     ) : WeightRepository {
-        override suspend fun postWeight(weightPostRequest: WeightPostRequest) = weightDataSource.postWeight(weightPostRequest)
+        override suspend fun postWeight(
+            accessToken: String,
+            weightPostRequest: WeightPostRequest,
+        ) = weightDataSource.postWeight(accessToken, weightPostRequest)
 
-        override suspend fun patchWeight(weightPatchRequest: WeightPatchRequest) = weightDataSource.patchWeight(weightPatchRequest)
+        override suspend fun patchWeight(
+            accessToken: String,
+            weightPatchRequest: WeightPatchRequest,
+        ) = weightDataSource.patchWeight(accessToken, weightPatchRequest)
 
-        override suspend fun getWeeklyWeight(weightGetRequest: WeightGetRequest) = weightDataSource.getWeeklyWeight(weightGetRequest)
+        override suspend fun getWeeklyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) = weightDataSource.getWeeklyWeight(accessToken, weightGetRequest)
 
-        override suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest) = weightDataSource.getMonthlyWeight(weightGetRequest)
+        override suspend fun getMonthlyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) = weightDataSource.getMonthlyWeight(accessToken, weightGetRequest)
 
-        override suspend fun getDayWeight(weightGetRequest: WeightGetRequest) = weightDataSource.getDayWeight(weightGetRequest)
+        override suspend fun getDayWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) = weightDataSource.getDayWeight(accessToken, weightGetRequest)
     }
