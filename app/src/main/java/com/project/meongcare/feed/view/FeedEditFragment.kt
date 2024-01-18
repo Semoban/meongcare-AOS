@@ -224,6 +224,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                 override fun onFirstDateSelected(startDate: Calendar) {
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    date.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     selectedStartDate = dateFormat.format(startDate.time)
 
                     date.text = convertDateFormat(selectedStartDate)
@@ -248,6 +249,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                 override fun onFirstDateSelected(startDate: Calendar) {
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    date.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     selectedEndDate = dateFormat.format(startDate.time)
                     date.text = convertDateFormat(selectedEndDate)
 
@@ -276,6 +278,10 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 textviewFeedaddeditIntakePeriodEnd,
                 checkboxFeedaddeditDoNotKnowEndDate,
             )
+
+            checkboxFeedaddeditDoNotKnowEndDate.setOnClickListener {
+                textviewFeedaddeditIntakePeriodEnd.text = "모름"
+            }
         }
     }
 
@@ -311,7 +317,10 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     val endDate = selectedEndDate?.replace("-","")?.toInt()!!
 
                     if (startDate > endDate) {
-                        textviewFeedaddeditIntakePeriodError.visibility = View.VISIBLE
+                        textviewFeedaddeditIntakePeriodError.apply {
+                            text = "시작 일자가 종료 일자 이후 일 수 없습니다."
+                            visibility = View.VISIBLE
+                        }
                         isValid = false
                     }
                 }
@@ -319,6 +328,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
+                        textviewFeedaddeditIntakePeriodError,
                     )
                     isValid = false
                 }
@@ -326,6 +336,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
+                        textviewFeedaddeditIntakePeriodError
                     )
                     isValid = false
                 }

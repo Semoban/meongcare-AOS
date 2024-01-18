@@ -153,31 +153,25 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             textviewFeedaddeditIntakePeriodStart.apply {
                 setOnClickListener {
-                    text = "시작 일자"
                     setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     setTextColor(resources.getColor(R.color.black, null))
                     calendarviewFeedaddeditStartDate.visibility = View.VISIBLE
                     calendarviewFeedaddeditEndDate.visibility = View.GONE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.GONE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.GONE
-                    if (textviewFeedaddeditIntakePeriodEnd.text != "필수 입력 값입니다") {
-                        textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
-                    }
+                    textviewFeedaddeditIntakePeriodEnd.setTextColor(resources.getColor(R.color.gray4, null))
                     scrollviewFeedadd.smoothScrollTo(0, buttonFeedaddeditCompletion.bottom)
                 }
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
                 setOnClickListener {
-                    text = "종료 일자"
                     setBackgroundResource(R.drawable.all_rect_gray1_r5)
                     setTextColor(resources.getColor(R.color.black, null))
                     calendarviewFeedaddeditEndDate.visibility = View.VISIBLE
                     calendarviewFeedaddeditStartDate.visibility = View.INVISIBLE
                     checkboxFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
                     textviewFeedaddeditDoNotKnowEndDate.visibility = View.VISIBLE
-                    if (textviewFeedaddeditIntakePeriodEnd.text != "필수 입력 값입니다") {
-                        textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
-                    }
+                    textviewFeedaddeditIntakePeriodStart.setTextColor(resources.getColor(R.color.gray4, null))
                     scrollviewFeedadd.smoothScrollTo(0, buttonFeedaddeditCompletion.bottom)
                 }
             }
@@ -199,6 +193,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                 override fun onFirstDateSelected(startDate: Calendar) {
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    date.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     selectedStartDate = dateFormat.format(startDate.time)
 
                     date.text = convertDateFormat(selectedStartDate)
@@ -223,6 +218,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                 override fun onFirstDateSelected(startDate: Calendar) {
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    date.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     selectedEndDate = dateFormat.format(startDate.time)
                     date.text = convertDateFormat(selectedEndDate)
 
@@ -251,6 +247,9 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 textviewFeedaddeditIntakePeriodEnd,
                 checkboxFeedaddeditDoNotKnowEndDate,
             )
+            checkboxFeedaddeditDoNotKnowEndDate.setOnClickListener {
+                textviewFeedaddeditIntakePeriodEnd.text = "모름"
+            }
         }
     }
 
@@ -286,7 +285,10 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     val endDate = selectedEndDate?.replace("-","")?.toInt()!!
 
                     if (startDate > endDate) {
-                        textviewFeedaddeditIntakePeriodError.visibility = View.VISIBLE
+                        textviewFeedaddeditIntakePeriodError.apply {
+                            text = "시작 일자가 종료 일자 이후 일 수 없습니다."
+                            visibility = View.VISIBLE
+                        }
                         isValid = false
                     }
                 }
@@ -294,6 +296,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
+                        textviewFeedaddeditIntakePeriodError,
                     )
                     isValid = false
                 }
@@ -301,6 +304,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
+                        textviewFeedaddeditIntakePeriodError,
                     )
                     isValid = false
                 }

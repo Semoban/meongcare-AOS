@@ -69,9 +69,13 @@ object FeedValidationUtils {
 
     fun validationIntakePeriod(
         textView: TextView,
+        errorMessage: TextView,
     ) {
+        errorMessage.apply {
+            text = "섭취 기간은 필수 항목입니다."
+            visibility = View.VISIBLE
+        }
         textView.apply {
-            text = "필수 입력 값입니다"
             setTextColor(resources.getColor(R.color.sub1, null))
             setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         }
