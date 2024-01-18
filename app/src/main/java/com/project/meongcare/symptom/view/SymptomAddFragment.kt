@@ -291,13 +291,12 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
     }
 
     private fun checkNullAndAddData(
-        dateTimeString: String?,
         addItemName: String?,
         addItemTitle: String?,
+        dateTimeString: String?,
     ) {
         if (dateTimeString != null && addItemName != null && addItemTitle != null) {
-            val toAddSymptom = ToAddSymptom(1, addItemName, addItemTitle, dateTimeString)
-            symptomViewModel.addSymptomData(toAddSymptom)
+            symptomViewModel.addSymptomData(addItemName, addItemTitle, dateTimeString)
         }
     }
 

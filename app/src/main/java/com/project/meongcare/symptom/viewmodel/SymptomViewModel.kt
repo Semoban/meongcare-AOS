@@ -3,21 +3,30 @@ package com.project.meongcare.symptom.viewmodel
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.R
+import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToDateToMiliSec
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
+import javax.inject.Inject
 
-class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() {
+@HiltViewModel
+class SymptomViewModel @Inject constructor(private val repository: SymptomRepository) : ViewModel() {
     var symptomList = MutableLiveData<MutableList<Symptom>>()
     var symptomDateText = MutableLiveData<String?>()
     var symptomTimeHour: Int? = null
@@ -44,12 +53,15 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
     }
 
     fun getSymptomList(
-        dogId: Int,
         date: Date,
     ) {
         val localDate = convertToDateToMiliSec(date)
         viewModelScope.launch {
-            val symptoms = repository.getSymptomByDogId(dogId, localDate)
+            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId:Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            Log.d("Symptom get Api accessToken", "${accessToken}")
+            Log.d("Symptom get Api dogId", "${dogId}")
+            val symptoms = repository.getSymptomByDogId(accessToken, dogId,localDate)
             symptoms.onSuccess {
                 symptomList.value = it.records.sortedBy { s -> s.dateTime }.toMutableList()
                 Log.d("Symptom get Api 통신 성공", symptomList.value.toString())
@@ -59,9 +71,16 @@ class SymptomViewModel(private val repository: SymptomRepository) : ViewModel() 
         }
     }
 
-    fun addSymptomData(toAddSymptom: ToAddSymptom) {
+    fun addSymptomData(addItemName: String,
+                       addItemTitle: String,
+                       dateTimeString: String,) {
         viewModelScope.launch {
-            addSymptomCode.value = repository.addSymptom(toAddSymptom)
+            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId:Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            Log.d("Symptom add Api accessToken", "${accessToken}")
+            Log.d("Symptom add Api dogId", "${dogId}")
+            val toAddSymptom = ToAddSymptom(dogId!!, addItemName, addItemTitle, dateTimeString)
+            addSymptomCode.value = repository.addSymptom(accessToken,toAddSymptom)
         }
     }
 

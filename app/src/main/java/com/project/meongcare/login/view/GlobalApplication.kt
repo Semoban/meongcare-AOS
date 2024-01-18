@@ -16,6 +16,20 @@ val Context.dogDataStore: DataStore<Preferences> by preferencesDataStore(name = 
 
 @HiltAndroidApp
 class GlobalApplication : Application() {
+
+    lateinit var context: Context
+
+    init {
+        instance = this
+    }
+
+    companion object {
+        private var instance: GlobalApplication? = null
+        fun applicationContext(): Context {
+            return instance!!.applicationContext
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
 

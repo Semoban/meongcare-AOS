@@ -3,6 +3,7 @@ package com.project.meongcare.symptom.model.data.remote
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
+import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,14 +18,14 @@ import retrofit2.http.Query
 interface SymptomAPI {
     @GET("/symptom/{dogId}")
     suspend fun getSymptomList(
-        @Header("AccessToken") accessToken: String,
-        @Path("dogId") dogId: Int,
+        @Header("AccessToken") accessToken: String?,
+        @Path("dogId") dogId: Long?,
         @Query("dateTime") dateTime: String,
     ): Response<ResultSymptom>
 
     @POST("/symptom")
     suspend fun addSymptom(
-        @Header("AccessToken") accessToken: String,
+        @Header("AccessToken") accessToken: String?,
         @Body requestBody: ToAddSymptom,
     ): Response<ResponseBody>
 
