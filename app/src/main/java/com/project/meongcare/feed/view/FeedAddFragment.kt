@@ -258,7 +258,6 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
-            kcal = edittextFeedaddeditKcalContent.text.toString()
             feedInfo =
                 FeedInfo(
                     2L,
@@ -306,6 +305,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
+                kcal = edittextFeedaddeditKcalContent.text.toString()
                 if (kcal.isEmpty() || kcal == "000.00") {
                     validationKcal(
                         edittextFeedaddeditKcalContent,
