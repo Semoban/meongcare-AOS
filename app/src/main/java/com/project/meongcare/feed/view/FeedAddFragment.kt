@@ -112,7 +112,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     recommendIntake =
                         calculateRecommendDailyIntake(
                             weight,
-                            text.toString().toDoubleOrNull()?: 0.0,
+                            text.toString().toDoubleOrNull() ?: 0.0,
                         )
                     initRecommendDailyIntake(
                         recommendIntake,
@@ -295,7 +295,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                 if (selectedEndDate != null) {
                     val startDate = selectedStartDate.replace("-", "").toInt()
-                    val endDate = selectedEndDate?.replace("-","")?.toInt()!!
+                    val endDate = selectedEndDate?.replace("-", "")?.toInt()!!
 
                     if (startDate > endDate) {
                         textviewFeedaddeditIntakePeriodError.apply {
@@ -409,7 +409,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         textviewFeedaddeditBrandError,
                         scrollviewFeedadd,
                         textviewFeedaddeditBrand,
-                        inputMethodManager
+                        inputMethodManager,
                     )
                     isValid = false
                 }
@@ -438,7 +438,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()
-                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료가 등록되었습니다!",)
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료가 등록되었습니다!")
                     .show()
             } else {
                 CustomSnackBar.make(
