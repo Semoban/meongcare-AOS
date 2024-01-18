@@ -60,11 +60,12 @@ object FeedInfoUtils {
         textView: TextView,
     ) {
         textView.apply {
-            text = if (recommendIntake == Double.POSITIVE_INFINITY) {
-                "0"
-            }  else {
-                "$recommendIntake"
-            }
+            text =
+                if (recommendIntake == Double.POSITIVE_INFINITY) {
+                    "0"
+                } else {
+                    "$recommendIntake"
+                }
         }
     }
 }
