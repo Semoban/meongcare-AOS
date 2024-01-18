@@ -64,6 +64,8 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var kcal = ""
     private var weight = 0.0
 
+    private var dogId = 0L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,6 +80,10 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
         dogViewModel.fetchDogWeight()
         dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
             weight = response
@@ -259,7 +265,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
             val feedName = edittextFeedaddeditName.text.toString()
             feedInfo =
                 FeedInfo(
-                    2L,
+                    dogId,
                     brand,
                     feedName,
                     proteinValue,
