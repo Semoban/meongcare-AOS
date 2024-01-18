@@ -14,7 +14,10 @@ class FeedRepositoryImpl
 
         override suspend fun postFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.postFeed(feedUploadRequest)
 
-        override suspend fun getFeedPart(feedRecordId: Long) = feedRemoteDataSource.getFeedPart(feedRecordId)
+        override suspend fun getFeedPart(
+            dogId: Long,
+            feedRecordId: Long,
+        ) = feedRemoteDataSource.getFeedPart(dogId, feedRecordId)
 
         override suspend fun getFeeds(dogId: Long) = feedRemoteDataSource.getFeeds(dogId)
 

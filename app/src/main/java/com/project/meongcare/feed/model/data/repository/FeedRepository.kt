@@ -13,7 +13,10 @@ interface FeedRepository {
 
     suspend fun postFeed(feedUploadRequest: FeedUploadRequest): Int?
 
-    suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords?
+    suspend fun getFeedPart(
+        dogId: Long,
+        feedRecordId: Long,
+    ): FeedPartRecords?
 
     suspend fun getFeeds(dogId: Long): Feeds?
 
