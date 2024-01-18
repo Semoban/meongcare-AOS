@@ -23,11 +23,12 @@ class PreviousFeedAdapter : ListAdapter<FeedRecord, PreviousFeedAdapter.Previous
                         .into(imageviewOldfeed)
                 }
 
-                val period = if (item.endDate == null) {
-                    "${item.startDate}~ 모름"
-                } else {
-                    "${item.startDate}~ ${item.endDate}"
-                }
+                val period =
+                    if (item.endDate == null) {
+                        "${item.startDate}~ 모름"
+                    } else {
+                        "${item.startDate}~ ${item.endDate}"
+                    }
 
                 textviewOldfeedBrand.text = item.brand
                 textviewOldfeedName.text = item.feedName
