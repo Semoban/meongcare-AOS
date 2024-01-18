@@ -330,6 +330,7 @@
                 android:text="000.00"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/textview_feedinfo_kcal_title"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_kcal_title"
                 app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_kcal"
                 app:layout_constraintTop_toTopOf="@id/textview_feedinfo_kcal_title" />
@@ -341,6 +342,7 @@
                 android:layout_marginEnd="95dp"
                 android:text="kcal/kg"
                 android:textAppearance="@style/Typography.Body2.Regular"
+                app:layout_constraintStart_toEndOf="@id/textview_feedinfo_kcal_content"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_kcal_content"
                 app:layout_constraintEnd_toEndOf="@id/view_feedinfo_kcal"
                 app:layout_constraintTop_toTopOf="@id/textview_feedinfo_kcal_content" />
