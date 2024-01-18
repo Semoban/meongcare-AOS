@@ -20,11 +20,12 @@ class FeedPartAdapter : ListAdapter<FeedPartRecord, FeedPartAdapter.FeedPartView
                         .into(imageviewFeed)
                 }
 
-                val period = if (item.endDate == null) {
-                    "${item.startDate}~ 모름"
-                } else {
-                    "${item.startDate}~ ${item.endDate}"
-                }
+                val period =
+                    if (item.endDate == null) {
+                        "${item.startDate}~ 모름"
+                    } else {
+                        "${item.startDate}~ ${item.endDate}"
+                    }
 
                 textviewFeedBrand.text = item.brandName
                 textviewFeedName.text = item.feedName
