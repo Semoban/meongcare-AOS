@@ -44,20 +44,18 @@ object FeedValidationUtils {
     fun validationTotalIngredient(
         errorMessage: TextView,
         scrollview: ScrollView,
-        ingredientTitle: TextView
+        ingredientTitle: TextView,
     ) {
         errorMessage.apply {
             text = "사료 성분 비율의 총합은 100%를 초과할 수 없습니다."
             visibility = View.VISIBLE
         }
         scrollview.smoothScrollTo(0, ingredientTitle.top)
-
     }
 
     fun validationKcal(
         editText: EditText,
         errorMessage: TextView,
-
     ) {
         errorMessage.visibility = View.VISIBLE
         editText.apply {
