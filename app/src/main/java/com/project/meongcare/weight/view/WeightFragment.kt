@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
@@ -39,7 +40,9 @@ class WeightFragment : Fragment() {
     private lateinit var inputMethodManager: InputMethodManager
     private val weightViewModel: WeightViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
     private var accessToken = ""
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,13 +60,17 @@ class WeightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initInputMethodManager()
         userViewModel.fetchAccessToken()
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
             showWeightEditDialog()
             fetchWeeklyWeight()
             fetchMonthlyWeight()
         }
-        weightViewModel.postWeight(accessToken, LocalDate.now().toString())
+        weightViewModel.postWeight(accessToken, dogId, LocalDate.now().toString())
         weightViewModel.weightPosted.observe(viewLifecycleOwner) { response ->
             if (response == true) {
                 fetchDailyWeight()
@@ -73,7 +80,7 @@ class WeightFragment : Fragment() {
     }
 
     private fun fetchDailyWeight() {
-        weightViewModel.getDailyWeight(accessToken,"2024-01-19")
+        weightViewModel.getDailyWeight(accessToken, dogId, "2024-01-19")
         weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 binding.textviewWeightRecordContent.text = response.weight.toString()
@@ -82,14 +89,14 @@ class WeightFragment : Fragment() {
     }
 
     private fun fetchWeeklyWeight() {
-        weightViewModel.getWeeklyWeight(accessToken, "2024-01-19")
+        weightViewModel.getWeeklyWeight(accessToken, dogId,"2024-01-19")
         weightViewModel.weeklyWeightGet.observe(viewLifecycleOwner) { response ->
             initWeeklyRecordChart(response)
         }
     }
 
     private fun fetchMonthlyWeight() {
-        weightViewModel.getMonthlyWeight(accessToken,"2024-01-19")
+        weightViewModel.getMonthlyWeight(accessToken, dogId, "2024-01-19")
         weightViewModel.monthlyWeightGet.observe(viewLifecycleOwner) { response ->
             initMonthlyRecordChart(response)
             showMonthlyWeightVariation(response)
@@ -149,7 +156,7 @@ class WeightFragment : Fragment() {
         val weightText = binding.layoutWeightEdit.edittextWeighteditdialog.text.toString()
         val weight = weightText.toDoubleOrNull() ?: return
 
-        weightViewModel.patchWeight(accessToken, weight, date)
+        weightViewModel.patchWeight(accessToken, dogId, weight, date)
         hideSoftKeyboard()
         binding.layoutWeightEdit.run {
             edittextWeighteditdialog.text.clear()
