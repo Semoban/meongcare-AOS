@@ -34,7 +34,7 @@ class FeedRepositoryImpl
         override suspend fun getPreviousFeed(
             accessToken: String,
             dogId: Long,
-            feedRecordId: Long
+            feedRecordId: Long,
         ) = feedRemoteDataSource.getPreviousFeed(accessToken, dogId, feedRecordId)
 
         override suspend fun getDetailFeed(
