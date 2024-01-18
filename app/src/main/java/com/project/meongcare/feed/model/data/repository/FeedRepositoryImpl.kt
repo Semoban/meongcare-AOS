@@ -10,30 +10,51 @@ class FeedRepositoryImpl
     constructor(
         private val feedRemoteDataSource: FeedRemoteDataSource,
     ) : FeedRepository {
-        override suspend fun getFeed(dogId: Long) = feedRemoteDataSource.getFeed(dogId)
+        override suspend fun getFeed(
+            accessToken: String,
+            dogId: Long,
+        ) = feedRemoteDataSource.getFeed(accessToken, dogId)
 
-        override suspend fun postFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.postFeed(feedUploadRequest)
+        override suspend fun postFeed(
+            accessToken: String,
+            feedUploadRequest: FeedUploadRequest,
+        ) = feedRemoteDataSource.postFeed(accessToken, feedUploadRequest)
 
         override suspend fun getFeedPart(
+            accessToken: String,
             dogId: Long,
             feedRecordId: Long,
-        ) = feedRemoteDataSource.getFeedPart(dogId, feedRecordId)
+        ) = feedRemoteDataSource.getFeedPart(accessToken, dogId, feedRecordId)
 
-        override suspend fun getFeeds(dogId: Long) = feedRemoteDataSource.getFeeds(dogId)
+        override suspend fun getFeeds(
+            accessToken: String,
+            dogId: Long,
+        ) = feedRemoteDataSource.getFeeds(accessToken, dogId)
 
         override suspend fun getPreviousFeed(
+            accessToken: String,
             dogId: Long,
             feedRecordId: Long
-        ) = feedRemoteDataSource.getPreviousFeed(dogId, feedRecordId)
+        ) = feedRemoteDataSource.getPreviousFeed(accessToken, dogId, feedRecordId)
 
         override suspend fun getDetailFeed(
+            accessToken: String,
             feedId: Long,
             feedRecordId: Long,
-        ) = feedRemoteDataSource.getFeedDetail(feedId, feedRecordId)
+        ) = feedRemoteDataSource.getFeedDetail(accessToken, feedId, feedRecordId)
 
-        override suspend fun patchFeed(feedPatchRequest: FeedPatchRequest) = feedRemoteDataSource.patchFeed(feedPatchRequest)
+        override suspend fun patchFeed(
+            accessToken: String,
+            feedPatchRequest: FeedPatchRequest,
+        ) = feedRemoteDataSource.patchFeed(accessToken, feedPatchRequest)
 
-        override suspend fun putFeed(feedUploadRequest: FeedUploadRequest) = feedRemoteDataSource.putFeed(feedUploadRequest)
+        override suspend fun putFeed(
+            accessToken: String,
+            feedUploadRequest: FeedUploadRequest,
+        ) = feedRemoteDataSource.putFeed(accessToken, feedUploadRequest)
 
-        override suspend fun deleteFeed(feedId: Long) = feedRemoteDataSource.deleteFeed(feedId)
+        override suspend fun deleteFeed(
+            accessToken: String,
+            feedId: Long,
+        ) = feedRemoteDataSource.deleteFeed(accessToken, feedId)
     }
