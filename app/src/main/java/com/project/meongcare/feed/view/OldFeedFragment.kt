@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.databinding.FragmentOldFeedBinding
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.PreviousFeedGetViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,9 +21,11 @@ class OldFeedFragment : Fragment() {
 
     private val previousFeedGetViewModel: PreviousFeedGetViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var previousFeedAdapter: PreviousFeedAdapter
 
     private var dogId = 0L
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +41,21 @@ class OldFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        val feedRecordId = getFeedRecordId()
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
-        val feedRecordId = getFeedRecordId()
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            previousFeedGetViewModel.getPreviousFeed(
+                accessToken,
+                dogId,
+                feedRecordId,
+            )
+        }
         previousFeedAdapter = PreviousFeedAdapter()
-        previousFeedGetViewModel.getPreviousFeed(dogId, feedRecordId)
         previousFeedGetViewModel.previousFeedGet.observe(viewLifecycleOwner) { response ->
             if (response.feedRecords.isEmpty()) {
                 binding.apply {

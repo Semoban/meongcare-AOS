@@ -37,6 +37,7 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -60,6 +61,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
     private val feedPutViewModel: FeedPutViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var inputMethodManager: InputMethodManager
 
     private var proteinValue = 0.0
@@ -68,6 +70,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var moistureValue = 0.0
     private var kcal = ""
     private var weight = 0.0
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +86,10 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+        }
         dogViewModel.fetchDogWeight()
         dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
             weight = response
@@ -121,8 +128,10 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 selectedStartDate = feedInfo.startDate
                 text = convertDateFormat(feedInfo.startDate)
                 setTextColor(resources.getColor(R.color.black, null))
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
             textviewFeedaddeditIntakePeriodEnd.apply {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 text =
                     if (feedInfo.endDate != null) {
                         selectedEndDate = feedInfo.endDate
@@ -457,7 +466,10 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     dto,
                     file,
                 )
-            feedPutViewModel.putFeed(feedUploadRequest)
+            feedPutViewModel.putFeed(
+                accessToken,
+                feedUploadRequest,
+            )
             feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
                 if (response == SUCCESS) {
                     findNavController().popBackStack()

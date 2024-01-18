@@ -35,6 +35,7 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -50,6 +51,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private lateinit var inputMethodManager: InputMethodManager
     private val feedPostViewModel: FeedPostViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     private var recommendIntake = 0.0
     var selectedStartDate = ""
@@ -65,6 +67,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var weight = 0.0
 
     private var dogId = 0L
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +86,10 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
+        }
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
         }
         dogViewModel.fetchDogWeight()
         dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
@@ -425,6 +432,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         val uploadRequest = FeedUploadRequest(dto, file)
 
         feedPostViewModel.postFeed(
+            accessToken,
             uploadRequest,
         )
         feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->

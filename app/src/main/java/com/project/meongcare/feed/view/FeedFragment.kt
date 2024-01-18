@@ -1,6 +1,7 @@
 package com.project.meongcare.feed.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedGetViewModel
 import com.project.meongcare.feed.viewmodel.FeedPartGetViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -31,10 +33,12 @@ class FeedFragment : Fragment() {
     private val feedGetViewModel: FeedGetViewModel by viewModels()
     private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var feedPartAdapter: FeedPartAdapter
     private lateinit var feedGetResponse: FeedGetResponse
 
     private var dogId = 0L
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,13 +54,20 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel.fetchAccessToken()
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            feedGetViewModel.getFeed(
+                accessToken,
+                dogId,
+            )
+        }
 
         feedPartAdapter = FeedPartAdapter()
-        feedGetViewModel.getFeed(dogId)
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
             feedGetResponse =
                 FeedGetResponse(
@@ -92,9 +103,12 @@ class FeedFragment : Fragment() {
                 )
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
-                updateViewVisibilityBasedOnOldFeedPartExist(dogId, feedGetResponse.feedRecordId)
+                updateViewVisibilityBasedOnOldFeedPartExist(
+                    accessToken,
+                    dogId,
+                    feedGetResponse.feedRecordId,
+                )
             }
-
             initNutrientTable(feedGetResponse)
             initOldFeedSeeMoreButton(feedGetResponse.feedRecordId)
         }
@@ -112,6 +126,7 @@ class FeedFragment : Fragment() {
                 piechartFeedNutrient.visibility = View.GONE
             } else {
                 imageviewFeedBowlIllustration.visibility = View.GONE
+                piechartFeedNutrient.visibility = View.VISIBLE
                 buttonFeedInputGuide.visibility = View.GONE
             }
         }
@@ -220,10 +235,12 @@ class FeedFragment : Fragment() {
     }
 
     private fun updateViewVisibilityBasedOnOldFeedPartExist(
+        accessToken: String,
         dogId: Long,
         feedRecordId: Long,
     ) {
         feedPartGetViewModel.getFeedPart(
+            accessToken,
             dogId,
             feedRecordId,
         )
