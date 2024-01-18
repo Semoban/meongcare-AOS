@@ -21,9 +21,12 @@ class FeedsGetViewModel
 
         private var allFeeds: Feeds? = null
 
-        fun getFeeds(dogId: Long) {
+        fun getFeeds(
+            accessToken: String,
+            dogId: Long,
+        ) {
             viewModelScope.launch {
-                allFeeds = feedRepositoryImpl.getFeeds(dogId)
+                allFeeds = feedRepositoryImpl.getFeeds(accessToken, dogId)
                 _feedsGet.value = allFeeds!!
             }
         }

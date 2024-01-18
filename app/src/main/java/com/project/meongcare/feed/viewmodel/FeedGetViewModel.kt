@@ -19,10 +19,13 @@ class FeedGetViewModel
         val feedGet
             get() = _feedGet
 
-        fun getFeed(dogId: Long) {
+        fun getFeed(
+            accessToken: String,
+            dogId: Long,
+        ) {
             viewModelScope.launch {
                 _feedGet.value =
-                    feedRepositoryImpl.getFeed(dogId)
+                    feedRepositoryImpl.getFeed(accessToken, dogId)
             }
         }
     }

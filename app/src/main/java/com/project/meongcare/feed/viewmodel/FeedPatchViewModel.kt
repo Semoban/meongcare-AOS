@@ -19,10 +19,13 @@ class FeedPatchViewModel
         val feedPatched
             get() = _feedPatched
 
-        fun patchFeed(feedPatchRequest: FeedPatchRequest) {
+        fun patchFeed(
+            accessToken: String,
+            feedPatchRequest: FeedPatchRequest,
+        ) {
             viewModelScope.launch {
                 _feedPatched.value =
-                    feedRepositoryImpl.patchFeed(feedPatchRequest)
+                    feedRepositoryImpl.patchFeed(accessToken, feedPatchRequest)
             }
         }
     }

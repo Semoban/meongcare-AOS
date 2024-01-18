@@ -18,10 +18,13 @@ class FeedDeleteViewModel
         val feedDeleted
             get() = _feedDeleted
 
-        fun deleteFeed(feedId: Long) {
+        fun deleteFeed(
+            accessToken: String,
+            feedId: Long,
+        ) {
             viewModelScope.launch {
                 _feedDeleted.value =
-                    feedRepositoryImpl.deleteFeed(feedId)
+                    feedRepositoryImpl.deleteFeed(accessToken, feedId)
             }
         }
     }
