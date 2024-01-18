@@ -88,13 +88,15 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
 
     fun deleteSymptom(symptomIds: IntArray) {
         viewModelScope.launch {
-            deleteSymptomCode.value = repository.deleteSymptom(symptomIds)
+            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            deleteSymptomCode.value = repository.deleteSymptom(accessToken, symptomIds)
         }
     }
 
     fun patchSymptom(toEditSymptom: ToEditSymptom) {
         viewModelScope.launch {
-            val patch = repository.patchSymptom(toEditSymptom)
+            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val patch = repository.patchSymptom(accessToken, toEditSymptom)
             patch.onSuccess {
                 patchSymptomIsSuccess.value = true
                 Log.d("이상증상 수정 Api 통신 성공", it.toString())

@@ -44,6 +44,13 @@ class SymptomInfoFragment : Fragment() {
         val factory = SymptomViewModelFactory(SymptomRepository())
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
+        symptomViewModel.run {
+            deleteSymptomCode.observe(viewLifecycleOwner) {
+                if(it == 200) {
+                    findNavController().popBackStack()
+                }
+            }
+        }
         fragmentSymptomInfoBinding.run {
             val symptomData = arguments?.getParcelable<Symptom>("symptomData")
             toolbarSymptominfo.run {
@@ -62,7 +69,6 @@ class SymptomInfoFragment : Fragment() {
                                 buttonDeleteDialogDelete.setOnClickListener {
                                     val symptomIdsArray = intArrayOf(symptomData!!.symptomId)
                                     symptomViewModel.deleteSymptom(symptomIdsArray)
-                                    findNavController().popBackStack()
                                 }
                             }
                         }

@@ -49,21 +49,21 @@ class SymptomRepository @Inject constructor() {
         return response.code()
     }
 
-    suspend fun deleteSymptom(symptomIds: IntArray): Int {
+    suspend fun deleteSymptom(accessToken: String?, symptomIds: IntArray): Int {
         val response =
             symptomAPI.deleteSymptom(
-                MainActivity.ACCESS_TOKEN,
+                accessToken,
                 symptomIds,
             )
 
         return response.code()
     }
 
-    suspend fun patchSymptom(toEditSymptom: ToEditSymptom): Result<ResponseBody> =
+    suspend fun patchSymptom(accessToken: String?, toEditSymptom: ToEditSymptom): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
                 symptomAPI.patchSymptom(
-                    MainActivity.ACCESS_TOKEN,
+                    accessToken,
                     toEditSymptom,
                 )
 
