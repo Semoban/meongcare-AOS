@@ -323,7 +323,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                 if (selectedEndDate != null) {
                     val startDate = selectedStartDate.replace("-", "").toInt()
-                    val endDate = selectedEndDate?.replace("-","")?.toInt()!!
+                    val endDate = selectedEndDate?.replace("-", "")?.toInt()!!
 
                     if (startDate > endDate) {
                         textviewFeedaddeditIntakePeriodError.apply {
@@ -345,7 +345,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
-                        textviewFeedaddeditIntakePeriodError
+                        textviewFeedaddeditIntakePeriodError,
                     )
                     isValid = false
                 }
@@ -437,7 +437,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         textviewFeedaddeditBrandError,
                         scrollviewFeedadd,
                         textviewFeedaddeditBrand,
-                        inputMethodManager
+                        inputMethodManager,
                     )
                     isValid = false
                 }
