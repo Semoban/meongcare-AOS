@@ -65,12 +65,15 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords? {
+        suspend fun getFeedPart(
+            dogId: Long,
+            feedRecordId: Long,
+        ): FeedPartRecords? {
             try {
                 val getFeedPartResponse =
                     feedApiService.getFeedPart(
                         accessToken,
-                        2L,
+                        dogId,
                         feedRecordId,
                     )
                 return if (getFeedPartResponse.code() == SUCCESS) {
