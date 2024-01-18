@@ -14,8 +14,10 @@ import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPatchViewModel
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +27,12 @@ class SearchFeedFragment : Fragment() {
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
     private val feedPatchViewModel: FeedPatchViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var feedsAdapter: FeedsAdapter
+
+    private var dogId = 0L
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +48,18 @@ class SearchFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        dogViewModel.fetchDogId()
+        userViewModel.fetchAccessToken()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            feedsGetViewModel.getFeeds(
+                accessToken,
+                dogId,
+            )
+        }
         feedsAdapter =
             FeedsAdapter(
                 object : FeedItemSelectionListener {
@@ -54,7 +73,6 @@ class SearchFeedFragment : Fragment() {
         initFeedsRecyclerView()
         initDirectInputButton()
         updateSearchResult()
-        feedsGetViewModel.getFeeds()
         feedsGetViewModel.feedsGet.observe(viewLifecycleOwner) { response ->
             feedsAdapter.submitList(response.feeds)
         }
@@ -83,10 +101,13 @@ class SearchFeedFragment : Fragment() {
     private fun patchFeed(newFeedId: Long) {
         val feedPatchRequest =
             FeedPatchRequest(
-                2L,
+                dogId,
                 newFeedId,
             )
-        feedPatchViewModel.patchFeed(feedPatchRequest)
+        feedPatchViewModel.patchFeed(
+            accessToken,
+            feedPatchRequest,
+        )
         feedPatchViewModel.feedPatched.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()

@@ -28,10 +28,13 @@ class FeedPostViewModel
             feedImage.value = uri
         }
 
-        fun postFeed(feedUploadRequest: FeedUploadRequest) {
+        fun postFeed(
+            accessToken: String,
+            feedUploadRequest: FeedUploadRequest,
+        ) {
             viewModelScope.launch {
                 _feedPosted.value =
-                    feedRepositoryImpl.postFeed(feedUploadRequest)
+                    feedRepositoryImpl.postFeed(accessToken, feedUploadRequest)
             }
         }
     }

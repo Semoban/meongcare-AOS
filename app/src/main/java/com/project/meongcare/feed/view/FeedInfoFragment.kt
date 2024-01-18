@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.excreta.utils.SUCCESS
@@ -17,6 +16,8 @@ import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +27,12 @@ class FeedInfoFragment : Fragment() {
 
     private val feedInfoFeedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
     private val feedDeleteViewModel: FeedDeleteViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     private var feedId = 0L
     private var feedRecordId = 0L
     private lateinit var feedInfo: FeedDetailGetResponse
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,12 +48,17 @@ class FeedInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel.fetchAccessToken()
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
-        feedInfoFeedDetailGetViewModel.getFeedDetail(
-            feedId,
-            feedRecordId,
-        )
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            feedInfoFeedDetailGetViewModel.getFeedDetail(
+                accessToken,
+                feedId,
+                feedRecordId,
+            )
+        }
         initToolbar()
         fetchFeedInfo()
     }
@@ -112,23 +120,39 @@ class FeedInfoFragment : Fragment() {
                         findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment, bundle)
                     }
                     R.id.menu_info_delete -> {
-                        // 삭제 다이얼로그 추가 필요
-                        feedDeleteViewModel.deleteFeed(feedId)
-                        feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
-                            if (response == SUCCESS) {
-                                findNavController().popBackStack()
-                                Snackbar.make(requireView(), "사료 정보를 삭제하였습니다!", Snackbar.LENGTH_SHORT).show()
-                            } else {
-                                Snackbar.make(
-                                    requireView(),
-                                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                                    Snackbar.LENGTH_SHORT,
-                                ).show()
+                        binding.apply {
+                            includeFeedInfoDeleteDialog.root.visibility = View.VISIBLE
+                            includeFeedInfoDeleteDialog.apply {
+                                buttonDeleteDialogCancel.setOnClickListener {
+                                    includeFeedInfoDeleteDialog.root.visibility = View.GONE
+                                }
+                                buttonDeleteDialogDelete.setOnClickListener {
+                                    deleteFeedInfo()
+                                }
                             }
                         }
                     }
                 }
                 false
+            }
+        }
+    }
+
+    private fun deleteFeedInfo() {
+        feedDeleteViewModel.deleteFeed(
+            accessToken,
+            feedId,
+        )
+        feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보를 삭제하였습니다!").show()
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                ).show()
             }
         }
     }

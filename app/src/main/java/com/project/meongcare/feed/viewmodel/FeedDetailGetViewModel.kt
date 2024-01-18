@@ -20,12 +20,14 @@ class FeedDetailGetViewModel
             get() = _feedDetailGet
 
         fun getFeedDetail(
+            accessToken: String,
             feedId: Long,
             feedRecordId: Long,
         ) {
             viewModelScope.launch {
                 _feedDetailGet.value =
                     feedRepositoryImpl.getDetailFeed(
+                        accessToken,
                         feedId,
                         feedRecordId,
                     )
