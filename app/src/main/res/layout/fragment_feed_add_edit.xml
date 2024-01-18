@@ -510,11 +510,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="0g"
+                android:text="0"
                 android:textAppearance="@style/Typography.Body2.Medium"
                 android:textColor="@color/main4"
                 app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_daily_intake_title"
                 app:layout_constraintStart_toEndOf="@id/textview_feedaddedit_daily_intake_title"
+                app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_daily_intake_title" />
+
+            <TextView
+                android:id="@+id/textview_feedaddedit_daily_intake_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="g"
+                android:textAppearance="@style/Typography.Body2.Medium"
+                android:textColor="@color/main4"
+                app:layout_constraintBottom_toBottomOf="@id/textview_feedaddedit_daily_intake_title"
+                app:layout_constraintStart_toEndOf="@id/textview_feedaddedit_daily_intake_content"
                 app:layout_constraintTop_toTopOf="@id/textview_feedaddedit_daily_intake_title" />
 
             <TextView
