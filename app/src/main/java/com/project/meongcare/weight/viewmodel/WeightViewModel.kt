@@ -44,13 +44,14 @@ class WeightViewModel
 
         fun postWeight(
             accessToken: String,
+            dogId: Long,
             dateTime: String,
             weight: Double? = null,
         ) {
             viewModelScope.launch {
                 val weightPostRequest =
                     WeightPostRequest(
-                        2L,
+                        dogId,
                         dateTime,
                         weight,
                     )
@@ -67,13 +68,14 @@ class WeightViewModel
 
         fun patchWeight(
             accessToken: String,
+            dogId: Long,
             kg: Double,
             date: String,
         ) {
             viewModelScope.launch {
                 val weightPatchRequest =
                     WeightPatchRequest(
-                        2L,
+                        dogId,
                         kg,
                         date,
                     )
@@ -90,12 +92,13 @@ class WeightViewModel
 
         fun getWeeklyWeight(
             accessToken: String,
+            dogId: Long,
             date: String,
         ) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
-                        2L,
+                        dogId,
                         date,
                     )
 
@@ -105,12 +108,13 @@ class WeightViewModel
 
         fun getMonthlyWeight(
             accessToken: String,
+            dogId: Long,
             date: String,
         ) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
-                        2L,
+                        dogId,
                         date,
                     )
 
@@ -120,12 +124,13 @@ class WeightViewModel
 
         fun getDailyWeight(
             accessToken: String,
+            dogId: Long,
             date: String,
         ) {
             viewModelScope.launch {
                 val weightGetRequest =
                     WeightGetRequest(
-                        2L,
+                        dogId,
                         date,
                     )
 
