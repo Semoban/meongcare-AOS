@@ -19,10 +19,13 @@ class FeedPartGetViewModel
         val feedPartGet
             get() = _feedPartGet
 
-        fun getFeedPart(feedRecordId: Long) {
+        fun getFeedPart(
+            dogId: Long,
+            feedRecordId: Long,
+        ) {
             viewModelScope.launch {
                 feedPartGet.value =
-                    feedRepositoryImpl.getFeedPart(feedRecordId)
+                    feedRepositoryImpl.getFeedPart(dogId, feedRecordId)
             }
         }
     }

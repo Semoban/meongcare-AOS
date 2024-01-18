@@ -92,7 +92,7 @@ class FeedFragment : Fragment() {
                 )
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
-                updateViewVisibilityBasedOnOldFeedPartExist(feedGetResponse.feedRecordId)
+                updateViewVisibilityBasedOnOldFeedPartExist(dogId, feedGetResponse.feedRecordId)
             }
 
             initNutrientTable(feedGetResponse)
@@ -219,8 +219,14 @@ class FeedFragment : Fragment() {
         binding.textviewFeedDailyIntakeContent.text = convertDailyRecommendIntake(recommendIntake)
     }
 
-    private fun updateViewVisibilityBasedOnOldFeedPartExist(feedRecordId: Long) {
-        feedPartGetViewModel.getFeedPart(feedRecordId)
+    private fun updateViewVisibilityBasedOnOldFeedPartExist(
+        dogId: Long,
+        feedRecordId: Long,
+    ) {
+        feedPartGetViewModel.getFeedPart(
+            dogId,
+            feedRecordId,
+        )
         feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
             if (response.feedPartRecords.isEmpty()) {
                 binding.apply {
