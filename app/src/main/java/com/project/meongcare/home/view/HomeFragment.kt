@@ -282,7 +282,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         }
                     }
                 }
-                //findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
+                // findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
             }
 
             constraintlayoutHomeNutrition.setOnClickListener {
