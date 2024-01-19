@@ -162,7 +162,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.GONE
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
                 adapter.updateDogProfileList(dogListResponse.body()?.dogs!!)
-                if (dogListResponse.body() != null && !dogListResponse.body()?.dogs.isNullOrEmpty() && homeViewModel.homeSelectedDogPos.value == null) {
+                if (dogListResponse.body() != null && !dogListResponse.body()?.dogs.isNullOrEmpty() &&
+                    homeViewModel.homeSelectedDogPos.value == null) {
                     homeViewModel.setSelectedDogPos(0)
                 }
             } else if (dogListResponse != null && dogListResponse.code() == 401) {
