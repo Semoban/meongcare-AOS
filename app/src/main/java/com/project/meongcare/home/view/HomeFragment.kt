@@ -22,7 +22,9 @@ import com.project.meongcare.home.model.data.local.DogProfileClickListener
 import com.project.meongcare.home.model.data.local.HorizonCalendarItemClickListener
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -47,6 +49,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     @Inject
     lateinit var dogPreferences: DogPreferences
 
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getAccessToken()
@@ -60,13 +65,41 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { homeProfileResponse ->
-            if (homeProfileResponse != null) {
+        homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { profileResponse ->
+            if (profileResponse != null && profileResponse.code() == 200) {
                 Glide.with(this)
-                    .load(homeProfileResponse.imageUrl)
+                    .load(profileResponse.body()?.imageUrl)
                     .placeholder(R.drawable.home_profile_default_image)
                     .error(R.drawable.home_profile_default_image)
                     .into(fragmentHomeBinding.imageviewHomeProfile)
+            } else if (profileResponse != null && profileResponse.code() == 401) {
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken.isNotEmpty()) {
+                        val response = loginRepository.getNewAccessToken(refreshToken)
+                        if (response != null) {
+                            when (response.code()) {
+                                200 -> {
+                                    userPreferences.setAccessToken(response.body()?.accessToken)
+                                }
+                                401 -> {
+                                    CustomSnackBar.make(
+                                        requireView(),
+                                        R.drawable.snackbar_error_16dp,
+                                        getString(R.string.snack_bar_refresh_expire),
+                                    ).show()
+                                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure)
+                ).show()
             }
         }
 
@@ -122,15 +155,38 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
         }
 
-        homeViewModel.homeDogList.observe(viewLifecycleOwner) { dogList ->
-            if (!dogList.isNullOrEmpty()) {
+        homeViewModel.homeDogList.observe(viewLifecycleOwner) { dogListResponse ->
+            if (dogListResponse != null && dogListResponse.code() == 200) {
                 fragmentHomeBinding.recyclerviewHomeDog.visibility = View.VISIBLE
                 fragmentHomeBinding.linearlayoutDogExist.visibility = View.VISIBLE
                 fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.GONE
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
-                adapter.updateDogProfileList(dogList)
+                adapter.updateDogProfileList(dogListResponse.body()?.dogs!!)
                 if (homeViewModel.homeSelectedDogPos.value == null) {
                     homeViewModel.setSelectedDogPos(0)
+                }
+            } else if (dogListResponse != null && dogListResponse.code() == 401) {
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken.isNotEmpty()) {
+                        val response = loginRepository.getNewAccessToken(refreshToken)
+                        if (response != null) {
+                            when (response.code()) {
+                                200 -> {
+                                    userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                }
+                                401 -> {
+                                    CustomSnackBar.make(
+                                        requireView(),
+                                        R.drawable.snackbar_error_16dp,
+                                        getString(R.string.snack_bar_refresh_expire),
+                                    ).show()
+                                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                }
+                            }
+
+                        }
+                    }
                 }
             } else {
                 fragmentHomeBinding.recyclerviewHomeDog.visibility = View.GONE
@@ -170,63 +226,248 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     dateToString(homeViewModel.homeSelectedDate.value!!),
                     currentAccessToken,
                 )
+            } else if (responseCode != null && responseCode == 401) {
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken.isNotEmpty()) {
+                        val response = loginRepository.getNewAccessToken(refreshToken)
+                        if (response != null) {
+                            when (response.code()) {
+                                200 -> {
+                                    userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                }
+                                401 -> {
+                                    CustomSnackBar.make(
+                                        requireView(),
+                                        R.drawable.snackbar_error_16dp,
+                                        getString(R.string.snack_bar_refresh_expire),
+                                    ).show()
+                                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                }
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
             if (selectedDogPos != null) {
-                Log.d("homeSelectedDogName", homeViewModel.homeDogList.value!![selectedDogPos].name)
-                homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
+                Log.d("homeSelectedDogName", homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].name)
+                homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].dogId)
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
                 adapter.updateSelectedPos(selectedDogPos)
-                dogPreferences.setDogId(homeViewModel.homeDogList.value!![selectedDogPos].dogId)
-                dogPreferences.setDogName(homeViewModel.homeDogList.value!![selectedDogPos].name)
+                dogPreferences.setDogId(homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].dogId)
+                dogPreferences.setDogName(homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].name)
             }
         }
 
-        homeViewModel.homeDogWeight.observe(viewLifecycleOwner) { dogWeight ->
-            if (dogWeight != null) {
-                Log.d("homeDogWeight", dogWeight.weight.toString())
-                fragmentHomeBinding.textviewHomeWeight.text = dogWeight.weight.toString()
-                dogPreferences.setDogWeight(dogWeight.weight)
+        homeViewModel.homeDogWeight.observe(viewLifecycleOwner) { dogWeightResponse ->
+            if (dogWeightResponse != null && dogWeightResponse.code() == 200) {
+                Log.d("homeDogWeight", dogWeightResponse.body()?.weight?.toString()!!)
+                fragmentHomeBinding.textviewHomeWeight.text = dogWeightResponse.body()?.weight?.toString()
+                dogPreferences.setDogWeight(dogWeightResponse.body()?.weight!!)
+            } else if (dogWeightResponse != null && dogWeightResponse.code() == 400) {
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken.isNotEmpty()) {
+                        val response = loginRepository.getNewAccessToken(refreshToken)
+                        if (response != null) {
+                            when (response.code()) {
+                                200 -> {
+                                    userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                }
+                                401 -> {
+                                    CustomSnackBar.make(
+                                        requireView(),
+                                        R.drawable.snackbar_error_16dp,
+                                        getString(R.string.snack_bar_refresh_expire),
+                                    ).show()
+                                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                }
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
-        homeViewModel.homeDogFeed.observe(viewLifecycleOwner) { dogFeed ->
-            if (dogFeed != null) {
-                Log.d("homeDogFeed", dogFeed.recommendIntake.toString())
-                fragmentHomeBinding.textviewHomeFeed.text = dogFeed.recommendIntake.toString()
+        homeViewModel.homeDogFeed.observe(viewLifecycleOwner) { dogFeedResponse ->
+            if (dogFeedResponse != null) {
+                if (dogFeedResponse.code() == 200) {
+                    Log.d("homeDogFeed", dogFeedResponse.body()?.recommendIntake.toString())
+                    fragmentHomeBinding.textviewHomeFeed.text = dogFeedResponse.body()?.recommendIntake.toString()
+                }
+                else if (dogFeedResponse.code() == 401) {
+                    lifecycleScope.launch {
+                        val refreshToken = userPreferences.getRefreshToken()
+                        if (refreshToken.isNotEmpty()) {
+                            val response = loginRepository.getNewAccessToken(refreshToken)
+                            if (response != null) {
+                                when (response.code()) {
+                                    200 -> {
+                                        userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    }
+                                    401 -> {
+                                        CustomSnackBar.make(
+                                            requireView(),
+                                            R.drawable.snackbar_error_16dp,
+                                            getString(R.string.snack_bar_refresh_expire),
+                                        ).show()
+                                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                } else {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_error_16dp,
+                        getString(R.string.snack_bar_failure),
+                    ).show()
+                }
             }
         }
 
-        homeViewModel.homeDogSupplements.observe(viewLifecycleOwner) { dogSupplements ->
-            if (dogSupplements != null) {
-                Log.d("homeDogSupplements", dogSupplements.supplementsRate.toString())
-                fragmentHomeBinding.textviewHomeNutritionPercentage.text = dogSupplements.supplementsRate.toString()
-                fragmentHomeBinding.progressbarNutrition.progress = dogSupplements.supplementsRate
+        homeViewModel.homeDogSupplements.observe(viewLifecycleOwner) { dogSupplementsResponse ->
+            if (dogSupplementsResponse != null) {
+                if (dogSupplementsResponse.code() == 200) {
+                    Log.d("homeDogSupplements", dogSupplementsResponse.body()?.supplementsRate.toString())
+                    fragmentHomeBinding.textviewHomeNutritionPercentage.text = dogSupplementsResponse.body()?.supplementsRate.toString()
+                    fragmentHomeBinding.progressbarNutrition.progress = dogSupplementsResponse.body()?.supplementsRate ?:0
+                } else if (dogSupplementsResponse.code() == 401) {
+                    lifecycleScope.launch {
+                        val refreshToken = userPreferences.getRefreshToken()
+                        if (refreshToken.isNotEmpty()) {
+                            val response = loginRepository.getNewAccessToken(refreshToken)
+                            if (response != null) {
+                                when (response.code()) {
+                                    200 -> {
+                                        userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    }
+                                    401 -> {
+                                        CustomSnackBar.make(
+                                            requireView(),
+                                            R.drawable.snackbar_error_16dp,
+                                            getString(R.string.snack_bar_refresh_expire),
+                                        ).show()
+                                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                } else {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_error_16dp,
+                        getString(R.string.snack_bar_failure),
+                    ).show()
+                }
             }
         }
 
-        homeViewModel.homeDogExcreta.observe(viewLifecycleOwner) { dogExcreta ->
-            if (dogExcreta != null) {
-                Log.d("homeDogExcreta", dogExcreta.fecesCount.toString())
-                fragmentHomeBinding.textviewHomeFecesCount.text = dogExcreta.fecesCount.toString()
-                fragmentHomeBinding.textviewHomeUrineCount.text = dogExcreta.urineCount.toString()
+        homeViewModel.homeDogExcreta.observe(viewLifecycleOwner) { dogExcretaResponse ->
+            if (dogExcretaResponse != null) {
+                if (dogExcretaResponse.code() == 200) {
+                    Log.d("homeDogExcreta", dogExcretaResponse.body()?.urineCount.toString())
+                    fragmentHomeBinding.textviewHomeFecesCount.text = dogExcretaResponse.body()?.fecesCount.toString()
+                    fragmentHomeBinding.textviewHomeUrineCount.text = dogExcretaResponse.body()?.urineCount.toString()
+                } else if (dogExcretaResponse.code() == 401) {
+                    lifecycleScope.launch {
+                        val refreshToken = userPreferences.getRefreshToken()
+                        if (refreshToken.isNotEmpty()) {
+                            val response = loginRepository.getNewAccessToken(refreshToken)
+                            if (response != null) {
+                                when (response.code()) {
+                                    200 -> {
+                                        userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    }
+                                    401 -> {
+                                        CustomSnackBar.make(
+                                            requireView(),
+                                            R.drawable.snackbar_error_16dp,
+                                            getString(R.string.snack_bar_refresh_expire),
+                                        ).show()
+                                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                } else {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_error_16dp,
+                        getString(R.string.snack_bar_failure),
+                    ).show()
+                }
             }
         }
 
-        homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptom ->
-            if (dogSymptom.symptomRecords.isNullOrEmpty()) {
+        homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptomResponse ->
+            if (dogSymptomResponse != null) {
+                if (dogSymptomResponse.code() == 200) {
+                    fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_exist)
+                    fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.VISIBLE
+                    dogSymptomResponse.body()?.symptomRecords?.forEach { symptoms ->
+                        Log.d("homeDogSymptom", symptoms.symptomString)
+                    }
+                    val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
+                    adapter.updateSymptomList(dogSymptomResponse.body()?.symptomRecords!!)
+                } else if (dogSymptomResponse.code() == 401) {
+                    lifecycleScope.launch {
+                        val refreshToken = userPreferences.getRefreshToken()
+                        if (refreshToken.isNotEmpty()) {
+                            val response = loginRepository.getNewAccessToken(refreshToken)
+                            if (response != null) {
+                                when (response.code()) {
+                                    200 -> {
+                                        userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    }
+                                    401 -> {
+                                        CustomSnackBar.make(
+                                            requireView(),
+                                            R.drawable.snackbar_error_16dp,
+                                            getString(R.string.snack_bar_refresh_expire),
+                                        ).show()
+                                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                } else{
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_error_16dp,
+                        getString(R.string.snack_bar_failure),
+                    ).show()
+                    fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
+                    fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
+                }
+            } else {
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
-            } else {
-                fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_exist)
-                fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.VISIBLE
-                dogSymptom.symptomRecords.forEach {
-                    Log.d("homeDogSymptom", it.symptomString)
-                }
-                val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
-                adapter.updateSymptomList(dogSymptom.symptomRecords)
             }
         }
 
