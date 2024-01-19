@@ -13,6 +13,7 @@ import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -25,9 +26,11 @@ class ExcretaRecordEditFragment : Fragment() {
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
 
     private lateinit var excretaAdapter: ExcretaRecordEditAdapter
     private var accessToken = ""
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +49,10 @@ class ExcretaRecordEditFragment : Fragment() {
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
+        }
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
         }
         excretaAdapter =
             ExcretaRecordEditAdapter(
@@ -91,7 +98,7 @@ class ExcretaRecordEditFragment : Fragment() {
         val dateTime = LocalDateTime.now().toString().slice(ExcretaFragment.DATE_TIME_START..ExcretaFragment.DATE_TIME_END)
 
         excretaRecordViewModel.apply {
-            getExcretaRecord(accessToken, dateTime)
+            getExcretaRecord(dogId, accessToken, dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 excretaAdapter.submitList(response.excretaRecords)
             }

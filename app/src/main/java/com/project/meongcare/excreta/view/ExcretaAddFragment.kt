@@ -19,6 +19,7 @@ import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeForma
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
+import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +31,11 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
 
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
+
     private var excretaDate = ""
     private var accessToken = ""
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +54,10 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
+        }
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
         }
         initToolbar()
         initPhotoAttachModalBottomSheet()
@@ -141,6 +149,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
 
                 val currentImageUri = excretaAddViewModel.excretaImage.value
                 excretaAddViewModel.postExcreta(
+                    dogId,
                     accessToken,
                     excretaType,
                     excretaDateTime,

@@ -21,13 +21,14 @@ class ExcretaRecordViewModel
             get() = _excretaRecordGet
 
         fun getExcretaRecord(
+            dogId: Long,
             accessToken: String,
             date: String,
         ) {
             viewModelScope.launch {
                 val excretaRecordGetRequest =
                     ExcretaRecordGetRequest(
-                        35L,
+                        dogId,
                         date,
                     )
 

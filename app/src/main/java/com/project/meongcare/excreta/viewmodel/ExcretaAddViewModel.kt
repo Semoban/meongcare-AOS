@@ -41,6 +41,7 @@ class ExcretaAddViewModel
         }
 
         fun postExcreta(
+            dogId: Long,
             accessToken: String,
             excretaType: String,
             dateTime: String,
@@ -50,7 +51,7 @@ class ExcretaAddViewModel
             viewModelScope.launch {
                 val excretaInfo =
                     ExcretaInfo(
-                        35L,
+                        dogId,
                         excretaType,
                         dateTime,
                     )
