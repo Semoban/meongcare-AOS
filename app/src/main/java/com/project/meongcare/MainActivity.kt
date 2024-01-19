@@ -13,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -26,12 +25,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var toolbarViewModel: ToolbarViewModel
-    lateinit var symptomViewModel: SymptomViewModel
 
     companion object {
         const val BASE_URL = "https://dev.meongcare.com/"
-        const val ACCESS_TOKEN =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyMTMzOTQ5fQ.lolNGSPRJDf3O1t-bjaPtKmVU_A4-iqfRFbbt1YYkDM"
     }
 
     @Inject
@@ -55,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         handleOnBackPressed()
 
         toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding.run {
             autoLogin()
