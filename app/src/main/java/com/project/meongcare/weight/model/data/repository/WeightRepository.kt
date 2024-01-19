@@ -8,13 +8,28 @@ import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 
 interface WeightRepository {
-    suspend fun postWeight(weightPostRequest: WeightPostRequest): Int?
+    suspend fun postWeight(
+        accessToken: String,
+        weightPostRequest: WeightPostRequest,
+    ): Int?
 
-    suspend fun patchWeight(weightPatchRequest: WeightPatchRequest): Int?
+    suspend fun patchWeight(
+        accessToken: String,
+        weightPatchRequest: WeightPatchRequest,
+    ): Int?
 
-    suspend fun getWeeklyWeight(weightGetRequest: WeightGetRequest): WeightWeeksResponse?
+    suspend fun getWeeklyWeight(
+        accessToken: String,
+        weightGetRequest: WeightGetRequest,
+    ): WeightWeeksResponse?
 
-    suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest): WeightMonthResponse?
+    suspend fun getMonthlyWeight(
+        accessToken: String,
+        weightGetRequest: WeightGetRequest,
+    ): WeightMonthResponse?
 
-    suspend fun getDayWeight(weightGetRequest: WeightGetRequest): WeightDayResponse?
+    suspend fun getDayWeight(
+        accessToken: String,
+        weightGetRequest: WeightGetRequest,
+    ): WeightDayResponse?
 }
