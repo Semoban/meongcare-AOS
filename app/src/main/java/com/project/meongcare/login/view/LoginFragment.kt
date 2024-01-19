@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -33,8 +32,8 @@ import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingService
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -65,18 +64,20 @@ class LoginFragment : Fragment() {
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                lifecycleScope.launch {
-                    val refreshToken = userPreferences.getRefreshToken()
-                    userPreferences.setAccessToken(loginResponse.accessToken)
-                    userPreferences.setRefreshToken(loginResponse.refreshToken)
-                    if (refreshToken.isNullOrEmpty()) {
-                        findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
-                    } else {
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    }
+                userPreferences.setAccessToken(loginResponse.accessToken)
+                userPreferences.setRefreshToken(loginResponse.refreshToken)
+                Log.e("isFirstLogin", loginResponse.isFirstLogin.toString())
+                when (loginResponse.isFirstLogin) {
+                    true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                    false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
             } else {
-                Log.d("Login-viewmodel", "통신 실패")
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_login_failure),
+                )
+                Log.d("Login", "통신 실패")
             }
         }
 
