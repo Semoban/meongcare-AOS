@@ -80,7 +80,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/all_rect_main4_r5"
                             android:visibility="visible" />
                     </LinearLayout>
 
