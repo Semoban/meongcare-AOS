@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.home.model.entities.DogProfile
+import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.repository.ProfileRepository
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
@@ -12,21 +13,22 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel
     @Inject
     constructor(private val profileRepository: ProfileRepository) : ViewModel() {
-        private val _userProfile = MutableLiveData<GetUserProfileResponse>()
+        private val _userProfile = MutableLiveData<Response<GetUserProfileResponse>?>()
         val userProfile
             get() = _userProfile
 
-        private val _dogList = MutableLiveData<MutableList<DogProfile>>()
+        private val _dogList = MutableLiveData<Response<GetDogListResponse>?>()
         val dogList
             get() = _dogList
 
-        private val _dogInfo = MutableLiveData<GetDogInfoResponse>()
+        private val _dogInfo = MutableLiveData<Response<GetDogInfoResponse>?>()
         val dogInfo
             get() = _dogInfo
 
