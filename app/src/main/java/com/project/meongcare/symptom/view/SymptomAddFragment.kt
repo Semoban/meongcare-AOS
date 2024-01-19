@@ -199,7 +199,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         val dateTimeString = getDateTimeString()
         val addItemName = getAddItemName()
         val addItemTitle = symptomViewModel.symptomItemTitle.value
-        checkNullAndAddData( addItemName, addItemTitle, dateTimeString,)
+        checkNullAndAddData(addItemName, addItemTitle, dateTimeString)
     }
 
     private fun getAddItemName() =

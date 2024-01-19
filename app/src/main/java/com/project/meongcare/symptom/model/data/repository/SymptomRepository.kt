@@ -1,27 +1,23 @@
 package com.project.meongcare.symptom.model.data.repository
 
-import android.util.Log
-import com.project.meongcare.MainActivity
-import com.project.meongcare.home.model.data.local.DogPreferences
-import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.symptom.model.data.remote.SymptomAPI
 import com.project.meongcare.symptom.model.data.remote.SymptomRetrofitInstance
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
-import kotlinx.coroutines.flow.collect
 import okhttp3.ResponseBody
 import javax.inject.Inject
 
-class SymptomRepository @Inject constructor() {
+class SymptomRepository
+@Inject
+constructor() {
     companion object {
         private val symptomAPI: SymptomAPI =
             SymptomRetrofitInstance.getInstance().create(SymptomAPI::class.java)
     }
 
     suspend fun getSymptomByDogId(
-        accessToken:String?,
+        accessToken: String?,
         dogId: Long?,
         dateTime: String,
     ): Result<ResultSymptom> =
@@ -40,7 +36,10 @@ class SymptomRepository @Inject constructor() {
             }
         }
 
-    suspend fun addSymptom(accessToken:String?,toAddSymptom: ToAddSymptom): Int {
+    suspend fun addSymptom(
+        accessToken: String?,
+        toAddSymptom: ToAddSymptom,
+    ): Int {
         val response =
             symptomAPI.addSymptom(
                 accessToken,
@@ -49,17 +48,22 @@ class SymptomRepository @Inject constructor() {
         return response.code()
     }
 
-    suspend fun deleteSymptom(accessToken: String?, symptomIds: IntArray): Int {
+    suspend fun deleteSymptom(
+        accessToken: String?,
+        symptomIds: IntArray,
+    ): Int {
         val response =
             symptomAPI.deleteSymptom(
                 accessToken,
                 symptomIds,
             )
-
         return response.code()
     }
 
-    suspend fun patchSymptom(accessToken: String?, toEditSymptom: ToEditSymptom): Result<ResponseBody> =
+    suspend fun patchSymptom(
+        accessToken: String?,
+        toEditSymptom: ToEditSymptom,
+    ): Result<ResponseBody> =
         kotlin.runCatching {
             val response =
                 symptomAPI.patchSymptom(

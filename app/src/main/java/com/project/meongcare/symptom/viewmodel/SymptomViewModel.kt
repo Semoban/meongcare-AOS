@@ -3,10 +3,8 @@ package com.project.meongcare.symptom.viewmodel
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.R
 import com.project.meongcare.home.model.data.local.DogPreferences
@@ -26,7 +24,9 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class SymptomViewModel @Inject constructor(private val repository: SymptomRepository) : ViewModel() {
+class SymptomViewModel
+@Inject
+constructor(private val repository: SymptomRepository) : ViewModel() {
     var symptomList = MutableLiveData<MutableList<Symptom>>()
     var symptomDateText = MutableLiveData<String?>()
     var symptomTimeHour: Int? = null
@@ -57,11 +57,12 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
     ) {
         val localDate = convertToDateToMiliSec(date)
         viewModelScope.launch {
-            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-            val dogId:Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-            Log.d("Symptom get Api accessToken", "${accessToken}")
-            Log.d("Symptom get Api dogId", "${dogId}")
-            val symptoms = repository.getSymptomByDogId(accessToken, dogId,localDate)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            Log.d("Symptom get Api accessToken", "$accessToken")
+            Log.d("Symptom get Api dogId", "$dogId")
+            val symptoms = repository.getSymptomByDogId(accessToken, dogId, localDate)
             symptoms.onSuccess {
                 symptomList.value = it.records.sortedBy { s -> s.dateTime }.toMutableList()
                 Log.d("Symptom get Api 통신 성공", symptomList.value.toString())
@@ -71,31 +72,37 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
         }
     }
 
-    fun addSymptomData(addItemName: String,
-                       addItemTitle: String,
-                       dateTimeString: String,) {
+    fun addSymptomData(
+        addItemName: String,
+        addItemTitle: String,
+        dateTimeString: String,
+    ) {
         viewModelScope.launch {
-            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-            val dogId:Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-            Log.d("Symptom add Api accessToken", "${accessToken}")
-            Log.d("Symptom add Api dogId", "${dogId}")
-            val toAddSymptom = ToAddSymptom(dogId!!.toInt(), addItemName, addItemTitle,dateTimeString )
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            Log.d("Symptom add Api accessToken", "$accessToken")
+            Log.d("Symptom add Api dogId", "$dogId")
+            val toAddSymptom =
+                ToAddSymptom(dogId!!.toInt(), addItemName, addItemTitle, dateTimeString)
             Log.d("Symptom add Api toAddSymptom", "$toAddSymptom")
-            addSymptomCode.value = repository.addSymptom(accessToken,toAddSymptom)
+            addSymptomCode.value = repository.addSymptom(accessToken, toAddSymptom)
             Log.d("Symptom add Api addSymptomCode", "${addSymptomCode.value}")
         }
     }
 
     fun deleteSymptom(symptomIds: IntArray) {
         viewModelScope.launch {
-            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
             deleteSymptomCode.value = repository.deleteSymptom(accessToken, symptomIds)
         }
     }
 
     fun patchSymptom(toEditSymptom: ToEditSymptom) {
         viewModelScope.launch {
-            val accessToken: String? = UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
             val patch = repository.patchSymptom(accessToken, toEditSymptom)
             patch.onSuccess {
                 patchSymptomIsSuccess.value = true

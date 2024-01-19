@@ -47,7 +47,7 @@ class SymptomInfoFragment : Fragment() {
 
         symptomViewModel.run {
             deleteSymptomCode.observe(viewLifecycleOwner) {
-                if(it == 200) {
+                if (it == 200) {
                     showSuccessSnackbar()
                     findNavController().popBackStack()
                 } else {

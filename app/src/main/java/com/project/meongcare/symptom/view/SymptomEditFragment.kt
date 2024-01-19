@@ -98,7 +98,6 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
                 timepickerSymptomEdit.visibility = View.VISIBLE
             }
 
-
             timepickerSymptomEdit.setOnTimeChangedListener { timePicker, hour, minute ->
                 symptomViewModel.symptomTimeHour = hour
                 symptomViewModel.symptomTimeMinute = minute
@@ -236,7 +235,7 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
 
     private fun getDateTimeString() =
         if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-            if(fragmentSymptomEditBinding.timepickerSymptomEdit.visibility == View.VISIBLE){
+            if (fragmentSymptomEditBinding.timepickerSymptomEdit.visibility == View.VISIBLE) {
                 "${symptomViewModel.symptomDateText.value}T${
                     String.format(
                         "%02d:%02d",
@@ -249,7 +248,6 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
                     convertDateToSimpleTime(symptomViewModel.infoSymptomData.value!!.dateTime)
                 }"
             }
-
         } else {
             checkNullInput(
                 fragmentSymptomEditBinding.textViewSymptomEditDate,

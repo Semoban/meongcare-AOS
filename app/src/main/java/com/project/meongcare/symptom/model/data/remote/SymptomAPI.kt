@@ -3,7 +3,6 @@ package com.project.meongcare.symptom.model.data.remote
 import com.project.meongcare.symptom.model.entities.ResultSymptom
 import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
-import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
