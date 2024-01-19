@@ -32,7 +32,7 @@
                 android:id="@+id/imageView_item_symptomadd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                app:srcCompat="@drawable/all_rect_main4_r5" />
 
         </androidx.cardview.widget.CardView>
 

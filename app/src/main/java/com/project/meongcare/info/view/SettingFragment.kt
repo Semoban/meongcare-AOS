@@ -2,6 +2,7 @@ package com.project.meongcare.info.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,6 +42,9 @@ class SettingFragment : Fragment() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,21 +60,76 @@ class SettingFragment : Fragment() {
         binding = FragmentSettingBinding.inflate(inflater)
 
         settingViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null && response == 200) {
-                userPreferences.setProvider(null)
-                userPreferences.setEmail(null)
-                userPreferences.setAccessToken(null)
-                userPreferences.setRefreshToken(null)
-                findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+            if (response != null) {
+                when (response) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_user_delete_complete),
+                        )
+                        userPreferences.setProvider(null)
+                        userPreferences.setEmail(null)
+                        userPreferences.setAccessToken(null)
+                        userPreferences.setRefreshToken(null)
+                        findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_user_delete_failure),
+                                            ).show()
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
         settingViewModel.patchPushResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
                 when (binding.switchSettingNotification.isChecked) {
-                    true -> makeSnackBar(binding.root, requireContext(), "알림 수신 처리되었습니다.")
-                    false -> makeSnackBar(binding.root, requireContext(), "알림 거부 처리되었습니다.")
+                    true -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_notification_on),
+                        )
+                    }
+                    false -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_notification_off),
+                        )
+                    }
                 }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                )
             }
         }
 
@@ -91,7 +157,14 @@ class SettingFragment : Fragment() {
                     includeDeleteAccountDialog.root.visibility = View.GONE
                 }
                 buttonDeleteAccountDialogDelete.setOnClickListener {
-                    settingViewModel.deleteUser(currentAccessToken)
+                    lifecycleScope.launch {
+                        val currentProvider = userPreferences.getProvider()
+                        when (currentProvider) {
+                            "kakao" -> deleteKakaoAccount()
+                            "naver" -> deleteNaverAccount()
+                            "google" -> deleteGoogleAccount()
+                        }
+                    }
                 }
             }
 
@@ -116,33 +189,61 @@ class SettingFragment : Fragment() {
             }
         }
     }
-}
 
-fun makeSnackBar(
-    view: View,
-    context: Context,
-    message: String,
-) {
-    val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-    val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
+    private fun deleteKakaoAccount() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e("Delete-kakao", "연결 끊기 실패", error)
+            } else {
+                Log.d("Delete-kakao", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                settingViewModel.deleteUser(currentAccessToken)
+            }
+        }
+    }
 
-    val imageView = ImageView(context)
-    imageView.setImageResource(R.drawable.all_snack_bar_complete)
-    val imageViewStartPadding = context.resources.getDimensionPixelSize(R.dimen.snackbar_image_start_padding)
-    imageView.setPadding(imageViewStartPadding, 0, 0, 0)
+    private fun deleteNaverAccount() {
+        NidOAuthLogin().callDeleteTokenApi(
+            object : OAuthLoginCallback {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
 
-    val params =
-        LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.MATCH_PARENT,
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
+                }
+
+                override fun onSuccess() {
+                    Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
+                    settingViewModel.deleteUser(currentAccessToken)
+                }
+            },
         )
-    params.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-    snackBarLayout.addView(imageView, 0, params)
+    }
 
-    val textView = snackBarLayout.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+    private fun deleteGoogleAccount() {
+        val gso =
+            GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN,
+            ).build()
+        val googleSignInClient =
+            this.let {
+                GoogleSignIn.getClient(requireContext(), gso)
+            }
 
-    val textViewStartPadding = context.resources.getDimensionPixelSize(R.dimen.snackbar_text_start_padding)
-    textView.setPadding(textViewStartPadding, 0, 0, 0)
-
-    snackBar.show()
+        googleSignInClient.revokeAccess()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Delete-google", "회원 탈퇴 성공")
+                    settingViewModel.deleteUser(currentAccessToken)
+                } else {
+                    Log.e("Delete-google", "회원 탈퇴 실패 ${task.result}")
+                }
+            }
+    }
 }

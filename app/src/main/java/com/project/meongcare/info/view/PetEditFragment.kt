@@ -24,6 +24,7 @@ import com.project.meongcare.databinding.FragmentPetEditBinding
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
@@ -34,6 +35,7 @@ import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.onboarding.view.dateFormat
 import com.project.meongcare.onboarding.view.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,6 +59,9 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    @Inject
+    lateinit var loginRepository: LoginRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,8 +98,52 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
 
         petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null && response == 200) {
-                findNavController().popBackStack()
+            if (response != null) {
+                when (response) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_dog_edit_complete),
+                        ).show()
+                        findNavController().popBackStack()
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_info_edit_failure),
+                                            ).show()
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_failure),
+                        ).show()
+                    }
+                }
             }
         }
 
@@ -129,7 +178,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
             }
 
-            imageviewPeteditBirthdayCalender.setOnClickListener {
+            edittextPeteditSelectBirthday.setOnClickListener {
                 val calendarBottomSheet = CalendarBottomSheetFragment()
                 calendarBottomSheet.setDateSubmitListener(this@PetEditFragment)
                 calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)

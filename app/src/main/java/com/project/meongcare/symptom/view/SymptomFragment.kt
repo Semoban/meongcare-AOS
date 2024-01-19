@@ -44,14 +44,14 @@ class SymptomFragment : Fragment() {
         toolbarViewModel.run {
             selectedDate.observe(viewLifecycleOwner) {
                 if (toolbarViewModel.selectedDate.value != null) {
-                    symptomViewModel.getSymptomList(1, toolbarViewModel.selectedDate.value!!)
+                    symptomViewModel.getSymptomList(toolbarViewModel.selectedDate.value!!)
                 }
             }
         }
 
         symptomViewModel.run {
             clearLiveData()
-            getSymptomList(1, toolbarViewModel.selectedDate.value!!)
+            getSymptomList(toolbarViewModel.selectedDate.value!!)
             symptomList.observe(viewLifecycleOwner) {
                 updateVisiblity()
                 setRecyclerViewAdapter()
@@ -107,7 +107,7 @@ class SymptomFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        symptomViewModel.getSymptomList(1, toolbarViewModel.selectedDate.value!!)
+        symptomViewModel.getSymptomList(toolbarViewModel.selectedDate.value!!)
     }
 }
 

@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    custom:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    custom:behavior_hideable="true"
+    custom:behavior_peekHeight="0dp"
     tools:context=".CalendarBottomSheetFragment">
 
     <ImageView

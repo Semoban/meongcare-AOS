@@ -8,6 +8,7 @@ import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -23,14 +24,6 @@ class SymptomUtils {
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
             val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
-            return dateTime.format(outputFormatter)
-        }
-
-        fun convertDateToSimpleTime(localMili: String): String {
-            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
-
-            val outputFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
             return dateTime.format(outputFormatter)
         }
 
@@ -63,6 +56,13 @@ class SymptomUtils {
             val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             return localDateTime.format(formatter)
+        }
+
+        fun convertDateToSimpleTime(inputDateString: String): String {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val date: Date = inputFormat.parse(inputDateString)
+            val outputFormat = SimpleDateFormat("HH:mm:ss")
+            return outputFormat.format(date)
         }
 
         fun getSymptomImg(symptomData: Symptom): Int {

@@ -75,16 +75,21 @@ class MainActivity : AppCompatActivity() {
 
                     true
                 }
+                setOnItemReselectedListener { menuItem ->
+                    if (menuItem.itemId == R.id.menuMainBottomNavHome) {
+                        fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                    } else {
+                        includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                    }
+                }
             }
 
             includeMedicalRecordDialog.run {
                 constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+                    includeMedicalRecordDialog.root.visibility = View.VISIBLE
                 }
                 buttonOk.setOnClickListener {
                     includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
