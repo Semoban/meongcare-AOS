@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         requestPermissions(permissionList, 0)
         initNavController()
+        handleOnBackPressed()
 
         toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
         symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
@@ -270,5 +272,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun handleOnBackPressed() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                when (navController.currentDestination?.id) {
+                    R.id.homeFragment,
+                    R.id.medicalRecordFragment -> finish()
+                    else -> if (navController.popBackStack().not()) {
+                        isEnabled = false
+                    }
+                }
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 }
