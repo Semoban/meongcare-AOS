@@ -194,8 +194,7 @@ class SettingFragment : Fragment() {
         UserApiClient.instance.unlink { error ->
             if (error != null) {
                 Log.e("Delete-kakao", "연결 끊기 실패", error)
-            }
-            else {
+            } else {
                 Log.d("Delete-kakao", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
                 settingViewModel.deleteUser(currentAccessToken)
             }
@@ -203,20 +202,28 @@ class SettingFragment : Fragment() {
     }
 
     private fun deleteNaverAccount() {
-        NidOAuthLogin().callDeleteTokenApi(object : OAuthLoginCallback {
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
+        NidOAuthLogin().callDeleteTokenApi(
+            object : OAuthLoginCallback {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
 
-            override fun onFailure(httpStatus: Int, message: String) {
-                Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
-            }
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
+                }
 
-            override fun onSuccess() {
-                Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
-                settingViewModel.deleteUser(currentAccessToken)
+                override fun onSuccess() {
+                    Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
+                    settingViewModel.deleteUser(currentAccessToken)
+                }
             }
-        })
+        )
     }
 
     private fun deleteGoogleAccount() {
