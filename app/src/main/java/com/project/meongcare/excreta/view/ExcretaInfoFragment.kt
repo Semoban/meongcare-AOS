@@ -18,6 +18,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,7 +79,12 @@ class ExcretaInfoFragment : Fragment() {
                         excretaDeleteViewModel.apply {
                             deleteExcreta(accessToken, intArrayOf(excretaId.toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
-                                if (response == SUCCESS) findNavController().popBackStack()
+                                if (response == SUCCESS) {
+                                    CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "대소변 정보가 삭제되었습니다!").show()
+                                    findNavController().popBackStack()
+                                } else {
+                                    CustomSnackBar.make(requireView(), R.drawable.snackbar_error_16dp, "서버가 불안정 하여 대소변 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.").show()
+                                }
                             }
                         }
                     }
