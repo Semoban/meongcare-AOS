@@ -257,7 +257,7 @@ class LoginFragment : Fragment() {
 
             val loginRequest =
                 LoginRequest(
-                    "${account.serverAuthCode}",
+                    "${account.idToken}",
                     "google",
                     "김멍멍",
                     "${account.email}",
