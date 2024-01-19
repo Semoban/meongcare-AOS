@@ -88,7 +88,7 @@ class WeightViewModel
 
         fun getDailyWeight(
             accessToken: String,
-            weightGetRequest: WeightGetRequest
+            weightGetRequest: WeightGetRequest,
         ) {
             viewModelScope.launch {
                 _dayWeightGet.value = weightRepositoryImpl.getDayWeight(accessToken, weightGetRequest)
