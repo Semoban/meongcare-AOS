@@ -58,6 +58,18 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         fragmentDogAddOnBoardingBinding = FragmentDogAddOnBoardingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
+            if (uri != null) {
+                fragmentDogAddOnBoardingBinding.run {
+                    Glide.with(this@DogAddOnBoardingFragment)
+                        .load(uri)
+                        .into(imageviewPetaddImage)
+                    imageviewPetaddDog.visibility = View.GONE
+                    textviewPetaddImageDescription.visibility = View.GONE
+                }
+            }
+        }
+
         dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
                 fragmentDogAddOnBoardingBinding.textviewPetaddSelectBirthday.run {
@@ -198,14 +210,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     override fun onUriPassed(uri: Uri) {
         dogAddViewModel.getDogProfileImage(uri)
-
-        fragmentDogAddOnBoardingBinding.run {
-            Glide.with(this@DogAddOnBoardingFragment)
-                .load(uri)
-                .into(imageviewPetaddImage)
-            imageviewPetaddDog.visibility = View.GONE
-            textviewPetaddImageDescription.visibility = View.GONE
-        }
     }
 
     override fun onDateSubmit(str: String) {
