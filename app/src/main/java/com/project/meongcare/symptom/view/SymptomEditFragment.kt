@@ -22,6 +22,7 @@ import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.ToEditSymptom
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToSimpleTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertSimpleDateToMonthDate
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
@@ -96,6 +97,7 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
                 it.visibility = View.GONE
                 timepickerSymptomEdit.visibility = View.VISIBLE
             }
+
 
             timepickerSymptomEdit.setOnTimeChangedListener { timePicker, hour, minute ->
                 symptomViewModel.symptomTimeHour = hour
@@ -179,21 +181,12 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         }
     }
 
-    private fun checkSuccessToEdit(it: Boolean) {
-        if (it) {
-            symptomViewModel.clearLiveData()
-            CustomSnackBar(
-                requireView(),
-                R.drawable.snackbar_success_16dp,
-                "수정이 완료되었습니다.",
-            )
+    private fun checkSuccessToEdit(it: Boolean?) {
+        if (it == true) {
+            showSuccessSnackbar()
             findNavController().popBackStack(R.id.symptomFragment, false)
-        } else {
-            CustomSnackBar(
-                requireView(),
-                R.drawable.snackbar_error_16dp,
-                "서버 에러입니다.\n잠시 후에 다시 시도해주세요.",
-            )
+        } else if (it == false) {
+            showFailSnackbar()
         }
     }
 
@@ -243,13 +236,20 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
 
     private fun getDateTimeString() =
         if (!symptomViewModel.symptomDateText.value.isNullOrEmpty()) {
-            "${symptomViewModel.symptomDateText.value}T${
-                String.format(
-                    "%02d:%02d",
-                    fragmentSymptomEditBinding.timepickerSymptomEdit.hour,
-                    fragmentSymptomEditBinding.timepickerSymptomEdit.minute,
-                )
-            }:00"
+            if(fragmentSymptomEditBinding.timepickerSymptomEdit.visibility == View.VISIBLE){
+                "${symptomViewModel.symptomDateText.value}T${
+                    String.format(
+                        "%02d:%02d",
+                        fragmentSymptomEditBinding.timepickerSymptomEdit.hour,
+                        fragmentSymptomEditBinding.timepickerSymptomEdit.minute,
+                    )
+                }:00"
+            } else {
+                "${symptomViewModel.symptomDateText.value}T${
+                    convertDateToSimpleTime(symptomViewModel.infoSymptomData.value!!.dateTime)
+                }"
+            }
+
         } else {
             checkNullInput(
                 fragmentSymptomEditBinding.textViewSymptomEditDate,
@@ -327,6 +327,22 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
             Log.d("이상증상 편집 확인", toEditSymptom.toString())
             symptomViewModel.patchSymptom(toEditSymptom)
         }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "수정이 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "수정에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 
     override fun onDateSelected(date: LocalDate) {

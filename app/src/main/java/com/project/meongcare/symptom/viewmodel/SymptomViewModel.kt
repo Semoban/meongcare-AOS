@@ -39,7 +39,7 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
     var infoSymptomData = MutableLiveData<Symptom>()
     var addSymptomCode = MutableLiveData<Int?>()
     var deleteSymptomCode = MutableLiveData<Int?>()
-    var patchSymptomIsSuccess = MutableLiveData<Boolean>()
+    var patchSymptomIsSuccess = MutableLiveData<Boolean?>()
     var symptomIdList = MutableLiveData<MutableList<Int>>()
     var symptomIdListAllCheck = MutableLiveData<Boolean>()
 
@@ -49,7 +49,7 @@ class SymptomViewModel @Inject constructor(private val repository: SymptomReposi
         symptomItemImgId.value = R.drawable.symptom_etc_record
         textViewNoDataVisibility.value = false
         symptomIdListAllCheck.value = false
-        patchSymptomIsSuccess.value = false
+        patchSymptomIsSuccess.value = null
     }
 
     fun getSymptomList(
