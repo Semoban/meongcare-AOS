@@ -52,9 +52,7 @@ class SymptomViewModel
             patchSymptomIsSuccess.value = null
         }
 
-        fun getSymptomList(
-            date: Date,
-        ) {
+        fun getSymptomList(date: Date) {
             val localDate = convertToDateToMiliSec(date)
             viewModelScope.launch {
                 val accessToken: String? =
