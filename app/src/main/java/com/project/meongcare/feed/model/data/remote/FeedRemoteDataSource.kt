@@ -15,11 +15,12 @@ import javax.inject.Inject
 class FeedRemoteDataSource
     @Inject
     constructor() {
-        private val accessToken =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val feedApiService = FeedClient.feedService
 
-        suspend fun postFeed(feedUploadRequest: FeedUploadRequest): Int? {
+        suspend fun postFeed(
+            accessToken: String,
+            feedUploadRequest: FeedUploadRequest,
+        ): Int? {
             try {
                 val postFeedResponse =
                     feedApiService.postFeed(
@@ -43,12 +44,15 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeed(): FeedGetResponse? {
+        suspend fun getFeed(
+            accessToken: String,
+            dogId: Long,
+        ): FeedGetResponse? {
             try {
                 val getFeedResponse =
                     feedApiService.getFeed(
                         accessToken,
-                        2L,
+                        dogId,
                     )
                 return if (getFeedResponse.code() == SUCCESS) {
                     Log.d("FeedGetSuccess", getFeedResponse.code().toString())
@@ -65,12 +69,16 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords? {
+        suspend fun getFeedPart(
+            accessToken: String,
+            dogId: Long,
+            feedRecordId: Long,
+        ): FeedPartRecords? {
             try {
                 val getFeedPartResponse =
                     feedApiService.getFeedPart(
                         accessToken,
-                        2L,
+                        dogId,
                         feedRecordId,
                     )
                 return if (getFeedPartResponse.code() == SUCCESS) {
@@ -88,12 +96,15 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getFeeds(): Feeds? {
+        suspend fun getFeeds(
+            accessToken: String,
+            dogId: Long,
+        ): Feeds? {
             try {
                 val getFeedsResponse =
                     feedApiService.getFeeds(
                         accessToken,
-                        2L,
+                        dogId,
                     )
                 return if (getFeedsResponse.code() == SUCCESS) {
                     Log.d("FeedsGetSuccess", getFeedsResponse.code().toString())
@@ -110,12 +121,16 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords? {
+        suspend fun getPreviousFeed(
+            accessToken: String,
+            dogId: Long,
+            feedRecordId: Long,
+        ): FeedRecords? {
             try {
                 val getPreviousFeedResponse =
                     feedApiService.getPreviousFeed(
                         accessToken,
-                        2L,
+                        dogId,
                         feedRecordId,
                     )
 
@@ -135,6 +150,7 @@ class FeedRemoteDataSource
         }
 
         suspend fun getFeedDetail(
+            accessToken: String,
             feedId: Long,
             feedRecordId: Long,
         ): FeedDetailGetResponse? {
@@ -161,7 +177,10 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int? {
+        suspend fun patchFeed(
+            accessToken: String,
+            feedPatchRequest: FeedPatchRequest,
+        ): Int? {
             try {
                 val patchFeedResponse =
                     feedApiService.patchFeed(
@@ -184,7 +203,10 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun putFeed(feedUploadRequest: FeedUploadRequest): Int? {
+        suspend fun putFeed(
+            accessToken: String,
+            feedUploadRequest: FeedUploadRequest,
+        ): Int? {
             try {
                 val putFeedResponse =
                     feedApiService.putFeed(
@@ -208,7 +230,10 @@ class FeedRemoteDataSource
             }
         }
 
-        suspend fun deleteFeed(feedId: Long): Int? {
+        suspend fun deleteFeed(
+            accessToken: String,
+            feedId: Long,
+        ): Int? {
             try {
                 val deleteFeedResponse =
                     feedApiService.deleteFeed(

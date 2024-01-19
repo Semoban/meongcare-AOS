@@ -23,6 +23,7 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.SupplementDto
@@ -133,6 +134,15 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                     )
                 }
             }
+
+            supplementViewModel.supplementCode.observe(viewLifecycleOwner) {
+                if (it == 200) {
+                    showSuccessSnackbar()
+                    navController.popBackStack()
+                } else {
+                    showFailSnackbar()
+                }
+            }
         }
 
         fragmentSupplementAddBinding.run {
@@ -176,23 +186,13 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                 if (checkInput()) {
                     val brandName = editTextSupplementAddBrandName.text.toString()
                     val name = editTextSupplementAddName.text.toString()
-                    val cycle = supplementViewModel.supplementCycle.value!!
-                    val intakeUnit = supplementViewModel.intakeTimeUnit.value!!
-                    val intakeInfo = supplementViewModel.intakeTimeList.value!!
                     val imgUri = supplementViewModel.supplementAddImg.value
-                    val supplementDto =
-                        SupplementDto(1, brandName, name, cycle, intakeUnit, intakeInfo)
+
                     supplementViewModel.addSupplement(
-                        supplementDto,
-                        requireContext(),
+                        brandName,
+                        name,
                         imgUri ?: Uri.EMPTY,
                     )
-
-                    supplementViewModel.supplementCode.observe(viewLifecycleOwner) {
-                        if (it == 200) {
-                            navController.popBackStack()
-                        }
-                    }
                 }
             }
         }
@@ -375,6 +375,22 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             }
         }
         return true
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "추가가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "추가에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 
     override fun onPictureChanged(uri: Uri) {

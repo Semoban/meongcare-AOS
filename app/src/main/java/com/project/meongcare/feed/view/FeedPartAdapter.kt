@@ -19,7 +19,14 @@ class FeedPartAdapter : ListAdapter<FeedPartRecord, FeedPartAdapter.FeedPartView
                         .load(item.feedImageURL)
                         .into(imageviewFeed)
                 }
-                val period = "${item.startDate}~ ${item.endDate}"
+
+                val period =
+                    if (item.endDate == null) {
+                        "${item.startDate}~ 모름"
+                    } else {
+                        "${item.startDate}~ ${item.endDate}"
+                    }
+
                 textviewFeedBrand.text = item.brandName
                 textviewFeedName.text = item.feedName
                 textviewFeedDate.text = period

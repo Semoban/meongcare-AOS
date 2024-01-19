@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -21,12 +22,23 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
+import com.project.meongcare.excreta.utils.SUCCESS
+import com.project.meongcare.feed.viewmodel.DogViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
+import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
+import com.project.meongcare.weight.model.entities.WeightPatchRequest
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import com.project.meongcare.weight.viewmodel.WeightViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -37,6 +49,16 @@ class WeightFragment : Fragment() {
 
     private lateinit var inputMethodManager: InputMethodManager
     private val weightViewModel: WeightViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
+    lateinit var toolbarViewModel: ToolbarViewModel
+
+    private var accessToken = ""
+    private var dogId = 0L
+    private var weight = 0.0
+    private lateinit var weightGetRequest: WeightGetRequest
+    private var date = ""
+    private var thisMonth = 0F
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,36 +75,77 @@ class WeightFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initInputMethodManager()
-        weightViewModel.postWeight(LocalDate.now().toString())
-        weightViewModel.weightPosted.observe(viewLifecycleOwner) { response ->
-            if (response == true) {
-                fetchDailyWeight()
-                initWeightEditDialog()
+        userViewModel.fetchAccessToken()
+        dogViewModel.fetchDogId()
+        toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
+        toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { selectedDate ->
+            convertSelectedDate(selectedDate)
+            convertThisMonth(selectedDate)
+            dogViewModel.dogId.observe(viewLifecycleOwner) { id ->
+                dogId = id
+                weightGetRequest =
+                    WeightGetRequest(
+                        dogId,
+                        date,
+                    )
+            }
+            userViewModel.accessToken.observe(viewLifecycleOwner) { access ->
+                accessToken = access
+                showWeightEditDialog()
+                fetchWeeklyWeight()
+                fetchMonthlyWeight()
+                postWeight()
             }
         }
-        showWeightEditDialog()
-        fetchWeeklyWeight()
-        fetchMonthlyWeight()
+        fetchDogName()
+    }
+
+    private fun postWeight() {
+        val weightPostRequest =
+            WeightPostRequest(
+                dogId,
+                LocalDate.now().toString(),
+                null,
+            )
+        weightViewModel.postWeight(accessToken, weightPostRequest)
+        weightViewModel.weightPosted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                fetchDailyWeight()
+            }
+        }
+    }
+
+    private fun fetchDogName() {
+        dogViewModel.fetchDogName()
+        dogViewModel.dogName.observe(viewLifecycleOwner) { name ->
+            binding.apply {
+                textviewWeightRecordExplanationDogName.text = name
+                textviewWeightWeeklyRecordTitleDogName.text = name
+                textviewWeightWeeklyRecordExplanationDogName.text = name
+            }
+        }
     }
 
     private fun fetchDailyWeight() {
-        weightViewModel.getDailyWeight("2023-12-18")
+        weightViewModel.getDailyWeight(accessToken, weightGetRequest)
         weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                binding.textviewWeightRecordContent.text = response.weight.toString()
+                weight = response.weight
+                binding.textviewWeightRecordContent.text = weight.toString()
+                initWeightEditDialog()
             }
         }
     }
 
     private fun fetchWeeklyWeight() {
-        weightViewModel.getWeeklyWeight("2023-12-18")
+        weightViewModel.getWeeklyWeight(accessToken, weightGetRequest)
         weightViewModel.weeklyWeightGet.observe(viewLifecycleOwner) { response ->
             initWeeklyRecordChart(response)
         }
     }
 
     private fun fetchMonthlyWeight() {
-        weightViewModel.getMonthlyWeight("2023-12-17")
+        weightViewModel.getMonthlyWeight(accessToken, weightGetRequest)
         weightViewModel.monthlyWeightGet.observe(viewLifecycleOwner) { response ->
             initMonthlyRecordChart(response)
             showMonthlyWeightVariation(response)
@@ -124,8 +187,23 @@ class WeightFragment : Fragment() {
 
     private fun initWeightEditDialog() {
         binding.layoutWeightEdit.run {
+            edittextWeighteditdialog.setText(weight.toString())
             buttonWeighteditdialogCancel.setOnClickListener { onCancelClicked() }
-            buttonWeighteditdialogCheck.setOnClickListener { onCheckClicked() }
+            buttonWeighteditdialogCheck.setOnClickListener {
+                edittextWeighteditdialog.apply {
+                    if (text.isEmpty()) {
+                        textviewWeighteditdialogWeightError.apply {
+                            visibility = View.VISIBLE
+                            setOnClickListener {
+                                visibility = View.GONE
+                                edittextWeighteditdialog.requestFocus()
+                            }
+                        }
+                    } else {
+                        onCheckClicked()
+                    }
+                }
+            }
         }
     }
 
@@ -142,11 +220,32 @@ class WeightFragment : Fragment() {
         val weightText = binding.layoutWeightEdit.edittextWeighteditdialog.text.toString()
         val weight = weightText.toDoubleOrNull() ?: return
 
-        weightViewModel.patchWeight(weight, date)
-        hideSoftKeyboard()
-        binding.layoutWeightEdit.run {
-            edittextWeighteditdialog.text.clear()
-            root.visibility = View.GONE
+        val weightPatchRequest =
+            WeightPatchRequest(
+                dogId,
+                weight,
+                date,
+            )
+
+        weightViewModel.patchWeight(accessToken, weightPatchRequest)
+        weightViewModel.weightPatched.observe(viewLifecycleOwner) { response ->
+            hideSoftKeyboard()
+            binding.layoutWeightEdit.run {
+                edittextWeighteditdialog.text.clear()
+                root.visibility = View.GONE
+            }
+            if (response == SUCCESS) {
+                fetchDailyWeight()
+                fetchWeeklyWeight()
+                fetchMonthlyWeight()
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "체중이 수정되었습니다!").show()
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    "서버가 불안정 하여 체중 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                ).show()
+            }
         }
     }
 
@@ -218,8 +317,8 @@ class WeightFragment : Fragment() {
     private fun initMonthlyRecordChart(response: WeightMonthResponse) {
         val weightMonthlyData =
             listOf(
-                BarEntry(11F, response.lastMonthWeight.toFloat()),
-                BarEntry(12F, response.thisMonthWeight.toFloat()),
+                BarEntry(thisMonth - 1F, response.lastMonthWeight.toFloat()),
+                BarEntry(thisMonth, response.thisMonthWeight.toFloat()),
             )
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
@@ -296,7 +395,11 @@ class WeightFragment : Fragment() {
         private val format = DecimalFormat("#월")
 
         override fun getFormattedValue(value: Float): String {
-            return format.format(value)
+            return if (value == 0F) {
+                "12월"
+            } else {
+                return format.format(value)
+            }
         }
     }
 
@@ -306,6 +409,16 @@ class WeightFragment : Fragment() {
         override fun getFormattedValue(value: Float): String {
             return format.format(value)
         }
+    }
+
+    private fun convertSelectedDate(selectedDate: Date) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        date = dateFormat.format(selectedDate.time)
+    }
+
+    private fun convertThisMonth(selectedDate: Date) {
+        val dateFormat = SimpleDateFormat("MM", Locale.getDefault())
+        thisMonth = dateFormat.format(selectedDate.time).toFloat()
     }
 
     private fun initInputMethodManager() {

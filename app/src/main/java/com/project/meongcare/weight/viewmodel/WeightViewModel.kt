@@ -22,13 +22,13 @@ class WeightViewModel
     constructor(
         private val weightRepositoryImpl: WeightRepositoryImpl,
     ) : ViewModel() {
-        private var _weightPosted = MutableLiveData<Boolean>()
+        private var _weightPosted = MutableLiveData<Int>()
         val weightPosted
             get() = _weightPosted
 
-        private var weightPatched = MutableLiveData<Boolean>()
-        private val _weightPatched
-            get() = weightPatched
+        private var _weightPatched = MutableLiveData<Int>()
+        val weightPatched
+            get() = _weightPatched
 
         private var _weeklyWeightGet = MutableLiveData<WeightWeeksResponse>()
         val weeklyWeightGet: LiveData<WeightWeeksResponse>
@@ -43,76 +43,55 @@ class WeightViewModel
             get() = _dayWeightGet
 
         fun postWeight(
-            dateTime: String,
-            weight: Double? = null,
+            accessToken: String,
+            weightPostRequest: WeightPostRequest,
         ) {
             viewModelScope.launch {
-                val weightPostRequest =
-                    WeightPostRequest(
-                        2L,
-                        dateTime,
-                        weight,
+                _weightPosted.value =
+                    weightRepositoryImpl.postWeight(
+                        accessToken,
+                        weightPostRequest,
                     )
-
-                weightRepositoryImpl.postWeight(weightPostRequest)
-                _weightPosted.value = true
-
-                Log.d("hye", weightPostRequest.toString())
             }
         }
 
         fun patchWeight(
-            kg: Double,
-            date: String,
+            accessToken: String,
+            weightPatchRequest: WeightPatchRequest,
         ) {
             viewModelScope.launch {
-                val weightPatchRequest =
-                    WeightPatchRequest(
-                        2L,
-                        kg,
-                        date,
+                _weightPatched.value =
+                    weightRepositoryImpl.patchWeight(
+                        accessToken,
+                        weightPatchRequest,
                     )
-
-                weightRepositoryImpl.patchWeight(weightPatchRequest)
-                _weightPatched.value = true
-
-                Log.d("hye", weightPatchRequest.toString())
             }
         }
 
-        fun getWeeklyWeight(date: String) {
+        fun getWeeklyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        2L,
-                        date,
-                    )
-
-                _weeklyWeightGet.value = weightRepositoryImpl.getWeeklyWeight(weightGetRequest)
+                _weeklyWeightGet.value = weightRepositoryImpl.getWeeklyWeight(accessToken, weightGetRequest)
             }
         }
 
-        fun getMonthlyWeight(date: String) {
+        fun getMonthlyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        2L,
-                        date,
-                    )
-
-                _monthlyWeightGet.value = weightRepositoryImpl.getMonthlyWeight(weightGetRequest)
+                _monthlyWeightGet.value = weightRepositoryImpl.getMonthlyWeight(accessToken, weightGetRequest)
             }
         }
 
-        fun getDailyWeight(date: String) {
+        fun getDailyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ) {
             viewModelScope.launch {
-                val weightGetRequest =
-                    WeightGetRequest(
-                        2L,
-                        date,
-                    )
-
-                _dayWeightGet.value = weightRepositoryImpl.getDayWeight(weightGetRequest)
+                _dayWeightGet.value = weightRepositoryImpl.getDayWeight(accessToken, weightGetRequest)
             }
         }
     }

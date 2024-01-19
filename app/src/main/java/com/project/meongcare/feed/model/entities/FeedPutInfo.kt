@@ -11,6 +11,6 @@ data class FeedPutInfo(
     val kcal: Double,
     val recommendIntake: Int,
     val startDate: String,
-    val endDate: String,
+    val endDate: String? = null,
     val feedRecordId: Long,
 )

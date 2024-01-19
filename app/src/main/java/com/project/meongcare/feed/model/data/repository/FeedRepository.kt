@@ -9,24 +9,51 @@ import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 
 interface FeedRepository {
-    suspend fun getFeed(): FeedGetResponse?
+    suspend fun getFeed(
+        accessToken: String,
+        dogId: Long,
+    ): FeedGetResponse?
 
-    suspend fun postFeed(feedUploadRequest: FeedUploadRequest): Int?
+    suspend fun postFeed(
+        accessToken: String,
+        feedUploadRequest: FeedUploadRequest,
+    ): Int?
 
-    suspend fun getFeedPart(feedRecordId: Long): FeedPartRecords?
+    suspend fun getFeedPart(
+        accessToken: String,
+        dogId: Long,
+        feedRecordId: Long,
+    ): FeedPartRecords?
 
-    suspend fun getFeeds(): Feeds?
+    suspend fun getFeeds(
+        accessToken: String,
+        dogId: Long,
+    ): Feeds?
 
-    suspend fun getPreviousFeed(feedRecordId: Long): FeedRecords?
+    suspend fun getPreviousFeed(
+        accessToken: String,
+        dogId: Long,
+        feedRecordId: Long,
+    ): FeedRecords?
 
     suspend fun getDetailFeed(
+        accessToken: String,
         feedId: Long,
         feedRecordId: Long,
     ): FeedDetailGetResponse?
 
-    suspend fun patchFeed(feedPatchRequest: FeedPatchRequest): Int?
+    suspend fun patchFeed(
+        accessToken: String,
+        feedPatchRequest: FeedPatchRequest,
+    ): Int?
 
-    suspend fun putFeed(feedUploadRequest: FeedUploadRequest): Int?
+    suspend fun putFeed(
+        accessToken: String,
+        feedUploadRequest: FeedUploadRequest,
+    ): Int?
 
-    suspend fun deleteFeed(feedId: Long): Int?
+    suspend fun deleteFeed(
+        accessToken: String,
+        feedId: Long,
+    ): Int?
 }
