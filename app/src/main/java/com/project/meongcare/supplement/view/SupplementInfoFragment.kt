@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementInfoBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.view.adapter.SupplementInfoTimeRecyclerViewAdapter
@@ -75,13 +76,21 @@ class SupplementInfoFragment : Fragment() {
                         textViewButtonSupplementInfoRoutine.run {
                             if (!it) {
                                 setTextColor(selected)
-                                text = "루틴 중단"
+                                text = "루틴 시작하기"
                             } else {
                                 setTextColor(unselected)
-                                text = "루틴 시작하기"
+                                text = "루틴 중단"
                             }
                         }
                     }
+                }
+            }
+            supplementDeleteCode.observe(viewLifecycleOwner) {
+                if (it == 200) {
+                    showSuccessSnackbar()
+                    findNavController().popBackStack()
+                } else {
+                    showFailSnackbar()
                 }
             }
         }
@@ -99,7 +108,7 @@ class SupplementInfoFragment : Fragment() {
                             includeSupplementInfoDeleteDialog.root.visibility = View.GONE
                         }
                         buttonDeleteDialogDelete.setOnClickListener {
-                            supplementViewModel.deleteSupplement(supplementId!!, navController)
+                            supplementViewModel.deleteSupplement(supplementId!!)
                         }
                     }
 
@@ -139,5 +148,21 @@ class SupplementInfoFragment : Fragment() {
                 textViewButtonSupplementInfoUnitJung.setTextColor(selectedTextColor)
             }
         }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "삭제가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 }

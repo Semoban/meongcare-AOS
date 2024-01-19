@@ -54,6 +54,7 @@ constructor(private val repository: SupplementRepository) : ViewModel() {
     var supplementDetail = MutableLiveData<DetailSupplement>()
     var supplementAddImg = MutableLiveData<Uri?>()
     var supplementCode = MutableLiveData<Int?>()
+    var supplementDeleteCode = MutableLiveData<Int?>()
     var routineIsClicked = MutableLiveData<Boolean>()
 
     init {
@@ -209,31 +210,16 @@ constructor(private val repository: SupplementRepository) : ViewModel() {
             val accessToken: String? =
                 UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
             val check = repository.deleteSupplementsById(accessToken, supplementsIds)
-            check.onSuccess {
-                Log.d("영양제 삭제 Api 통신 성공", it.toString())
-            }.onFailure {
-                Log.d("영양제 삭제 Api 통신 에러", it.toString())
-            }
+            supplementDeleteCode.value = check
         }
     }
 
-    fun deleteSupplement(
-        supplementsId: Int,
-        navController: NavController,
-    ) {
+    fun deleteSupplement(supplementsId: Int) {
         viewModelScope.launch {
             val accessToken: String? =
                 UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
             val check = repository.deleteSupplementById(accessToken, supplementsId)
-            check.onSuccess {
-                Log.d("영양제 하나 삭제 Api 통신 성공", it.toString())
-            }.onFailure {
-                Log.d("영양제 하나 삭제 Api 통신 에러", it.toString())
-            }
-
-            withContext(Main) {
-                navController.popBackStack()
-            }
+            supplementDeleteCode.value = check
         }
     }
 

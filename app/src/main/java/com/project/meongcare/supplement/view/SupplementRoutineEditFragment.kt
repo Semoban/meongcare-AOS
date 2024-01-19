@@ -17,6 +17,7 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementRoutineEditBinding
 import com.project.meongcare.databinding.ItemSupplementRoutineEditBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
@@ -59,6 +60,14 @@ class SupplementRoutineEditFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                 }
             }
+            supplementDeleteCode.observe(viewLifecycleOwner) {
+                if (it == 200) {
+                    showSuccessSnackbar()
+                    findNavController().popBackStack()
+                } else {
+                    showFailSnackbar()
+                }
+            }
         }
 
         fragmentSupplementRoutineEditBinding.run {
@@ -68,7 +77,8 @@ class SupplementRoutineEditFragment : Fragment() {
                 val isAllSelected = !view.isSelected
                 view.isSelected = isAllSelected
                 val temp =
-                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }.toMutableList()
+                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
+                        .toMutableList()
                 supplementViewModel.setAllItemsChecked(
                     imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
                     temp,
@@ -87,12 +97,27 @@ class SupplementRoutineEditFragment : Fragment() {
                     }
                     buttonDeleteDialogDelete.setOnClickListener {
                         supplementViewModel.deleteSupplements(supplementViewModel.supplementIdList.value!!.toIntArray())
-                        navController.popBackStack()
                     }
                 }
             }
         }
         return fragmentSupplementRoutineEditBinding.root
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            requireView(),
+            R.drawable.snackbar_success_16dp,
+            "삭제가 완료되었습니다.",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            requireView(),
+            R.drawable.snackbar_error_16dp,
+            "삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 
     inner class SupplementRoutineEditRecyclerViewAdapter :
