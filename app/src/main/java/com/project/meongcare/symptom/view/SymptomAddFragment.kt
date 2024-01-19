@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomAddBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
-import com.project.meongcare.symptom.model.entities.ToAddSymptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.hideKeyboard
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
@@ -53,8 +53,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         val factory = SymptomViewModelFactory(SymptomRepository())
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
-//        getBundleOfSymptomSelectData()
-
         symptomViewModel.run {
             if (sharedPreferences.getInt("symptomItemImgId", 0) != 0 && sharedPreferences.getString(
                     "symptomItemTitle",
@@ -76,9 +74,7 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
                 setGetItem(it)
             }
 
-            addSymptomCode.observe(viewLifecycleOwner) {
-                checkSuccessToAdd(it)
-            }
+            checkAddSuccess()
         }
 
         fragmentSymptomAddBinding.run {
@@ -109,6 +105,19 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
             }
         }
         return fragmentSymptomAddBinding.root
+    }
+
+    private fun checkAddSuccess() {
+        symptomViewModel.addSymptomCode.observe(viewLifecycleOwner) {
+            if (it == 200) {
+                Log.d("이상증상 추가 코드1", it.toString())
+                showSuccessSnackbar()
+                findNavController().popBackStack()
+            } else {
+                Log.d("이상증상 추가 코드2", it.toString())
+                showFailSnackbar()
+            }
+        }
     }
 
     private fun getItemCustom() {
@@ -160,13 +169,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         }
     }
 
-    private fun checkSuccessToAdd(it: Int?) {
-        if (it == 200) {
-            symptomViewModel.clearLiveData()
-            findNavController().popBackStack()
-        }
-    }
-
     private fun setGetItem(visible: Int?) {
         if (visible == View.VISIBLE) {
             fragmentSymptomAddBinding.textViewSymptomAddSelectSymptom.run {
@@ -187,15 +189,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
             fragmentSymptomAddBinding.buttonSymptomAddDate.setBackgroundResource(R.drawable.all_rect_gray1_r5)
         }
     }
-
-//    private fun getBundleOfSymptomSelectData() {
-//        if (arguments?.getInt("symptomItemImgId") != null) {
-//            Log.d("번들 확인1", arguments?.getInt("symptomItemImgId").toString())
-//            Log.d("번들 확인2", arguments?.getString("symptomItemTitle").toString())
-//            symptomViewModel.symptomItemImgId.value = arguments?.getInt("symptomItemImgId")
-//            symptomViewModel.symptomItemTitle.value = arguments?.getString("symptomItemTitle")
-//        }
-//    }
 
     private fun setClearEditTextSymptomAddCustom() {
         fragmentSymptomAddBinding.editTextSymptomAddCustom.text.clear()
@@ -298,6 +291,22 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         if (dateTimeString != null && addItemName != null && addItemTitle != null) {
             symptomViewModel.addSymptomData(addItemName, addItemTitle, dateTimeString)
         }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "추가가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "추가에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 
     override fun onDateSelected(date: LocalDate) {
