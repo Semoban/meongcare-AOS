@@ -28,6 +28,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -190,7 +191,10 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                 )
                 excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
+                        CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "대소변 정보가 수정되었습니다!").show()
                         findNavController().popBackStack()
+                    } else {
+                        CustomSnackBar.make(requireView(), R.drawable.snackbar_error_16dp, "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.").show()
                     }
                 }
             }
