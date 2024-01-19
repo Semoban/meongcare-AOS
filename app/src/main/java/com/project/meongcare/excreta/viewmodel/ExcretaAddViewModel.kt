@@ -41,6 +41,7 @@ class ExcretaAddViewModel
         }
 
         fun postExcreta(
+            accessToken: String,
             excretaType: String,
             dateTime: String,
             context: Context,
@@ -49,7 +50,7 @@ class ExcretaAddViewModel
             viewModelScope.launch {
                 val excretaInfo =
                     ExcretaInfo(
-                        2L,
+                        35L,
                         excretaType,
                         dateTime,
                     )
@@ -62,7 +63,7 @@ class ExcretaAddViewModel
                         file,
                     )
 
-                _excretaPosted.value = excretaRepositoryImpl.postExcreta(excretaPostRequest)
+                _excretaPosted.value = excretaRepositoryImpl.postExcreta(accessToken, excretaPostRequest)
             }
         }
     }

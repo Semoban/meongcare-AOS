@@ -26,6 +26,7 @@ import com.project.meongcare.excreta.utils.MINUTE_END
 import com.project.meongcare.excreta.utils.MINUTE_START
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,8 +36,10 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     val binding get() = _binding!!
 
     private val excretaPatchViewModel: ExcretaPatchViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaDate = ""
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +56,10 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     ) {
         super.onViewCreated(view, savedInstanceState)
         excretaInfo = getExcretaInfo()
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+        }
         initToolbar()
         initDate()
         initExcretaImage()
@@ -174,6 +181,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
 
                 val currentImageUri = excretaPatchViewModel.excretaImage.value
                 excretaPatchViewModel.patchExcreta(
+                    accessToken,
                     getExcretaId(),
                     excretaType,
                     excretaDateTime,

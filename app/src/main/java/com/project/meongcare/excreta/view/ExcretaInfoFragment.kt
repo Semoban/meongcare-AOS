@@ -17,6 +17,7 @@ import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeF
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +27,13 @@ class ExcretaInfoFragment : Fragment() {
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaImageURL = ""
     private var excretaDateTime = ""
     private var excretaType = ""
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +49,11 @@ class ExcretaInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        fetchExcretaInfo()
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            fetchExcretaInfo()
+        }
         initToolbar()
     }
 
@@ -68,7 +76,7 @@ class ExcretaInfoFragment : Fragment() {
                     }
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
-                            deleteExcreta(intArrayOf(excretaId.toInt()))
+                            deleteExcreta(accessToken, intArrayOf(excretaId.toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
                                 if (response == SUCCESS) findNavController().popBackStack()
                             }
@@ -82,7 +90,7 @@ class ExcretaInfoFragment : Fragment() {
 
     private fun fetchExcretaInfo() {
         excretaDetailViewModel.apply {
-            getExcretaDetail(getExcretaId())
+            getExcretaDetail(accessToken, getExcretaId())
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
                 excretaImageURL = response.excretaImageURL
                 excretaDateTime = response.dateTime

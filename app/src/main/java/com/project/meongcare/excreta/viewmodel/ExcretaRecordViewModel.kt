@@ -20,16 +20,19 @@ class ExcretaRecordViewModel
         val excretaRecordGet
             get() = _excretaRecordGet
 
-        fun getExcretaRecord(date: String) {
+        fun getExcretaRecord(
+            accessToken: String,
+            date: String,
+        ) {
             viewModelScope.launch {
                 val excretaRecordGetRequest =
                     ExcretaRecordGetRequest(
-                        2L,
+                        35L,
                         date,
                     )
 
                 _excretaRecordGet.value =
-                    excretaRepositoryImpl.getExcretaRecord(excretaRecordGetRequest)
+                    excretaRepositoryImpl.getExcretaRecord(accessToken, excretaRecordGetRequest)
             }
         }
     }

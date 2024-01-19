@@ -24,7 +24,7 @@ object ExcretaDateTimeUtils {
     fun plusDay(date: String): String {
         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-        return LocalDate.parse(date, inputFormat).plusDays(1).toString()
+        return LocalDate.parse(date, inputFormat).toString()
     }
 
     fun convertTimeFormat(timePiker: TimePicker): String {

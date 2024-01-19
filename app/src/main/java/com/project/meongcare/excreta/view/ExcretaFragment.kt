@@ -13,6 +13,7 @@ import com.project.meongcare.databinding.FragmentExcretaBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.Excreta.FECES
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
@@ -22,7 +23,9 @@ class ExcretaFragment : Fragment() {
     val binding get() = _binding!!
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var excretaAdapter: ExcretaAdapter
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +41,15 @@ class ExcretaFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            fetchExcretaRecord()
+            initExcretaRecordRecyclerView()
+        }
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
         initExcretaEditButton()
-        initExcretaRecordRecyclerView()
-        fetchExcretaRecord()
     }
 
     private fun initExcretaAddButton() {
@@ -67,7 +74,7 @@ class ExcretaFragment : Fragment() {
     private fun fetchExcretaRecord() {
         excretaRecordViewModel.apply {
             val dateTime = LocalDateTime.now().toString().slice(DATE_TIME_START..DATE_TIME_END)
-            getExcretaRecord(dateTime)
+            getExcretaRecord(accessToken, "2024-01-19T20:20:00")
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 binding.apply {
                     if (response.excretaRecords.size == 0) {
