@@ -246,13 +246,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
-        android:id="@+id/include_bottomsheet_symptom_edit"
-        style="@style/Widget.Material3.BottomSheet"
-        layout="@layout/bottomsheet_symptom_add_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="@string/bottom_sheet_behavior" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
