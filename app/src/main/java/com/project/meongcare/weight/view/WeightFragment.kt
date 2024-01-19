@@ -189,7 +189,21 @@ class WeightFragment : Fragment() {
         binding.layoutWeightEdit.run {
             edittextWeighteditdialog.setText(weight.toString())
             buttonWeighteditdialogCancel.setOnClickListener { onCancelClicked() }
-            buttonWeighteditdialogCheck.setOnClickListener { onCheckClicked() }
+            buttonWeighteditdialogCheck.setOnClickListener {
+                edittextWeighteditdialog.apply {
+                    if (text.isEmpty()) {
+                        textviewWeighteditdialogWeightError.apply {
+                            visibility = View.VISIBLE
+                            setOnClickListener {
+                                visibility = View.GONE
+                                edittextWeighteditdialog.requestFocus()
+                            }
+                        }
+                    } else {
+                        onCheckClicked()
+                    }
+                }
+             }
         }
     }
 
