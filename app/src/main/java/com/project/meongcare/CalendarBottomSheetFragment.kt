@@ -49,6 +49,11 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
         fragmentCalendarBottomSheetBinding.run {
             val calendarTypeface = Typeface.createFromAsset(mainActivity.assets, "pretendard_regular.otf")
             calendarBottomSheet.setFonts(calendarTypeface)
+            val currentMonth = Calendar.getInstance()
+            val pastMonth = Calendar.getInstance()
+            pastMonth.add(Calendar.MONTH, -282)
+            calendarBottomSheet.setVisibleMonthRange(pastMonth, currentMonth)
+            calendarBottomSheet.setCurrentMonth(currentMonth)
 
             calendarBottomSheet.setCalendarListener(
                 object : CalendarListener {
