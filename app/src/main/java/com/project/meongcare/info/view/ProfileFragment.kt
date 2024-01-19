@@ -60,6 +60,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         binding = FragmentProfileBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        profileViewModel.getUserProfile(currentAccessToken)
+        profileViewModel.getDogList(currentAccessToken)
+
         profileViewModel.userProfile.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null) {
                 when (profileResponse.code()) {
@@ -256,8 +259,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             userPreferences.accessToken.collectLatest { accessToken ->
                 if (accessToken != null) {
                     currentAccessToken = accessToken
-                    profileViewModel.getUserProfile(accessToken)
-                    profileViewModel.getDogList(accessToken)
                 }
             }
         }

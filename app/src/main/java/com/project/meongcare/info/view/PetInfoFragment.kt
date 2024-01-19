@@ -50,6 +50,8 @@ class PetInfoFragment : Fragment() {
     ): View {
         binding = FragmentPetAddEditBinding.inflate(inflater)
 
+        petInfoViewModel.getDogInfo(dogId, currentAccessToken)
+
         petInfoViewModel.dogInfo.observe(viewLifecycleOwner) { dogInfoResponse ->
             if (dogInfoResponse != null) {
                 when (dogInfoResponse.code()) {
@@ -126,7 +128,6 @@ class PetInfoFragment : Fragment() {
             userPreferences.accessToken.collectLatest { accessToken ->
                 if (accessToken != null) {
                     currentAccessToken = accessToken
-                    petInfoViewModel.getDogInfo(dogId, currentAccessToken)
                 }
             }
         }
