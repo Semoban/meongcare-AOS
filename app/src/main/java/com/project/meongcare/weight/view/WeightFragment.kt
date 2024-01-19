@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -25,6 +26,7 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
@@ -33,7 +35,10 @@ import com.project.meongcare.weight.model.entities.WeightWeeksResponse
 import com.project.meongcare.weight.viewmodel.WeightViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -46,10 +51,14 @@ class WeightFragment : Fragment() {
     private val weightViewModel: WeightViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    lateinit var toolbarViewModel: ToolbarViewModel
+
     private var accessToken = ""
     private var dogId = 0L
     private var weight: Double? = null
     private lateinit var weightGetRequest: WeightGetRequest
+    private var date = ""
+    private var thisMonth = 0F
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,20 +77,25 @@ class WeightFragment : Fragment() {
         initInputMethodManager()
         userViewModel.fetchAccessToken()
         dogViewModel.fetchDogId()
-        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
-            dogId = response
-            weightGetRequest =
-                WeightGetRequest(
-                    dogId,
-                    "2024-01-19"
-                )
-        }
-        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
-            accessToken = response
-            showWeightEditDialog()
-            fetchWeeklyWeight()
-            fetchMonthlyWeight()
-            postWeight()
+        toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
+        toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { selectedDate ->
+            convertSelectedDate(selectedDate)
+            convertThisMonth(selectedDate)
+            dogViewModel.dogId.observe(viewLifecycleOwner) { id ->
+                dogId = id
+                weightGetRequest =
+                    WeightGetRequest(
+                        dogId,
+                        date,
+                    )
+            }
+            userViewModel.accessToken.observe(viewLifecycleOwner) { access ->
+                accessToken = access
+                showWeightEditDialog()
+                fetchWeeklyWeight()
+                fetchMonthlyWeight()
+                postWeight()
+            }
         }
     }
 
@@ -275,8 +289,8 @@ class WeightFragment : Fragment() {
     private fun initMonthlyRecordChart(response: WeightMonthResponse) {
         val weightMonthlyData =
             listOf(
-                BarEntry(11F, response.lastMonthWeight.toFloat()),
-                BarEntry(12F, response.thisMonthWeight.toFloat()),
+                BarEntry(thisMonth - 1F, response.lastMonthWeight.toFloat()),
+                BarEntry(thisMonth, response.thisMonthWeight.toFloat()),
             )
 
         val weightMonthlyDataSet = BarDataSet(weightMonthlyData, "")
@@ -363,6 +377,16 @@ class WeightFragment : Fragment() {
         override fun getFormattedValue(value: Float): String {
             return format.format(value)
         }
+    }
+
+    private fun convertSelectedDate(selectedDate: Date) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        date = dateFormat.format(selectedDate.time)
+    }
+
+    private fun convertThisMonth(selectedDate: Date) {
+        val dateFormat = SimpleDateFormat("MM", Locale.getDefault())
+        thisMonth = dateFormat.format(selectedDate.time).toFloat()
     }
 
     private fun initInputMethodManager() {
