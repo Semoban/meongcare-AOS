@@ -133,7 +133,12 @@ class MainActivity : AppCompatActivity() {
                     floatingButtonMenuIn(activityMainBinding)
                     delay(550L)
                     overlayLayout.visibility = View.GONE
-                    fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                    includeMedicalRecordDialog.run {
+                        root.visibility = View.VISIBLE
+                        constraintlayoutBg.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
+                        buttonOk.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
+                    }
+                    // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
             }
 

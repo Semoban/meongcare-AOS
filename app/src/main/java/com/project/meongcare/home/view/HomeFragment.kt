@@ -270,7 +270,19 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeFeces.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
+                // 대소변 기능 업데이트 후 삭제
+                fragmentHomeBinding.run {
+                    includeMedicalRecordDialog.run {
+                        root.visibility = View.VISIBLE
+                        constraintlayoutBg.setOnClickListener {
+                            includeMedicalRecordDialog.root.visibility = View.GONE
+                        }
+                        buttonOk.setOnClickListener {
+                            includeMedicalRecordDialog.root.visibility = View.GONE
+                        }
+                    }
+                }
+                // findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
             }
 
             constraintlayoutHomeNutrition.setOnClickListener {
