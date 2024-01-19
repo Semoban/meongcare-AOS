@@ -1,11 +1,14 @@
 package com.project.meongcare
 
+import android.app.Dialog
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.FragmentCalendarBottomSheetBinding
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
@@ -22,6 +25,19 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
     private var dateSubmitListener: DateSubmitListener? = null
     private var currentDate: String? = null
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        val peekHeightInPixels = 0
+
+        val behavior = dialog.behavior
+        if (behavior != null) {
+            behavior.peekHeight = peekHeightInPixels
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        return dialog
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +49,11 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
         fragmentCalendarBottomSheetBinding.run {
             val calendarTypeface = Typeface.createFromAsset(mainActivity.assets, "pretendard_regular.otf")
             calendarBottomSheet.setFonts(calendarTypeface)
+            val currentMonth = Calendar.getInstance()
+            val pastMonth = Calendar.getInstance()
+            pastMonth.add(Calendar.MONTH, -282)
+            calendarBottomSheet.setVisibleMonthRange(pastMonth, currentMonth)
+            calendarBottomSheet.setCurrentMonth(currentMonth)
 
             calendarBottomSheet.setCalendarListener(
                 object : CalendarListener {
