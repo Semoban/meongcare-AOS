@@ -285,13 +285,14 @@ class MainActivity : AppCompatActivity() {
                 override fun handleOnBackPressed() {
                     when (navController.currentDestination?.id) {
                         R.id.homeFragment,
-                        R.id.medicalRecordFragment -> finish()
+                        R.id.medicalRecordFragment,
+                            -> finish()
                         else -> if (navController.popBackStack().not()) {
                             isEnabled = false
                         }
                     }
                 }
-        }
+            }
 
         onBackPressedDispatcher.addCallback(this, callback)
     }
