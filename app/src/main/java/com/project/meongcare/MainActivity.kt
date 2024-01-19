@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
                             includeMedicalRecordDialog.root.visibility = View.GONE
                         }
                     }
-                    //fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                    // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
 
             }
