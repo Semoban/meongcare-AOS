@@ -19,10 +19,14 @@ class PreviousFeedGetViewModel
         val previousFeedGet
             get() = _previousFeedGet
 
-        fun getPreviousFeed(feedRecordId: Long) {
+        fun getPreviousFeed(
+            accessToken: String,
+            dogId: Long,
+            feedRecordId: Long,
+        ) {
             viewModelScope.launch {
                 _previousFeedGet.value =
-                    feedRepositoryImpl.getPreviousFeed(feedRecordId)
+                    feedRepositoryImpl.getPreviousFeed(accessToken, dogId, feedRecordId)
             }
         }
     }

@@ -2,6 +2,7 @@ package com.project.meongcare.feed.model.utils
 
 import android.content.Context
 import android.net.Uri
+import android.widget.TextView
 import com.google.gson.Gson
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedPutInfo
@@ -43,5 +44,28 @@ object FeedInfoUtils {
         val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    fun calculateRecommendDailyIntake(
+        weight: Double,
+        feedKcal: Double,
+    ): Double {
+        val dailyEnergyRequirement = 1.6 * (30 * weight + 70)
+        val recommendDailyIntake = dailyEnergyRequirement * 1000 / feedKcal
+        return String.format("%.2f", recommendDailyIntake).toDouble()
+    }
+
+    fun initRecommendDailyIntake(
+        recommendIntake: Double,
+        textView: TextView,
+    ) {
+        textView.apply {
+            text =
+                if (recommendIntake == Double.POSITIVE_INFINITY) {
+                    "0"
+                } else {
+                    "$recommendIntake"
+                }
+        }
     }
 }

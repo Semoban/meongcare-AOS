@@ -42,10 +42,25 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="13dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_weighteditdialog_title" />
+
+            <TextView
+                android:id="@+id/textview_weighteditdialog_weight_error"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/all_rect_gray1_r5_outline_sub1"
+                android:padding="13dp"
+                android:text="필수 입력 값입니다"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/sub1"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_weighteditdialog"
+                app:layout_constraintEnd_toEndOf="@id/edittext_weighteditdialog"
+                app:layout_constraintStart_toStartOf="@id/edittext_weighteditdialog"
+                app:layout_constraintTop_toTopOf="@id/edittext_weighteditdialog" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_weighteditdialog_cancel"

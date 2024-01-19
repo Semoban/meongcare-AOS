@@ -13,11 +13,12 @@ import javax.inject.Inject
 class WeightRemoteDataSource
     @Inject
     constructor() {
-        private val accessToken =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAyMzY3NDAzfQ.5GM7dR3jwmUE1MDAOt9m-h4E0n9l5_g7ONvtGFlgNV4"
         private val weightApiService = WeightClient.weightService
 
-        suspend fun postWeight(weightPostRequest: WeightPostRequest): Int? {
+        suspend fun postWeight(
+            accessToken: String,
+            weightPostRequest: WeightPostRequest,
+        ): Int? {
             try {
                 val postResponse =
                     weightApiService.postWeight(
@@ -25,22 +26,25 @@ class WeightRemoteDataSource
                         weightPostRequest,
                     )
 
-                return if (postResponse.code() == SUCCESS) {
-                    Log.d("WeightSuccess", postResponse.code().toString())
-                    postResponse.body()
-                } else {
-                    Log.d("WeightFailure", postResponse.code().toString())
+                if (postResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(postResponse.errorBody()?.string()!!)
+                    Log.d("WeightFailure", postResponse.code().toString())
                     Log.d("WeightFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("WeightSuccess", postResponse.code().toString())
+                return postResponse.code()
             } catch (e: Exception) {
                 Log.e("WeightException", e.toString())
                 return null
             }
         }
 
-        suspend fun patchWeight(weightPatchRequest: WeightPatchRequest): Int? {
+        suspend fun patchWeight(
+            accessToken: String,
+            weightPatchRequest: WeightPatchRequest,
+        ): Int? {
             try {
                 val patchResponse =
                     weightApiService.patchWeight(
@@ -50,22 +54,25 @@ class WeightRemoteDataSource
                         weightPatchRequest.date,
                     )
 
-                return if (patchResponse.code() == SUCCESS) {
-                    Log.d("WeightPatchSuccess", patchResponse.code().toString())
-                    patchResponse.body()
-                } else {
+                if (patchResponse.code() != SUCCESS) {
                     val stringToJson = JSONObject(patchResponse.errorBody()?.string()!!)
                     Log.d("WeightPatchFailure", patchResponse.code().toString())
                     Log.d("WeightPatchFailure", "$stringToJson")
-                    null
+                    return null
                 }
+
+                Log.d("WeightPatchSuccess", patchResponse.code().toString())
+                return patchResponse.code()
             } catch (e: Exception) {
                 Log.e("WeightPatchException", e.toString())
                 return null
             }
         }
 
-        suspend fun getWeeklyWeight(weightGetRequest: WeightGetRequest): WeightWeeksResponse? {
+        suspend fun getWeeklyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ): WeightWeeksResponse? {
             try {
                 val getWeeklyResponse =
                     weightApiService.getWeeklyWeight(
@@ -89,7 +96,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun getMonthlyWeight(weightGetRequest: WeightGetRequest): WeightMonthResponse? {
+        suspend fun getMonthlyWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ): WeightMonthResponse? {
             try {
                 val getMonthlyResponse =
                     weightApiService.getMonthlyWeight(
@@ -113,7 +123,10 @@ class WeightRemoteDataSource
             }
         }
 
-        suspend fun getDayWeight(weightGetRequest: WeightGetRequest): WeightDayResponse? {
+        suspend fun getDayWeight(
+            accessToken: String,
+            weightGetRequest: WeightGetRequest,
+        ): WeightDayResponse? {
             try {
                 val getDayResponse =
                     weightApiService.getDayWeight(
