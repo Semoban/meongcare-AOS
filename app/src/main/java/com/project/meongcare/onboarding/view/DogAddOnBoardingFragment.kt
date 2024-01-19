@@ -150,7 +150,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             }
 
             // 날짜 등록
-            imageviewPetaddBirthdayCalender.setOnClickListener {
+            textviewPetaddSelectBirthday.setOnClickListener {
                 val calendarBottomSheet = CalendarBottomSheetFragment()
                 calendarBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
                 calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)

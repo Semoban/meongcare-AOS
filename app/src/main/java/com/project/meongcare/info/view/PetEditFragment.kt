@@ -178,7 +178,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
             }
 
-            imageviewPeteditBirthdayCalender.setOnClickListener {
+            edittextPeteditSelectBirthday.setOnClickListener {
                 val calendarBottomSheet = CalendarBottomSheetFragment()
                 calendarBottomSheet.setDateSubmitListener(this@PetEditFragment)
                 calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
