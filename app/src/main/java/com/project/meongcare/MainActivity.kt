@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
-
             }
 
             menuDogFoodAdd.setOnClickListener {
