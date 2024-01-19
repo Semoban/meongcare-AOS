@@ -138,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                     floatingButtonMenuIn(activityMainBinding)
                     delay(550L)
                     overlayLayout.visibility = View.GONE
-
                     // 대소변 기능 업데이트 후 삭제
                     includeMedicalRecordDialog.run {
                         root.visibility = View.VISIBLE
