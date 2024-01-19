@@ -42,6 +42,7 @@ class SupplementInfoFragment : Fragment() {
         supplementViewModel.run {
             getSupplementDetail(supplementId!!)
             supplementDetail.observe(viewLifecycleOwner) {
+                routineIsClicked.value = it.isActive
                 fragmentSupplementInfoBinding.run {
                     if (!it.imageUrl.isNullOrBlank()) {
                         layoutSupplementInfoDefault.visibility = View.GONE
@@ -61,6 +62,25 @@ class SupplementInfoFragment : Fragment() {
                     recyclerViewSupplementInfoTimeList.run {
                         adapter = SupplementInfoTimeRecyclerViewAdapter(supplementViewModel)
                         layoutManager = LinearLayoutManager(context)
+                    }
+                }
+            }
+            routineIsClicked.observe(viewLifecycleOwner) {
+                fragmentSupplementInfoBinding.run {
+                    buttonSupplementInfoRoutine.run {
+                        this.isSelected = it
+                        val selected = ContextCompat.getColor(context, R.color.white)
+                        val unselected = ContextCompat.getColor(context, R.color.gray4)
+
+                        textViewButtonSupplementInfoRoutine.run {
+                            if (!it) {
+                                setTextColor(selected)
+                                text = "루틴 중단"
+                            } else {
+                                setTextColor(unselected)
+                                text = "루틴 시작하기"
+                            }
+                        }
                     }
                 }
             }
@@ -87,33 +107,11 @@ class SupplementInfoFragment : Fragment() {
                 }
             }
 
-            // Todo : supplementViewModel.supplementDetail.value.isActive 로 교체
-            var temp = true
-            buttonSupplementInfoRoutine.run {
-                this.isSelected = temp
-                val selected = ContextCompat.getColor(context, R.color.white)
-                val unselected = ContextCompat.getColor(context, R.color.gray4)
-
-                textViewButtonSupplementInfoRoutine.run {
-                    if (isSelected) {
-                        setTextColor(unselected)
-                        text = "루틴 중단"
-                    } else {
-                        setTextColor(selected)
-                        text = "루틴 시작하기"
-                    }
-                }
-            }
-
             buttonSupplementInfoRoutine.setOnClickListener {
-                temp = !temp
-                it.isSelected = !it.isSelected
-                val activeStatus = it.isSelected
+                supplementViewModel.routineIsClicked.value = !supplementViewModel.routineIsClicked.value!!
                 supplementViewModel.patchSupplementActive(
                     supplementId!!,
-                    activeStatus,
-                    mainActivity,
-                    textViewButtonSupplementInfoRoutine,
+                    supplementViewModel.routineIsClicked.value!!,
                 )
             }
         }

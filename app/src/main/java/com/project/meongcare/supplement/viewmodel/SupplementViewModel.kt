@@ -54,6 +54,7 @@ constructor(private val repository: SupplementRepository) : ViewModel() {
     var supplementDetail = MutableLiveData<DetailSupplement>()
     var supplementAddImg = MutableLiveData<Uri?>()
     var supplementCode = MutableLiveData<Int?>()
+    var routineIsClicked = MutableLiveData<Boolean>()
 
     init {
         intakeTimeList.value = mutableListOf()
@@ -190,8 +191,6 @@ constructor(private val repository: SupplementRepository) : ViewModel() {
     fun patchSupplementActive(
         supplementsId: Int,
         isActive: Boolean,
-        context: Activity,
-        textView: TextView,
     ) {
         viewModelScope.launch {
             val accessToken: String? =
@@ -201,20 +200,6 @@ constructor(private val repository: SupplementRepository) : ViewModel() {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 성공", it.toString())
             }.onFailure {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 에러", it.toString())
-            }
-            withContext(Main) {
-                val selected = ContextCompat.getColor(context, R.color.white)
-                val unselected = ContextCompat.getColor(context, R.color.gray4)
-                val status = !isActive
-                textView.run {
-                    if (status) {
-                        setTextColor(unselected)
-                        text = "루틴 중단"
-                    } else {
-                        setTextColor(selected)
-                        text = "루틴 시작하기"
-                    }
-                }
             }
         }
     }

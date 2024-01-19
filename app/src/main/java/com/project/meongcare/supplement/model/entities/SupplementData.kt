@@ -29,6 +29,7 @@ data class Supplement(
 data class DetailSupplement(
     val supplementsId: Int,
     val imageUrl: String,
+    val isActive: Boolean,
     val brand: String,
     val name: String,
     val intakeCycle: Int,
