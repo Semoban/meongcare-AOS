@@ -25,12 +25,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var toolbarViewModel: ToolbarViewModel
-    lateinit var symptomViewModel: SymptomViewModel
-
     companion object {
         const val BASE_URL = "https://dev.meongcare.com/"
-        const val ACCESS_TOKEN =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyMTMzOTQ5fQ.lolNGSPRJDf3O1t-bjaPtKmVU_A4-iqfRFbbt1YYkDM"
     }
 
     @Inject
@@ -53,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         initNavController()
 
         toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding.run {
             autoLogin()

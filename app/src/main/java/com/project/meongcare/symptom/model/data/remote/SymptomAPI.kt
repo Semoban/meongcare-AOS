@@ -17,26 +17,26 @@ import retrofit2.http.Query
 interface SymptomAPI {
     @GET("/symptom/{dogId}")
     suspend fun getSymptomList(
-        @Header("AccessToken") accessToken: String,
-        @Path("dogId") dogId: Int,
+        @Header("AccessToken") accessToken: String?,
+        @Path("dogId") dogId: Long?,
         @Query("dateTime") dateTime: String,
     ): Response<ResultSymptom>
 
     @POST("/symptom")
     suspend fun addSymptom(
-        @Header("AccessToken") accessToken: String,
+        @Header("AccessToken") accessToken: String?,
         @Body requestBody: ToAddSymptom,
     ): Response<ResponseBody>
 
     @DELETE("/symptom")
     suspend fun deleteSymptom(
-        @Header("AccessToken") accessToken: String,
+        @Header("AccessToken") accessToken: String?,
         @Query("symptomIds") symtomIds: IntArray,
     ): Response<ResponseBody>
 
     @PATCH("/symptom")
     suspend fun patchSymptom(
-        @Header("AccessToken") accessToken: String,
+        @Header("AccessToken") accessToken: String?,
         @Body requestBody: ToEditSymptom,
     ): Response<ResponseBody>
 }

@@ -51,10 +51,7 @@ class SupplementFragment : Fragment() {
             selectedDate.observe(viewLifecycleOwner) {
                 if (it != null) {
                     fragmentSupplementBinding.run {
-                        supplementViewModel.getSupplements(
-                            1,
-                            it,
-                        )
+                        supplementViewModel.getSupplements(it)
                     }
                 }
             }
