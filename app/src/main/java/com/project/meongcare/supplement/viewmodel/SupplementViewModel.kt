@@ -13,6 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.project.meongcare.R
+import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
@@ -23,12 +26,18 @@ import com.project.meongcare.supplement.model.entities.SupplementDto
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertPictureToFile
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertSupplementDto
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
+import javax.inject.Inject
 
-class SupplementViewModel(private val repository: SupplementRepository) : ViewModel() {
+@HiltViewModel
+class SupplementViewModel
+@Inject
+constructor(private val repository: SupplementRepository) : ViewModel() {
     var supplementList = MutableLiveData<MutableList<Supplement>>()
     var intakeTimeList = MutableLiveData<MutableList<IntakeInfo>>()
     var intakeTimeUnit = MutableLiveData<String>()
@@ -59,12 +68,16 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     }
 
     fun getSupplements(
-        dogId: Int,
         date: Date,
     ) {
         viewModelScope.launch {
             val covertedDate = convertToDateToDate(date)
-            val supplements = repository.getSupplements(dogId, covertedDate)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            Log.d("Supplement get Api accessToken", "$accessToken")
+            Log.d("Supplement get Api dogId", "$dogId")
+            val supplements = repository.getSupplements(accessToken, dogId, covertedDate)
             supplements.onSuccess {
                 supplementList.value =
                     it.routines.sortedBy { s -> s.intakeTime }.toMutableList()
@@ -80,7 +93,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
 
     fun getSupplementDetail(supplementsId: Int) {
         viewModelScope.launch {
-            val supplements = repository.getSupplementDetail(supplementsId)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val supplements = repository.getSupplementDetail(accessToken, supplementsId)
             supplements.onSuccess {
                 supplementDetail.value = it
                 Log.d("영양제 상세 조회 Api 통신 성공", supplementDetail.value.toString())
@@ -90,9 +105,12 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         }
     }
 
-    fun getSupplementDogs(dogId: Int) {
+    fun getSupplementDogs() {
         viewModelScope.launch {
-            val supplements = repository.getSupplementDogs(dogId)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            val supplements = repository.getSupplementDogs(accessToken, dogId)
             supplements.onSuccess {
                 supplementDogList.value =
                     it.supplementsInfos.sortedBy { s -> s.supplementsId }.toMutableList()
@@ -108,7 +126,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         imageView: ImageView,
     ) {
         viewModelScope.launch {
-            val check = repository.checkSupplement(supplementsRecordId)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val check = repository.checkSupplement(accessToken, supplementsRecordId)
             check.onSuccess {
                 if (!imageView.isSelected) {
                     supplementCheckCount.value = supplementCheckCount.value?.plus(1)
@@ -126,21 +146,28 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
     }
 
     fun addSupplement(
-        supplementDto: SupplementDto,
-        context: Context,
+        brandName: String,
+        name: String,
         uri: Uri,
     ) {
         viewModelScope.launch {
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+
+            val supplementDto =
+                SupplementDto(dogId!!, brandName, name, supplementCycle.value!!, intakeTimeUnit.value!!, intakeTimeList.value!!)
             val dto = convertSupplementDto(supplementDto)
-            val file = convertPictureToFile(context, uri)
+            val file = convertPictureToFile(GlobalApplication.applicationContext(), uri)
 
             val requestSupplement =
                 RequestSupplement(
                     dto,
                     file,
                 )
-
-            supplementCode.value = repository.addSupplement(requestSupplement)
+            Log.d("영양제 추가 확인",supplementDto.toString())
+            supplementCode.value = repository.addSupplement(accessToken, requestSupplement)
+            Log.d("영양제 추가 확인2",supplementCode.value.toString())
         }
     }
 
@@ -149,7 +176,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         pushAgreement: Boolean,
     ) {
         viewModelScope.launch {
-            val alarm = repository.patchSupplementAlarm(supplementsId, pushAgreement)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val alarm = repository.patchSupplementAlarm(accessToken, supplementsId, pushAgreement)
             alarm.onSuccess {
                 Log.d("영양제 알람 Api 통신 성공", it.toString())
             }.onFailure {
@@ -165,7 +194,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         textView: TextView,
     ) {
         viewModelScope.launch {
-            val active = repository.patchSupplementActive(supplementsId, isActive)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val active = repository.patchSupplementActive(accessToken, supplementsId, isActive)
             active.onSuccess {
                 Log.d("영양제 루틴 활성화 체크 Api 통신 성공", it.toString())
             }.onFailure {
@@ -190,7 +221,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
 
     fun deleteSupplements(supplementsIds: IntArray) {
         viewModelScope.launch {
-            val check = repository.deleteSupplementsById(supplementsIds)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val check = repository.deleteSupplementsById(accessToken, supplementsIds)
             check.onSuccess {
                 Log.d("영양제 삭제 Api 통신 성공", it.toString())
             }.onFailure {
@@ -204,7 +237,9 @@ class SupplementViewModel(private val repository: SupplementRepository) : ViewMo
         navController: NavController,
     ) {
         viewModelScope.launch {
-            val check = repository.deleteSupplementById(supplementsId)
+            val accessToken: String? =
+                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            val check = repository.deleteSupplementById(accessToken, supplementsId)
             check.onSuccess {
                 Log.d("영양제 하나 삭제 Api 통신 성공", it.toString())
             }.onFailure {

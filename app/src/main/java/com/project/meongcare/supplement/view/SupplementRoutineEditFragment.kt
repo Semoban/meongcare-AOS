@@ -42,7 +42,7 @@ class SupplementRoutineEditFragment : Fragment() {
         supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
 
         supplementViewModel.run {
-            getSupplementDogs(1)
+            getSupplementDogs()
             supplementIdListAllCheck.observe(viewLifecycleOwner) {
                 Log.d("루틴 변경", it.toString())
                 Log.d("루틴 변경2", supplementIdList.value.toString())

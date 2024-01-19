@@ -176,15 +176,11 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                 if (checkInput()) {
                     val brandName = editTextSupplementAddBrandName.text.toString()
                     val name = editTextSupplementAddName.text.toString()
-                    val cycle = supplementViewModel.supplementCycle.value!!
-                    val intakeUnit = supplementViewModel.intakeTimeUnit.value!!
-                    val intakeInfo = supplementViewModel.intakeTimeList.value!!
                     val imgUri = supplementViewModel.supplementAddImg.value
-                    val supplementDto =
-                        SupplementDto(1, brandName, name, cycle, intakeUnit, intakeInfo)
+
                     supplementViewModel.addSupplement(
-                        supplementDto,
-                        requireContext(),
+                        brandName,
+                        name,
                         imgUri ?: Uri.EMPTY,
                     )
 

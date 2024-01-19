@@ -37,7 +37,7 @@ data class DetailSupplement(
 )
 
 data class SupplementDto(
-    val dogId: Int,
+    val dogId: Long,
     val brand: String,
     val name: String,
     val intakeCycle: Int,

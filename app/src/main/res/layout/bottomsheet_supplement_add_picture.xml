@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +36,8 @@
                 android:paddingBottom="16dp"
                 android:text="기본 이미지로 변경"
                 android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/gray5" />
+                android:textColor="@color/gray5"
+                android:visibility="gone" />
 
 
             <View
