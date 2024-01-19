@@ -118,4 +118,8 @@ class UserPreferences
         suspend fun getRefreshToken(): String {
             return context.userDataStore.data.first()[preferenceKeyRefreshToken] ?: ""
         }
+
+        suspend fun getProvider(): String {
+            return context.userDataStore.data.first()[preferenceKeyProvider] ?: ""
+        }
     }

@@ -14,8 +14,10 @@ import com.project.meongcare.databinding.FragmentPetAddEditBinding
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.onboarding.view.Gender
 import com.project.meongcare.onboarding.view.dateFormat
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,6 +34,9 @@ class PetInfoFragment : Fragment() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dogId = arguments?.getLong("dogId")!!
@@ -45,9 +50,40 @@ class PetInfoFragment : Fragment() {
     ): View {
         binding = FragmentPetAddEditBinding.inflate(inflater)
 
-        petInfoViewModel.dogInfo.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                initDogInfo(response)
+        petInfoViewModel.dogInfo.observe(viewLifecycleOwner) { dogInfoResponse ->
+            if (dogInfoResponse != null) {
+                when (dogInfoResponse.code()) {
+                    200 -> initDogInfo(dogInfoResponse.body()!!)
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petInfoFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_get_dog_failure),
+                ).show()
             }
         }
 
@@ -57,7 +93,7 @@ class PetInfoFragment : Fragment() {
             }
             imagebuttonPetaddEdit.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putParcelable("dogInfo", petInfoViewModel.dogInfo.value)
+                bundle.putParcelable("dogInfo", petInfoViewModel.dogInfo.value?.body()!!)
                 findNavController().navigate(R.id.action_petInfoFragment_to_petEditFragment, bundle)
             }
             imagebuttonPetaddDelete.setOnClickListener {
@@ -90,7 +126,7 @@ class PetInfoFragment : Fragment() {
             userPreferences.accessToken.collectLatest { accessToken ->
                 if (accessToken != null) {
                     currentAccessToken = accessToken
-                    petInfoViewModel.getDogInfo(dogId, accessToken)
+                    petInfoViewModel.getDogInfo(dogId, currentAccessToken)
                 }
             }
         }
