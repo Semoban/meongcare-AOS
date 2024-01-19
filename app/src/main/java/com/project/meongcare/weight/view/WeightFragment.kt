@@ -97,6 +97,7 @@ class WeightFragment : Fragment() {
                 postWeight()
             }
         }
+        fetchDogName()
     }
 
     private fun postWeight() {
@@ -111,6 +112,17 @@ class WeightFragment : Fragment() {
             if (response == SUCCESS) {
                 fetchDailyWeight()
                 initWeightEditDialog()
+            }
+        }
+    }
+
+    private fun fetchDogName() {
+        dogViewModel.fetchDogName()
+        dogViewModel.dogName.observe(viewLifecycleOwner) { name ->
+            binding.apply {
+                textviewWeightRecordExplanationDogName.text = name
+                textviewWeightWeeklyRecordTitleDogName.text = name
+                textviewWeightWeeklyRecordExplanationDogName.text = name
             }
         }
     }

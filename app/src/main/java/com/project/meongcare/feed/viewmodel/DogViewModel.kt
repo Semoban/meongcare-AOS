@@ -23,6 +23,10 @@ class DogViewModel
         val dogWeight
             get() = _dogWeight
 
+        private var _dogName = MutableLiveData<String>()
+        val dogName
+            get() = _dogName
+
         fun fetchDogId() {
             viewModelScope.launch {
                 dogPreferences.dogId.collect { id ->
@@ -35,6 +39,14 @@ class DogViewModel
             viewModelScope.launch {
                 dogPreferences.dogWeight.collect { weight ->
                     _dogWeight.value = weight
+                }
+            }
+        }
+
+        fun fetchDogName() {
+            viewModelScope.launch {
+                dogPreferences.dogName.collect { name ->
+                    _dogName.value = name
                 }
             }
         }
