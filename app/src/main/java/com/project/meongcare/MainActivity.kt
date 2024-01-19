@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,12 +26,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var toolbarViewModel: ToolbarViewModel
-    lateinit var symptomViewModel: SymptomViewModel
-
     companion object {
         const val BASE_URL = "https://dev.meongcare.com/"
-        const val ACCESS_TOKEN =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNzAyMTMzOTQ5fQ.lolNGSPRJDf3O1t-bjaPtKmVU_A4-iqfRFbbt1YYkDM"
     }
 
     @Inject
@@ -51,9 +48,9 @@ class MainActivity : AppCompatActivity() {
 
         requestPermissions(permissionList, 0)
         initNavController()
+        handleOnBackPressed()
 
         toolbarViewModel = ViewModelProvider(this)[ToolbarViewModel::class.java]
-        symptomViewModel = ViewModelProvider(this)[SymptomViewModel::class.java]
 
         activityMainBinding.run {
             autoLogin()
@@ -78,16 +75,21 @@ class MainActivity : AppCompatActivity() {
 
                     true
                 }
+                setOnItemReselectedListener { menuItem ->
+                    if (menuItem.itemId == R.id.menuMainBottomNavHome) {
+                        fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                    } else {
+                        includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                    }
+                }
             }
 
             includeMedicalRecordDialog.run {
                 constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+                    includeMedicalRecordDialog.root.visibility = View.VISIBLE
                 }
                 buttonOk.setOnClickListener {
                     includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
@@ -270,5 +272,29 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun handleOnBackPressed() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController =
+            navHostFragment.navController
+
+        val callback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when (navController.currentDestination?.id) {
+                        R.id.homeFragment,
+                        R.id.medicalRecordFragment,
+                        -> finish()
+                        else ->
+                            if (navController.popBackStack().not()) {
+                                isEnabled = false
+                            }
+                    }
+                }
+            }
+
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 }

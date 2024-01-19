@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSupplementInfoBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.view.adapter.SupplementInfoTimeRecyclerViewAdapter
@@ -42,6 +43,7 @@ class SupplementInfoFragment : Fragment() {
         supplementViewModel.run {
             getSupplementDetail(supplementId!!)
             supplementDetail.observe(viewLifecycleOwner) {
+                routineIsClicked.value = it.isActive
                 fragmentSupplementInfoBinding.run {
                     if (!it.imageUrl.isNullOrBlank()) {
                         layoutSupplementInfoDefault.visibility = View.GONE
@@ -64,6 +66,33 @@ class SupplementInfoFragment : Fragment() {
                     }
                 }
             }
+            routineIsClicked.observe(viewLifecycleOwner) {
+                fragmentSupplementInfoBinding.run {
+                    buttonSupplementInfoRoutine.run {
+                        this.isSelected = it
+                        val selected = ContextCompat.getColor(context, R.color.white)
+                        val unselected = ContextCompat.getColor(context, R.color.gray4)
+
+                        textViewButtonSupplementInfoRoutine.run {
+                            if (!it) {
+                                setTextColor(selected)
+                                text = "루틴 시작하기"
+                            } else {
+                                setTextColor(unselected)
+                                text = "루틴 중단"
+                            }
+                        }
+                    }
+                }
+            }
+            supplementDeleteCode.observe(viewLifecycleOwner) {
+                if (it == 200) {
+                    showSuccessSnackbar()
+                    findNavController().popBackStack()
+                } else {
+                    showFailSnackbar()
+                }
+            }
         }
 
         fragmentSupplementInfoBinding.run {
@@ -79,7 +108,7 @@ class SupplementInfoFragment : Fragment() {
                             includeSupplementInfoDeleteDialog.root.visibility = View.GONE
                         }
                         buttonDeleteDialogDelete.setOnClickListener {
-                            supplementViewModel.deleteSupplement(supplementId!!, navController)
+                            supplementViewModel.deleteSupplement(supplementId!!)
                         }
                     }
 
@@ -87,33 +116,11 @@ class SupplementInfoFragment : Fragment() {
                 }
             }
 
-            // Todo : supplementViewModel.supplementDetail.value.isActive 로 교체
-            var temp = true
-            buttonSupplementInfoRoutine.run {
-                this.isSelected = temp
-                val selected = ContextCompat.getColor(context, R.color.white)
-                val unselected = ContextCompat.getColor(context, R.color.gray4)
-
-                textViewButtonSupplementInfoRoutine.run {
-                    if (isSelected) {
-                        setTextColor(unselected)
-                        text = "루틴 중단"
-                    } else {
-                        setTextColor(selected)
-                        text = "루틴 시작하기"
-                    }
-                }
-            }
-
             buttonSupplementInfoRoutine.setOnClickListener {
-                temp = !temp
-                it.isSelected = !it.isSelected
-                val activeStatus = it.isSelected
+                supplementViewModel.routineIsClicked.value = !supplementViewModel.routineIsClicked.value!!
                 supplementViewModel.patchSupplementActive(
                     supplementId!!,
-                    activeStatus,
-                    mainActivity,
-                    textViewButtonSupplementInfoRoutine,
+                    supplementViewModel.routineIsClicked.value!!,
                 )
             }
         }
@@ -141,5 +148,21 @@ class SupplementInfoFragment : Fragment() {
                 textViewButtonSupplementInfoUnitJung.setTextColor(selectedTextColor)
             }
         }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "삭제가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 }

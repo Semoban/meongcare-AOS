@@ -80,7 +80,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_launcher_background"
+                            android:src="@drawable/all_rect_main4_r5"
                             android:visibility="visible" />
                     </LinearLayout>
 
@@ -482,23 +482,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include
-        android:id="@+id/include_bottomsheet_supplement_add_cycle"
-        style="@style/Widget.Material3.BottomSheet"
-        layout="@layout/bottomsheet_supplement_add_cycle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="@string/bottom_sheet_behavior" />
-
-    <include
-        android:id="@+id/include_bottomsheet_supplement_add_time"
-        style="@style/Widget.Material3.BottomSheet"
-        layout="@layout/bottomsheet_supplement_add_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="@string/bottom_sheet_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

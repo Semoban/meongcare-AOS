@@ -5,6 +5,7 @@ import com.project.meongcare.login.model.data.remote.LoginRetrofitClient
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.model.entities.LoginResponse
 import com.project.meongcare.login.model.entities.ReissueResponse
+import retrofit2.Response
 import javax.inject.Inject
 
 class LoginRepositoryImpl
@@ -26,15 +27,15 @@ class LoginRepositoryImpl
             }
         }
 
-        override suspend fun getNewAccessToken(refreshToken: String): ReissueResponse? {
+        override suspend fun getNewAccessToken(refreshToken: String): Response<ReissueResponse>? {
             try {
                 val response = loginRetrofitClient.loginApi.getNewAccessToken(refreshToken)
                 if (response.isSuccessful) {
                     Log.d("LoginRepository", "통신 성공 : ${response.code()}")
-                    return response.body()
+                    return response
                 } else {
                     Log.d("LoginRepository", "통신 실패 : ${response.code()}")
-                    return null
+                    return response
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

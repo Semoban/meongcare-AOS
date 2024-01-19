@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/onBoardingFragment">
 
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -39,6 +39,10 @@
         <action
             android:id="@+id/action_dogAddOnBoardingFragment_to_dogVarietySearchFragment"
             app:destination="@id/dogVarietySearchFragment" />
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
     </fragment>
 
     <fragment
@@ -86,6 +90,10 @@
         <action
             android:id="@+id/action_homeFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@+id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
     </fragment>
 
     <fragment
@@ -282,6 +290,10 @@
         <action
             android:id="@+id/action_petInfoFragment_to_petEditFragment"
             app:destination="@id/petEditFragment" />
+        <action
+            android:id="@+id/action_petInfoFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
     </fragment>
 
     <fragment
@@ -292,6 +304,10 @@
         <action
             android:id="@+id/action_petEditFragment_to_dogVarietySearchFragment"
             app:destination="@id/dogVarietySearchFragment" />
+        <action
+            android:id="@+id/action_petEditFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
     </fragment>
 
     <fragment

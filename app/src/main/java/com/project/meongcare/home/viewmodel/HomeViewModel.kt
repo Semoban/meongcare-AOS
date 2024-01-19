@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.home.model.data.repository.HomeRepository
 import com.project.meongcare.home.model.entities.DogProfile
+import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
@@ -16,6 +17,7 @@ import com.project.meongcare.home.model.entities.HomeGetWeightResponse
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -26,8 +28,8 @@ import javax.inject.Inject
 class HomeViewModel
     @Inject
     constructor(private val homeRepository: HomeRepository) : ViewModel() {
-        private val _homeProfileResponse = MutableLiveData<GetUserProfileResponse?>()
-        val homeProfileResponse: LiveData<GetUserProfileResponse?>
+        private val _homeProfileResponse = MutableLiveData<Response<GetUserProfileResponse>?>()
+        val homeProfileResponse: LiveData<Response<GetUserProfileResponse>?>
             get() = _homeProfileResponse
 
         private val _homeSelectedDate = MutableLiveData<Date>()
@@ -42,8 +44,8 @@ class HomeViewModel
         val homeSelectedDatePos: LiveData<Int>
             get() = _homeSelectedDatePos
 
-        private val _homeDogList = MutableLiveData<MutableList<DogProfile>?>()
-        val homeDogList: LiveData<MutableList<DogProfile>?>
+        private val _homeDogList = MutableLiveData<Response<GetDogListResponse>?>()
+        val homeDogList: LiveData<Response<GetDogListResponse>?>
             get() = _homeDogList
 
         private val _homeSelectedDogPos = MutableLiveData<Int>()
@@ -58,24 +60,24 @@ class HomeViewModel
         val homeDogWeightPost: LiveData<Int>
             get() = _homeDogWeightPost
 
-        private val _homeDogWeight = MutableLiveData<HomeGetWeightResponse>()
-        val homeDogWeight: LiveData<HomeGetWeightResponse>
+        private val _homeDogWeight = MutableLiveData<Response<HomeGetWeightResponse>?>()
+        val homeDogWeight: LiveData<Response<HomeGetWeightResponse>?>
             get() = _homeDogWeight
 
-        private val _homeDogFeed = MutableLiveData<HomeGetFeedResponse>()
-        val homeDogFeed: LiveData<HomeGetFeedResponse>
+        private val _homeDogFeed = MutableLiveData<Response<HomeGetFeedResponse>?>()
+        val homeDogFeed: LiveData<Response<HomeGetFeedResponse>?>
             get() = _homeDogFeed
 
-        private val _homeDogSupplements = MutableLiveData<HomeGetSupplementsResponse>()
-        val homeDogSupplements: LiveData<HomeGetSupplementsResponse>
+        private val _homeDogSupplements = MutableLiveData<Response<HomeGetSupplementsResponse>?>()
+        val homeDogSupplements: LiveData<Response<HomeGetSupplementsResponse>?>
             get() = _homeDogSupplements
 
-        private val _homeDogExcreta = MutableLiveData<HomeGetExcretaResponse>()
-        val homeDogExcreta: LiveData<HomeGetExcretaResponse>
+        private val _homeDogExcreta = MutableLiveData<Response<HomeGetExcretaResponse>?>()
+        val homeDogExcreta: LiveData<Response<HomeGetExcretaResponse>?>
             get() = _homeDogExcreta
 
-        private val _homeDogSymptom = MutableLiveData<HomeGetSymptomResponse>()
-        val homeDogSymptom: LiveData<HomeGetSymptomResponse>
+        private val _homeDogSymptom = MutableLiveData<Response<HomeGetSymptomResponse>?>()
+        val homeDogSymptom: LiveData<Response<HomeGetSymptomResponse>?>
             get() = _homeDogSymptom
 
         init {

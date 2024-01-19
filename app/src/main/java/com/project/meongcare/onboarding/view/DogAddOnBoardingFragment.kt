@@ -20,11 +20,13 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -48,6 +50,9 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     @Inject
     lateinit var userPreferences: UserPreferences
 
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     private var isCbxChecked = false
 
     override fun onCreateView(
@@ -57,6 +62,18 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     ): View? {
         fragmentDogAddOnBoardingBinding = FragmentDogAddOnBoardingBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+
+        dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
+            if (uri != null) {
+                fragmentDogAddOnBoardingBinding.run {
+                    Glide.with(this@DogAddOnBoardingFragment)
+                        .load(uri)
+                        .into(imageviewPetaddImage)
+                    imageviewPetaddDog.visibility = View.GONE
+                    textviewPetaddImageDescription.visibility = View.GONE
+                }
+            }
+        }
 
         dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
@@ -80,7 +97,40 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_success_16dp,
+                    getString(R.string.snack_bar_dog_create_complete),
+                ).show()
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
+            } else if (response == 401) {
+                lifecycleScope.launch {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken.isNotEmpty()) {
+                        val reissueResponse = loginRepository.getNewAccessToken(refreshToken)
+                        if (reissueResponse != null && reissueResponse.code() == 200) {
+                            CustomSnackBar.make(
+                                requireView(),
+                                R.drawable.snackbar_error_16dp,
+                                getString(R.string.snack_bar_info_add_failure),
+                            ).show()
+                            userPreferences.setAccessToken(reissueResponse.body()?.accessToken!!)
+                        } else if (reissueResponse != null && reissueResponse.code() == 401) {
+                            CustomSnackBar.make(
+                                requireView(),
+                                R.drawable.snackbar_error_16dp,
+                                getString(R.string.snack_bar_refresh_expire),
+                            ).show()
+                            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_loginFragment)
+                        }
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
@@ -100,7 +150,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             }
 
             // 날짜 등록
-            imageviewPetaddBirthdayCalender.setOnClickListener {
+            textviewPetaddSelectBirthday.setOnClickListener {
                 val calendarBottomSheet = CalendarBottomSheetFragment()
                 calendarBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
                 calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
@@ -198,14 +248,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     override fun onUriPassed(uri: Uri) {
         dogAddViewModel.getDogProfileImage(uri)
-
-        fragmentDogAddOnBoardingBinding.run {
-            Glide.with(this@DogAddOnBoardingFragment)
-                .load(uri)
-                .into(imageviewPetaddImage)
-            imageviewPetaddDog.visibility = View.GONE
-            textviewPetaddImageDescription.visibility = View.GONE
-        }
     }
 
     override fun onDateSubmit(str: String) {

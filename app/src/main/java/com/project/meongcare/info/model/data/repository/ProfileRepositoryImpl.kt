@@ -2,25 +2,27 @@ package com.project.meongcare.info.model.data.repository
 
 import android.util.Log
 import com.project.meongcare.home.model.entities.DogProfile
+import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.remote.ProfileRetrofitClient
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import javax.inject.Inject
 
 class ProfileRepositoryImpl
     @Inject
     constructor(private val profileRetrofitClient: ProfileRetrofitClient) : ProfileRepository {
-        override suspend fun getUserProfile(accessToken: String): GetUserProfileResponse? {
+        override suspend fun getUserProfile(accessToken: String): Response<GetUserProfileResponse>? {
             try {
                 val response = profileRetrofitClient.profileApi.getUserProfile(accessToken)
                 return if (response.isSuccessful) {
                     Log.d("ProfileRepo-UserProfile", "통신 성공 : ${response.code()}")
-                    response.body()
+                    response
                 } else {
                     Log.d("ProfileRepo-UserProfile", "통신 실패 : ${response.code()}")
-                    null
+                    response
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -28,15 +30,15 @@ class ProfileRepositoryImpl
             }
         }
 
-        override suspend fun getDogList(accessToken: String): MutableList<DogProfile>? {
+        override suspend fun getDogList(accessToken: String): Response<GetDogListResponse>? {
             try {
                 val response = profileRetrofitClient.profileApi.getDogList(accessToken)
                 return if (response.isSuccessful) {
                     Log.d("ProfileRepo-DogList", "통신 성공 : ${response.code()}")
-                    response.body()?.dogs
+                    response
                 } else {
                     Log.d("ProfileRepo-DogList", "통신 실패 : ${response.code()}")
-                    null
+                    response
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -47,15 +49,15 @@ class ProfileRepositoryImpl
         override suspend fun getdogInfo(
             dogId: Long,
             accessToken: String,
-        ): GetDogInfoResponse? {
+        ): Response<GetDogInfoResponse>? {
             return try {
                 val response = profileRetrofitClient.profileApi.getDogInfo(dogId, accessToken)
                 if (response.isSuccessful) {
                     Log.d("ProfileRepo-DogInfo", "통신 성공 : ${response.code()}")
-                    response.body()
+                    response
                 } else {
                     Log.d("ProfileRepo-DogInfo", "통신 실패 : ${response.code()}")
-                    null
+                    response
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
