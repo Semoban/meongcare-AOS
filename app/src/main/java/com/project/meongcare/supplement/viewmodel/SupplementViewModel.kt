@@ -69,9 +69,7 @@ class SupplementViewModel
             supplementAddImg.value = null
         }
 
-        fun getSupplements(
-            date: Date,
-        ) {
+        fun getSupplements(date: Date) {
             viewModelScope.launch {
                 val covertedDate = convertToDateToDate(date)
                 val accessToken: String? =
@@ -167,9 +165,9 @@ class SupplementViewModel
                         dto,
                         file,
                     )
-                Log.d("영양제 추가 확인",supplementDto.toString())
+                Log.d("영양제 추가 확인", supplementDto.toString())
                 supplementCode.value = repository.addSupplement(accessToken, requestSupplement)
-                Log.d("영양제 추가 확인2",supplementCode.value.toString())
+                Log.d("영양제 추가 확인2", supplementCode.value.toString())
             }
         }
 

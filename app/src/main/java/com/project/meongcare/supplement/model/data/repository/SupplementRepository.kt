@@ -39,7 +39,7 @@ class SupplementRepository
 
         suspend fun getSupplementDetail(
             accessToken: String?,
-            supplementsId: Int
+            supplementsId: Int,
         ): Result<DetailSupplement> =
             kotlin.runCatching {
                 val response =
@@ -57,7 +57,7 @@ class SupplementRepository
 
         suspend fun getSupplementDogs(
             accessToken: String?,
-            dogId: Long?
+            dogId: Long?,
         ): Result<DogSupplement> =
             kotlin.runCatching {
                 val response = supplementAPI.getSupplementDogs(accessToken, dogId)
@@ -71,7 +71,7 @@ class SupplementRepository
 
         suspend fun checkSupplement(
             accessToken: String?,
-            supplementsRecordId: Int
+            supplementsRecordId: Int,
         ): Result<ResponseBody> =
             kotlin.runCatching {
                 val response =
@@ -137,7 +137,7 @@ class SupplementRepository
 
         suspend fun deleteSupplementsById(
             accessToken: String?,
-            supplementsIds: IntArray
+            supplementsIds: IntArray,
         ): Int {
             val response =
                 supplementAPI.deleteSupplementsById(
@@ -151,7 +151,7 @@ class SupplementRepository
 
         suspend fun deleteSupplementById(
             accessToken: String?,
-            supplementsId: Int
+            supplementsId: Int,
         ): Int {
             val response =
                 supplementAPI.deleteSupplementById(
@@ -163,7 +163,7 @@ class SupplementRepository
 
         suspend fun addSupplement(
             accessToken: String?,
-            requestSupplement: RequestSupplement
+            requestSupplement: RequestSupplement,
         ): Int {
             val response =
                 supplementAPI.addSupplement(
