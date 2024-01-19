@@ -203,7 +203,7 @@ class WeightFragment : Fragment() {
                         onCheckClicked()
                     }
                 }
-             }
+            }
         }
     }
 
