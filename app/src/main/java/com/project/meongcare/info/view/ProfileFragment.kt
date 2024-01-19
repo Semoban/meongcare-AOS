@@ -22,8 +22,10 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.createMultipartBody
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,6 +39,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var profileUri: Uri
     private lateinit var currentAccessToken: String
+
+    @Inject
+    lateinit var loginRepository: LoginRepository
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -55,25 +60,90 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         binding = FragmentProfileBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        profileViewModel.userProfile.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                binding.run {
-                    Glide.with(this@ProfileFragment)
-                        .load(response.imageUrl)
-                        .error(R.drawable.profile_default_image)
-                        .into(imageviewProfileImage)
-                    textviewProfileEmail.text = response.email
+        profileViewModel.userProfile.observe(viewLifecycleOwner) { profileResponse ->
+            if (profileResponse != null) {
+                when (profileResponse.code()) {
+                    200 -> {
+                        binding.run {
+                            Glide.with(this@ProfileFragment)
+                                .load(profileResponse.body()?.imageUrl)
+                                .error(R.drawable.profile_default_image)
+                                .into(imageviewProfileImage)
+                            textviewProfileEmail.text = profileResponse.body()?.email
+                        }
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
-        profileViewModel.dogList.observe(viewLifecycleOwner) { dogList ->
-            if (!dogList.isNullOrEmpty()) {
-                binding.textViewNoDog.visibility = View.GONE
-                binding.recyclerviewProfilePetList.visibility = View.VISIBLE
-                val adapter = binding.recyclerviewProfilePetList.adapter as ProfileDogAdapter
-                adapter.updateDogList(dogList)
+        profileViewModel.dogList.observe(viewLifecycleOwner) { dogListResponse ->
+            if (dogListResponse != null) {
+                when (dogListResponse.code()) {
+                    200 -> {
+                        binding.textViewNoDog.visibility = View.GONE
+                        binding.recyclerviewProfilePetList.visibility = View.VISIBLE
+                        val adapter = binding.recyclerviewProfilePetList.adapter as ProfileDogAdapter
+                        adapter.updateDogList(dogListResponse.body()?.dogs!!)
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_get_dog_list_failure),
+                ).show()
                 binding.textViewNoDog.visibility = View.VISIBLE
                 binding.recyclerviewProfilePetList.visibility = View.GONE
             }
@@ -90,6 +160,12 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                         }
                     }
                 }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
@@ -100,14 +176,22 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                         .load(profileUri)
                         .into(imageviewProfileImage)
                 }
-                makeSnackBar(binding.root, requireContext(), "프로필 사진 변경이 완료되었습니다.")
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_success_16dp,
+                    getString(R.string.snack_bar_profile_update_complete),
+                ).show()
             } else {
                 binding.run {
                     Glide.with(this@ProfileFragment)
                         .load(R.drawable.profile_default_image)
                         .into(imageviewProfileImage)
                 }
-                makeSnackBar(binding.root, requireContext(), "프로필 사진 변경에 실패하였습니다.")
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
@@ -130,7 +214,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
             buttonProfileSetting.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.pushAgreement!!)
+                bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
                 findNavController().navigate(R.id.action_profileFragment_to_settingFragment, bundle)
             }
 
@@ -148,8 +232,12 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                     includeLogoutDialog.root.visibility = View.GONE
                 }
                 buttonLogoutDialogLogout.setOnClickListener {
-                    val refreshToken = ""
-                    profileViewModel.logoutUser(refreshToken)
+                    lifecycleScope.launch {
+                        val refreshToken = userPreferences.getRefreshToken()
+                        if (refreshToken != null) {
+                            profileViewModel.logoutUser(refreshToken)
+                        }
+                    }
                 }
             }
         }
