@@ -2,6 +2,7 @@ package com.project.meongcare.info.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
@@ -91,7 +98,14 @@ class SettingFragment : Fragment() {
                     includeDeleteAccountDialog.root.visibility = View.GONE
                 }
                 buttonDeleteAccountDialogDelete.setOnClickListener {
-                    settingViewModel.deleteUser(currentAccessToken)
+                    lifecycleScope.launch {
+                        val currentProvider = userPreferences.getProvider()
+                        when (currentProvider) {
+                            "kakao" -> deleteKakaoAccount()
+                            "naver" -> deleteNaverAccount()
+                            "google" -> deleteGoogleAccount()
+                        }
+                    }
                 }
             }
 
@@ -145,4 +159,53 @@ fun makeSnackBar(
     textView.setPadding(textViewStartPadding, 0, 0, 0)
 
     snackBar.show()
+    private fun deleteKakaoAccount() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e("Delete-kakao", "연결 끊기 실패", error)
+            }
+            else {
+                Log.d("Delete-kakao", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                settingViewModel.deleteUser(currentAccessToken)
+            }
+        }
+    }
+
+    private fun deleteNaverAccount() {
+        NidOAuthLogin().callDeleteTokenApi(object : OAuthLoginCallback {
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
+            }
+
+            override fun onSuccess() {
+                Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
+                settingViewModel.deleteUser(currentAccessToken)
+            }
+        })
+    }
+
+    private fun deleteGoogleAccount() {
+        val gso =
+            GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN,
+            ).build()
+        val googleSignInClient =
+            this.let {
+                GoogleSignIn.getClient(requireContext(), gso)
+            }
+
+        googleSignInClient.revokeAccess()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Delete-google", "회원 탈퇴 성공")
+                    settingViewModel.deleteUser(currentAccessToken)
+                } else {
+                    Log.e("Delete-google", "회원 탈퇴 실패 ${task.result}")
+                }
+            }
+    }
 }
