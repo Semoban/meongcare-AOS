@@ -55,7 +55,7 @@ class WeightFragment : Fragment() {
 
     private var accessToken = ""
     private var dogId = 0L
-    private var weight: Double? = null
+    private var weight = 0.0
     private lateinit var weightGetRequest: WeightGetRequest
     private var date = ""
     private var thisMonth = 0F
@@ -105,13 +105,12 @@ class WeightFragment : Fragment() {
             WeightPostRequest(
                 dogId,
                 LocalDate.now().toString(),
-                weight,
+                null,
             )
         weightViewModel.postWeight(accessToken, weightPostRequest)
         weightViewModel.weightPosted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 fetchDailyWeight()
-                initWeightEditDialog()
             }
         }
     }
@@ -131,7 +130,9 @@ class WeightFragment : Fragment() {
         weightViewModel.getDailyWeight(accessToken, weightGetRequest)
         weightViewModel.dayWeightGet.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                binding.textviewWeightRecordContent.text = response.weight.toString()
+                weight = response.weight
+                binding.textviewWeightRecordContent.text = weight.toString()
+                initWeightEditDialog()
             }
         }
     }
@@ -186,6 +187,7 @@ class WeightFragment : Fragment() {
 
     private fun initWeightEditDialog() {
         binding.layoutWeightEdit.run {
+            edittextWeighteditdialog.setText(weight.toString())
             buttonWeighteditdialogCancel.setOnClickListener { onCancelClicked() }
             buttonWeighteditdialogCheck.setOnClickListener { onCheckClicked() }
         }
