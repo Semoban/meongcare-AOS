@@ -222,7 +222,7 @@ class SettingFragment : Fragment() {
                     Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
                     settingViewModel.deleteUser(currentAccessToken)
                 }
-            }
+            },
         )
     }
 
