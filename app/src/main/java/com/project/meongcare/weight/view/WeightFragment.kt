@@ -367,7 +367,11 @@ class WeightFragment : Fragment() {
         private val format = DecimalFormat("#월")
 
         override fun getFormattedValue(value: Float): String {
-            return format.format(value)
+            return if (value == 0F) {
+                "12월"
+            } else {
+                return format.format(value)
+            }
         }
     }
 
