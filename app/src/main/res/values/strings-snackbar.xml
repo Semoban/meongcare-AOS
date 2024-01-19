@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snack_bar_profile_update_complete">프로필 사진이 변경되었습니다!</string>
+    <string name="snack_bar_dog_create_complete">반려견 정보가 등록되었습니다!</string>
+    <string name="snack_bar_dog_edit_complete">반려견 정보가 수정되었습니다!</string>
+    <string name="snack_bar_user_delete_complete">회원 탈퇴가 완료되었습니다!</string>
+    <string name="snack_bar_refresh_expire">세션 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
+    <string name="snack_bar_failure">오류가 발생하였습니다.</string>
+    <string name="snack_bar_info_add_failure">서버 연결 문제로 정보 등록에 실패하였습니다. 다시 시도해 주세요.</string>
+    <string name="snack_bar_info_edit_failure">서버 연결 문제로 정보 수정에 실패하였습니다. 다시 시도해 주세요.</string>
+    <string name="snack_bar_user_delete_failure">서버 연결 문제로 회원 탈퇴에 실패하였습니다. 다시 시도해 주세요.</string>
+    <string name="snack_bar_get_dog_list_failure">반려견 목록을 불러오는데 실패하였습니다.</string>
+    <string name="snack_bar_get_dog_failure">반려견 정보를 불러오는데 실패하였습니다.</string>
+    <string name="snack_bar_notification_on">알림 수신 처리되었습니다.</string>
+    <string name="snack_bar_notification_off">알림 거부 처리되었습니다.</string>
+</resources>
