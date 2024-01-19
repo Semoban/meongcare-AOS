@@ -277,18 +277,20 @@ class MainActivity : AppCompatActivity() {
     private fun handleOnBackPressed() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        val navController =
+            navHostFragment.navController
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                when (navController.currentDestination?.id) {
-                    R.id.homeFragment,
-                    R.id.medicalRecordFragment -> finish()
-                    else -> if (navController.popBackStack().not()) {
-                        isEnabled = false
+        val callback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when (navController.currentDestination?.id) {
+                        R.id.homeFragment,
+                        R.id.medicalRecordFragment -> finish()
+                        else -> if (navController.popBackStack().not()) {
+                            isEnabled = false
+                        }
                     }
                 }
-            }
         }
 
         onBackPressedDispatcher.addCallback(this, callback)
