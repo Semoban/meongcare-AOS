@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter
 
 object ExcretaDateTimeUtils {
     fun convertDateTimeFormat(dateTime: String): String {
-        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss")
+        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 
         val parsedDate = LocalDate.parse(dateTime, inputFormat)
