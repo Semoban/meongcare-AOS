@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomInfoBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToMonthDate
@@ -47,7 +48,10 @@ class SymptomInfoFragment : Fragment() {
         symptomViewModel.run {
             deleteSymptomCode.observe(viewLifecycleOwner) {
                 if(it == 200) {
+                    showSuccessSnackbar()
                     findNavController().popBackStack()
+                } else {
+                    showFailSnackbar()
                 }
             }
         }
@@ -94,6 +98,22 @@ class SymptomInfoFragment : Fragment() {
             }
         }
         return fragmentSymptomInfoBinding.root
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            requireView(),
+            R.drawable.snackbar_success_16dp,
+            "삭제가 완료되었습니다.",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            requireView(),
+            R.drawable.snackbar_error_16dp,
+            "삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 }
 
