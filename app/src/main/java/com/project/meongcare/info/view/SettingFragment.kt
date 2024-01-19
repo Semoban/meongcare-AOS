@@ -24,6 +24,8 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
+import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,6 +42,9 @@ class SettingFragment : Fragment() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,19 +60,76 @@ class SettingFragment : Fragment() {
         binding = FragmentSettingBinding.inflate(inflater)
 
         settingViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null && response == 200) {
-                userPreferences.setProvider(null)
-                userPreferences.setEmail(null)
-                userPreferences.setAccessToken(null)
-                userPreferences.setRefreshToken(null)
-                findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+            if (response != null) {
+                when (response) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_user_delete_complete),
+                        )
+                        userPreferences.setProvider(null)
+                        userPreferences.setEmail(null)
+                        userPreferences.setAccessToken(null)
+                        userPreferences.setRefreshToken(null)
+                        findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_user_delete_failure),
+                                            ).show()
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
         settingViewModel.patchPushResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
                 when (binding.switchSettingNotification.isChecked) {
+                    true -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_notification_on),
+                        )
+                    }
+                    false -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_notification_off),
+                        )
+                    }
                 }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                )
             }
         }
 
