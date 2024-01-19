@@ -75,16 +75,42 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textview_weight_recordexplanation"
+                        android:id="@+id/textview_weight_record_explanation_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="14dp"
-                        android:text="현재 김먼지님의 체중입니다."
+                        android:text="현재 "
                         android:textAppearance="@style/Typography.Body3.Regular"
                         android:textColor="@color/gray4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/textview_weight_recordtitle"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_record_explanation_dog_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="OOO"
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_record_explanation_start"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_record_explanation_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="님의 체중입니다."
+                        android:textAppearance="@style/Typography.Body3.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_record_explanation_dog_name"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_recordtitle" />
 
                     <TextView
@@ -131,24 +157,45 @@
                     android:padding="24dp">
 
                     <TextView
-                        android:id="@+id/textview_weight_weeklyrecordtitle"
+                        android:id="@+id/textview_weight_weekly_record_title_dog_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="김먼지님의 체중변화를 기록했어요!"
+                        android:text="OOO"
                         android:textAppearance="@style/Typography.Title3.SemiBold"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/textview_weight_weeklyrecordtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="님의 체중변화를 기록했어요!"
+                        android:textAppearance="@style/Typography.Title3.SemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_weekly_record_title_dog_name"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_weight_weekly_record_explanation_dog_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="OOO"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray5"
+                        app:layout_constraintStart_toStartOf="@id/textview_weight_weekly_record_title_dog_name"
+                        app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordtitle" />
+
+                    <TextView
                         android:id="@+id/textview_weight_weeklyrecordexplanation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="김먼지님의 주 별 체중변화"
+                        android:text="님의 주 별 체중변화"
                         android:textAppearance="@style/Typography.Body2.Regular"
                         android:textColor="@color/gray5"
-                        app:layout_constraintStart_toStartOf="@id/textview_weight_weeklyrecordtitle"
+                        app:layout_constraintStart_toEndOf="@id/textview_weight_weekly_record_explanation_dog_name"
                         app:layout_constraintTop_toBottomOf="@id/textview_weight_weeklyrecordtitle" />
 
                     <com.github.mikephil.charting.charts.LineChart
