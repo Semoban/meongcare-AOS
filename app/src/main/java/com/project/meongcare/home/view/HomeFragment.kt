@@ -98,7 +98,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure)
+                    getString(R.string.snack_bar_failure),
                 ).show()
             }
         }
@@ -184,7 +184,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
-
                         }
                     }
                 }
@@ -245,7 +244,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
-
                         }
                     }
                 }
@@ -293,7 +291,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
-
                         }
                     }
                 }
@@ -311,8 +308,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 if (dogFeedResponse.code() == 200) {
                     Log.d("homeDogFeed", dogFeedResponse.body()?.recommendIntake.toString())
                     fragmentHomeBinding.textviewHomeFeed.text = dogFeedResponse.body()?.recommendIntake.toString()
-                }
-                else if (dogFeedResponse.code() == 401) {
+                } else if (dogFeedResponse.code() == 401) {
                     lifecycleScope.launch {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
@@ -331,7 +327,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
-
                             }
                         }
                     }
@@ -350,7 +345,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 if (dogSupplementsResponse.code() == 200) {
                     Log.d("homeDogSupplements", dogSupplementsResponse.body()?.supplementsRate.toString())
                     fragmentHomeBinding.textviewHomeNutritionPercentage.text = dogSupplementsResponse.body()?.supplementsRate.toString()
-                    fragmentHomeBinding.progressbarNutrition.progress = dogSupplementsResponse.body()?.supplementsRate ?:0
+                    fragmentHomeBinding.progressbarNutrition.progress = dogSupplementsResponse.body()?.supplementsRate ?: 0
                 } else if (dogSupplementsResponse.code() == 401) {
                     lifecycleScope.launch {
                         val refreshToken = userPreferences.getRefreshToken()
@@ -370,7 +365,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
-
                             }
                         }
                     }
@@ -409,7 +403,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
-
                             }
                         }
                     }
@@ -452,11 +445,10 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
-
                             }
                         }
                     }
-                } else{
+                } else {
                     CustomSnackBar.make(
                         requireView(),
                         R.drawable.snackbar_error_16dp,
