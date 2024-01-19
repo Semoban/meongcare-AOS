@@ -142,12 +142,8 @@ class MainActivity : AppCompatActivity() {
                     // 대소변 기능 업데이트 후 삭제
                     includeMedicalRecordDialog.run {
                         root.visibility = View.VISIBLE
-                        constraintlayoutBg.setOnClickListener {
-                            includeMedicalRecordDialog.root.visibility = View.GONE
-                        }
-                        buttonOk.setOnClickListener {
-                            includeMedicalRecordDialog.root.visibility = View.GONE
-                        }
+                        constraintlayoutBg.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
+                        buttonOk.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
                     }
                     // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
