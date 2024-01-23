@@ -80,6 +80,22 @@ class LoginFragment : Fragment() {
                             }
                         }
                     }
+                    400 -> {
+                        // 로그인 실패 : 탈퇴 유저
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_login_failure_deleted),
+                        )
+                        lifecycleScope.launch {
+                            val provider = userPreferences.getProvider()
+                            when (provider) {
+                                "kakao" -> deleteKakaoAccount()
+                                "naver" -> deleteNaverAccount()
+                                "google" -> deleteGoogleAccount()
+                            }
+                        }
+                    }
                     else -> {
                         CustomSnackBar.make(
                             requireView(),
@@ -286,5 +302,59 @@ class LoginFragment : Fragment() {
             }
         Log.d("in-getDeviceToken-method", deviceToken)
         return deviceToken
+    }
+
+    private fun deleteKakaoAccount() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e("Delete-kakao", "연결 끊기 실패", error)
+            } else {
+                Log.d("Delete-kakao", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+            }
+        }
+    }
+
+    private fun deleteNaverAccount() {
+        NidOAuthLogin().callDeleteTokenApi(
+            object : OAuthLoginCallback {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
+
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
+                }
+
+                override fun onSuccess() {
+                    Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
+                }
+            },
+        )
+    }
+
+    private fun deleteGoogleAccount() {
+        val gso =
+            GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN,
+            ).build()
+        val googleSignInClient =
+            this.let {
+                GoogleSignIn.getClient(requireContext(), gso)
+            }
+
+        googleSignInClient.revokeAccess()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Delete-google", "회원 탈퇴 성공")
+                } else {
+                    Log.e("Delete-google", "회원 탈퇴 실패 ${task.result}")
+                }
+            }
     }
 }
