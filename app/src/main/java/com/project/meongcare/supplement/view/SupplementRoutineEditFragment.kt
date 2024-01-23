@@ -44,20 +44,35 @@ class SupplementRoutineEditFragment : Fragment() {
 
         supplementViewModel.run {
             getSupplementDogs()
-            supplementIdListAllCheck.observe(viewLifecycleOwner) {
-                Log.d("루틴 변경", it.toString())
-                Log.d("루틴 변경2", supplementIdList.value.toString())
+            supplementIdList.observe(viewLifecycleOwner){
+                Log.d("영양제 리스트", supplementIdList.value.toString())
                 fragmentSupplementRoutineEditBinding.run {
+                    imageViewSupplementRoutineEditDeleteAllCheck.isSelected = it.isNotEmpty() && it.size == supplementDogList.value!!.size
+                }
+            }
+            supplementDogList.observe(viewLifecycleOwner) {
+                Log.d("영양제 리스트 확인", it.toString())
+                fragmentSupplementRoutineEditBinding.run {
+                    val temp =
+                        supplementViewModel.supplementDogList.value!!.map { it.supplementsId }.toMutableList()
+                    Log.d("영양제 리스트 확인2", temp.toString())
+                    imageViewSupplementRoutineEditDeleteAllCheck.run {
+                        setOnClickListener {
+                            it.isSelected = !it.isSelected
+                            Log.d("영양제 리스트1", it.isSelected.toString())
+                            if (it.isSelected) {
+                                supplementViewModel.supplementIdList.value = temp
+                                Log.d("영양제 리스트2", supplementViewModel.supplementIdList.value.toString())
+                            } else {
+                                supplementViewModel.supplementIdList.value = mutableListOf()
+                                Log.d("영양제 리스트3", supplementViewModel.supplementIdList.value.toString())
+                            }
+                        }
+                    }
                     recyclerViewSupplementRoutineEdit.run {
                         adapter = SupplementRoutineEditRecyclerViewAdapter()
                         layoutManager = LinearLayoutManager(context)
                     }
-                }
-            }
-            supplementDogList.observe(viewLifecycleOwner) {
-                fragmentSupplementRoutineEditBinding.recyclerViewSupplementRoutineEdit.run {
-                    adapter = SupplementRoutineEditRecyclerViewAdapter()
-                    layoutManager = LinearLayoutManager(context)
                 }
             }
             supplementDeleteCode.observe(viewLifecycleOwner) {
@@ -73,16 +88,21 @@ class SupplementRoutineEditFragment : Fragment() {
         fragmentSupplementRoutineEditBinding.run {
             toolbarSupplementRoutineEdit.setNavigationOnClickListener { navController.popBackStack() }
 
-            imageViewSupplementRoutineEditDeleteAllCheck.setOnClickListener { view ->
-                val isAllSelected = !view.isSelected
-                view.isSelected = isAllSelected
-                val temp =
-                    supplementViewModel.supplementDogList.value!!.map { it.supplementsId }
-                        .toMutableList()
-                supplementViewModel.setAllItemsChecked(
-                    imageViewSupplementRoutineEditDeleteAllCheck.isSelected,
-                    temp,
-                )
+            val temp =
+                supplementViewModel.supplementDogList.value!!.map { it.supplementsId }.toMutableList()
+            Log.d("영양제 리스트 확인2", temp.toString())
+            imageViewSupplementRoutineEditDeleteAllCheck.run {
+                setOnClickListener {
+                    it.isSelected = !it.isSelected
+                    Log.d("영양제 리스트1", it.isSelected.toString())
+                    if (it.isSelected) {
+                        supplementViewModel.supplementIdList.value = temp
+                        Log.d("영양제 리스트2", supplementViewModel.supplementIdList.value.toString())
+                    } else {
+                        supplementViewModel.supplementIdList.value = mutableListOf()
+                        Log.d("영양제 리스트3", supplementViewModel.supplementIdList.value.toString())
+                    }
+                }
             }
 
             buttonSupplementRoutineEditCancel.setOnClickListener {
@@ -170,17 +190,20 @@ class SupplementRoutineEditFragment : Fragment() {
             val supplementsId =
                 supplementViewModel.supplementDogList.value!![position].supplementsId
 
-            holder.itemSupplementRoutineEditCheckImg.isSelected =
-                supplementViewModel.supplementIdList.value!!.contains(supplementsId)
+            supplementViewModel.supplementIdList.observe(viewLifecycleOwner) {
+                holder.itemSupplementRoutineEditCheckImg.isSelected =
+                    supplementViewModel.supplementIdList.value!!.contains(supplementsId)
+            }
 
             holder.itemSupplementRoutineEditCheckImg.setOnClickListener {
-                supplementViewModel.updateSupplementIds(mutableListOf(supplementsId))
-                holder.itemSupplementRoutineEditCheckImg.isSelected =
-                    !holder.itemSupplementRoutineEditCheckImg.isSelected
-
-                if (supplementViewModel.supplementIdListAllCheck.value!!) {
-                    fragmentSupplementRoutineEditBinding.imageViewSupplementRoutineEditDeleteAllCheck.isSelected =
-                        false
+                it.isSelected = !it.isSelected
+                val temp2 = supplementViewModel.supplementIdList.value!!
+                if (temp2.contains(supplementsId)) {
+                    temp2.remove(supplementsId)
+                    supplementViewModel.supplementIdList.value = temp2
+                } else {
+                    temp2.add(supplementsId)
+                    supplementViewModel.supplementIdList.value = temp2
                 }
             }
 
