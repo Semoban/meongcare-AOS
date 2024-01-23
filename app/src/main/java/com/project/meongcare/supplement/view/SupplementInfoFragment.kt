@@ -51,10 +51,10 @@ class SupplementInfoFragment : Fragment() {
                         Glide.with(this@SupplementInfoFragment)
                             .load(it.imageUrl)
                             .into(imageViewSupplementInfo)
-                        textViewSupplementInfoName.text = it.name
                     }
 
                     textViewSupplementInfoBrandName.text = it.brand
+                    textViewSupplementInfoName.text = it.name
                     textViewSupplementInfoCycleCount.text = it.intakeCycle.toString()
                     textViewSupplementInfoTimeListCount.text = "${it.intakeInfos.size}회"
 
