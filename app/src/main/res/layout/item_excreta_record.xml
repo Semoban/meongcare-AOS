@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="14dp"
         android:text="소변"
-        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textAppearance="@style/Typography.Body1.Bold"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
