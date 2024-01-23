@@ -50,9 +50,7 @@ class SymptomListEditFragment : Fragment() {
             symptomIdList.observe(viewLifecycleOwner) {
                 Log.d("이상증상 변화", it.toString())
                 fragmentSymptomListEditBinding.run {
-                    if (it.isNotEmpty() && it.size == symptomList.value!!.size) {
-                        imageViewSymptomListEditDeleteAllCheck.isSelected = true
-                    }
+                    imageViewSymptomListEditDeleteAllCheck.isSelected = it.isNotEmpty() && it.size == symptomList.value!!.size
                     recyclerViewSymptomListEdit.run {
                         adapter = SymptomListEditRecyclerViewAdapter(symptomViewModel)
                         layoutManager = LinearLayoutManager(context)
