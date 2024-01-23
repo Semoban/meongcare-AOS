@@ -44,7 +44,7 @@ class SupplementRoutineEditFragment : Fragment() {
 
         supplementViewModel.run {
             getSupplementDogs()
-            supplementIdList.observe(viewLifecycleOwner){
+            supplementIdList.observe(viewLifecycleOwner) {
                 Log.d("영양제 리스트", supplementIdList.value.toString())
                 fragmentSupplementRoutineEditBinding.run {
                     imageViewSupplementRoutineEditDeleteAllCheck.isSelected = it.isNotEmpty() && it.size == supplementDogList.value!!.size
