@@ -53,10 +53,7 @@ class ExcretaFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        dogViewModel.fetchDogId()
-        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
-            dogId = response
-        }
+        initDogId()
         initDogName()
         toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
         toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
@@ -71,6 +68,13 @@ class ExcretaFragment : Fragment() {
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
         initExcretaEditButton()
+    }
+
+    private fun initDogId() {
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
     }
 
     private fun initDogName() {
