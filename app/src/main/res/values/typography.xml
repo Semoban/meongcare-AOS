@@ -68,6 +68,10 @@
         <item name="android:lineSpacingExtra">8dp</item>
     </style>
 
+    <style name="Typography.Body1.Bold" parent="Typography.Body1">
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
     <style name="Typography.Body1.SemiBold" parent="Typography.Body1">
         <item name="fontFamily">@font/pretendard_semi_bold</item>
     </style>
