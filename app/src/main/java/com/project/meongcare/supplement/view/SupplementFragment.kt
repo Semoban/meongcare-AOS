@@ -97,7 +97,6 @@ class SupplementFragment : Fragment() {
 
         fragmentSupplementBinding.run {
             textViewSupplementDogName.text = supplementViewModel.dogName.value
-            
             textViewSupplementAdd.setOnClickListener {
                 navController.navigate(R.id.action_supplement_to_supplementAdd)
             }
