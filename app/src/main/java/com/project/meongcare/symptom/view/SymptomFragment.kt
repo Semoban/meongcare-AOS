@@ -37,8 +37,6 @@ class SymptomFragment : Fragment() {
         val factory = SymptomViewModelFactory(SymptomRepository())
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
-        val dogName = "김대박"
-
         navController = findNavController()
 
         toolbarViewModel.run {
@@ -60,7 +58,7 @@ class SymptomFragment : Fragment() {
 
 
         fragmentSymptomBinding.run {
-            textViewSymptomDogName.text = dogName
+            textViewSymptomDogName.text = symptomViewModel.dogName.value
             textViewSymptomAdd.setOnClickListener {
                 navController.navigate(R.id.action_symptom_to_symptomAdd)
             }

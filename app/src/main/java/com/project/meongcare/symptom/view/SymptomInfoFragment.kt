@@ -46,7 +46,6 @@ class SymptomInfoFragment : Fragment() {
         symptomViewModel = ViewModelProvider(this, factory)[SymptomViewModel::class.java]
 
         symptomViewModel.run {
-            getDogName()
             deleteSymptomCode.observe(viewLifecycleOwner) {
                 if (it == 200) {
                     showSuccessSnackbar()

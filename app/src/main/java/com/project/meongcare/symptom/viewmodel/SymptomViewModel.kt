@@ -51,6 +51,7 @@ class SymptomViewModel
             textViewNoDataVisibility.value = false
             symptomIdListAllCheck.value = false
             patchSymptomIsSuccess.value = null
+            getDogName()
         }
 
         fun getSymptomList(date: Date) {
@@ -137,7 +138,6 @@ class SymptomViewModel
                 symptomDateText.value = date.toString()
             }
         }
-
 
         fun getDogName() {
             viewModelScope.launch {
