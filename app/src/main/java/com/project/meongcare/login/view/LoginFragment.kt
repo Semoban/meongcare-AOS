@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -34,6 +35,7 @@ import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -64,20 +66,30 @@ class LoginFragment : Fragment() {
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                userPreferences.setAccessToken(loginResponse.accessToken)
-                userPreferences.setRefreshToken(loginResponse.refreshToken)
-                Log.e("isFirstLogin", loginResponse.isFirstLogin.toString())
-                when (loginResponse.isFirstLogin) {
-                    true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
-                    false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                when (loginResponse.code()) {
+                    200 -> {
+                        // 로그인 성공
+                        if (loginResponse.body() != null) {
+                            Log.e("isFirstLogin", loginResponse.body()?.isFirstLogin.toString())
+                            userPreferences.setAccessToken(loginResponse.body()?.accessToken)
+                            userPreferences.setRefreshToken(loginResponse.body()?.refreshToken)
+                            when (loginResponse.body()?.isFirstLogin) {
+                                true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                                false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                                else -> {}
+                            }
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_login_failure),
+                        )
+                        Log.d("Login", "통신 실패")
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_login_failure),
-                )
-                Log.d("Login", "통신 실패")
+
             }
         }
 
@@ -149,7 +161,6 @@ class LoginFragment : Fragment() {
                     LoginRequest(
                         "${user.id}",
                         "kakao",
-                        "김멍멍",
                         "${user.kakaoAccount?.email}",
                         "${user.kakaoAccount?.profile?.thumbnailImageUrl}",
                         deviceToken,
@@ -193,7 +204,6 @@ class LoginFragment : Fragment() {
                             LoginRequest(
                                 "${result.profile?.id}",
                                 "naver",
-                                "김멍멍",
                                 "${result.profile?.email}",
                                 "${result.profile?.profileImage}",
                                 deviceToken,
@@ -259,7 +269,6 @@ class LoginFragment : Fragment() {
                 LoginRequest(
                     "${account.idToken}",
                     "google",
-                    "김멍멍",
                     "${account.email}",
                     "${account.photoUrl}",
                     deviceToken,
