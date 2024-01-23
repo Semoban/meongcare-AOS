@@ -80,7 +80,9 @@ class ExcretaFragment : Fragment() {
 
     private fun initExcretaEditButton() {
         binding.textviewExcretaEditbutton.setOnClickListener {
-            findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment)
+            val bundle = Bundle()
+            bundle.putString("selectedDateTime", dateTime)
+            findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment, bundle)
         }
     }
 
