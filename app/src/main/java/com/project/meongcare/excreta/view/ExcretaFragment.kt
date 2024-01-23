@@ -57,6 +57,7 @@ class ExcretaFragment : Fragment() {
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
+        initDogName()
         toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
         toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
             userViewModel.fetchAccessToken()
@@ -70,6 +71,13 @@ class ExcretaFragment : Fragment() {
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
         initExcretaEditButton()
+    }
+
+    private fun initDogName() {
+        dogViewModel.fetchDogName()
+        dogViewModel.dogName.observe(viewLifecycleOwner) { response ->
+            binding.textviewExcretaTitleName.text = response
+        }
     }
 
     private fun initExcretaAddButton() {
