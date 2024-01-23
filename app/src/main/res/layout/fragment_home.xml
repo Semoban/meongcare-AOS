@@ -543,7 +543,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearlayout_dog_exist">
+        app:layout_constraintTop_toBottomOf="@+id/constraintlayout_home_horizon_calendar">
 
         <ImageView
             android:id="@+id/imageView3"
