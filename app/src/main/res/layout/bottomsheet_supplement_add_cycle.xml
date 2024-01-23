@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_supplement_add_cycle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp">
+
+    <ImageView
+        android:id="@+id/imageView_bottomsheet_supplement_add_cycle_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Typography.Title3.SemiBold"
+        android:text="섭취 주기"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_bottomsheet_supplement_add_cycle_number_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/nutrition_outline_minus" />
+
+        <TextView
+            android:id="@+id/textView_bottomsheet_supplement_add_cycle_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:text="1"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/imageView_bottomsheet_supplement_add_cycle_number_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/supplement_add_btn_plus" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_bottomsheet_supplement_add_cycle_complete"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/all_rect_main4_r5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Typography.Bottom1.SemiBold"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</LinearLayout>

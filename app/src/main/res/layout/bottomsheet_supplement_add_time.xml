@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_supplement_add_time"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView_bottomsheet_supplement_add_time_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/all_rect_gray2_r10_outline"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="섭취 량"
+            android:textAppearance="@style/Typography.Title3.SemiBold" />
+
+            <LinearLayout
+                android:id="@+id/layout_supplementAdd_cycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView_bottomsheet_supplement_add_time_number_minus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/nutrition_outline_minus" />
+
+                <TextView
+                    android:id="@+id/textView_bottomsheet_supplement_add_time_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:text="1"
+                    android:textAppearance="@style/Typography.Body1.Medium" />
+
+                <ImageView
+                    android:id="@+id/imageView_bottomsheet_supplement_add_time_number_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/supplement_add_btn_plus" />
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="섭취 시간"
+            android:textAppearance="@style/Typography.Title3.SemiBold" />
+
+        <TimePicker
+            android:id="@+id/timepicker_bottomsheet_supplement_add_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:theme="@style/DefaultTimePicker"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button__bottomsheet_supplement_add_time_complete"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="23dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/all_rect_main4_r5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Typography.Bottom1.SemiBold"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</LinearLayout>

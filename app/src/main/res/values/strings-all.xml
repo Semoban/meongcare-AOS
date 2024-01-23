@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all_select_date">날짜를 선택해주세요</string>
+    <string name="all_completion">완료</string>
+    <string name="all_setting">설정</string>
+    <string name="all_add">추가</string>
+    <string name="all_edit">편집</string>
+    <string name="all_share">공유</string>
+    <string name="all_announcement">공지사항</string>
+    <string name="all_deleteall">전체 삭제</string>
+    <string name="all_delete_selected">선택 삭제</string>
+    <string name="all_delete">식제</string>
+    <string name="all_cancel">취소</string>
+</resources>

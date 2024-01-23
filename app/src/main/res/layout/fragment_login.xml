@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.view.LoginFragment">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="185dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="156dp"
+        android:src="@drawable/semoban_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonKakaoLogin"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#FEE500"
+        android:drawableLeft="@drawable/login_kakao_talk"
+        android:letterSpacing="-0.02"
+        android:text="카카오로 시작하기"
+        android:textAppearance="@style/Typography.Body2.Medium"
+        android:textColor="@color/black"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNaverLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonNaverLogin"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#03C75A"
+        android:drawableLeft="@drawable/login_naver"
+        android:letterSpacing="-0.02"
+        android:text="네이버로 시작하기"
+        android:textAppearance="@style/Typography.Body2.Medium"
+        android:textColor="@color/white"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGoogleLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonGoogleLogin"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/login_google"
+        android:letterSpacing="-0.02"
+        android:text="Google로 시작하기"
+        android:textAppearance="@style/Typography.Body2.Medium"
+        android:textColor="@color/black"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/gray3"
+        app:strokeWidth="0.7dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

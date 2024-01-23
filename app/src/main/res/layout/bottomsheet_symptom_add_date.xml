@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_symptom_add_date"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="37dp"
+    android:paddingRight="37dp">
+
+    <ImageView
+        android:id="@+id/imageView_bottomsheet_symptom_add_date_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        app:srcCompat="@drawable/all_bottomsheet_drag_handler" />
+
+    <DatePicker
+        android:id="@+id/datepicker_bottomsheet_symptom_add_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    />
+    <LinearLayout
+        android:id="@+id/button_bottomsheet_symptom_add_date_complete"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/all_rect_main4_r5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

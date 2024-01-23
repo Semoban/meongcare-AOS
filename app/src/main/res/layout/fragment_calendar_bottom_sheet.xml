@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    custom:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    custom:behavior_hideable="true"
+    custom:behavior_peekHeight="0dp"
+    tools:context=".CalendarBottomSheetFragment">
+
+    <ImageView
+        android:id="@+id/imageview_calendar_bottom_sheet_drag_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/all_bottomsheet_drag_handler"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent" />
+
+    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+        android:id="@+id/calendar_bottom_sheet"
+        android:layout_width="322dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        custom:disable_date_color="@color/gray4"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toBottomOf="@+id/imageview_calendar_bottom_sheet_drag_handler"
+        custom:range_color="@color/main1"
+        custom:range_date_color="@color/main4"
+        custom:selected_date_circle_color="@color/main4"
+        custom:selected_date_color="@color/white"
+        custom:text_size_date="16sp"
+        custom:text_size_title="18sp"
+        custom:text_size_week="16sp"
+        custom:title_color="@color/black"
+        custom:week_color="@color/black" />
+
+    <Button
+        android:id="@+id/button_submit"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="288dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="23dp"
+        android:backgroundTint="@color/main4"
+        android:letterSpacing="-0.02"
+        android:text="완료"
+        android:textAppearance="@style/Typography.Bottom1.SemiBold"
+        android:textColor="@color/white"
+        custom:cornerRadius="5dp"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toBottomOf="@+id/calendar_bottom_sheet" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

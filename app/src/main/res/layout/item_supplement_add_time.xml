@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView_item_supplement_add_time_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="6dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/nutrition_filled_minus" />
+
+        <LinearLayout
+            android:id="@+id/layout_item_supplement_add_time"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_gray1_r5"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/textView_item_supplement_add_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray4" />
+
+            <TextView
+                android:id="@+id/textView_item_supplement_add_time_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textColor="@color/gray5" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

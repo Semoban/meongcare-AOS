@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".excreta.view.ExcretaRecordEditFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_excretarecordedit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_arrow_back_18dp"
+        app:title="초코님의 기록"
+        app:titleTextAppearance="@style/Typography.Title3.SemiBold"
+        app:titleTextColor="@color/black" />
+
+    <CheckBox
+        android:id="@+id/checkbox_excretarecordedit_selectall"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/selector_checkbox_line_16dp"
+        android:buttonTint="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_excretarecordedit" />
+
+    <TextView
+        android:id="@+id/textview_excretarecordedit_selectall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="전체 선택"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/gray4"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox_excretarecordedit_selectall"
+        app:layout_constraintStart_toEndOf="@id/checkbox_excretarecordedit_selectall"
+        app:layout_constraintTop_toTopOf="@id/checkbox_excretarecordedit_selectall" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_excretarecordedit_record"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="17dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/button_excretarecordedit_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkbox_excretarecordedit_selectall"
+        tools:listitem="@layout/item_excreta_record_edit" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_excretarecordedit_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/all_rect_r4"
+        android:paddingVertical="12dp"
+        android:text="취소"
+        android:textAppearance="@style/Typography.Bottom1.SemiBold"
+        android:textColor="@color/gray5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_excretarecordedit_delete"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_excretarecordedit_delete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
+        android:background="@drawable/all_rect_r4"
+        android:backgroundTint="@color/main4"
+        android:paddingVertical="12dp"
+        android:text="삭제"
+        android:textAppearance="@style/Typography.Bottom1.SemiBold"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/button_excretarecordedit_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_excretarecordedit_cancel"
+        app:layout_constraintTop_toTopOf="@id/button_excretarecordedit_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

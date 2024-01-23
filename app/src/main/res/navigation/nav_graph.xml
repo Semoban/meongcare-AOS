@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/onBoardingFragment">
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_onBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.project.meongcare.login.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_dogAddOnBoardingFragment"
+            app:destination="@id/dogAddOnBoardingFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogAddOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.DogAddOnBoardingFragment"
+        android:label="fragment_dog_add_on_boarding"
+        tools:layout="@layout/fragment_dog_add_on_boarding">
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_completeOnBoardingFragment"
+            app:destination="@id/completeOnBoardingFragment" />
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+        <action
+            android:id="@+id/action_dogAddOnBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogVarietySearchFragment"
+        android:name="com.project.meongcare.onboarding.view.DogVarietySearchFragment"
+        android:label="fragment_dog_variety_search"
+        tools:layout="@layout/fragment_dog_variety_search"/>
+
+    <fragment
+        android:id="@+id/completeOnBoardingFragment"
+        android:name="com.project.meongcare.onboarding.view.CompleteOnBoardingFragment"
+        android:label="fragment_complete_on_boarding"
+        tools:layout="@layout/fragment_complete_on_boarding">
+        <action
+            android:id="@+id/action_completeOnBoardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project.meongcare.home.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_weightFragment"
+            app:destination="@id/weightFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dogAddOnBoardingFragment"
+            app:destination="@id/dogAddOnBoardingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_symptomFragment"
+            app:destination="@id/symptomFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_supplementFragment"
+            app:destination="@id/supplementFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@+id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomFragment"
+        android:label="fragment_symptom"
+        tools:layout="@layout/fragment_symptom" >
+        <action
+            android:id="@+id/action_symptom_to_symptomAdd"
+            app:destination="@+id/symptomAddFragment" />
+        <action
+            android:id="@+id/action_symptom_to_symptomInfo"
+            app:destination="@+id/symptomInfoFragment" />
+        <action
+            android:id="@+id/action_symptom_to_symptomListEdit"
+            app:destination="@+id/symptomListEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomAddFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomAddFragment"
+        android:label="fragment_symptom_add"
+        tools:layout="@layout/fragment_symptom_add" >
+        <action
+            android:id="@+id/action_symptomAdd_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomAdd_to_symptomSelect"
+            app:destination="@+id/symptomSelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomSelectFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomSelectFragment"
+        android:label="fragment_symptom_select"
+        tools:layout="@layout/fragment_symptom_select">
+        <action
+            android:id="@+id/action_symptomSelect_to_symptomAdd"
+            app:destination="@+id/symptomAddFragment" />
+
+        <action
+            android:id="@+id/action_symptomSelect_to_symptomEdit"
+            app:destination="@+id/symptomEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomInfoFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomInfoFragment"
+        android:label="fragment_symptom_info"
+        tools:layout="@layout/fragment_symptom_info">
+        <action
+            android:id="@+id/action_symptomInfo_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomInfo_to_symptomEdit"
+            app:destination="@+id/symptomEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomListEditFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomListEditFragment"
+        android:label="fragment_symptom_list_edit"
+        tools:layout="@layout/fragment_symptom_list_edit" >
+        <action
+            android:id="@+id/action_symptomListEdit_to_symptom"
+            app:destination="@+id/symptomFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/symptomEditFragment"
+        android:name="com.project.meongcare.symptom.view.SymptomEditFragment"
+        android:label="fragment_symptom_edit"
+        tools:layout="@layout/fragment_symptom_edit" >
+        <action
+            android:id="@+id/action_symptomEdit_to_symptomSelect"
+            app:destination="@+id/symptomSelectFragment" />
+        <action
+            android:id="@+id/action_symptomEdit_to_symptom"
+            app:destination="@+id/symptomFragment" />
+        <action
+            android:id="@+id/action_symptomEdit_to_symptomInfo"
+            app:destination="@+id/symptomInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaFragment"
+        android:label="fragment_excreta"
+        tools:layout="@layout/fragment_excreta" >
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaAddFragment"
+            app:destination="@id/excretaAddFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaRecordEditFragment"
+            app:destination="@id/excretaRecordEditFragment" />
+        <action
+            android:id="@+id/action_excretaFragment_to_excretaInfoFragment"
+            app:destination="@id/excretaInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaAddFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
+        android:label="fragment_excreta_add"
+        tools:layout="@layout/fragment_excreta_add_edit" >
+        <action
+            android:id="@+id/action_excretaAddFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaInfoFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaInfoFragment"
+        android:label="fragment_excreta_info"
+        tools:layout="@layout/fragment_excreta_info" >
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+        <action
+            android:id="@+id/action_excretaInfoFragment_to_excretaEditFragment"
+            app:destination="@id/excretaEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/excretaRecordEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaRecordEditFragment"
+        android:label="fragment_excreta_record_edit"
+        tools:layout="@layout/fragment_excreta_record_edit" >
+        <action
+            android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
+            app:destination="@id/excretaFragment" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/excretaEditFragment"
+        android:name="com.project.meongcare.excreta.view.ExcretaEditFragment"
+        android:label="ExcretaEditFragment" />
+
+    <fragment
+        android:id="@+id/weightFragment"
+        android:name="com.project.meongcare.weight.view.WeightFragment"
+        android:label="fragment_weight"
+        tools:layout="@layout/fragment_weight" />
+
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="com.project.meongcare.notice.view.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice"/>
+
+    <fragment
+        android:id="@+id/medicalRecordFragment"
+        android:name="com.project.meongcare.MedicalRecordFragment"
+        android:label="MedicalRecordFragment" />
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.project.meongcare.feed.view.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_searchFeedFragment"
+            app:destination="@id/searchFeedFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.project.meongcare.info.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_petAddFragment"
+            app:destination="@id/petInfoFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/petInfoFragment"
+        android:name="com.project.meongcare.info.view.PetInfoFragment"
+        android:label="fragment_pet_add_edit"
+        tools:layout="@layout/fragment_pet_add_edit">
+        <action
+            android:id="@+id/action_petInfoFragment_to_petEditFragment"
+            app:destination="@id/petEditFragment" />
+        <action
+            android:id="@+id/action_petInfoFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/petEditFragment"
+        android:name="com.project.meongcare.info.view.PetEditFragment"
+        android:label="fragment_pet_edit"
+        tools:layout="@layout/fragment_pet_edit">
+        <action
+            android:id="@+id/action_petEditFragment_to_dogVarietySearchFragment"
+            app:destination="@id/dogVarietySearchFragment" />
+        <action
+            android:id="@+id/action_petEditFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.project.meongcare.info.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+  
+  <fragment
+        android:id="@+id/supplementFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementFragment"
+        android:label="fragment_supplement"
+        tools:layout="@layout/fragment_supplement" >
+        <action
+            android:id="@+id/action_supplement_to_supplementAdd"
+            app:destination="@+id/supplementAddFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+        <action
+            android:id="@+id/action_supplement_to_supplementRoutineEdit"
+            app:destination="@+id/supplementRoutineEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/supplementAddFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementAddFragment"
+        android:label="fragment_supplement_add"
+        tools:layout="@layout/fragment_supplement_add" />
+
+    <fragment
+        android:id="@+id/supplementInfoFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementInfoFragment"
+        android:label="fragment_supplement_info"
+        tools:layout="@layout/fragment_supplement_info" />
+
+    <fragment
+        android:id="@+id/supplementRoutineEditFragment"
+        android:name="com.project.meongcare.supplement.view.SupplementRoutineEditFragment"
+        android:label="fragment_supplement_routine_edit"
+        tools:layout="@layout/fragment_supplement_routine_edit" >
+        <action
+            android:id="@+id/action_supplementRoutineEdit_to_supplementInfo"
+            app:destination="@+id/supplementInfoFragment" />
+     </fragment>
+
+    <fragment
+        android:id="@+id/feedAddFragment"
+        android:name="com.project.meongcare.feed.view.FeedAddFragment"
+        android:label="fragment_feed_add_edit"
+        tools:layout="@layout/fragment_feed_add_edit" >
+        <action
+            android:id="@+id/action_feedAddFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_feedAddFragment_to_searchFeedFragment"
+            app:destination="@id/searchFeedFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/oldFeedFragment"
+        android:name="com.project.meongcare.feed.view.OldFeedFragment"
+        android:label="fragment_old_feed"
+        tools:layout="@layout/fragment_old_feed" >
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_oldFeedFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFeedFragment"
+        android:name="com.project.meongcare.feed.view.SearchFeedFragment"
+        android:label="fragment_search_feed"
+        tools:layout="@layout/fragment_search_feed" >
+        <action
+            android:id="@+id/action_searchFeedFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_searchFeedFragment_to_feedAddFragment"
+            app:destination="@id/feedAddFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedInfoFragment"
+        android:name="com.project.meongcare.feed.view.FeedInfoFragment"
+        android:label="fragment_feed_info"
+        tools:layout="@layout/fragment_feed_info" >
+        <action
+            android:id="@+id/action_feedInfoFragment_to_oldFeedFragment"
+            app:destination="@id/oldFeedFragment" />
+        <action
+            android:id="@+id/action_feedInfoFragment_to_feedEditFragment"
+            app:destination="@id/feedEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedEditFragment"
+        android:name="com.project.meongcare.feed.view.FeedEditFragment"
+        android:label="FeedEditFragment" >
+        <action
+            android:id="@+id/action_feedEditFragment_to_feedInfoFragment"
+            app:destination="@id/feedInfoFragment" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".symptom.view.SymptomSelectFragment" >
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_symptomSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_symptomSelect">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_weight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_weight"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/all_weighing_machine" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_weight_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="체중이 감소한다"
+                            android:textAppearance="@style/Typography.Body2.Medium"/>
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_weight_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="갑작스럽게 체중이 감소하는 증상이 나타난다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_highFever"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_highFever"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_highFever"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/all_temperature_measurement" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_highFever_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="고열이 난다"
+                            android:textAppearance="@style/Typography.Body2.Medium" />
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_highFever_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="체온이 41도 이상인 상태가 오랫동안 지속된다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_cough"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_cough"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_cough"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/symptom_cough" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_cough_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="기침을 한다"
+                            android:textAppearance="@style/Typography.Body2.Medium"/>
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_cough_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="갑자기 켁켁거리며 기침이 많아진다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_diarrhea"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_diarrhea"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_diarrhea"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/symptom_diarrhea" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_diarrhea_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="설사를 한다"
+                            android:textAppearance="@style/Typography.Body2.Medium"/>
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_diarrhea_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="갑자기 설사를 한다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_lossOfAppetite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_lossOfAppetite"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_lossOfAppetite"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/symptom_loss_appetite" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_lossOfAppetite_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="식욕부진이 나타난다"
+                            android:textAppearance="@style/Typography.Body2.Medium"/>
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_lossOfAppetite_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="사료를 먹지 않는 행동을 보인다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_activityDecrease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_activityDecrease"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/symptom_item_main"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:elevation="0dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imageView_symptomSelect_activityDecrease"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/symptom_amount_activity" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="13dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_activityDecrease_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="활동량이 감소한다"
+                            android:textAppearance="@style/Typography.Body2.Medium"/>
+
+                        <TextView
+                            android:id="@+id/textView_symptomSelect_activityDecrease_subtext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="평소에 비해 활동량이 적어진다"
+                            android:textAppearance="@style/Typography.Body3.Regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/button_symptomSelectCustom_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_gray3_r4_outline"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="center"
+                android:text="취소"
+                android:textColor="@color/gray5"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_symptomSelectCustom_complete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_main4_r4"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="center"
+                android:text="완료"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

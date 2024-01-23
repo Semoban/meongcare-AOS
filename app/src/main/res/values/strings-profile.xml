@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_pet_list">나의 반려동물 목록</string>
+    <string name="profile_logout">로그아웃</string>
+    <string name="profile_header">나의 정보</string>
+</resources>

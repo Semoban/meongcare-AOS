@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textview_oldfeed_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="0000년 00월 00일~ 00월 00일"
+        android:textAppearance="@style/Typography.Body1.SemiBold"
+        android:textColor="@color/gray5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_oldfeed"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gray2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_oldfeed_date" />
+
+    <ImageView
+        android:id="@+id/imageview_oldfeed"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/feed_item_default_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_oldfeed" />
+
+    <TextView
+        android:id="@+id/textview_oldfeed_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="브랜드명"
+        android:textAppearance="@style/Typography.Body2.Regular"
+        android:textColor="@color/gray4"
+        app:layout_constraintStart_toEndOf="@id/imageview_oldfeed"
+        app:layout_constraintTop_toTopOf="@id/imageview_oldfeed" />
+
+    <TextView
+        android:id="@+id/textview_oldfeed_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="제품명"
+        android:textAppearance="@style/Typography.Body1.Medium"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/imageview_oldfeed"
+        app:layout_constraintStart_toStartOf="@id/textview_oldfeed_brand"
+        app:layout_constraintTop_toBottomOf="@id/textview_oldfeed_brand" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintlayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black30">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_delete_account_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp">
+
+            <TextView
+                android:id="@+id/textview_delete_account_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:text="정말 회원 탈퇴하시겠습니까?"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_delete_account_dialog_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="4dp"
+                android:text="탈퇴하시면 계정은 삭제됩니다."
+                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textColor="@color/gray5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_delete_account_dialog_title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_delete_account_dialog_subtitle">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_delete_account_dialog_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/all_rect_gray2_r5"
+                    android:stateListAnimator="@null"
+                    android:text="취소"
+                    android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                    android:textColor="@color/gray5"
+                    app:layout_constraintEnd_toStartOf="@+id/button_delete_account_dialog_delete"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_delete_account_dialog_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/all_rect_main4_r5"
+                    android:stateListAnimator="@null"
+                    android:text="탈퇴하기"
+                    android:textAppearance="@style/Typography.Bottom2.SemiBold"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/button_delete_account_dialog_cancel" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

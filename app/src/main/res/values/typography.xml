@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Typography">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Typography.Title1" parent="Typography">
+        <item name="android:textSize">24sp</item>
+        <item name="lineHeight">28dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Title1.SemiBold" parent="Typography.Title1">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Title2" parent="Typography">
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">28dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Title2.SemiBold" parent="Typography.Title2">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Title3" parent="Typography">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Title3.SemiBold" parent="Typography.Title3">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Bottom1" parent="Typography">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Bottom1.SemiBold" parent="Typography.Body1">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+
+    <style name="Typography.Bottom2" parent="Typography">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Bottom2.SemiBold" parent="Typography.Bottom2">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Body1" parent="Typography">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Body1.SemiBold" parent="Typography.Body1">
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+    </style>
+
+    <style name="Typography.Body1.Medium" parent="Typography.Body1">
+       <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Body1.Regular" parent="Typography.Body1">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Body2" parent="Typography">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Body2.Medium" parent="Typography.Body2">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Body2.Regular" parent="Typography.Body2">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Body2.Light" parent="Typography.Body2">
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="Typography.Body3" parent="Typography">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="Typography.Body3.Medium" parent="Typography.Body3">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Typography.Body3.Regular" parent="Typography.Body3">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Typography.Body3.Light" parent="Typography.Body3">
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+</resources>

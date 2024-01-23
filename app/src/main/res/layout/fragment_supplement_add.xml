@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".supplement.view.SupplementAddFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_supplementAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/all_arrow_back_18dp"
+            app:titleCentered="false" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView_supplementAdd"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_supplementAdd_complete"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_supplementAdd">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_supplementAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="151dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginRight="55dp"
+                    android:elevation="0dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray2"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/layout_supplementAdd_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/supplement_img_default" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="사진을 첨부해주세요"
+                                android:textAppearance="@style/Typography.Body3.Regular"
+                                android:textColor="@color/gray5" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView_supplementAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/all_rect_main4_r5"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="31dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="브랜드명"
+                            android:textAppearance="@style/Typography.Body1.SemiBold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/essential_input_element_icon" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/editText_supplementAdd_brand_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/all_rect_gray2_r5"
+                        android:ems="10"
+                        android:hint="브랜드를 입력해주세요"
+                        android:inputType="text"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="23dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="제품명"
+                            android:textAppearance="@style/Typography.Body1.SemiBold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/essential_input_element_icon" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/editText_supplementAdd_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/all_rect_gray2_r5"
+                        android:ems="10"
+                        android:hint="제품명을 입력해주세요"
+                        android:inputType="text"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="28dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="섭취 주기"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/essential_input_element_icon" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_supplementAdd_cycle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layout_supplementAdd_cycle_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
+
+                            <TextView
+                                android:id="@+id/textView_supplementAdd_cycle_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="0"
+                                android:textAppearance="@style/Typography.Body2.Regular"
+                                android:textColor="@color/gray5" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:gravity="center_vertical"
+                                android:text="일 마다"
+                                android:textAppearance="@style/Typography.Body2.Regular"
+                                android:textColor="@color/gray5" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView_supplementAdd_cycle_to_bottomsheet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:src="@drawable/all_arrow_forward" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_supplementAdd_cycle_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@style/Typography.Body3.Regular"
+                    android:text="필수 입력 값입니다."
+                    android:textColor="@color/sub1"
+                    android:visibility="gone"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginBottom="23dp"
+                    android:background="@color/gray2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="섭취 단위"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/essential_input_element_icon" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_supplementAdd_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/button_supplementAdd_unit_mg"
+                            android:layout_width="47dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_mg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="mg"
+                                android:textAppearance="@style/Typography.Body2.Medium"
+                                android:textColor="@color/gray4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_supplementAdd_unit_scoop"
+                            android:layout_width="47dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_scoop"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="스쿱"
+                                android:textAppearance="@style/Typography.Body2.Medium"
+                                android:textColor="@color/gray4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_supplementAdd_unit_jung"
+                            android:layout_width="47dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/all_rect_gray3_r5_outline"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_button_supplementAdd_unit_jung"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="정"
+                                android:textAppearance="@style/Typography.Body2.Medium"
+                                android:textColor="@color/gray4" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginBottom="23dp"
+                    android:background="@color/gray2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="섭취 시간"
+                        android:textAppearance="@style/Typography.Body1.SemiBold" />
+
+                    <ImageView
+                        android:id="@+id/imageView_supplementAdd_time_list_essential"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:src="@drawable/essential_input_element_icon" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_supplementAdd_time_list_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="9dp"
+                        android:layout_marginLeft="9dp"
+                        android:background="@drawable/all_rect_main1_r5"
+                        android:visibility="gone"
+                        >
+                        <TextView
+                            android:id="@+id/textView_supplementAdd_time_list_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="@style/Typography.Body1.Medium"
+                            android:textColor="@color/main4"
+                            android:text="1회"
+                            />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView_supplementAdd_time_list_add"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="추가"
+                            android:textAppearance="@style/Typography.Body2.Regular"
+                            android:textColor="@color/gray4" />
+
+                        <TextView
+                            android:id="@+id/textView_supplementAdd_time_list_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:gravity="center_vertical"
+                            android:text="편집"
+                            android:textAppearance="@style/Typography.Body2.Regular"
+                            android:textColor="@color/gray4"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_supplementAdd_time_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@style/Typography.Body3.Regular"
+                    android:text="필수 입력 값입니다."
+                    android:textColor="@color/sub1"
+                    android:visibility="gone"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/layout_supplement_add_time_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_supplement_add_time_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="9"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:listitem="@layout/item_supplement_add_time" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/button_supplementAdd_complete"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="19dp"
+            android:layout_weight="1"
+            android:background="@drawable/all_rect_main4_r5"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:gravity="center"
+                android:text="완료"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
