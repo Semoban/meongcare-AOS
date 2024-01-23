@@ -170,6 +170,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 ) {
                     homeViewModel.setSelectedDogPos(0)
                 }
+                if (dogListResponse.body()?.dogs.isNullOrEmpty()) {
+                    fragmentHomeBinding.recyclerviewHomeDog.visibility = View.GONE
+                    fragmentHomeBinding.linearlayoutDogExist.visibility = View.GONE
+                    fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.VISIBLE
+                }
             } else if (dogListResponse != null && dogListResponse.code() == 401) {
                 lifecycleScope.launch {
                     val refreshToken = userPreferences.getRefreshToken()
@@ -462,7 +467,16 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                     fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
                 }
+                if (dogSymptomResponse.body()?.symptomRecords.isNullOrEmpty()) {
+                    fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
+                    fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
+                }
             } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             }
