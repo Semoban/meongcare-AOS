@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
@@ -15,8 +16,13 @@ import com.project.meongcare.excreta.model.entities.Excreta.FECES
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class ExcretaFragment : Fragment() {
@@ -26,10 +32,12 @@ class ExcretaFragment : Fragment() {
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    lateinit var toolbarViewModel: ToolbarViewModel
 
     private lateinit var excretaAdapter: ExcretaAdapter
     private var accessToken = ""
     private var dogId = 0L
+    private var dateTime = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,11 +57,15 @@ class ExcretaFragment : Fragment() {
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
-        userViewModel.fetchAccessToken()
-        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
-            accessToken = response
-            fetchExcretaRecord()
-            initExcretaRecordRecyclerView()
+        toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
+        toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            userViewModel.fetchAccessToken()
+            userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+                accessToken = response
+                fetchExcretaRecord(date)
+                initExcretaRecordRecyclerView()
+
+            }
         }
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
@@ -79,14 +91,16 @@ class ExcretaFragment : Fragment() {
         }
     }
 
-    private fun fetchExcretaRecord() {
+    private fun fetchExcretaRecord(selectedDate: Date) {
         excretaRecordViewModel.apply {
-            val dateTime = LocalDateTime.now().toString().slice(DATE_TIME_START..DATE_TIME_END)
-            getExcretaRecord(dogId, accessToken, "2024-01-20T20:20:00")
+            dateTime = convertSelectedDate(selectedDate)
+            getExcretaRecord(dogId, accessToken, dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 binding.apply {
                     if (response.excretaRecords.size == 0) {
                         textviewExcretaEditbutton.visibility = View.GONE
+                    } else {
+                        textviewExcretaEditbutton.visibility = View.VISIBLE
                     }
                     textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
                     textviewExcretaNumberurine.text = formatExcretaCount(Excreta.URINE.type, response.urineCount)
@@ -94,6 +108,11 @@ class ExcretaFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun convertSelectedDate(selectedDate: Date): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(selectedDate.time)
     }
 
     private fun formatExcretaCount(
