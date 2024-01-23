@@ -42,6 +42,7 @@ class SymptomViewModel
         var patchSymptomIsSuccess = MutableLiveData<Boolean?>()
         var symptomIdList = MutableLiveData<MutableList<Int>>()
         var symptomIdListAllCheck = MutableLiveData<Boolean>()
+        var dogName = MutableLiveData<String>()
 
         init {
             symptomList.value = mutableListOf()
@@ -134,6 +135,13 @@ class SymptomViewModel
                 symptomDateText.value = date.format(formatter)
             } else {
                 symptomDateText.value = date.toString()
+            }
+        }
+
+
+        fun getDogName() {
+            viewModelScope.launch {
+                dogName.value = DogPreferences(GlobalApplication.applicationContext()).dogName.first()
             }
         }
 }
