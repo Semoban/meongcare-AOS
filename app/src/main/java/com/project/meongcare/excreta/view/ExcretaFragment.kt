@@ -138,8 +138,6 @@ class ExcretaFragment : Fragment() {
     }
 
     companion object {
-        const val DATE_TIME_START = 0
-        const val DATE_TIME_END = 18
         const val TIME = "회"
     }
 }
