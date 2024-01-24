@@ -62,7 +62,6 @@ class ExcretaFragment : Fragment() {
             accessToken = response
             excretaRecordViewModel.getExcretaRecord(dogId, accessToken, dateTime)
             initExcretaRecordRecyclerView()
-
         }
         fetchExcretaRecord()
         excretaAdapter = ExcretaAdapter()
