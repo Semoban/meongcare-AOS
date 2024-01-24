@@ -76,6 +76,7 @@ class FeedFragment : Fragment() {
                     response.fat,
                     response.crudeAsh,
                     response.moisture,
+                    response.etc,
                     response.days,
                     response.recommendIntake,
                     response.feedId,
@@ -99,6 +100,7 @@ class FeedFragment : Fragment() {
                     feedGetResponse.fat,
                     feedGetResponse.crudeAsh,
                     feedGetResponse.moisture,
+                    feedGetResponse.etc,
                 )
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
