@@ -209,13 +209,13 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                         if (response == SUCCESS) {
                             showSuccessSnackBar(
                                 requireView(),
-                                PATCH_SUCCESS,
+                                EXCRETA_PATCH_SUCCESS,
                             )
                             findNavController().popBackStack()
                         } else {
                             showFailureSnackBar(
                                 requireView(),
-                                PATCH_FAILURE,
+                                EXCRETA_PATCH_FAILURE,
                             )
                         }
                     }
@@ -253,7 +253,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     companion object {
-        const val PATCH_SUCCESS = "대소변 정보가 수정되었습니다!"
-        const val PATCH_FAILURE = "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
+        const val EXCRETA_PATCH_SUCCESS = "대소변 정보가 수정되었습니다!"
+        const val EXCRETA_PATCH_FAILURE = "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
     }
 }

@@ -176,13 +176,13 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
                         if (response == SUCCESS) {
                             showSuccessSnackBar(
                                 requireView(),
-                                POST_SUCCESS,
+                                EXCRETA_POST_SUCCESS,
                             )
                             findNavController().popBackStack()
                         } else {
                             showFailureSnackBar(
                                 requireView(),
-                                POST_FAILURE,
+                                EXCRETA_POST_FAILURE,
                             )
                         }
                     }
@@ -197,7 +197,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     companion object {
-        const val POST_SUCCESS = "대소변 정보가 저장되었습니다!"
-        const val POST_FAILURE = "서버가 불안정 하여 대소변 정보 저장에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
+        const val EXCRETA_POST_SUCCESS = "대소변 정보가 저장되었습니다!"
+        const val EXCRETA_POST_FAILURE = "서버가 불안정 하여 대소변 정보 저장에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
     }
 }
