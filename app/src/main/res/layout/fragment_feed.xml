@@ -121,6 +121,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_crude_ash" />
 
+            <include
+                android:id="@+id/include_feed_nutrient_etc"
+                layout="@layout/layout_feed_nutrient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_moisture" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_feed_intake_info"
                 android:layout_width="0dp"
@@ -132,7 +142,7 @@
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_moisture">
+                app:layout_constraintTop_toBottomOf="@id/include_feed_nutrient_etc">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
