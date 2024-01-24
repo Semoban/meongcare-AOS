@@ -49,13 +49,13 @@ class SupplementViewModel
         var supplementSize = MutableLiveData<Double>()
         var supplementPercentage = MutableLiveData<Double>()
         var supplementIdList = MutableLiveData<MutableList<Int>>()
-        var supplementIdListAllCheck = MutableLiveData<Boolean>()
         var supplementDogList = MutableLiveData<MutableList<SupplementDog>>()
         var supplementDetail = MutableLiveData<DetailSupplement>()
         var supplementAddImg = MutableLiveData<Uri?>()
         var supplementCode = MutableLiveData<Int?>()
         var supplementDeleteCode = MutableLiveData<Int?>()
         var routineIsClicked = MutableLiveData<Boolean>()
+        var dogName = MutableLiveData<String>()
 
         init {
             intakeTimeList.value = mutableListOf()
@@ -65,8 +65,8 @@ class SupplementViewModel
             supplementCheckCount.value = 0.0
             supplementSize.value = 0.0
             supplementPercentage.value = 0.0
-            supplementIdListAllCheck.value = false
             supplementAddImg.value = null
+            getDogName()
         }
 
         fun getSupplements(date: Date) {
@@ -289,29 +289,9 @@ class SupplementViewModel
             }
         }
 
-        fun updateSupplementIds(supplementsRoutineIdList: MutableList<Int>) {
+        fun getDogName() {
             viewModelScope.launch {
-                if (supplementsRoutineIdList.isNotEmpty()) {
-                    if (supplementIdList.value!!.containsAll(supplementsRoutineIdList)) {
-                        supplementIdList.value!!.removeAll(supplementsRoutineIdList)
-                    } else {
-                        supplementIdList.value!!.addAll(supplementsRoutineIdList)
-                    }
-                }
+                dogName.value = DogPreferences(GlobalApplication.applicationContext()).dogName.first()
             }
-        }
-
-        fun setAllItemsChecked(
-            isChecked: Boolean,
-            supplementsRoutineIdList: MutableList<Int>,
-        ) {
-            if (isChecked) {
-                supplementIdList.value!!.clear()
-                supplementIdList.value = supplementsRoutineIdList
-            } else {
-                supplementIdList.value!!.clear()
-            }
-
-            supplementIdListAllCheck.value = isChecked
         }
     }

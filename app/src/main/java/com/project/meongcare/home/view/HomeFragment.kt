@@ -65,6 +65,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        homeViewModel.getUserProfile(currentAccessToken)
+        homeViewModel.getDogList(currentAccessToken)
+
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null && profileResponse.code() == 200) {
                 Glide.with(this)
@@ -529,8 +532,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             userPreferences.accessToken.collectLatest { accessToken ->
                 if (accessToken != null) {
                     currentAccessToken = accessToken
-                    homeViewModel.getUserProfile(currentAccessToken)
-                    homeViewModel.getDogList(currentAccessToken)
                 }
             }
         }
