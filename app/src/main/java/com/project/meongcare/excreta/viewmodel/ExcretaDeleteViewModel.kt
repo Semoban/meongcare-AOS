@@ -18,10 +18,13 @@ class ExcretaDeleteViewModel
         val excretaDeleted
             get() = _excretaDeleted
 
-        fun deleteExcreta(excretaIds: IntArray) {
+        fun deleteExcreta(
+            accessToken: String,
+            excretaIds: IntArray,
+        ) {
             viewModelScope.launch {
                 _excretaDeleted.value =
-                    excretaRepositoryImpl.deleteExcreta(excretaIds)
+                    excretaRepositoryImpl.deleteExcreta(accessToken, excretaIds)
             }
         }
     }

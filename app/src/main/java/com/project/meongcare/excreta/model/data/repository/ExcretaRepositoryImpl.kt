@@ -10,16 +10,28 @@ class ExcretaRepositoryImpl
     constructor(
         private val excretaRemoteDataSource: ExcretaRemoteDataSource,
     ) : ExcretaRepository {
-        override suspend fun postExcreta(excretaUploadRequest: ExcretaUploadRequest) =
-            excretaRemoteDataSource.postExcreta(excretaUploadRequest)
+        override suspend fun postExcreta(
+            accessToken: String,
+            excretaUploadRequest: ExcretaUploadRequest,
+        ) = excretaRemoteDataSource.postExcreta(accessToken, excretaUploadRequest)
 
-        override suspend fun getExcretaRecord(excretaRecordGetRequest: ExcretaRecordGetRequest) =
-            excretaRemoteDataSource.getExcretaRecord(excretaRecordGetRequest)
+        override suspend fun getExcretaRecord(
+            accessToken: String,
+            excretaRecordGetRequest: ExcretaRecordGetRequest,
+        ) = excretaRemoteDataSource.getExcretaRecord(accessToken, excretaRecordGetRequest)
 
-        override suspend fun getExcretaDetail(excretaId: Long) = excretaRemoteDataSource.getExcretaDetail(excretaId)
+        override suspend fun getExcretaDetail(
+            accessToken: String,
+            excretaId: Long,
+        ) = excretaRemoteDataSource.getExcretaDetail(accessToken, excretaId)
 
-        override suspend fun deleteExcreta(excretaIds: IntArray) = excretaRemoteDataSource.deleteExcreta(excretaIds)
+        override suspend fun deleteExcreta(
+            accessToken: String,
+            excretaIds: IntArray,
+        ) = excretaRemoteDataSource.deleteExcreta(accessToken, excretaIds)
 
-        override suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest) =
-            excretaRemoteDataSource.patchExcreta(excretaUploadRequest)
+        override suspend fun patchExcreta(
+            accessToken: String,
+            excretaUploadRequest: ExcretaUploadRequest,
+        ) = excretaRemoteDataSource.patchExcreta(accessToken, excretaUploadRequest)
     }

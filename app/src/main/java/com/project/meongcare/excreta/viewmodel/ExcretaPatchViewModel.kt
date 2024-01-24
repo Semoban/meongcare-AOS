@@ -41,6 +41,7 @@ class ExcretaPatchViewModel
         }
 
         fun patchExcreta(
+            accessToken: String,
             excretaId: Long,
             excretaType: String,
             excretaDateTime: String,
@@ -63,7 +64,7 @@ class ExcretaPatchViewModel
                         file,
                     )
 
-                _excretaPatched.value = excretaRepositoryImpl.patchExcreta(excretaPatchRequest)
+                _excretaPatched.value = excretaRepositoryImpl.patchExcreta(accessToken, excretaPatchRequest)
             }
         }
     }
