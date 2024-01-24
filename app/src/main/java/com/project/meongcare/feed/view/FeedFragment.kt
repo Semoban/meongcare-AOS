@@ -143,8 +143,16 @@ class FeedFragment : Fragment() {
         brand: String,
         feedName: String,
     ) {
-        binding.textviewFeedBrand.text = brand
-        binding.textviewFeedName.text = feedName
+        binding.apply {
+            textviewFeedBrand.apply {
+                visibility = View.VISIBLE
+                text = brand
+            }
+            textviewFeedName.apply {
+                visibility = View.VISIBLE
+                text = feedName
+            }
+        }
     }
 
     private fun initNutrientPieChart(
