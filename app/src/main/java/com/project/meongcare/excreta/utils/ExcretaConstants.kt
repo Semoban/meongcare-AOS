@@ -23,5 +23,9 @@ const val EXCRETA_POST_FAILURE = "서버가 불안정 하여 대소변 정보 �
 const val EXCRETA_PATCH_SUCCESS = "대소변 정보가 수정되었습니다!"
 const val EXCRETA_PATCH_FAILURE = "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
 
+// ExcretaInfo
+const val EXCRETA_DELETE_SUCCESS = "대소변 정보가 삭제되었습니다!"
+const val EXCRETA_DELETE_FAILURE = "서버가 불안정 하여 대소변 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
+
 // Excreta
 const val TIME = "회"

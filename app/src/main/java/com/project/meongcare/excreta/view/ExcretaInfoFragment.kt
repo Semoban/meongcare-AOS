@@ -13,8 +13,12 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.utils.EXCRETA_DELETE_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_DELETE_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showSuccessSnackBar
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
@@ -81,10 +85,16 @@ class ExcretaInfoFragment : Fragment() {
                             deleteExcreta(accessToken, intArrayOf(excretaId.toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
                                 if (response == SUCCESS) {
-                                    CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "대소변 정보가 삭제되었습니다!").show()
+                                    showSuccessSnackBar(
+                                        requireView(),
+                                        EXCRETA_DELETE_SUCCESS,
+                                    )
                                     findNavController().popBackStack()
                                 } else {
-                                    CustomSnackBar.make(requireView(), R.drawable.snackbar_error_16dp, "서버가 불안정 하여 대소변 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.").show()
+                                    showFailureSnackBar(
+                                        requireView(),
+                                        EXCRETA_DELETE_FAILURE,
+                                    )
                                 }
                             }
                         }
