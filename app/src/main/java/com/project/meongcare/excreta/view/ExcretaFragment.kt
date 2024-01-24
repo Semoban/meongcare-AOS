@@ -13,6 +13,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.Excreta.FECES
+import com.project.meongcare.excreta.utils.TIME
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -135,9 +136,5 @@ class ExcretaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val TIME = "회"
     }
 }

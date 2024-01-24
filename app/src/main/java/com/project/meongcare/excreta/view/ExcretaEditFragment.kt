@@ -16,6 +16,8 @@ import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.utils.EXCRETA_PATCH_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_PATCH_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
@@ -250,10 +252,5 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val EXCRETA_PATCH_SUCCESS = "대소변 정보가 수정되었습니다!"
-        const val EXCRETA_PATCH_FAILURE = "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
     }
 }

@@ -14,6 +14,8 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
+import com.project.meongcare.excreta.utils.EXCRETA_POST_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_POST_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
@@ -194,10 +196,5 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val EXCRETA_POST_SUCCESS = "대소변 정보가 저장되었습니다!"
-        const val EXCRETA_POST_FAILURE = "서버가 불안정 하여 대소변 정보 저장에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
     }
 }
