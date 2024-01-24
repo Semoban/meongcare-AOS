@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -63,6 +64,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     private var fatValue = 0.0
     private var ashValue = 0.0
     private var moistureValue = 0.0
+    private var etcValue = 0.0
     private var kcal = ""
     private var weight = 0.0
 
@@ -99,6 +101,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         initToolbar()
         initPhotoAttachModalBottomSheet()
         applyKeyboardHidingAction()
+        updateEtcPercentage()
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
@@ -159,6 +162,38 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
             hideKeyboardOnAction(edittextFeedaddeditCrudeFatPercent)
             hideKeyboardOnAction(edittextFeedaddeditCrudeAshPercent)
             hideKeyboardOnAction(edittextFeedaddeditMoisturePercent)
+        }
+    }
+
+    private fun calculateEtcPercent(editText: EditText) {
+        binding.apply {
+            editText.doAfterTextChanged {
+                val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString().toDoubleOrNull() ?: 0.0
+                val fat = edittextFeedaddeditCrudeFatPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val ash = edittextFeedaddeditCrudeAshPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val moisture = edittextFeedaddeditMoisturePercent.text.toString().toDoubleOrNull() ?: 0.0
+                val etc = 100.0 - protein - fat - ash - moisture
+
+                if (etc in 0.0 .. 100.0) {
+                    textviewFeedaddeditEtcPercent.text = etc.toString()
+                } else {
+                    validationTotalIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditKcalTitle,
+                    )
+                    editText.setText("0.00")
+                }
+            }
+        }
+    }
+
+    private fun updateEtcPercentage() {
+        binding.apply {
+            calculateEtcPercent(edittextFeedaddeditCrudeProteinPercentage)
+            calculateEtcPercent(edittextFeedaddeditCrudeFatPercent)
+            calculateEtcPercent(edittextFeedaddeditCrudeAshPercent)
+            calculateEtcPercent(edittextFeedaddeditMoisturePercent)
         }
     }
 
@@ -279,6 +314,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     fatValue,
                     ashValue,
                     moistureValue,
+                    etcValue,
                     kcal.toDouble(),
                     recommendIntake.toInt(),
                     selectedStartDate,
@@ -335,11 +371,13 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
                 val ash = edittextFeedaddeditCrudeAshPercent.text.toString()
                 val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+                val etc = textviewFeedaddeditEtcPercent.text.toString()
 
                 proteinValue = protein.toDoubleOrNull() ?: 0.0
                 fatValue = fat.toDoubleOrNull() ?: 0.0
                 ashValue = ash.toDoubleOrNull() ?: 0.0
                 moistureValue = moisture.toDoubleOrNull() ?: 0.0
+                etcValue = etc.toDoubleOrNull() ?: 0.0
 
                 if (protein.isEmpty() || protein == "0.00") {
                     validationIngredient(
@@ -381,7 +419,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
+                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue + etcValue
 
                 if (totalIngredient > 100) {
                     validationTotalIngredient(
