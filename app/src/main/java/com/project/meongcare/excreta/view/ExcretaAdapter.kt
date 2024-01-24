@@ -15,6 +15,7 @@ import com.project.meongcare.excreta.utils.HOUR_END
 import com.project.meongcare.excreta.utils.HOUR_START
 import com.project.meongcare.excreta.utils.MINUTE_END
 import com.project.meongcare.excreta.utils.MINUTE_START
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
 
 class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHolder>(diffUtil) {
     inner class ExcretaViewHolder(private val binding: ItemExcretaRecordBinding) :
@@ -73,15 +74,6 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
                     return oldItem == newItem
                 }
             }
-
-        fun convertToTimeFormat(date: String): String {
-            val hour = date.substring(HOUR_START, HOUR_END).toInt()
-            val minute = date.substring(MINUTE_START, MINUTE_END).toInt()
-
-            if (hour == NOON) return String.format("$AFTERNOON $TIME_FORM", hour, minute)
-            if (hour > NOON) return String.format("$AFTERNOON $TIME_FORM", hour - NOON, minute)
-            return String.format("$MORNING $TIME_FORM", hour, minute)
-        }
 
         private const val NOON = 12
         private const val MORNING = "오전"

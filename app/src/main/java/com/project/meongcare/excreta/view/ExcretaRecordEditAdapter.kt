@@ -9,6 +9,7 @@ import com.project.meongcare.databinding.ItemExcretaRecordEditBinding
 import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaRecord
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
 
 class ExcretaRecordEditAdapter(
     private val excretaItemCheckedListener: ExcretaItemCheckedListener,
@@ -32,7 +33,7 @@ class ExcretaRecordEditAdapter(
                 checkboxExcretarecordedit.isChecked = item.isChecked
                 includeExcretarecordeditRecord.apply {
                     textviewExcretarecordType.text = Excreta.valueOf(item.excretaType).type
-                    textviewExcretarecordTime.text = ExcretaAdapter.convertToTimeFormat(item.time)
+                    textviewExcretarecordTime.text = convertToTimeFormat(item.time)
                 }
             }
         }

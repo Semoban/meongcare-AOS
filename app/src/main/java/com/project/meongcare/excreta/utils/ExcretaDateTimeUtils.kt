@@ -40,6 +40,15 @@ object ExcretaDateTimeUtils {
         return String.format("%02d:%02d:00", hour, minute)
     }
 
+    fun convertToTimeFormat(date: String): String {
+        val hour = date.substring(HOUR_START, HOUR_END).toInt()
+        val minute = date.substring(MINUTE_START, MINUTE_END).toInt()
+
+        if (hour == NOON) return String.format("$AFTERNOON $TIME_FORM", hour, minute)
+        if (hour > NOON) return String.format("$AFTERNOON $TIME_FORM", hour - NOON, minute)
+        return String.format("$MORNING $TIME_FORM", hour, minute)
+    }
+
     fun initCalendarModalBottomSheet(
         date: TextView,
         calendarBottomSheet: CalendarBottomSheetFragment,
