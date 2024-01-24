@@ -19,6 +19,7 @@ import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.utils.HOUR_END
 import com.project.meongcare.excreta.utils.HOUR_START
@@ -38,6 +39,8 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
 
     private val excretaPatchViewModel: ExcretaPatchViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val calendarModalBottomSheet = CalendarBottomSheetFragment()
+
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaDate = ""
     private var accessToken = ""
@@ -56,6 +59,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaEditFragment)
         excretaInfo = getExcretaInfo()
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
@@ -67,7 +71,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         initExcretaCheckBox(excretaInfo.excretaType)
         initTime()
         initPhotoAttachModalBottomSheet()
-        initCalendarModalBottomSheet()
+        setUpCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
         observeAndUpdateExcretaDate()
         editExcretaInfo()
@@ -119,13 +123,13 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
-    private fun initCalendarModalBottomSheet() {
-        binding.textviewExcretaaddDate.setOnClickListener {
-            val calendarModalBottomSheet = CalendarBottomSheetFragment()
-            calendarModalBottomSheet.setDateSubmitListener(this@ExcretaEditFragment)
-            calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager,
-                calendarModalBottomSheet.tag,
+    private fun setUpCalendarModalBottomSheet() {
+        binding.apply {
+            initCalendarModalBottomSheet(
+                textviewExcretaaddDate,
+                calendarModalBottomSheet,
+                requireActivity(),
+                textviewExcretaaddDateError,
             )
         }
     }
@@ -170,31 +174,51 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun editExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType =
-                    if (checkboxExcretaaddUrine.isChecked) {
-                        Excreta.URINE.toString()
-                    } else {
-                        Excreta.FECES.toString()
+                var isValid = true
+
+                if (excretaDate.isEmpty()) {
+                    textviewExcretaaddDateError.apply {
+                        visibility = View.VISIBLE
                     }
+                    isValid = false
+                }
 
-                val excretaTime = ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T$excretaTime"
+                if (isValid) {
+                    val excretaType =
+                        if (checkboxExcretaaddUrine.isChecked) {
+                            Excreta.URINE.toString()
+                        } else {
+                            Excreta.FECES.toString()
+                        }
 
-                val currentImageUri = excretaPatchViewModel.excretaImage.value
-                excretaPatchViewModel.patchExcreta(
-                    accessToken,
-                    getExcretaId(),
-                    excretaType,
-                    excretaDateTime,
-                    requireContext(),
-                    currentImageUri ?: Uri.EMPTY,
-                )
-                excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "대소변 정보가 수정되었습니다!").show()
-                        findNavController().popBackStack()
-                    } else {
-                        CustomSnackBar.make(requireView(), R.drawable.snackbar_error_16dp, "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.").show()
+                    val excretaTime =
+                        ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
+                    val excretaDateTime = "${excretaDate}T$excretaTime"
+
+                    val currentImageUri = excretaPatchViewModel.excretaImage.value
+                    excretaPatchViewModel.patchExcreta(
+                        accessToken,
+                        getExcretaId(),
+                        excretaType,
+                        excretaDateTime,
+                        requireContext(),
+                        currentImageUri ?: Uri.EMPTY,
+                    )
+                    excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
+                        if (response == SUCCESS) {
+                            CustomSnackBar.make(
+                                requireView(),
+                                R.drawable.snackbar_success_16dp,
+                                "대소변 정보가 수정되었습니다!"
+                            ).show()
+                            findNavController().popBackStack()
+                        } else {
+                            CustomSnackBar.make(
+                                requireView(),
+                                R.drawable.snackbar_error_16dp,
+                                "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
+                            ).show()
+                        }
                     }
                 }
             }
