@@ -21,6 +21,8 @@ import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateForma
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showSuccessSnackBar
 import com.project.meongcare.excreta.utils.HOUR_END
 import com.project.meongcare.excreta.utils.HOUR_START
 import com.project.meongcare.excreta.utils.MINUTE_END
@@ -29,7 +31,6 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -206,18 +207,16 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                     )
                     excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
                         if (response == SUCCESS) {
-                            CustomSnackBar.make(
+                            showSuccessSnackBar(
                                 requireView(),
-                                R.drawable.snackbar_success_16dp,
-                                "대소변 정보가 수정되었습니다!"
-                            ).show()
+                                PATCH_SUCCESS,
+                            )
                             findNavController().popBackStack()
                         } else {
-                            CustomSnackBar.make(
+                            showFailureSnackBar(
                                 requireView(),
-                                R.drawable.snackbar_error_16dp,
-                                "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
-                            ).show()
+                                PATCH_FAILURE,
+                            )
                         }
                     }
                 }
@@ -251,5 +250,10 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val PATCH_SUCCESS = "대소변 정보가 수정되었습니다!"
+        const val PATCH_FAILURE = "서버가 불안정 하여 대소변 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요."
     }
 }

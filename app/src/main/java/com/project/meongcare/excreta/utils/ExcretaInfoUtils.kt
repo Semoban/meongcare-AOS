@@ -2,9 +2,12 @@ package com.project.meongcare.excreta.utils
 
 import android.content.Context
 import android.net.Uri
+import android.view.View
 import com.google.gson.Gson
+import com.project.meongcare.R
 import com.project.meongcare.excreta.model.entities.ExcretaInfo
 import com.project.meongcare.excreta.model.entities.ExcretaInfoPatch
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,5 +46,27 @@ object ExcretaInfoUtils {
         val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    fun showSuccessSnackBar(
+        view: View,
+        message: String,
+    ) {
+        CustomSnackBar.make(
+            view,
+            R.drawable.snackbar_success_16dp,
+            message,
+        ).show()
+    }
+
+    fun showFailureSnackBar(
+        view: View,
+        message: String,
+    ) {
+        CustomSnackBar.make(
+            view,
+            R.drawable.snackbar_error_16dp,
+            message,
+        ).show()
     }
 }
