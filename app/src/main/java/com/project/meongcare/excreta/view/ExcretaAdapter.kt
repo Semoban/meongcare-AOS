@@ -24,7 +24,6 @@ class ExcretaAdapter : ListAdapter<ExcretaRecord, ExcretaAdapter.ExcretaViewHold
                 root.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putLong("excretaId", item.excretaId)
-                    bundle.putString("excretaTime", excretaTime)
                     it.findNavController()
                         .navigate(R.id.action_excretaFragment_to_excretaInfoFragment, bundle)
                 }

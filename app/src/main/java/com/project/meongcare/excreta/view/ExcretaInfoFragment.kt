@@ -14,6 +14,7 @@ import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
@@ -110,7 +111,7 @@ class ExcretaInfoFragment : Fragment() {
                 initExcretaImage(excretaImageURL)
                 binding.textviewExcretainfoDate.text = convertDateTimeFormat(excretaDateTime)
                 initExcretaCheckBox(excretaType)
-                binding.textviewExcretainfoTime.text = getExcretaTime()
+                binding.textviewExcretainfoTime.text = convertToTimeFormat(response.dateTime)
             }
         }
     }
@@ -146,8 +147,6 @@ class ExcretaInfoFragment : Fragment() {
     }
 
     private fun getExcretaId() = arguments?.getLong("excretaId")!!
-
-    private fun getExcretaTime() = arguments?.getString("excretaTime")
 
     override fun onDestroyView() {
         super.onDestroyView()
