@@ -150,6 +150,12 @@ class ExcretaInfoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.apply {
+            textviewExcretainfoDate.text = ""
+            textviewExcretainfoTime.text = ""
+            Glide.with(this@ExcretaInfoFragment)
+                .clear(imageviewExcretainfoPicture)
+        }
         _binding = null
     }
 }
