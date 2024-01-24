@@ -226,7 +226,7 @@ class FeedFragment : Fragment() {
                 includeFeedNutrientEtc,
                 R.drawable.feed_rect_etc_r5,
                 "기타",
-                0.0,
+                feedInfo.etc,
             )
         }
     }
