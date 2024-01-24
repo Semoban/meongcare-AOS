@@ -214,6 +214,12 @@ class FeedFragment : Fragment() {
                 "수분",
                 feedInfo.moisture,
             )
+            initNutrientRow(
+                includeFeedNutrientEtc,
+                R.drawable.feed_rect_etc_r5,
+                "기타",
+                0.0,
+            )
         }
     }
 
