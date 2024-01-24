@@ -1,6 +1,12 @@
 package com.project.meongcare.excreta.utils
 
+import android.content.Context
+import android.view.View
+import android.widget.TextView
 import android.widget.TimePicker
+import androidx.fragment.app.FragmentActivity
+import com.project.meongcare.CalendarBottomSheetFragment
+import com.project.meongcare.MainActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -33,4 +39,26 @@ object ExcretaDateTimeUtils {
 
         return String.format("%02d:%02d:00", hour, minute)
     }
+
+    fun initCalendarModalBottomSheet(
+        date: TextView,
+        calendarBottomSheet: CalendarBottomSheetFragment,
+        activity: FragmentActivity,
+        dateError: TextView,
+    ) {
+        date.setOnClickListener {
+            calendarBottomSheet.show(
+                activity.supportFragmentManager,
+                calendarBottomSheet.tag,
+            )
+        }
+        dateError.setOnClickListener {
+            it.visibility = View.GONE
+            calendarBottomSheet.show(
+                activity.supportFragmentManager,
+                calendarBottomSheet.tag,
+            )
+        }
+    }
+
 }

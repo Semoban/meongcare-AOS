@@ -16,6 +16,7 @@ import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
@@ -32,6 +33,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val calendarModalBottomSheet = CalendarBottomSheetFragment()
 
     private var excretaDate = ""
     private var accessToken = ""
@@ -51,6 +53,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
@@ -61,7 +64,7 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
         initToolbar()
         initPhotoAttachModalBottomSheet()
-        initCalendarModalBottomSheet()
+        setUpCalendarModalBottomSheet()
         observeAndUpdateExcretaDate()
         toggleExcretaCheckboxesOnClick()
         saveExcretaInfo()
@@ -84,23 +87,14 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
-    private fun initCalendarModalBottomSheet() {
-        val calendarModalBottomSheet = CalendarBottomSheetFragment()
-        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
+    private fun setUpCalendarModalBottomSheet() {
         binding.apply {
-            textviewExcretaaddDate.setOnClickListener {
-                calendarModalBottomSheet.show(
-                    requireActivity().supportFragmentManager,
-                    calendarModalBottomSheet.tag,
-                )
-            }
-            textviewExcretaaddDateError.setOnClickListener {
-                it.visibility = View.GONE
-                calendarModalBottomSheet.show(
-                    requireActivity().supportFragmentManager,
-                    calendarModalBottomSheet.tag,
-                )
-            }
+            initCalendarModalBottomSheet(
+                textviewExcretaaddDate,
+                calendarModalBottomSheet,
+                requireActivity(),
+                textviewExcretaaddDateError,
+            )
         }
     }
 
