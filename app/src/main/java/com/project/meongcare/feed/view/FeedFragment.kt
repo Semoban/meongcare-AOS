@@ -152,6 +152,7 @@ class FeedFragment : Fragment() {
         fat: Double,
         crudeAsh: Double,
         moisture: Double,
+        etc: Double,
     ) {
         val nutrientRatio =
             listOf(
@@ -159,6 +160,7 @@ class FeedFragment : Fragment() {
                 PieEntry(fat.toFloat()),
                 PieEntry(crudeAsh.toFloat()),
                 PieEntry(moisture.toFloat()),
+                PieEntry(etc.toFloat()),
             )
 
         val pieColors =
@@ -167,6 +169,7 @@ class FeedFragment : Fragment() {
                 ContextCompat.getColor(requireContext(), R.color.sub7),
                 ContextCompat.getColor(requireContext(), R.color.sub6),
                 ContextCompat.getColor(requireContext(), R.color.sub8),
+                ContextCompat.getColor(requireContext(), R.color.sub5),
             )
 
         val dataSet = PieDataSet(nutrientRatio, "")
