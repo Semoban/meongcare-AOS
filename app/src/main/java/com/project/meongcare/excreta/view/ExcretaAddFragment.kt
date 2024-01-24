@@ -85,13 +85,22 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     private fun initCalendarModalBottomSheet() {
-        binding.textviewExcretaaddDate.setOnClickListener {
-            val calendarModalBottomSheet = CalendarBottomSheetFragment()
-            calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
-            calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager,
-                calendarModalBottomSheet.tag,
-            )
+        val calendarModalBottomSheet = CalendarBottomSheetFragment()
+        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
+        binding.apply {
+            textviewExcretaaddDate.setOnClickListener {
+                calendarModalBottomSheet.show(
+                    requireActivity().supportFragmentManager,
+                    calendarModalBottomSheet.tag,
+                )
+            }
+            textviewExcretaaddDateError.setOnClickListener {
+                it.visibility = View.GONE
+                calendarModalBottomSheet.show(
+                    requireActivity().supportFragmentManager,
+                    calendarModalBottomSheet.tag,
+                )
+            }
         }
     }
 
@@ -137,28 +146,40 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun saveExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType =
-                    if (checkboxExcretaaddUrine.isChecked) {
-                        Excreta.URINE.toString()
-                    } else {
-                        Excreta.FECES.toString()
+                var isValid = true
+
+                if (excretaDate.isEmpty()) {
+                    textviewExcretaaddDateError.apply {
+                        visibility = View.VISIBLE
                     }
+                    isValid = false
+                }
 
-                val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T$excretaTime"
+                if (isValid) {
+                    val excretaType =
+                        if (checkboxExcretaaddUrine.isChecked) {
+                            Excreta.URINE.toString()
+                        } else {
+                            Excreta.FECES.toString()
+                        }
 
-                val currentImageUri = excretaAddViewModel.excretaImage.value
-                excretaAddViewModel.postExcreta(
-                    dogId,
-                    accessToken,
-                    excretaType,
-                    excretaDateTime,
-                    requireContext(),
-                    currentImageUri ?: Uri.EMPTY,
-                )
-                excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        findNavController().popBackStack()
+                    val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
+                    val excretaDateTime = "${excretaDate}T$excretaTime"
+
+                    val currentImageUri = excretaAddViewModel.excretaImage.value
+
+                    excretaAddViewModel.postExcreta(
+                        dogId,
+                        accessToken,
+                        excretaType,
+                        excretaDateTime,
+                        requireContext(),
+                        currentImageUri ?: Uri.EMPTY,
+                    )
+                    excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
+                        if (response == SUCCESS) {
+                            findNavController().popBackStack()
+                        }
                     }
                 }
             }
