@@ -88,6 +88,7 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
         }
 
         fragmentSymptomEditBinding.run {
+            toolbarSymptomEditTitle.text = "${symptomViewModel.dogName.value}님의 이상증상"
 
             buttonSymptomEditDate.setOnClickListener {
                 showCalendarBottomSheet(parentFragmentManager, this@SymptomEditFragment)

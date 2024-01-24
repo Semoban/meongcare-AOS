@@ -56,6 +56,7 @@ class SupplementViewModel
         var supplementCode = MutableLiveData<Int?>()
         var supplementDeleteCode = MutableLiveData<Int?>()
         var routineIsClicked = MutableLiveData<Boolean>()
+        var dogName = MutableLiveData<String>()
 
         init {
             intakeTimeList.value = mutableListOf()
@@ -67,6 +68,7 @@ class SupplementViewModel
             supplementPercentage.value = 0.0
             supplementIdListAllCheck.value = false
             supplementAddImg.value = null
+            getDogName()
         }
 
         fun getSupplements(date: Date) {
@@ -313,5 +315,11 @@ class SupplementViewModel
             }
 
             supplementIdListAllCheck.value = isChecked
+        }
+
+        fun getDogName() {
+            viewModelScope.launch {
+                dogName.value = DogPreferences(GlobalApplication.applicationContext()).dogName.first()
+            }
         }
     }
