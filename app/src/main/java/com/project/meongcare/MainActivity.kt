@@ -86,10 +86,12 @@ class MainActivity : AppCompatActivity() {
 
             includeMedicalRecordDialog.run {
                 constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
                 buttonOk.setOnClickListener {
                     includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
