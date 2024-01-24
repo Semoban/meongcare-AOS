@@ -57,14 +57,16 @@ class ExcretaFragment : Fragment() {
         initDogName()
         toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
         toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            dateTime = convertSelectedDate(date)
             userViewModel.fetchAccessToken()
-            userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
-                accessToken = response
-                fetchExcretaRecord(date)
-                initExcretaRecordRecyclerView()
-
-            }
         }
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            excretaRecordViewModel.getExcretaRecord(dogId, accessToken, dateTime)
+            initExcretaRecordRecyclerView()
+
+        }
+        fetchExcretaRecord()
         excretaAdapter = ExcretaAdapter()
         initExcretaAddButton()
         initExcretaEditButton()
@@ -105,21 +107,17 @@ class ExcretaFragment : Fragment() {
         }
     }
 
-    private fun fetchExcretaRecord(selectedDate: Date) {
-        excretaRecordViewModel.apply {
-            dateTime = convertSelectedDate(selectedDate)
-            getExcretaRecord(dogId, accessToken, dateTime)
-            excretaRecordGet.observe(viewLifecycleOwner) { response ->
-                binding.apply {
-                    if (response.excretaRecords.size == 0) {
-                        textviewExcretaEditbutton.visibility = View.GONE
-                    } else {
-                        textviewExcretaEditbutton.visibility = View.VISIBLE
-                    }
-                    textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
-                    textviewExcretaNumberurine.text = formatExcretaCount(Excreta.URINE.type, response.urineCount)
-                    excretaAdapter.submitList(response.excretaRecords)
+    private fun fetchExcretaRecord() {
+        excretaRecordViewModel.excretaRecordGet.observe(viewLifecycleOwner) { response ->
+            binding.apply {
+                if (response.excretaRecords.isNullOrEmpty()) {
+                    textviewExcretaEditbutton.visibility = View.GONE
+                } else {
+                    textviewExcretaEditbutton.visibility = View.VISIBLE
                 }
+                textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
+                textviewExcretaNumberurine.text = formatExcretaCount(Excreta.URINE.type, response.urineCount)
+                excretaAdapter.submitList(response.excretaRecords)
             }
         }
     }
