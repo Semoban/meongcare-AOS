@@ -246,7 +246,7 @@
 
     <fragment
         android:id="@+id/medicalRecordFragment"
-        android:name="com.project.meongcare.medicalRecord.MedicalRecordFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordFragment"
         android:label="MedicalRecordFragment" />
 
     <fragment

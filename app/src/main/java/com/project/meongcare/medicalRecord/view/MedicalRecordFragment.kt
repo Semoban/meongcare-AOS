@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalRecord
+package com.project.meongcare.medicalRecord.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

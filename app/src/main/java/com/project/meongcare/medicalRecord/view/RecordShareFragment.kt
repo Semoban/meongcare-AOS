@@ -1,21 +1,21 @@
-package com.project.meongcare.medicalRecord
+package com.project.meongcare.medicalRecord.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
+import com.project.meongcare.databinding.FragmentRecordShareBinding
 
-class MedicalRecordEditFragment : Fragment() {
-    private lateinit var binding: FragmentMedicalRecordEditBinding
+class RecordShareFragment : Fragment() {
+    private lateinit var binding: FragmentRecordShareBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMedicalRecordEditBinding.inflate(inflater)
+        binding = FragmentRecordShareBinding.inflate(inflater)
         return binding.root
     }
 }
