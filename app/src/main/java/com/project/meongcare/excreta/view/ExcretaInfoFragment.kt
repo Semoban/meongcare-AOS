@@ -23,7 +23,6 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
