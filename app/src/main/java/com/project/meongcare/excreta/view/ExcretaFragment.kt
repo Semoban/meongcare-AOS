@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
 import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.model.entities.Excreta.FECES
 import com.project.meongcare.excreta.utils.TIME
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -20,8 +19,6 @@ import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 
