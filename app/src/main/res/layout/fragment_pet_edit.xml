@@ -261,6 +261,8 @@
                 android:text="@string/petadd_input_first_day"
                 android:textAppearance="@style/Typography.Body3.Regular"
                 android:textColor="@color/gray5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_petedit_end"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline_petedit_start"
                 app:layout_constraintTop_toBottomOf="@id/edittext_petedit_select_birthday" />
 

@@ -354,9 +354,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="32dp"
                 android:text="@string/petadd_input_first_day"
                 android:textAppearance="@style/Typography.Body3.Regular"
                 android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_petadd_select_birthday" />
 
@@ -612,7 +615,7 @@
                 android:text="완료"
                 android:textAppearance="@style/Typography.Bottom1.SemiBold"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 app:cornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
