@@ -16,7 +16,6 @@ import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class ExcretaRecordEditFragment : Fragment() {
