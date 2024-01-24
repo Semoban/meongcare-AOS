@@ -49,7 +49,6 @@ class SupplementViewModel
         var supplementSize = MutableLiveData<Double>()
         var supplementPercentage = MutableLiveData<Double>()
         var supplementIdList = MutableLiveData<MutableList<Int>>()
-        var supplementIdListAllCheck = MutableLiveData<Boolean>()
         var supplementDogList = MutableLiveData<MutableList<SupplementDog>>()
         var supplementDetail = MutableLiveData<DetailSupplement>()
         var supplementAddImg = MutableLiveData<Uri?>()
@@ -66,7 +65,6 @@ class SupplementViewModel
             supplementCheckCount.value = 0.0
             supplementSize.value = 0.0
             supplementPercentage.value = 0.0
-            supplementIdListAllCheck.value = false
             supplementAddImg.value = null
             getDogName()
         }
@@ -289,32 +287,6 @@ class SupplementViewModel
                 currentList.removeAt(indexToRemove)
                 intakeTimeList.value = currentList
             }
-        }
-
-        fun updateSupplementIds(supplementsRoutineIdList: MutableList<Int>) {
-            viewModelScope.launch {
-                if (supplementsRoutineIdList.isNotEmpty()) {
-                    if (supplementIdList.value!!.containsAll(supplementsRoutineIdList)) {
-                        supplementIdList.value!!.removeAll(supplementsRoutineIdList)
-                    } else {
-                        supplementIdList.value!!.addAll(supplementsRoutineIdList)
-                    }
-                }
-            }
-        }
-
-        fun setAllItemsChecked(
-            isChecked: Boolean,
-            supplementsRoutineIdList: MutableList<Int>,
-        ) {
-            if (isChecked) {
-                supplementIdList.value!!.clear()
-                supplementIdList.value = supplementsRoutineIdList
-            } else {
-                supplementIdList.value!!.clear()
-            }
-
-            supplementIdListAllCheck.value = isChecked
         }
 
         fun getDogName() {
