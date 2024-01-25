@@ -78,6 +78,6 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
 
     override fun onDogTypeSelected(dogType: String) {
         dogTypeSharedViewModel.setDogType(dogType)
-        findNavController().navigateUp()
+        findNavController().popBackStack()
     }
 }
