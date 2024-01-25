@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
 import com.project.meongcare.home.model.data.local.DogPreferences
@@ -27,7 +26,6 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -38,7 +36,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, HorizonCalendarItemClickListener {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
-    private lateinit var mainActivity: MainActivity
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var currentAccessToken: String
@@ -63,7 +60,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         savedInstanceState: Bundle?,
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
+        return fragmentHomeBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         homeViewModel.getUserProfile(currentAccessToken)
         homeViewModel.getDogList(currentAccessToken)
@@ -84,6 +85,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             when (response.code()) {
                                 200 -> {
                                     userPreferences.setAccessToken(response.body()?.accessToken)
+                                    getAccessToken()
                                 }
                                 401 -> {
                                     CustomSnackBar.make(
@@ -184,6 +186,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             when (response.code()) {
                                 200 -> {
                                     userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    getAccessToken()
                                 }
                                 401 -> {
                                     CustomSnackBar.make(
@@ -487,7 +490,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 val modalBottomSheet = CalendarBottomSheetFragment()
                 modalBottomSheet.setDateSubmitListener(this@HomeFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
             }
 
             imageviewHomeAlert.setOnClickListener {
@@ -504,7 +507,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
             recyclerviewHomeDog.run {
                 adapter = HomeDogProfileAdapter(layoutInflater, context, this@HomeFragment)
-                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
             recyclerviewHorizonCalendar.run {
@@ -514,7 +517,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
             recyclerviewHomeSymptom.run {
                 adapter = HomeSymptomAdapter(layoutInflater, context)
-                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
             constraintlayoutHomeSymptom.setOnClickListener {
@@ -549,28 +552,19 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 findNavController().navigate(R.id.action_homeFragment_to_feedFragment)
             }
         }
-
-        return fragmentHomeBinding.root
     }
 
     private fun getAccessToken() {
         lifecycleScope.launch {
-            userPreferences.accessToken.collectLatest { accessToken ->
-                if (accessToken != null) {
-                    currentAccessToken = accessToken
-                }
-            }
+            val accessToken = userPreferences.getAccessToken()
+            currentAccessToken = accessToken
+            homeViewModel.getUserProfile(currentAccessToken)
+            homeViewModel.getDogList(currentAccessToken)
         }
     }
 
     override fun onDateSubmit(str: String) {
         homeViewModel.setSelectedDate(stringToDate(str))
-    }
-
-    fun getCurrentDate(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return currentDate.format(formatter)
     }
 
     fun dateFormatter(date: Date): String {
@@ -602,4 +596,10 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.setSelectedDatePos(position)
         homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![position])
     }
+}
+
+fun getCurrentDate(): String {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return currentDate.format(formatter)
 }
