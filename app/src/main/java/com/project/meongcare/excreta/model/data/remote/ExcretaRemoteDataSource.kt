@@ -12,11 +12,12 @@ import javax.inject.Inject
 class ExcretaRemoteDataSource
     @Inject
     constructor() {
-        private val accessToken =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZXhwIjoxNzAzMzY1MjQ2fQ.qbSYeabyBpAni3yISWDUGYgFkQdKYfdFqPlMlz7DKCs"
         private val excretaApiService = ExcretaClient.excretaService
 
-        suspend fun postExcreta(excretaPostRequest: ExcretaUploadRequest): Int? {
+        suspend fun postExcreta(
+            accessToken: String,
+            excretaPostRequest: ExcretaUploadRequest,
+        ): Int? {
             try {
                 val postResponse =
                     excretaApiService.postExcreta(
@@ -40,7 +41,10 @@ class ExcretaRemoteDataSource
             }
         }
 
-        suspend fun getExcretaRecord(excretaRecordGetRequest: ExcretaRecordGetRequest): ExcretaRecordGetResponse? {
+        suspend fun getExcretaRecord(
+            accessToken: String,
+            excretaRecordGetRequest: ExcretaRecordGetRequest,
+        ): ExcretaRecordGetResponse? {
             try {
                 val getExcretaRecordResponse =
                     excretaApiService.getExcretaRecords(
@@ -63,7 +67,10 @@ class ExcretaRemoteDataSource
             }
         }
 
-        suspend fun getExcretaDetail(excretaId: Long): ExcretaDetailGetResponse? {
+        suspend fun getExcretaDetail(
+            accessToken: String,
+            excretaId: Long,
+        ): ExcretaDetailGetResponse? {
             try {
                 val getExcretaDetailResponse =
                     excretaApiService.getExcretaDetail(
@@ -85,7 +92,10 @@ class ExcretaRemoteDataSource
             }
         }
 
-        suspend fun deleteExcreta(excretaIds: IntArray): Int? {
+        suspend fun deleteExcreta(
+            accessToken: String,
+            excretaIds: IntArray,
+        ): Int? {
             try {
                 val deleteExcretaResponse =
                     excretaApiService.deleteExcreta(
@@ -108,7 +118,10 @@ class ExcretaRemoteDataSource
             }
         }
 
-        suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest): Int? {
+        suspend fun patchExcreta(
+            accessToken: String,
+            excretaUploadRequest: ExcretaUploadRequest,
+        ): Int? {
             try {
                 val patchResponse =
                     excretaApiService.patchExcreta(

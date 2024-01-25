@@ -19,10 +19,13 @@ class ExcretaDetailViewModel
         val excretaDetailGet
             get() = _excretaDetailGet
 
-        fun getExcretaDetail(excretaId: Long) {
+        fun getExcretaDetail(
+            accessToken: String,
+            excretaId: Long,
+        ) {
             viewModelScope.launch {
                 _excretaDetailGet.value =
-                    excretaRepositoryImpl.getExcretaDetail(excretaId)
+                    excretaRepositoryImpl.getExcretaDetail(accessToken, excretaId)
             }
         }
     }
