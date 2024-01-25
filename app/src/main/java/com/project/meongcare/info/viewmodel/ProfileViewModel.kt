@@ -1,14 +1,15 @@
 package com.project.meongcare.info.viewmodel
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.repository.ProfileRepository
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -39,6 +40,14 @@ class ProfileViewModel
         private val _dogPutResponse = MutableLiveData<Int>()
         val dogPutResponse
             get() = _dogPutResponse
+
+        private val _postDogWeightResponse = MutableLiveData<Int>()
+        val postDogWeightResponse: LiveData<Int>
+            get() = _postDogWeightResponse
+
+        private val _patchDogWeightResponse = MutableLiveData<Int>()
+        val patchDogWeightResponse: LiveData<Int>
+            get() = _patchDogWeightResponse
 
         private val _logoutResponse = MutableLiveData<Int>()
         val logoutResponse
@@ -110,6 +119,26 @@ class ProfileViewModel
         ) {
             viewModelScope.launch {
                 _dogPutResponse.value = profileRepository.putDogInfo(dogId, accessToken, file, dto)
+            }
+        }
+
+        fun postDogWeight(
+            accessToken: String,
+            dogWeightBody: WeightPostRequest,
+        ) {
+            viewModelScope.launch {
+                _postDogWeightResponse.value = profileRepository.postDogWeight(accessToken, dogWeightBody)
+            }
+        }
+
+        fun patchDogWeight(
+            dogId: Long,
+            kg: Double,
+            date: String,
+            accessToken: String,
+        ){
+            viewModelScope.launch {
+                _patchDogWeightResponse.value = profileRepository.patchDogWeight(dogId, kg, date, accessToken)
             }
         }
 

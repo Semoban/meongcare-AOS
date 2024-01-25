@@ -6,6 +6,7 @@ import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.remote.ProfileRetrofitClient
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -97,6 +98,46 @@ class ProfileRepositoryImpl
                     response.code()
                 } else {
                     Log.d("ProfileRepo-PutDog", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        override suspend fun postDogWeight(
+            accessToken: String,
+            requestBody: WeightPostRequest,
+        ): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.postDogWeight(accessToken, requestBody)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-PostWeight", "통신 성공")
+                    response.code()
+                } else {
+                    Log.e("ProfileRepo-PostWeight", "통신 실패 : ${response.code()}")
+                    response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        override suspend fun patchDogWeight(
+            dogId: Long,
+            kg: Double,
+            date: String,
+            accessToken: String,
+        ): Int? {
+            return try {
+                val response = profileRetrofitClient.profileApi.patchDogWeight(dogId, kg, date, accessToken)
+                if (response.code() == 200) {
+                    Log.d("ProfileRepo-PatchWeight", "통신 성공")
+                    response.code()
+                } else {
+                    Log.e("ProfileRepo-PatchWeight", "통신 실패 : ${response.code()}")
                     response.code()
                 }
             } catch (e: Exception) {
