@@ -229,17 +229,15 @@ class MainActivity : AppCompatActivity() {
 
     fun autoLogin() {
         lifecycleScope.launch {
-            lifecycleScope.launch {
-                val accessToken = userPreferences.getAccessToken()
-                val refreshToken = userPreferences.getRefreshToken()
+            val accessToken = userPreferences.getAccessToken()
+            val refreshToken = userPreferences.getRefreshToken()
 
-                if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
-                } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
-                } else {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
-                }
+            if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
+            } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
+            } else {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
             }
         }
     }
