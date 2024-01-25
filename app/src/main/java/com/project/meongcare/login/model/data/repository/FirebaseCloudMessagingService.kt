@@ -79,18 +79,18 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
 
         val pendingIntent =
             NavDeepLinkBuilder(this@FirebaseCloudMessagingService)
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.supplementFragment)
-            .createPendingIntent()
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.supplementFragment)
+                .createPendingIntent()
 
         val notificationBuilder =
             getNotificationBuilder(PUSH_NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentText(messageBody)
-            .setContentTitle(messageTitle)
-            .setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.semoban_icon)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText(messageBody)
+                .setContentTitle(messageTitle)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.semoban_icon)
 
         createNotificationChannel(
             PUSH_NOTIFICATION_CHANNEL_ID,
