@@ -8,6 +8,7 @@ data class FeedPutInfo(
     val fat: Double,
     val crudeAsh: Double,
     val moisture: Double,
+    val etc: Double,
     val kcal: Double,
     val recommendIntake: Int,
     val startDate: String,

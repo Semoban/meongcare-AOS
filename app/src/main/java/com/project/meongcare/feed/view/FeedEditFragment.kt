@@ -70,6 +70,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var fatValue = 0.0
     private var ashValue = 0.0
     private var moistureValue = 0.0
+    private var etcValue = 0.0
     private var kcal = ""
     private var weight = 0.0
     private var accessToken = ""
@@ -343,6 +344,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     fatValue,
                     ashValue,
                     moistureValue,
+                    etcValue,
                     kcal.toDouble(),
                     recommendIntake.toInt(),
                     selectedStartDate,
@@ -399,6 +401,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
                 val ash = edittextFeedaddeditCrudeAshPercent.text.toString()
                 val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+                val etc = textviewFeedaddeditEtcPercent.text.toString()
 
                 if (protein.isEmpty() || protein == "0.00") {
                     validationIngredient(
@@ -444,8 +447,9 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 fatValue = fat.toDoubleOrNull() ?: 0.0
                 ashValue = ash.toDoubleOrNull() ?: 0.0
                 moistureValue = moisture.toDoubleOrNull() ?: 0.0
+                etcValue = etc.toDoubleOrNull() ?: 0.0
 
-                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
+                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue + etcValue
 
                 if (totalIngredient > 100) {
                     validationTotalIngredient(
