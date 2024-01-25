@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.INTERNET,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.POST_NOTIFICATIONS,
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
