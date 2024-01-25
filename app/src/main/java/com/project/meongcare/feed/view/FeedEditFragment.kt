@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -101,6 +103,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         initToolbar()
         fetchFeedInfo()
         initPhotoAttachModalBottomSheet()
+        updateEtcPercentage()
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
@@ -161,6 +164,38 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 requireActivity().supportFragmentManager,
                 FeedPhotoAttachModalBottomSheetFragment.TAG,
             )
+        }
+    }
+
+    private fun calculateEtcPercent(editText: EditText) {
+        binding.apply {
+            editText.doAfterTextChanged {
+                val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString().toDoubleOrNull() ?: 0.0
+                val fat = edittextFeedaddeditCrudeFatPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val ash = edittextFeedaddeditCrudeAshPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val moisture = edittextFeedaddeditMoisturePercent.text.toString().toDoubleOrNull() ?: 0.0
+                val etc = 100.0 - protein - fat - ash - moisture
+
+                if (etc in 0.0 .. 100.0) {
+                    textviewFeedaddeditEtcPercent.text = etc.toString()
+                } else {
+                    validationTotalIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditKcalTitle,
+                    )
+                    editText.setText("0.00")
+                }
+            }
+        }
+    }
+
+    private fun updateEtcPercentage() {
+        binding.apply {
+            calculateEtcPercent(edittextFeedaddeditCrudeProteinPercentage)
+            calculateEtcPercent(edittextFeedaddeditCrudeFatPercent)
+            calculateEtcPercent(edittextFeedaddeditCrudeAshPercent)
+            calculateEtcPercent(edittextFeedaddeditMoisturePercent)
         }
     }
 
