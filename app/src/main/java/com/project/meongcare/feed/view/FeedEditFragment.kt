@@ -122,6 +122,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             edittextFeedaddeditCrudeFatPercent.setText(feedInfo.fat.toString())
             edittextFeedaddeditCrudeAshPercent.setText(feedInfo.crudeAsh.toString())
             edittextFeedaddeditMoisturePercent.setText(feedInfo.moisture.toString())
+            textviewFeedaddeditEtcPercent.text = feedInfo.etc.toString()
             edittextFeedaddeditKcalContent.setText(feedInfo.kcal.toString())
             textviewFeedaddeditDailyIntakeContent.text = "$recommendIntake"
             textviewFeedaddeditIntakePeriodStart.apply {
