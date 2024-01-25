@@ -84,6 +84,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:hint="@string/petadd_input_name"
+                android:inputType="text"
                 android:paddingHorizontal="20dp"
                 android:singleLine="true"
                 android:textAppearance="@style/Typography.Body1.Medium"
