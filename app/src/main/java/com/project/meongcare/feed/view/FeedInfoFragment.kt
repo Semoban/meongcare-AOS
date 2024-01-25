@@ -74,6 +74,7 @@ class FeedInfoFragment : Fragment() {
                         response.fat,
                         response.crudeAsh,
                         response.moisture,
+                        response.etc,
                         response.kcal,
                         response.recommendIntake,
                         response.imageURL,
@@ -91,6 +92,7 @@ class FeedInfoFragment : Fragment() {
                 textviewFeedinfoCrudeFatRatio.text = feedInfo.fat.toString()
                 textviewFeedinfoMoistureRatio.text = feedInfo.moisture.toString()
                 textviewFeedinfoCrudeAshRatio.text = feedInfo.crudeAsh.toString()
+                textviewFeedinfoEtcRatio.text = feedInfo.etc.toString()
                 textviewFeedinfoKcalContent.text = feedInfo.kcal.toString()
                 textviewFeedinfoDailyIntakeContent.text = feedInfo.recommendIntake.toString()
                 textviewFeedinfoIntakePeriodStart.text = convertDateFormat(feedInfo.startDate)
