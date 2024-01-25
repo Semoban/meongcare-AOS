@@ -105,7 +105,6 @@ class LoginFragment : Fragment() {
                         Log.d("Login", "통신 실패")
                     }
                 }
-
             }
         }
 
