@@ -63,7 +63,10 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         return fragmentHomeBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         homeViewModel.getUserProfile(currentAccessToken)
