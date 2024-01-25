@@ -36,7 +36,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
         }
     }
 
-    fun getNotificationBuilder(channerId: String) : NotificationCompat.Builder {
+    fun getNotificationBuilder(channerId: String): NotificationCompat.Builder {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder(this@FirebaseCloudMessagingService, channerId)
         } else {
@@ -49,7 +49,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
         channelName: String,
         notificationBuilder: NotificationCompat.Builder,
     ) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channel = notificationManager.getNotificationChannel(channelId)
 
@@ -77,12 +77,14 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
         intent.putExtra("moveFragment", "NoticeFragment")
         intent.addFlags(FLAG_ACTIVITY_SINGLE_TOP)
 
-        val pendingIntent = NavDeepLinkBuilder(this@FirebaseCloudMessagingService)
+        val pendingIntent =
+            NavDeepLinkBuilder(this@FirebaseCloudMessagingService)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.supplementFragment)
             .createPendingIntent()
 
-        val notificationBuilder = getNotificationBuilder(PUSH_NOTIFICATION_CHANNEL_ID)
+        val notificationBuilder =
+            getNotificationBuilder(PUSH_NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentText(messageBody)
@@ -90,8 +92,11 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.semoban_icon)
 
-        createNotificationChannel(PUSH_NOTIFICATION_CHANNEL_ID,
-            PUSH_NOTIFICATION_CHANNEL_NAME, notificationBuilder)
+        createNotificationChannel(
+            PUSH_NOTIFICATION_CHANNEL_ID,
+            PUSH_NOTIFICATION_CHANNEL_NAME,
+            notificationBuilder,
+        )
     }
 
     companion object {
