@@ -136,7 +136,7 @@ class ProfileViewModel
             kg: Double,
             date: String,
             accessToken: String,
-        ){
+        ) {
             viewModelScope.launch {
                 _patchDogWeightResponse.value = profileRepository.patchDogWeight(dogId, kg, date, accessToken)
             }
