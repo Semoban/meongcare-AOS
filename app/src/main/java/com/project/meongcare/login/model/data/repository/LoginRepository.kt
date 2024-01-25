@@ -6,7 +6,7 @@ import com.project.meongcare.login.model.entities.ReissueResponse
 import retrofit2.Response
 
 interface LoginRepository {
-    suspend fun postLoginInfo(loginRequest: LoginRequest): LoginResponse?
+    suspend fun postLoginInfo(loginRequest: LoginRequest): Response<LoginResponse>?
 
     suspend fun getNewAccessToken(refreshToken: String): Response<ReissueResponse>?
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -34,6 +35,7 @@ import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -64,20 +66,45 @@ class LoginFragment : Fragment() {
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                userPreferences.setAccessToken(loginResponse.accessToken)
-                userPreferences.setRefreshToken(loginResponse.refreshToken)
-                Log.e("isFirstLogin", loginResponse.isFirstLogin.toString())
-                when (loginResponse.isFirstLogin) {
-                    true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
-                    false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                when (loginResponse.code()) {
+                    200 -> {
+                        // 로그인 성공
+                        if (loginResponse.body() != null) {
+                            Log.e("isFirstLogin", loginResponse.body()?.isFirstLogin.toString())
+                            userPreferences.setAccessToken(loginResponse.body()?.accessToken)
+                            userPreferences.setRefreshToken(loginResponse.body()?.refreshToken)
+                            when (loginResponse.body()?.isFirstLogin) {
+                                true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                                false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                                else -> {}
+                            }
+                        }
+                    }
+                    400 -> {
+                        // 로그인 실패 : 탈퇴 유저
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_login_failure_deleted),
+                        )
+                        lifecycleScope.launch {
+                            val provider = userPreferences.getProvider()
+                            when (provider) {
+                                "kakao" -> deleteKakaoAccount()
+                                "naver" -> deleteNaverAccount()
+                                "google" -> deleteGoogleAccount()
+                            }
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_login_failure),
+                        )
+                        Log.d("Login", "통신 실패")
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_login_failure),
-                )
-                Log.d("Login", "통신 실패")
             }
         }
 
@@ -149,7 +176,6 @@ class LoginFragment : Fragment() {
                     LoginRequest(
                         "${user.id}",
                         "kakao",
-                        "김멍멍",
                         "${user.kakaoAccount?.email}",
                         "${user.kakaoAccount?.profile?.thumbnailImageUrl}",
                         deviceToken,
@@ -193,7 +219,6 @@ class LoginFragment : Fragment() {
                             LoginRequest(
                                 "${result.profile?.id}",
                                 "naver",
-                                "김멍멍",
                                 "${result.profile?.email}",
                                 "${result.profile?.profileImage}",
                                 deviceToken,
@@ -259,7 +284,6 @@ class LoginFragment : Fragment() {
                 LoginRequest(
                     "${account.idToken}",
                     "google",
-                    "김멍멍",
                     "${account.email}",
                     "${account.photoUrl}",
                     deviceToken,
@@ -277,5 +301,59 @@ class LoginFragment : Fragment() {
             }
         Log.d("in-getDeviceToken-method", deviceToken)
         return deviceToken
+    }
+
+    private fun deleteKakaoAccount() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e("Delete-kakao", "연결 끊기 실패", error)
+            } else {
+                Log.d("Delete-kakao", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+            }
+        }
+    }
+
+    private fun deleteNaverAccount() {
+        NidOAuthLogin().callDeleteTokenApi(
+            object : OAuthLoginCallback {
+                override fun onError(
+                    errorCode: Int,
+                    message: String,
+                ) {
+                    onFailure(errorCode, message)
+                }
+
+                override fun onFailure(
+                    httpStatus: Int,
+                    message: String,
+                ) {
+                    Log.e("Delete-naver", "토큰 삭제 실패 : ${NaverIdLoginSDK.getLastErrorDescription()}")
+                }
+
+                override fun onSuccess() {
+                    Log.d("Delete-naver", "토큰 삭제 성공, 연동 해제 됨")
+                }
+            },
+        )
+    }
+
+    private fun deleteGoogleAccount() {
+        val gso =
+            GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN,
+            ).build()
+        val googleSignInClient =
+            this.let {
+                GoogleSignIn.getClient(requireContext(), gso)
+            }
+
+        googleSignInClient.revokeAccess()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Delete-google", "회원 탈퇴 성공")
+                } else {
+                    Log.e("Delete-google", "회원 탈퇴 실패 ${task.result}")
+                }
+            }
     }
 }

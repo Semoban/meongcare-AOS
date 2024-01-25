@@ -67,7 +67,7 @@ class SettingFragment : Fragment() {
                             requireView(),
                             R.drawable.snackbar_success_16dp,
                             getString(R.string.snack_bar_user_delete_complete),
-                        )
+                        ).show()
                         userPreferences.setProvider(null)
                         userPreferences.setEmail(null)
                         userPreferences.setAccessToken(null)
@@ -114,14 +114,14 @@ class SettingFragment : Fragment() {
                             requireView(),
                             R.drawable.snackbar_success_16dp,
                             getString(R.string.snack_bar_notification_on),
-                        )
+                        ).show()
                     }
                     false -> {
                         CustomSnackBar.make(
                             requireView(),
-                            R.drawable.snackbar_error_16dp,
+                            R.drawable.snackbar_success_16dp,
                             getString(R.string.snack_bar_notification_off),
-                        )
+                        ).show()
                     }
                 }
             } else {
@@ -129,7 +129,7 @@ class SettingFragment : Fragment() {
                     requireView(),
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
-                )
+                ).show()
             }
         }
 

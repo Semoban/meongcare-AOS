@@ -27,6 +27,7 @@ import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,6 +38,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var mainActivity: MainActivity
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val logoutCoroutineJob = Job()
     private lateinit var profileUri: Uri
     private lateinit var currentAccessToken: String
 
@@ -98,18 +100,19 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                             }
                         }
                     }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_get_profile_failure),
+                        ).show()
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure),
-                ).show()
             }
         }
 
         profileViewModel.dogList.observe(viewLifecycleOwner) { dogListResponse ->
-            if (dogListResponse != null) {
+            if (dogListResponse != null && dogListResponse.body() != null) {
                 when (dogListResponse.code()) {
                     200 -> {
                         binding.textViewNoDog.visibility = View.GONE
@@ -140,21 +143,24 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                             }
                         }
                     }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_get_dog_list_failure),
+                        ).show()
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_get_dog_list_failure),
-                ).show()
-                binding.textViewNoDog.visibility = View.VISIBLE
-                binding.recyclerviewProfilePetList.visibility = View.GONE
+                if (dogListResponse.body()?.dogs.isNullOrEmpty()) {
+                    binding.textViewNoDog.visibility = View.VISIBLE
+                    binding.recyclerviewProfilePetList.visibility = View.GONE
+                }
             }
         }
 
         profileViewModel.logoutResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(logoutCoroutineJob) {
                     userPreferences.provider.collect { provider ->
                         when (provider) {
                             "kakao" -> kakaoLogout()
@@ -235,7 +241,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                     includeLogoutDialog.root.visibility = View.GONE
                 }
                 buttonLogoutDialogLogout.setOnClickListener {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(logoutCoroutineJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken != null) {
                             profileViewModel.logoutUser(refreshToken)
@@ -246,6 +252,11 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        logoutCoroutineJob.cancel()
     }
 
     override fun onUriPassed(uri: Uri) {

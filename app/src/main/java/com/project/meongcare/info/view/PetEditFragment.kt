@@ -21,6 +21,7 @@ import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
+import com.project.meongcare.home.view.getCurrentDate
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -36,6 +37,7 @@ import com.project.meongcare.onboarding.view.dateFormat
 import com.project.meongcare.onboarding.view.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -101,6 +103,116 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             if (response != null) {
                 when (response) {
                     200 -> {
+                        val dogPostRequest =
+                            WeightPostRequest(
+                                dogInfo.dogId,
+                                getCurrentDate(),
+                                null,
+                            )
+                        petEditViewModel.postDogWeight(currentAccessToken, dogPostRequest)
+                    }
+                    401 -> {
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_info_edit_failure),
+                                            ).show()
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_failure),
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        petEditViewModel.postDogWeightResponse.observe(viewLifecycleOwner) { postResponse ->
+            if (postResponse != null) {
+                when (postResponse) {
+                    200 -> {
+                        // post 성공, patch 호출
+                        petEditViewModel.patchDogWeight(
+                            dogInfo.dogId,
+                            binding.edittextPeteditWeight.text.toString().toDouble(),
+                            getCurrentDate(),
+                            currentAccessToken,
+                        )
+                    }
+                    401 -> {
+                        // refresh reissue 호출
+                        lifecycleScope.launch {
+                            val refreshToken = userPreferences.getRefreshToken()
+                            if (refreshToken.isNotEmpty()) {
+                                val response = loginRepository.getNewAccessToken(refreshToken)
+                                if (response != null) {
+                                    when (response.code()) {
+                                        200 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_info_edit_failure),
+                                            ).show()
+                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                        }
+                                        401 -> {
+                                            CustomSnackBar.make(
+                                                requireView(),
+                                                R.drawable.snackbar_error_16dp,
+                                                getString(R.string.snack_bar_refresh_expire),
+                                            ).show()
+                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else -> {
+                        // 강아지 정보 수정 실패
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_dog_weight_failure),
+                        ).show()
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
+            }
+        }
+
+        petEditViewModel.patchDogWeightResponse.observe(viewLifecycleOwner) { patchResponse ->
+            if (patchResponse != null) {
+                when (patchResponse) {
+                    200 -> {
                         CustomSnackBar.make(
                             requireView(),
                             R.drawable.snackbar_success_16dp,
@@ -140,10 +252,16 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                         CustomSnackBar.make(
                             requireView(),
                             R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_failure),
+                            getString(R.string.snack_bar_dog_weight_failure),
                         ).show()
                     }
                 }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
             }
         }
 
