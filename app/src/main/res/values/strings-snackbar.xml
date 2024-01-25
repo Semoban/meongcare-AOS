@@ -11,6 +11,8 @@
     <string name="snack_bar_user_delete_failure">서버 연결 문제로 회원 탈퇴에 실패하였습니다. 다시 시도해 주세요.</string>
     <string name="snack_bar_get_dog_list_failure">반려견 목록을 불러오는데 실패하였습니다.</string>
     <string name="snack_bar_get_dog_failure">반려견 정보를 불러오는데 실패하였습니다.</string>
+    <string name="snack_bar_get_profile_failure">프로필 정보를 불러오는데 실패하였습니다.</string>
+    <string name="snack_bar_dog_weight_failure">반려견 정보를 수정하는데 실패하였습니다.</string>
     <string name="snack_bar_login_failure">로그인에 실패하였습니다.</string>
     <string name="snack_bar_login_failure_deleted">탈퇴 유저는 90일 간 회원 가입할 수 없습니다. 다른 계정으로 가입해 주세요.</string>
     <string name="snack_bar_notification_on">알림 수신 처리되었습니다.</string>
