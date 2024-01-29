@@ -86,14 +86,33 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_dog_variety"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_input_dog_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_search_dog_variety" />
+
+    <Button
+        android:id="@+id/button_input_dog_type"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="308dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/white"
+        android:text="직접 입력하기"
+        android:textAppearance="@style/Typography.Bottom2.SemiBold"
+        android:textColor="@color/gray5"
+        android:textSize="16dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/gray4"
+        app:strokeWidth="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
