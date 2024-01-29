@@ -84,7 +84,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
                 .createPendingIntent()
 
         val notificationBuilder =
-            getNotificationBuilder(PUSH_NOTIFICATION_CHANNEL_ID)
+            getNotificationBuilder(getString(R.string.push_notification_channel_id))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentText(messageBody)
@@ -93,14 +93,9 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
                 .setSmallIcon(R.drawable.semoban_icon)
 
         createNotificationChannel(
-            PUSH_NOTIFICATION_CHANNEL_ID,
-            PUSH_NOTIFICATION_CHANNEL_NAME,
+            getString(R.string.push_notification_channel_id),
+            getString(R.string.push_notification_channel_name),
             notificationBuilder,
         )
-    }
-
-    companion object {
-        const val PUSH_NOTIFICATION_CHANNEL_ID = "SemobanNotificationChannel"
-        const val PUSH_NOTIFICATION_CHANNEL_NAME = "SemobanNoticifationChannel"
     }
 }
