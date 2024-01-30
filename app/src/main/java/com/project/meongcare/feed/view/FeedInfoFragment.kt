@@ -48,9 +48,9 @@ class FeedInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.fetchAccessToken()
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
+        userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
             feedInfoFeedDetailGetViewModel.getFeedDetail(
@@ -143,7 +143,7 @@ class FeedInfoFragment : Fragment() {
     private fun deleteFeedInfo() {
         feedDeleteViewModel.deleteFeed(
             accessToken,
-            feedId,
+            feedRecordId,
         )
         feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {

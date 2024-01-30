@@ -232,13 +232,13 @@ class FeedRemoteDataSource
 
         suspend fun deleteFeed(
             accessToken: String,
-            feedId: Long,
+            feedRecordId: Long,
         ): Int? {
             try {
                 val deleteFeedResponse =
                     feedApiService.deleteFeed(
                         accessToken,
-                        feedId,
+                        feedRecordId,
                     )
 
                 if (deleteFeedResponse.code() != SUCCESS) {
