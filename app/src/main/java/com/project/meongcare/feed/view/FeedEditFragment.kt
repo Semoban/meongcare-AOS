@@ -203,7 +203,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private fun applyKcalContentEditorBehavior() {
         binding.apply {
             edittextFeedaddeditKcalContent.apply {
-                setOnEditorActionListener { _, _, _ ->
+                doAfterTextChanged {
                     recommendIntake =
                         calculateRecommendDailyIntake(
                             weight,
@@ -213,8 +213,6 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         recommendIntake,
                         textviewFeedaddeditDailyIntakeContent,
                     )
-                    hideSoftKeyboard()
-                    true
                 }
             }
         }
