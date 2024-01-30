@@ -359,7 +359,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 }
 
                 kcal = edittextFeedaddeditKcalContent.text.toString()
-                if (kcal.isEmpty() || kcal == "000.00") {
+                if (kcal.isEmpty()) {
                     validationKcal(
                         edittextFeedaddeditKcalContent,
                         textviewFeedaddeditIngredientAndKcalError,
@@ -379,7 +379,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 moistureValue = moisture.toDoubleOrNull() ?: 0.0
                 etcValue = etc.toDoubleOrNull() ?: 0.0
 
-                if (protein.isEmpty() || protein == "0.00") {
+                if (protein.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeProteinPercentage,
@@ -389,7 +389,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (fat.isEmpty() || fat == "0.00") {
+                if (fat.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeFatPercent,
@@ -399,7 +399,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (ash.isEmpty() || ash == "0.00") {
+                if (ash.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeAshPercent,
@@ -409,7 +409,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (moisture.isEmpty() || moisture == "0.00") {
+                if (moisture.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditMoisturePercent,
