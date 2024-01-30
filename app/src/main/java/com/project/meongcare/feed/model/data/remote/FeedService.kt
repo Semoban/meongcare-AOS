@@ -69,6 +69,12 @@ interface FeedService {
         @Body requestBody: FeedPatchRequest,
     ): Response<Int>
 
+    @PATCH("feed/stop/{feedRecordId}")
+    suspend fun stopFeed(
+        @Header("AccessToken") accessToken: String,
+        @Path("feedRecordId") feedRecordId: Long,
+    ): Response<Int>
+
     @Multipart
     @PUT("feed")
     suspend fun putFeed(
