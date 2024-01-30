@@ -182,7 +182,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                         scrollviewFeedadd,
                         textviewFeedaddeditKcalTitle,
                     )
-                    editText.setText("0.00")
+                    editText.setText("")
                 }
             }
         }
