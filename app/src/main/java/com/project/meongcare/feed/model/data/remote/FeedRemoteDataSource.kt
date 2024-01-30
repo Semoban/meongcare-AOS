@@ -203,6 +203,32 @@ class FeedRemoteDataSource
             }
         }
 
+        suspend fun stopFeed(
+            accessToken: String,
+            feedRecordId: Long,
+        ): Int? {
+            try {
+                val stopFeedResponse =
+                    feedApiService.stopFeed(
+                        accessToken,
+                        feedRecordId,
+                    )
+
+                if (stopFeedResponse.code() != SUCCESS) {
+                    val stringToJson = JSONObject(stopFeedResponse.errorBody()?.string()!!)
+                    Log.d("FeedStopFailure", stopFeedResponse.code().toString())
+                    Log.d("FeedStopFailure", "$stringToJson")
+                    return null
+                }
+
+                Log.d("FeedStopSuccess", stopFeedResponse.code().toString())
+                return stopFeedResponse.code()
+            } catch (e: Exception) {
+                Log.d("FeedStopException", e.toString())
+                return null
+            }
+        }
+
         suspend fun putFeed(
             accessToken: String,
             feedUploadRequest: FeedUploadRequest,
