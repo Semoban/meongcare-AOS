@@ -16,11 +16,14 @@ import com.github.mikephil.charting.data.PieEntry
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
+import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedGetViewModel
 import com.project.meongcare.feed.viewmodel.FeedPartGetViewModel
+import com.project.meongcare.feed.viewmodel.FeedStopViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -31,13 +34,17 @@ class FeedFragment : Fragment() {
 
     private val feedGetViewModel: FeedGetViewModel by viewModels()
     private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
+    private val feedStopViewModel: FeedStopViewModel by viewModels()
+
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+
     private lateinit var feedPartAdapter: FeedPartAdapter
     private lateinit var feedGetResponse: FeedGetResponse
 
     private var dogId = 0L
     private var accessToken = ""
+    private var feedItemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,21 +75,7 @@ class FeedFragment : Fragment() {
 
         feedPartAdapter = FeedPartAdapter()
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
-            feedGetResponse =
-                FeedGetResponse(
-                    response.brand,
-                    response.feedName,
-                    response.protein,
-                    response.fat,
-                    response.crudeAsh,
-                    response.moisture,
-                    response.etc,
-                    response.days,
-                    response.recommendIntake,
-                    response.feedId,
-                    response.feedRecordId,
-                )
-
+            feedGetResponse = response
             if (feedGetResponse.brand == null) {
                 binding.apply {
                     imageviewFeedBowlIllustration.visibility = View.VISIBLE
@@ -91,6 +84,8 @@ class FeedFragment : Fragment() {
                     textviewFeedName.visibility = View.GONE
                     piechartFeedNutrient.visibility = View.GONE
                     buttonFeedChange.visibility = View.GONE
+                    textviewFeedSuspend.visibility = View.GONE
+                    dividerFeedSuspend.visibility = View.GONE
                 }
             } else {
                 updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
@@ -104,19 +99,18 @@ class FeedFragment : Fragment() {
                 )
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
-                updateViewVisibilityBasedOnOldFeedPartExist(
-                    accessToken,
-                    dogId,
-                    feedGetResponse.feedRecordId,
-                )
             }
+            updateViewVisibilityBasedOnOldFeedPartExist(
+                accessToken,
+                dogId,
+                feedGetResponse.feedRecordId,
+            )
             initNutrientTable(feedGetResponse)
             initOldFeedSeeMoreButton(feedGetResponse.feedRecordId)
         }
-
-        initFeedAddButton()
         initOldFeedPartRecyclerView()
         initChangeButton()
+        initFeedStopButton()
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -129,13 +123,69 @@ class FeedFragment : Fragment() {
                 imageviewFeedBowlIllustration.visibility = View.GONE
                 piechartFeedNutrient.visibility = View.VISIBLE
                 buttonFeedInputGuide.visibility = View.GONE
+                textviewFeedSuspend.visibility = View.VISIBLE
+                dividerFeedSuspend.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun initFeedStopButton() {
+        binding.textviewFeedSuspend.setOnClickListener {
+            stopFeed()
+        }
+    }
+
+    private fun stopFeed() {
+        feedStopViewModel.stopFeed(
+            accessToken,
+            feedGetResponse.feedRecordId,
+        )
+        feedStopViewModel.feedStopped.observe(viewLifecycleOwner) { code ->
+            if (code == SUCCESS) {
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 섭취를 중단하였습니다!").show()
+                feedGetViewModel.getFeed(
+                    accessToken,
+                    dogId,
+                )
+                feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
+                    feedGetResponse = response
+                    binding.apply {
+                        imageviewFeedBowlIllustration.visibility = View.VISIBLE
+                        buttonFeedInputGuide.visibility = View.VISIBLE
+                        textviewFeedBrand.visibility = View.GONE
+                        textviewFeedName.visibility = View.GONE
+                        piechartFeedNutrient.visibility = View.GONE
+                        buttonFeedChange.visibility = View.VISIBLE
+                        textviewFeedSuspend.visibility = View.GONE
+                        dividerFeedSuspend.visibility = View.GONE
+                    }
+                    updateViewVisibilityBasedOnOldFeedPartExist(
+                        accessToken,
+                        dogId,
+                        feedGetResponse.feedRecordId,
+                    )
+                    initIntakePeriod(feedGetResponse.days)
+                    initDailyRecommendIntake(feedGetResponse.recommendIntake)
+                    initOldFeedPartRecyclerView()
+                }
+            } else {
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_error_16dp, "서버가 불안정 하여 사료 섭취 중단에 실패하였습니다.\n잠시 후 다시 시도해 주세요.").show()
             }
         }
     }
 
     private fun initFeedAddButton() {
-        binding.buttonFeedInputGuide.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
+        binding.buttonFeedInputGuide.apply {
+            if (feedItemCount == 0) {
+                setOnClickListener {
+                    findNavController().navigate(R.id.action_feedFragment_to_feedAddFragment)
+                }
+            } else {
+                text = "사료를 선택해주세요"
+                setOnClickListener {
+                    findNavController().navigate(R.id.action_feedFragment_to_searchFeedFragment)
+                }
+            }
         }
     }
 
@@ -264,6 +314,8 @@ class FeedFragment : Fragment() {
         )
         feedPartGetViewModel.feedPartGet.observe(viewLifecycleOwner) { response ->
             feedPartAdapter.submitList(response.feedPartRecords)
+            feedItemCount = feedPartAdapter.itemCount
+            initFeedAddButton()
         }
     }
 
