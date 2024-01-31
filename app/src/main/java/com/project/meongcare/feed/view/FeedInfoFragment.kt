@@ -14,6 +14,8 @@ import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -148,13 +150,15 @@ class FeedInfoFragment : Fragment() {
         feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()
-                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보를 삭제하였습니다!").show()
-            } else {
-                CustomSnackBar.make(
+                showSuccessSnackBar(
                     requireView(),
-                    R.drawable.snackbar_error_16dp,
+                    "사료 정보를 삭제하였습니다!",
+                )
+            } else {
+                showFailureSnackBar(
+                    requireView(),
                     "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                ).show()
+                )
             }
         }
     }
