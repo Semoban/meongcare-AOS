@@ -13,8 +13,9 @@ import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
+import com.project.meongcare.feed.viewmodel.DogViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class ExcretaRecordEditFragment : Fragment() {
@@ -23,7 +24,12 @@ class ExcretaRecordEditFragment : Fragment() {
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
+
     private lateinit var excretaAdapter: ExcretaRecordEditAdapter
+    private var accessToken = ""
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +45,15 @@ class ExcretaRecordEditFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            fetchExcretaRecord()
+        }
         excretaAdapter =
             ExcretaRecordEditAdapter(
                 object : ExcretaItemCheckedListener {
@@ -51,7 +65,6 @@ class ExcretaRecordEditFragment : Fragment() {
         initToolbar()
         initSelectAllCheckBox()
         initExcretaRecordEditRecyclerView()
-        fetchExcretaRecord()
         initCancelButton()
     }
 
@@ -81,10 +94,9 @@ class ExcretaRecordEditFragment : Fragment() {
     }
 
     private fun fetchExcretaRecord() {
-        val dateTime = LocalDateTime.now().toString().slice(ExcretaFragment.DATE_TIME_START..ExcretaFragment.DATE_TIME_END)
-
+        val dateTime = getSelectedDateTime()
         excretaRecordViewModel.apply {
-            getExcretaRecord(dateTime)
+            getExcretaRecord(dogId, accessToken, dateTime)
             excretaRecordGet.observe(viewLifecycleOwner) { response ->
                 excretaAdapter.submitList(response.excretaRecords)
             }
@@ -99,7 +111,7 @@ class ExcretaRecordEditFragment : Fragment() {
 
     private fun deleteExcretaRecords(checkIds: IntArray) {
         binding.buttonExcretarecordeditDelete.setOnClickListener {
-            excretaDeleteViewModel.deleteExcreta(checkIds)
+            excretaDeleteViewModel.deleteExcreta(accessToken, checkIds)
             excretaDeleteViewModel.apply {
                 excretaDeleted.observe(viewLifecycleOwner) { response ->
                     if (response == SUCCESS) {
@@ -109,6 +121,8 @@ class ExcretaRecordEditFragment : Fragment() {
             }
         }
     }
+
+    private fun getSelectedDateTime() = arguments?.getString("selectedDateTime")!!
 
     override fun onDestroyView() {
         super.onDestroyView()

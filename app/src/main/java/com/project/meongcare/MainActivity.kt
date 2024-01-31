@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.INTERNET,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.POST_NOTIFICATIONS,
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,10 +87,12 @@ class MainActivity : AppCompatActivity() {
 
             includeMedicalRecordDialog.run {
                 constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                    includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
                 buttonOk.setOnClickListener {
                     includeMedicalRecordDialog.root.visibility = View.GONE
+                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
@@ -140,12 +143,7 @@ class MainActivity : AppCompatActivity() {
                     floatingButtonMenuIn(activityMainBinding)
                     delay(550L)
                     overlayLayout.visibility = View.GONE
-                    includeMedicalRecordDialog.run {
-                        root.visibility = View.VISIBLE
-                        constraintlayoutBg.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
-                        buttonOk.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
-                    }
-                    // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                    fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
             }
 
@@ -226,17 +224,15 @@ class MainActivity : AppCompatActivity() {
 
     fun autoLogin() {
         lifecycleScope.launch {
-            lifecycleScope.launch {
-                val accessToken = userPreferences.getAccessToken()
-                val refreshToken = userPreferences.getRefreshToken()
+            val accessToken = userPreferences.getAccessToken()
+            val refreshToken = userPreferences.getRefreshToken()
 
-                if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
-                } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
-                } else {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
-                }
+            if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
+            } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
+            } else {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
             }
         }
     }

@@ -6,13 +6,28 @@ import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 
 interface ExcretaRepository {
-    suspend fun postExcreta(excretaUploadRequest: ExcretaUploadRequest): Int?
+    suspend fun postExcreta(
+        accessToken: String,
+        excretaUploadRequest: ExcretaUploadRequest,
+    ): Int?
 
-    suspend fun getExcretaRecord(excretaRecordGetRequest: ExcretaRecordGetRequest): ExcretaRecordGetResponse?
+    suspend fun getExcretaRecord(
+        accessToken: String,
+        excretaRecordGetRequest: ExcretaRecordGetRequest,
+    ): ExcretaRecordGetResponse?
 
-    suspend fun getExcretaDetail(excretaId: Long): ExcretaDetailGetResponse?
+    suspend fun getExcretaDetail(
+        accessToken: String,
+        excretaId: Long,
+    ): ExcretaDetailGetResponse?
 
-    suspend fun deleteExcreta(excretaIds: IntArray): Int?
+    suspend fun deleteExcreta(
+        accessToken: String,
+        excretaIds: IntArray,
+    ): Int?
 
-    suspend fun patchExcreta(excretaUploadRequest: ExcretaUploadRequest): Int?
+    suspend fun patchExcreta(
+        accessToken: String,
+        excretaUploadRequest: ExcretaUploadRequest,
+    ): Int?
 }

@@ -14,6 +14,7 @@
         android:layout_marginStart="32dp"
         android:letterSpacing="-0.02"
         android:text="그럼 나만의\n세모반을 시작해볼까요?"
+        android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

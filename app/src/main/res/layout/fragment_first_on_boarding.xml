@@ -15,7 +15,7 @@
         android:letterSpacing="-0.02"
         android:text="반려견의 건강을\n기록하고 관리해보세요!"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +50,7 @@
                 android:letterSpacing="-0.02"
                 android:text="이상 증상"
                 android:textColor="@color/black"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +65,7 @@
                 android:layout_marginTop="1dp"
                 android:letterSpacing="-0.02"
                 android:text="오늘 이상 징후가 발견되었어요"
+                android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +111,7 @@
                     android:letterSpacing="-0.02"
                     android:text="체중이 감소한다"
                     android:textColor="#2B2B2B"
+                    android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView8"
@@ -155,6 +158,7 @@
                     android:letterSpacing="-0.02"
                     android:text="고열이 난다"
                     android:textColor="#2B2B2B"
+                    android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
@@ -188,6 +192,7 @@
                 android:letterSpacing="-0.02"
                 android:text="대소변"
                 android:textColor="#000000"
+                android:textSize="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -223,6 +228,7 @@
                     android:letterSpacing="-0.02"
                     android:text="대변 1회"
                     android:textColor="@color/main4"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView9"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -260,6 +266,7 @@
                     android:letterSpacing="-0.02"
                     android:text="소변 0회"
                     android:textColor="@color/sub3"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView10"
                     app:layout_constraintTop_toTopOf="parent" />

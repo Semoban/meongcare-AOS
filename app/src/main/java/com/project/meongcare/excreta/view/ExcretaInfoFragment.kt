@@ -13,10 +13,16 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaInfoBinding
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.utils.EXCRETA_DELETE_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_DELETE_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showSuccessSnackBar
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaDetailViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +32,13 @@ class ExcretaInfoFragment : Fragment() {
 
     private val excretaDetailViewModel: ExcretaDetailViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaImageURL = ""
     private var excretaDateTime = ""
     private var excretaType = ""
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +54,11 @@ class ExcretaInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        fetchExcretaInfo()
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+            fetchExcretaInfo()
+        }
         initToolbar()
     }
 
@@ -68,9 +81,20 @@ class ExcretaInfoFragment : Fragment() {
                     }
                     R.id.menu_info_delete -> {
                         excretaDeleteViewModel.apply {
-                            deleteExcreta(intArrayOf(excretaId.toInt()))
+                            deleteExcreta(accessToken, intArrayOf(excretaId.toInt()))
                             excretaDeleted.observe(viewLifecycleOwner) { response ->
-                                if (response == SUCCESS) findNavController().popBackStack()
+                                if (response == SUCCESS) {
+                                    showSuccessSnackBar(
+                                        requireView(),
+                                        EXCRETA_DELETE_SUCCESS,
+                                    )
+                                    findNavController().popBackStack()
+                                } else {
+                                    showFailureSnackBar(
+                                        requireView(),
+                                        EXCRETA_DELETE_FAILURE,
+                                    )
+                                }
                             }
                         }
                     }
@@ -82,7 +106,7 @@ class ExcretaInfoFragment : Fragment() {
 
     private fun fetchExcretaInfo() {
         excretaDetailViewModel.apply {
-            getExcretaDetail(getExcretaId())
+            getExcretaDetail(accessToken, getExcretaId())
             excretaDetailGet.observe(viewLifecycleOwner) { response ->
                 excretaImageURL = response.excretaImageURL
                 excretaDateTime = response.dateTime
@@ -96,7 +120,7 @@ class ExcretaInfoFragment : Fragment() {
                 initExcretaImage(excretaImageURL)
                 binding.textviewExcretainfoDate.text = convertDateTimeFormat(excretaDateTime)
                 initExcretaCheckBox(excretaType)
-                binding.textviewExcretainfoTime.text = getExcretaTime()
+                binding.textviewExcretainfoTime.text = convertToTimeFormat(response.dateTime)
             }
         }
     }
@@ -133,10 +157,14 @@ class ExcretaInfoFragment : Fragment() {
 
     private fun getExcretaId() = arguments?.getLong("excretaId")!!
 
-    private fun getExcretaTime() = arguments?.getString("excretaTime")
-
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.apply {
+            textviewExcretainfoDate.text = ""
+            textviewExcretainfoTime.text = ""
+            Glide.with(this@ExcretaInfoFragment)
+                .clear(imageviewExcretainfoPicture)
+        }
         _binding = null
     }
 }

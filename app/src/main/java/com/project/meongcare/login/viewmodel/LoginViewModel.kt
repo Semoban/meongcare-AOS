@@ -9,14 +9,15 @@ import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.model.entities.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
     @Inject
     constructor(private val loginRepository: LoginRepository) : ViewModel() {
-        private val _loginResponse = MutableLiveData<LoginResponse?>()
-        val loginResponse: LiveData<LoginResponse?>
+        private val _loginResponse = MutableLiveData<Response<LoginResponse>?>()
+        val loginResponse: LiveData<Response<LoginResponse>?>
             get() = _loginResponse
 
         fun postLoginInfo(loginRequest: LoginRequest) {

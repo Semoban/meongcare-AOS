@@ -14,11 +14,18 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
+import com.project.meongcare.excreta.utils.EXCRETA_POST_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_POST_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showSuccessSnackBar
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
+import com.project.meongcare.feed.viewmodel.DogViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +35,13 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     val binding get() = _binding!!
 
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
+    private val calendarModalBottomSheet = CalendarBottomSheetFragment()
+
     private var excretaDate = ""
+    private var accessToken = ""
+    private var dogId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +57,18 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+        }
+        dogViewModel.fetchDogId()
+        dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
+            dogId = response
+        }
         initToolbar()
         initPhotoAttachModalBottomSheet()
-        initCalendarModalBottomSheet()
+        setUpCalendarModalBottomSheet()
         observeAndUpdateExcretaDate()
         toggleExcretaCheckboxesOnClick()
         saveExcretaInfo()
@@ -69,13 +91,13 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
-    private fun initCalendarModalBottomSheet() {
-        binding.textviewExcretaaddDate.setOnClickListener {
-            val calendarModalBottomSheet = CalendarBottomSheetFragment()
-            calendarModalBottomSheet.setDateSubmitListener(this@ExcretaAddFragment)
-            calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager,
-                calendarModalBottomSheet.tag,
+    private fun setUpCalendarModalBottomSheet() {
+        binding.apply {
+            initCalendarModalBottomSheet(
+                textviewExcretaaddDate,
+                calendarModalBottomSheet,
+                requireActivity(),
+                textviewExcretaaddDateError,
             )
         }
     }
@@ -122,26 +144,49 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun saveExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType =
-                    if (checkboxExcretaaddUrine.isChecked) {
-                        Excreta.URINE.toString()
-                    } else {
-                        Excreta.FECES.toString()
+                var isValid = true
+
+                if (excretaDate.isEmpty()) {
+                    textviewExcretaaddDateError.apply {
+                        visibility = View.VISIBLE
                     }
+                    isValid = false
+                }
 
-                val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T$excretaTime"
+                if (isValid) {
+                    val excretaType =
+                        if (checkboxExcretaaddUrine.isChecked) {
+                            Excreta.URINE.toString()
+                        } else {
+                            Excreta.FECES.toString()
+                        }
 
-                val currentImageUri = excretaAddViewModel.excretaImage.value
-                excretaAddViewModel.postExcreta(
-                    excretaType,
-                    excretaDateTime,
-                    requireContext(),
-                    currentImageUri ?: Uri.EMPTY,
-                )
-                excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        findNavController().popBackStack()
+                    val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
+                    val excretaDateTime = "${excretaDate}T$excretaTime"
+
+                    val currentImageUri = excretaAddViewModel.excretaImage.value
+
+                    excretaAddViewModel.postExcreta(
+                        dogId,
+                        accessToken,
+                        excretaType,
+                        excretaDateTime,
+                        requireContext(),
+                        currentImageUri ?: Uri.EMPTY,
+                    )
+                    excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
+                        if (response == SUCCESS) {
+                            showSuccessSnackBar(
+                                requireView(),
+                                EXCRETA_POST_SUCCESS,
+                            )
+                            findNavController().popBackStack()
+                        } else {
+                            showFailureSnackBar(
+                                requireView(),
+                                EXCRETA_POST_FAILURE,
+                            )
+                        }
                     }
                 }
             }
