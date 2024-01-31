@@ -92,11 +92,7 @@ class FeedFragment : Fragment() {
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
             }
-            fetchPreviousFeedPart(
-                accessToken,
-                dogId,
-                feedGetResponse.feedRecordId,
-            )
+            fetchPreviousFeedPart(feedGetResponse.feedRecordId)
             initNutrientTable(feedGetResponse)
             initOldFeedSeeMoreButton(feedGetResponse.feedRecordId)
         }
@@ -155,11 +151,7 @@ class FeedFragment : Fragment() {
                     feedGetResponse = response
                     updateVisibilityForEmptyFeed()
                     binding.buttonFeedChange.visibility = View.VISIBLE
-                    fetchPreviousFeedPart(
-                        accessToken,
-                        dogId,
-                        feedGetResponse.feedRecordId,
-                    )
+                    fetchPreviousFeedPart(feedGetResponse.feedRecordId)
                     initIntakePeriod(feedGetResponse.days)
                     initDailyRecommendIntake(feedGetResponse.recommendIntake)
                     initOldFeedPartRecyclerView()
@@ -299,8 +291,6 @@ class FeedFragment : Fragment() {
     }
 
     private fun fetchPreviousFeedPart(
-        accessToken: String,
-        dogId: Long,
         feedRecordId: Long,
     ) {
         feedPartGetViewModel.getFeedPart(
