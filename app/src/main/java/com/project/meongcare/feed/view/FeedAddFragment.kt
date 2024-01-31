@@ -178,7 +178,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 val moisture = edittextFeedaddeditMoisturePercent.text.toString().toDoubleOrNull() ?: 0.0
                 val etc = 100.0 - protein - fat - ash - moisture
 
-                if (etc in 0.0 .. 100.0) {
+                if (etc in 0.0..100.0) {
                     textviewFeedaddeditEtcPercent.text = etc.toString()
                 } else {
                     validationTotalIngredient(
