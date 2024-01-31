@@ -32,6 +32,8 @@ import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDa
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
@@ -511,14 +513,15 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
                 if (response == SUCCESS) {
                     findNavController().popBackStack()
-                    CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보가 수정되었습니다!")
-                        .show()
-                } else {
-                    CustomSnackBar.make(
+                    showSuccessSnackBar(
                         requireView(),
-                        R.drawable.snackbar_error_16dp,
+                        "사료 정보가 수정되었습니다!",
+                    )
+                } else {
+                    showFailureSnackBar(
+                        requireView(),
                         "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                    ).show()
+                    )
                 }
             }
         }
