@@ -607,11 +607,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_petadd_chest_circumference" />
 
             <Button
+                android:id="@+id/button_cancel"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="112dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="29dp"
+                android:layout_marginBottom="56dp"
+                android:backgroundTint="@color/white"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="취소"
+                android:textAppearance="@style/Typography.Bottom1.SemiBold"
+                android:textColor="@color/gray4"
+                android:textSize="18dp"
+                app:cornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1"
+                app:strokeColor="@color/gray3"
+                app:strokeWidth="1dp" />
+
+            <Button
                 android:id="@+id/button_complete"
                 style="@style/Widget.Material3.Button"
-                android:layout_width="288dp"
+                android:layout_width="0dp"
                 android:layout_height="44dp"
-                android:layout_marginBottom="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="29dp"
+                android:layout_marginBottom="56dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:letterSpacing="-0.02"
                 android:text="완료"
                 android:textAppearance="@style/Typography.Bottom1.SemiBold"
@@ -620,7 +645,7 @@
                 app:cornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button_cancel"
                 app:layout_constraintTop_toBottomOf="@+id/view1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
