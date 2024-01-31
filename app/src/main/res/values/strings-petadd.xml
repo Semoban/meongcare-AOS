@@ -7,8 +7,8 @@
     <string name="petadd_breed">품종</string>
     <string name="petadd_select_breed">품종을 입력해주세요</string>
     <string name="petadd_gender">성별</string>
-    <string name="petadd_female">여성</string>
-    <string name="petadd_male">남성</string>
+    <string name="petadd_female">여아</string>
+    <string name="petadd_male">남아</string>
     <string name="petadd_neuter_status">중성화\n여부</string>
     <string name="petadd_birthday">생일을 알려주세요</string>
     <string name="petadd_input_first_day">강아지의 생일을 모를 경우, 처음 만난 날을 입력 해주세요</string>
