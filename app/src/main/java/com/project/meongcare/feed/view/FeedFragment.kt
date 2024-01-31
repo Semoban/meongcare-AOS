@@ -60,11 +60,11 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.fetchAccessToken()
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
+        userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
             feedGetViewModel.getFeed(
@@ -92,7 +92,7 @@ class FeedFragment : Fragment() {
                 initIntakePeriod(feedGetResponse.days)
                 initDailyRecommendIntake(feedGetResponse.recommendIntake)
             }
-            updateViewVisibilityBasedOnOldFeedPartExist(
+            fetchPreviousFeedPart(
                 accessToken,
                 dogId,
                 feedGetResponse.feedRecordId,
@@ -155,7 +155,7 @@ class FeedFragment : Fragment() {
                     feedGetResponse = response
                     updateVisibilityForEmptyFeed()
                     binding.buttonFeedChange.visibility = View.VISIBLE
-                    updateViewVisibilityBasedOnOldFeedPartExist(
+                    fetchPreviousFeedPart(
                         accessToken,
                         dogId,
                         feedGetResponse.feedRecordId,
@@ -298,7 +298,7 @@ class FeedFragment : Fragment() {
         binding.textviewFeedDailyIntakeContent.text = convertDailyRecommendIntake(recommendIntake)
     }
 
-    private fun updateViewVisibilityBasedOnOldFeedPartExist(
+    private fun fetchPreviousFeedPart(
         accessToken: String,
         dogId: Long,
         feedRecordId: Long,
