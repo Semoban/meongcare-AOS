@@ -25,7 +25,6 @@ import com.project.meongcare.feed.viewmodel.FeedGetViewModel
 import com.project.meongcare.feed.viewmodel.FeedPartGetViewModel
 import com.project.meongcare.feed.viewmodel.FeedStopViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 

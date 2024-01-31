@@ -19,7 +19,6 @@ import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
