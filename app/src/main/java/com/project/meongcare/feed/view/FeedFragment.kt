@@ -78,7 +78,6 @@ class FeedFragment : Fragment() {
             feedGetResponse = response
             if (feedGetResponse.brand == null) {
                 updateVisibilityForEmptyFeed()
-                binding.buttonFeedChange.visibility = View.GONE
             } else {
                 updateVisibilityForFeedExist(feedGetResponse.feedId)
                 initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
@@ -110,6 +109,7 @@ class FeedFragment : Fragment() {
             piechartFeedNutrient.visibility = View.GONE
             textviewFeedSuspend.visibility = View.GONE
             dividerFeedSuspend.visibility = View.GONE
+            buttonFeedChange.visibility = View.GONE
         }
     }
 
@@ -121,6 +121,7 @@ class FeedFragment : Fragment() {
                 buttonFeedInputGuide.visibility = View.GONE
                 textviewFeedSuspend.visibility = View.VISIBLE
                 dividerFeedSuspend.visibility = View.VISIBLE
+                buttonFeedChange.visibility = View.VISIBLE
             }
         }
     }
@@ -146,7 +147,6 @@ class FeedFragment : Fragment() {
                 feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
                     feedGetResponse = response
                     updateVisibilityForEmptyFeed()
-                    binding.buttonFeedChange.visibility = View.VISIBLE
                     fetchPreviousFeedPart(feedGetResponse.feedRecordId)
                     initIntakePeriod(feedGetResponse.days)
                     initDailyRecommendIntake(feedGetResponse.recommendIntake)
