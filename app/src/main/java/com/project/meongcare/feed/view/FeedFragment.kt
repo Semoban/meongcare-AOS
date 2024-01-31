@@ -80,7 +80,7 @@ class FeedFragment : Fragment() {
                 updateVisibilityForEmptyFeed()
                 binding.buttonFeedChange.visibility = View.GONE
             } else {
-                updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
+                updateVisibilityForFeedExist(feedGetResponse.feedId)
                 initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
                 initNutrientPieChart(
                     feedGetResponse.protein,
@@ -113,7 +113,7 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
+    private fun updateVisibilityForFeedExist(feedId: Long) {
         binding.apply {
             if (feedId == 0L) {
                 textviewFeedBrand.visibility = View.GONE
