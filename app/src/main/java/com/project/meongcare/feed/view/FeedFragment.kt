@@ -115,11 +115,7 @@ class FeedFragment : Fragment() {
 
     private fun updateVisibilityForFeedExist(feedId: Long) {
         binding.apply {
-            if (feedId == 0L) {
-                textviewFeedBrand.visibility = View.GONE
-                textviewFeedName.visibility = View.GONE
-                piechartFeedNutrient.visibility = View.GONE
-            } else {
+            if (feedId != 0L) {
                 imageviewFeedBowlIllustration.visibility = View.GONE
                 piechartFeedNutrient.visibility = View.VISIBLE
                 buttonFeedInputGuide.visibility = View.GONE
