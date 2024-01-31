@@ -18,6 +18,8 @@ import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
+import com.project.meongcare.feed.model.utils.FEED_STOP_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_STOP_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -142,7 +144,7 @@ class FeedFragment : Fragment() {
             if (code == SUCCESS) {
                 showSuccessSnackBar(
                     requireView(),
-                    "사료 섭취를 중단하였습니다!",
+                    FEED_STOP_SUCCESS,
                 )
                 feedGetViewModel.getFeed(
                     accessToken,
@@ -159,7 +161,7 @@ class FeedFragment : Fragment() {
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    "서버가 불안정 하여 사료 섭취 중단에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    FEED_STOP_FAILURE,
                 )
             }
         }

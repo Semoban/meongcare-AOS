@@ -24,6 +24,9 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.utils.END_DATE
+import com.project.meongcare.feed.model.utils.FEED_POST_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_POST_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
@@ -36,6 +39,8 @@ import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngr
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
+import com.project.meongcare.feed.model.utils.INTAKE_PERIOD_ERROR
+import com.project.meongcare.feed.model.utils.START_DATE
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -334,14 +339,14 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
 
                     if (startDate > endDate) {
                         textviewFeedaddeditIntakePeriodError.apply {
-                            text = "시작 일자가 종료 일자 이후 일 수 없습니다."
+                            text = INTAKE_PERIOD_ERROR
                             visibility = View.VISIBLE
                         }
                         isValid = false
                     }
                 }
 
-                if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
+                if (textviewFeedaddeditIntakePeriodEnd.text == END_DATE) {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
                         textviewFeedaddeditIntakePeriodError,
@@ -349,7 +354,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
+                if (textviewFeedaddeditIntakePeriodStart.text == START_DATE) {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
                         textviewFeedaddeditIntakePeriodError,
@@ -477,12 +482,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    "사료가 등록되었습니다!",
+                    FEED_POST_SUCCESS,
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    "서버가 불안정 하여 사료 정보 등록에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    FEED_POST_FAILURE,
                 )
             }
         }

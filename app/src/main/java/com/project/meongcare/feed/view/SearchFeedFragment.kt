@@ -14,6 +14,8 @@ import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.model.utils.FEED_CHANGE_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_CHANGE_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -115,12 +117,12 @@ class SearchFeedFragment : Fragment() {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    "사료를 변경하였습니다!",
+                    FEED_CHANGE_SUCCESS,
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    "서버가 불안정 하여 사료 변경에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    FEED_CHANGE_FAILURE,
                 )
             }
         }
