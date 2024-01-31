@@ -77,16 +77,8 @@ class FeedFragment : Fragment() {
         feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
             feedGetResponse = response
             if (feedGetResponse.brand == null) {
-                binding.apply {
-                    imageviewFeedBowlIllustration.visibility = View.VISIBLE
-                    buttonFeedInputGuide.visibility = View.VISIBLE
-                    textviewFeedBrand.visibility = View.GONE
-                    textviewFeedName.visibility = View.GONE
-                    piechartFeedNutrient.visibility = View.GONE
-                    buttonFeedChange.visibility = View.GONE
-                    textviewFeedSuspend.visibility = View.GONE
-                    dividerFeedSuspend.visibility = View.GONE
-                }
+                updateVisibilityForEmptyFeed()
+                binding.buttonFeedChange.visibility = View.GONE
             } else {
                 updateViewVisibilityBasedOnFeedExist(feedGetResponse.feedId)
                 initFeedInfo(feedGetResponse.brand!!, feedGetResponse.feedName!!)
@@ -111,6 +103,18 @@ class FeedFragment : Fragment() {
         initOldFeedPartRecyclerView()
         initChangeButton()
         initFeedStopButton()
+    }
+
+    private fun updateVisibilityForEmptyFeed() {
+        binding.apply {
+            imageviewFeedBowlIllustration.visibility = View.VISIBLE
+            buttonFeedInputGuide.visibility = View.VISIBLE
+            textviewFeedBrand.visibility = View.GONE
+            textviewFeedName.visibility = View.GONE
+            piechartFeedNutrient.visibility = View.GONE
+            textviewFeedSuspend.visibility = View.GONE
+            dividerFeedSuspend.visibility = View.GONE
+        }
     }
 
     private fun updateViewVisibilityBasedOnFeedExist(feedId: Long) {
@@ -149,16 +153,8 @@ class FeedFragment : Fragment() {
                 )
                 feedGetViewModel.feedGet.observe(viewLifecycleOwner) { response ->
                     feedGetResponse = response
-                    binding.apply {
-                        imageviewFeedBowlIllustration.visibility = View.VISIBLE
-                        buttonFeedInputGuide.visibility = View.VISIBLE
-                        textviewFeedBrand.visibility = View.GONE
-                        textviewFeedName.visibility = View.GONE
-                        piechartFeedNutrient.visibility = View.GONE
-                        buttonFeedChange.visibility = View.VISIBLE
-                        textviewFeedSuspend.visibility = View.GONE
-                        dividerFeedSuspend.visibility = View.GONE
-                    }
+                    updateVisibilityForEmptyFeed()
+                    binding.buttonFeedChange.visibility = View.VISIBLE
                     updateViewVisibilityBasedOnOldFeedPartExist(
                         accessToken,
                         dogId,
