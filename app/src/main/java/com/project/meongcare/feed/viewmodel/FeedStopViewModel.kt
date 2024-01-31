@@ -18,7 +18,7 @@ class FeedStopViewModel
         val feedStopped
             get() = _feedStopped
 
-       fun stopFeed(
+        fun stopFeed(
             accessToken: String,
             feedRecordId: Long,
         ) {
