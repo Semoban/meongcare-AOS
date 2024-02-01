@@ -226,13 +226,18 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val accessToken = userPreferences.getAccessToken()
             val refreshToken = userPreferences.getRefreshToken()
+            val isFirstLogin = userPreferences.getIsFirstLogin()
 
             if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
                 activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
             } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
                 activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
             } else {
-                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                if (isFirstLogin == true) {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.dogAddOnBoardingFragment)
+                } else {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                }
             }
         }
     }
