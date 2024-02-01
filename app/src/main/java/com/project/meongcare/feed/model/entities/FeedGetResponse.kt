@@ -7,6 +7,7 @@ data class FeedGetResponse(
     val fat: Double,
     val crudeAsh: Double,
     val moisture: Double,
+    val etc: Double,
     val days: Long,
     val recommendIntake: Int,
     val feedId: Long,
