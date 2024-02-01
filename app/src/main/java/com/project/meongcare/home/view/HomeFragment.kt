@@ -26,6 +26,7 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -39,6 +40,16 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var currentAccessToken: String
+
+    private val getAccessTokenJob = Job()
+    private val reissueAtProfileJob = Job()
+    private val reissueAtDogListJob = Job()
+    private val reissueAtPostDogWeightJob = Job()
+    private val reissueAtGetDogWeightJob = Job()
+    private val reissueAtGetDogFeedJob = Job()
+    private val reissueAtGetDogSupplementJob = Job()
+    private val reissueAtGetDogExcretaJob = Job()
+    private val reissueAtGetDogSymptomJob = Job()
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -69,9 +80,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.getUserProfile(currentAccessToken)
-        homeViewModel.getDogList(currentAccessToken)
-
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null && profileResponse.code() == 200) {
                 Glide.with(this)
@@ -79,8 +87,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     .placeholder(R.drawable.home_profile_default_image)
                     .error(R.drawable.home_profile_default_image)
                     .into(fragmentHomeBinding.imageviewHomeProfile)
+                homeViewModel.getDogList(currentAccessToken)
             } else if (profileResponse != null && profileResponse.code() == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtProfileJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -181,7 +190,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.VISIBLE
                 }
             } else if (dogListResponse != null && dogListResponse.code() == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtDogListJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -242,7 +251,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     currentAccessToken,
                 )
             } else if (responseCode != null && responseCode == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtPostDogWeightJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -289,7 +298,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 fragmentHomeBinding.textviewHomeWeight.text = dogWeightResponse.body()?.weight?.toString()
                 dogPreferences.setDogWeight(dogWeightResponse.body()?.weight!!)
             } else if (dogWeightResponse != null && dogWeightResponse.code() == 400) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtGetDogWeightJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -325,7 +334,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     Log.d("homeDogFeed", dogFeedResponse.body()?.recommendIntake.toString())
                     fragmentHomeBinding.textviewHomeFeed.text = dogFeedResponse.body()?.recommendIntake.toString()
                 } else if (dogFeedResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogFeedJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -363,7 +372,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.textviewHomeNutritionPercentage.text = dogSupplementsResponse.body()?.supplementsRate.toString()
                     fragmentHomeBinding.progressbarNutrition.progress = dogSupplementsResponse.body()?.supplementsRate ?: 0
                 } else if (dogSupplementsResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogSupplementJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -401,7 +410,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.textviewHomeFecesCount.text = dogExcretaResponse.body()?.fecesCount.toString()
                     fragmentHomeBinding.textviewHomeUrineCount.text = dogExcretaResponse.body()?.urineCount.toString()
                 } else if (dogExcretaResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogExcretaJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -443,7 +452,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
                     adapter.updateSymptomList(dogSymptomResponse.body()?.symptomRecords!!)
                 } else if (dogSymptomResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogSymptomJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -545,12 +554,24 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        getAccessTokenJob.cancel()
+        reissueAtProfileJob.cancel()
+        reissueAtDogListJob.cancel()
+        reissueAtPostDogWeightJob.cancel()
+        reissueAtGetDogWeightJob.cancel()
+        reissueAtGetDogFeedJob.cancel()
+        reissueAtGetDogSupplementJob.cancel()
+        reissueAtGetDogExcretaJob.cancel()
+        reissueAtGetDogSymptomJob.cancel()
+    }
+
     private fun getAccessToken() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(getAccessTokenJob) {
             val accessToken = userPreferences.getAccessToken()
             currentAccessToken = accessToken
             homeViewModel.getUserProfile(currentAccessToken)
-            homeViewModel.getDogList(currentAccessToken)
         }
     }
 
