@@ -39,6 +39,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/all_rect_gray1_r5"
                 android:hint="숫자를 입력하세요"
+                android:maxLength="6"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="13dp"
                 android:textAppearance="@style/Typography.Body1.Regular"
