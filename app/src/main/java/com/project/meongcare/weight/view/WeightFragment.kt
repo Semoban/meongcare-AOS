@@ -268,6 +268,14 @@ class WeightFragment : Fragment() {
 
         val weightWeeklyDataSet = LineDataSet(weightWeeklyData, "")
 
+        val weightWeeklyLabelColors =
+            listOf(
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.main4, null),
+            )
+
         val lineColor = resources.getColor(R.color.main4, null)
 
         val typo = Typeface.createFromAsset(requireContext().assets, "pretendard_medium.otf")
@@ -275,7 +283,8 @@ class WeightFragment : Fragment() {
         weightWeeklyDataSet.apply {
             valueTextSize = 12F
             valueTypeface = typo
-            valueTextColor = resources.getColor(R.color.gray3, null)
+
+            // valueTextColor = resources.getColor(R.color.gray3, null)
             valueFormatter = WeightDataFormatter()
             color = lineColor
             setCircleColor(lineColor)
@@ -287,6 +296,8 @@ class WeightFragment : Fragment() {
 
         binding.linechartWeightWeeklyrecord.apply {
             data = LineData(weightWeeklyDataSet)
+
+            data.setValueTextColors(weightWeeklyLabelColors)
 
             xAxis.apply {
                 granularity = 1F
@@ -320,7 +331,7 @@ class WeightFragment : Fragment() {
             setScaleEnabled(false)
             setPinchZoom(false)
             setDrawMarkers(true)
-            marker = WeightCustomMarker(context, R.layout.weight_marker)
+            // marker = WeightCustomMarker(context, R.layout.weight_marker)
             animateY(1200)
         }
     }
