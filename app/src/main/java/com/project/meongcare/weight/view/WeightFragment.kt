@@ -2,9 +2,7 @@ package com.project.meongcare.weight.view
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -23,7 +21,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
 import com.project.meongcare.databinding.LayoutWeightEditDialogBinding
