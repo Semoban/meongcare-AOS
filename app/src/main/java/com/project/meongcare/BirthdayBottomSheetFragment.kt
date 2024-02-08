@@ -82,7 +82,7 @@ class BirthdayBottomSheetFragment(
                         ).show()
                     }
                     else -> {
-                        dateSubmitListener?.onDateSubmit("$birthYear-$birthMonth-$birthDay")
+                        dateSubmitListener?.onDateSubmit(getBirthDate(birthYear, birthMonth, birthDay))
                         dismiss()
                     }
                 }
@@ -130,5 +130,21 @@ class BirthdayBottomSheetFragment(
             selectedMonth = month + "월"
             selectedDay = day + "일"
         }
+    }
+
+    private fun getBirthDate(year: Int, month: Int, day: Int): String {
+        val birthMonth = if (month.toString().length == 1) {
+            "0$month"
+        } else {
+            "$month"
+        }
+
+        val birthDay = if (day.toString().length == 1) {
+            "0$day"
+        } else {
+            "$day"
+        }
+
+        return "$year-$birthMonth-$birthDay"
     }
 }
