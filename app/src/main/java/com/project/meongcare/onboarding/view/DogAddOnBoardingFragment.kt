@@ -106,6 +106,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                     R.drawable.snackbar_success_16dp,
                     getString(R.string.snack_bar_dog_create_complete),
                 ).show()
+                userPreferences.setIsFirstLogin(false)
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
             } else if (response == 401) {
                 lifecycleScope.launch(dogAddCoroutineJob) {
