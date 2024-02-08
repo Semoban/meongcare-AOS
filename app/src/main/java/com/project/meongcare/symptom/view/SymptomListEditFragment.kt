@@ -98,8 +98,10 @@ class SymptomListEditFragment : Fragment() {
                 setOnClickListener { view ->
                     view.isSelected = !view.isSelected
                     if (view.isSelected) {
+                        symptomViewModel.symptomIdList.value!!.clear()
                         symptomViewModel.symptomIdList.value = temp
                     } else {
+                        symptomViewModel.symptomIdList.value!!.clear()
                         symptomViewModel.symptomIdList.value = mutableListOf()
                     }
                 }

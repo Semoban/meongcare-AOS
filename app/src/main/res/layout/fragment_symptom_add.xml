@@ -178,29 +178,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/all_rect_gray1_r5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_select_symptom">
-
-                    <EditText
-                        android:id="@+id/editText_symptomAdd_custom"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:gravity="center"
-                        android:hint="항목에 없는 증상을 적어주세요"
-                        android:inputType="text|textNoSuggestions"
-                        android:textStyle="normal"
-                        android:padding="10dp"
-                        android:textAppearance="@style/Typography.Body2.Medium"
-                        android:textColorHint="@color/gray4" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/layout_symptomAdd_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

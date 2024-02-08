@@ -58,6 +58,9 @@ class SymptomFragment : Fragment() {
 
 
         fragmentSymptomBinding.run {
+            if (symptomViewModel.dogName.value.isNullOrBlank()) {
+                layoutSymptomTitle.visibility = View.INVISIBLE
+            }
             textViewSymptomDogName.text = symptomViewModel.dogName.value
             textViewSymptomAdd.setOnClickListener {
                 navController.navigate(R.id.action_symptom_to_symptomAdd)

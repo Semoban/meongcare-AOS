@@ -264,7 +264,6 @@
                         android:text="수분"
                         android:textAppearance="@style/Typography.Body2.Medium"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider_feedinfo_ingredient_three" />
 
@@ -290,6 +289,50 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/textview_feedinfo_moisture_ratio"
                         app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_moisture_ratio" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider_feedinfo_ingredient_four"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="22dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textview_feedinfo_moisture" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_etc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="22dp"
+                        android:layout_marginStart="32dp"
+                        android:text="기타"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_feedinfo_ingredient_four" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_etc_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_etc"
+                        app:layout_constraintEnd_toStartOf="@id/textview_feedinfo_etc_percent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_etc" />
+
+                    <TextView
+                        android:id="@+id/textview_feedinfo_etc_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:text="%"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/textview_feedinfo_etc_ratio"
+                        app:layout_constraintBottom_toBottomOf="@id/textview_feedinfo_etc_ratio" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

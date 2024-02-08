@@ -48,6 +48,11 @@ class FeedRepositoryImpl
             feedPatchRequest: FeedPatchRequest,
         ) = feedRemoteDataSource.patchFeed(accessToken, feedPatchRequest)
 
+        override suspend fun stopFeed(
+            accessToken: String,
+            feedRecordId: Long,
+        ) = feedRemoteDataSource.stopFeed(accessToken, feedRecordId)
+
         override suspend fun putFeed(
             accessToken: String,
             feedUploadRequest: FeedUploadRequest,

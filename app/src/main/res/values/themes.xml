@@ -30,4 +30,8 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/all_calendar_bottom_sheet</item>
     </style>
+
+    <style name="CustomDialogTheme">
+        <item name="android:backgroundTint">@color/black30</item>
+    </style>
 </resources>
