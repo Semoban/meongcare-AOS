@@ -70,10 +70,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
                 setInputDate(it)
             }
 
-            symptomItemVisibility.observe(viewLifecycleOwner) {
-                setGetItem(it)
-            }
-
             checkAddSuccess()
         }
 
@@ -98,7 +94,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
             }
 
             checkNullAndSetEssential()
-            getItemCustom()
 
             buttonSymptomAddToSymptom.setOnClickListener {
                 addSymptom()
@@ -120,43 +115,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         }
     }
 
-    private fun getItemCustom() {
-        val editTextItemCustom = fragmentSymptomAddBinding.editTextSymptomAddCustom
-        editTextItemCustom.setOnEditorActionListener { t, a, k ->
-            if (
-                (
-                    a == EditorInfo.IME_ACTION_DONE ||
-                    (
-                            k != null &&
-                                k.action == KeyEvent.ACTION_DOWN &&
-                                k.keyCode == KeyEvent.KEYCODE_ENTER
-                        )
-                ) && t.text.trim().isNotEmpty()
-            ) {
-                fragmentSymptomAddBinding.layoutSymptomAddList.visibility = View.VISIBLE
-                setItemCustom()
-                setClearEditTextSymptomAddCustom()
-                hideKeyboard(editTextItemCustom)
-                return@setOnEditorActionListener true
-            }
-            false
-        }
-    }
-
-    private fun setItemCustom() {
-        symptomViewModel.run {
-            editor.putInt("symptomItemImgId", R.drawable.symptom_etc_record)
-            editor.putString(
-                "symptomItemTitle",
-                fragmentSymptomAddBinding.editTextSymptomAddCustom.text.toString().trim(),
-            )
-            editor.apply()
-            symptomViewModel.symptomItemImgId.value = R.drawable.symptom_etc_record
-            symptomViewModel.symptomItemTitle.value =
-                fragmentSymptomAddBinding.editTextSymptomAddCustom.text.toString().trim()
-        }
-    }
-
     private fun getItemTitle(it: String?) {
         if (it != null) {
             fragmentSymptomAddBinding.run {
@@ -166,16 +124,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
                 }
             }
             symptomViewModel.symptomItemVisibility.value = View.VISIBLE
-        }
-    }
-
-    private fun setGetItem(visible: Int?) {
-        if (visible == View.VISIBLE) {
-            fragmentSymptomAddBinding.textViewSymptomAddSelectSymptom.run {
-                text = "증상을 선택해주세요"
-                setTextColor(ContextCompat.getColor(manActivity, R.color.gray4))
-            }
-            fragmentSymptomAddBinding.buttonSymptomAddSelectSymptom.setBackgroundResource(R.drawable.all_rect_gray1_r5)
         }
     }
 
@@ -190,10 +138,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
         }
     }
 
-    private fun setClearEditTextSymptomAddCustom() {
-        fragmentSymptomAddBinding.editTextSymptomAddCustom.text.clear()
-        fragmentSymptomAddBinding.editTextSymptomAddCustom.clearFocus()
-    }
 
     private fun addSymptom() {
         val dateTimeString = getDateTimeString()
