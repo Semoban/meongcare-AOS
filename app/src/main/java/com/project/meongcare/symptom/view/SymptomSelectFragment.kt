@@ -3,9 +3,11 @@ package com.project.meongcare.symptom.view
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomSelectBinding
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
+import com.project.meongcare.symptom.utils.SymptomUtils
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 
@@ -64,6 +67,27 @@ class SymptomSelectFragment : Fragment() {
         return fragmentSymptomSelectBinding.root
     }
 
+
+    private fun setClearEditTextSymptomAddCustom() {
+        fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.clear()
+        fragmentSymptomSelectBinding.editTextSymptomAddCustom.clearFocus()
+    }
+
+
+    private fun setItemCustom() {
+        symptomViewModel.run {
+            editor.putInt("symptomItemImgId", R.drawable.symptom_etc_record)
+            editor.putString(
+                "symptomItemTitle",
+                fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString().trim(),
+            )
+            editor.apply()
+            symptomViewModel.symptomItemImgId.value = R.drawable.symptom_etc_record
+            symptomViewModel.symptomItemTitle.value =
+                fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString().trim()
+        }
+    }
+
     private fun addImgViews() {
         fragmentSymptomSelectBinding.run {
             symptomCheckImageViews.add(imageViewSymptomSelectCheckWeight)
@@ -72,6 +96,7 @@ class SymptomSelectFragment : Fragment() {
             symptomCheckImageViews.add(imageViewSymptomSelectCheckDiarrhea)
             symptomCheckImageViews.add(imageViewSymptomSelectCheckLossOfAppetite)
             symptomCheckImageViews.add(imageViewSymptomSelectCheckActivityDecrease)
+            symptomCheckImageViews.add(imageViewSymptomSelectCheckEtc)
         }
     }
 
@@ -141,6 +166,15 @@ class SymptomSelectFragment : Fragment() {
                 editor.putString(
                     "symptomItemTitle",
                     mainActivity.findViewById<TextView>(R.id.textView_symptomSelect_activityDecrease_title).text.toString()
+                )
+                editor.apply()
+            }
+
+            R.id.imageView_symptomSelect_check_etc -> {
+                editor.putInt("symptomItemImgId", R.drawable.symptom_etc_record)
+                editor.putString(
+                    "symptomItemTitle",
+                    fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString()
                 )
                 editor.apply()
             }
