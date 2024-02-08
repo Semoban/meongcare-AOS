@@ -17,4 +17,5 @@
     <string name="snack_bar_login_failure_deleted">탈퇴 유저는 90일 간 회원 가입할 수 없습니다. 다른 계정으로 가입해 주세요.</string>
     <string name="snack_bar_notification_on">알림 수신 처리되었습니다.</string>
     <string name="snack_bar_notification_off">알림 거부 처리되었습니다.</string>
+    <string name="snack_bar_future_date">유효하지 않은 날짜입니다. 다시 설정해주세요.</string>
 </resources>
