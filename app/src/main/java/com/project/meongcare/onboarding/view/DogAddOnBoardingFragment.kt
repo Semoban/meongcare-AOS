@@ -57,6 +57,12 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var loginRepository: LoginRepository
 
     private var isCbxChecked = false
+    private var isFirstRegister: Boolean? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isFirstRegister = arguments?.getBoolean("isFirstRegister")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -140,6 +146,11 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         fragmentDogAddOnBoardingBinding.run {
+            when(isFirstRegister) {
+                true -> buttonCancel.visibility = View.GONE
+                false, null -> buttonCancel.visibility = View.VISIBLE
+            }
+
             // 사진 등록
             cardviewPetaddImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
