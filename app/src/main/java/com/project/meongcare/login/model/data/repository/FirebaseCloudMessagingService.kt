@@ -90,7 +90,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
                 .setContentText(messageBody)
                 .setContentTitle(messageTitle)
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.semoban_icon)
+                .setSmallIcon(R.drawable.semoban_notification_icon)
 
         createNotificationChannel(
             getString(R.string.push_notification_channel_id),
