@@ -1,5 +1,6 @@
 package com.project.meongcare.weight.view
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentWeightBinding
+import com.project.meongcare.databinding.LayoutWeightEditDialogBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -47,6 +49,9 @@ class WeightFragment : Fragment() {
     private var _binding: FragmentWeightBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var dialogBinding: LayoutWeightEditDialogBinding
+    private lateinit var dialog: Dialog
+
     private lateinit var inputMethodManager: InputMethodManager
     private val weightViewModel: WeightViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
@@ -66,6 +71,7 @@ class WeightFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentWeightBinding.inflate(inflater, container, false)
+        dialogBinding = LayoutWeightEditDialogBinding.inflate((LayoutInflater.from(requireContext())))
         return binding.root
     }
 
@@ -180,13 +186,20 @@ class WeightFragment : Fragment() {
     private fun showWeightEditDialog() {
         binding.run {
             textviewWeightEditbutton.setOnClickListener {
-                layoutWeightEdit.root.visibility = View.VISIBLE
+                dialog = Dialog(requireContext(), R.style.CustomDialogTheme)
+                val view = dialogBinding.root
+
+                if (view.parent != null) {
+                    ((view.parent) as ViewGroup).removeView(view)
+                }
+                dialog.setContentView(dialogBinding.root)
+                dialog.show()
             }
         }
     }
 
     private fun initWeightEditDialog() {
-        binding.layoutWeightEdit.run {
+        dialogBinding.apply {
             edittextWeighteditdialog.setText(weight.toString())
             buttonWeighteditdialogCancel.setOnClickListener { onCancelClicked() }
             buttonWeighteditdialogCheck.setOnClickListener {
@@ -208,16 +221,15 @@ class WeightFragment : Fragment() {
     }
 
     private fun onCancelClicked() {
-        hideSoftKeyboard()
-        binding.layoutWeightEdit.run {
-            edittextWeighteditdialog.text.clear()
-            root.visibility = View.GONE
+        dialogBinding.run {
+            edittextWeighteditdialog.setText(weight.toString())
         }
+        dialog.dismiss()
     }
 
     private fun onCheckClicked() {
         val date = LocalDate.now().toString()
-        val weightText = binding.layoutWeightEdit.edittextWeighteditdialog.text.toString()
+        val weightText = dialogBinding.edittextWeighteditdialog.text.toString()
         val weight = weightText.toDoubleOrNull() ?: return
 
         val weightPatchRequest =
@@ -229,11 +241,7 @@ class WeightFragment : Fragment() {
 
         weightViewModel.patchWeight(accessToken, weightPatchRequest)
         weightViewModel.weightPatched.observe(viewLifecycleOwner) { response ->
-            hideSoftKeyboard()
-            binding.layoutWeightEdit.run {
-                edittextWeighteditdialog.text.clear()
-                root.visibility = View.GONE
-            }
+            dialog.dismiss()
             if (response == SUCCESS) {
                 fetchDailyWeight()
                 fetchWeeklyWeight()
@@ -257,6 +265,14 @@ class WeightFragment : Fragment() {
 
         val weightWeeklyDataSet = LineDataSet(weightWeeklyData, "")
 
+        val weightWeeklyLabelColors =
+            listOf(
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.gray3, null),
+                resources.getColor(R.color.main4, null),
+            )
+
         val lineColor = resources.getColor(R.color.main4, null)
 
         val typo = Typeface.createFromAsset(requireContext().assets, "pretendard_medium.otf")
@@ -264,7 +280,8 @@ class WeightFragment : Fragment() {
         weightWeeklyDataSet.apply {
             valueTextSize = 12F
             valueTypeface = typo
-            valueTextColor = resources.getColor(R.color.gray3, null)
+
+            // valueTextColor = resources.getColor(R.color.gray3, null)
             valueFormatter = WeightDataFormatter()
             color = lineColor
             setCircleColor(lineColor)
@@ -276,6 +293,8 @@ class WeightFragment : Fragment() {
 
         binding.linechartWeightWeeklyrecord.apply {
             data = LineData(weightWeeklyDataSet)
+
+            data.setValueTextColors(weightWeeklyLabelColors)
 
             xAxis.apply {
                 granularity = 1F
@@ -309,7 +328,7 @@ class WeightFragment : Fragment() {
             setScaleEnabled(false)
             setPinchZoom(false)
             setDrawMarkers(true)
-            marker = WeightCustomMarker(context, R.layout.weight_marker)
+            // marker = WeightCustomMarker(context, R.layout.weight_marker)
             animateY(1200)
         }
     }
