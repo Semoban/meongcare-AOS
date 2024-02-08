@@ -9,7 +9,7 @@ import com.github.ybq.android.spinkit.style.ThreeBounce
 import com.project.meongcare.R
 
 class LoadingDialog(
-    private val context: Context
+    private val context: Context,
 ) : Dialog(context) {
     init {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
