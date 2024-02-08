@@ -506,7 +506,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAlert.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_noticeFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("isFirstRegister", false)
+                findNavController().navigate(R.id.action_homeFragment_to_noticeFragment, bundle)
             }
 
             imageviewHomeProfile.setOnClickListener {
