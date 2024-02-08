@@ -70,10 +70,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
                 setInputDate(it)
             }
 
-            symptomItemVisibility.observe(viewLifecycleOwner) {
-                setGetItem(it)
-            }
-
             checkAddSuccess()
         }
 
@@ -128,16 +124,6 @@ class SymptomAddFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateSe
                 }
             }
             symptomViewModel.symptomItemVisibility.value = View.VISIBLE
-        }
-    }
-
-    private fun setGetItem(visible: Int?) {
-        if (visible == View.VISIBLE) {
-            fragmentSymptomAddBinding.textViewSymptomAddSelectSymptom.run {
-                text = "증상을 선택해주세요"
-                setTextColor(ContextCompat.getColor(manActivity, R.color.gray4))
-            }
-            fragmentSymptomAddBinding.buttonSymptomAddSelectSymptom.setBackgroundResource(R.drawable.all_rect_gray1_r5)
         }
     }
 
