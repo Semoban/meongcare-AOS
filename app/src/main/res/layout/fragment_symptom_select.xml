@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".symptom.view.SymptomSelectFragment" >
+    tools:context=".symptom.view.SymptomSelectFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelect"
@@ -13,7 +13,7 @@
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -409,8 +409,49 @@
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_etc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_etc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/all_rect_gray2_r5_outline_gray3"
+                    android:padding="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_select_symptom">
+
+                    <EditText
+                        android:id="@+id/editText_symptomAdd_custom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="항목에 없는 증상을 입력해주세요"
+                        android:inputType="text|textNoSuggestions"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColorHint="@color/gray4"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout
@@ -462,5 +503,4 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,22 +9,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FeedDeleteViewModel
+class FeedStopViewModel
     @Inject
     constructor(
         private val feedRepositoryImpl: FeedRepositoryImpl,
     ) : ViewModel() {
-        private var _feedDeleted = MutableLiveData<Int>()
-        val feedDeleted
-            get() = _feedDeleted
+        private var _feedStopped = MutableLiveData<Int>()
+        val feedStopped
+            get() = _feedStopped
 
-        fun deleteFeed(
+        fun stopFeed(
             accessToken: String,
             feedRecordId: Long,
         ) {
             viewModelScope.launch {
-                _feedDeleted.value =
-                    feedRepositoryImpl.deleteFeed(accessToken, feedRecordId)
+                _feedStopped.value = feedRepositoryImpl.stopFeed(accessToken, feedRecordId)
             }
         }
     }

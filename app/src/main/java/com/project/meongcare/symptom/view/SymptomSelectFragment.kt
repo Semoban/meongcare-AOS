@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSymptomSelectBinding
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.symptom.model.data.repository.SymptomRepository
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
@@ -72,6 +73,7 @@ class SymptomSelectFragment : Fragment() {
             symptomCheckImageViews.add(imageViewSymptomSelectCheckDiarrhea)
             symptomCheckImageViews.add(imageViewSymptomSelectCheckLossOfAppetite)
             symptomCheckImageViews.add(imageViewSymptomSelectCheckActivityDecrease)
+            symptomCheckImageViews.add(imageViewSymptomSelectCheckEtc)
         }
     }
 
@@ -85,8 +87,20 @@ class SymptomSelectFragment : Fragment() {
     }
 
     private fun setAddItemCheck() {
-        getSymptomNameFromCheck(symptomViewModel.selectCheckedImg.value!!)
-        navController.popBackStack()
+        if (symptomViewModel.selectCheckedImg.value == null) {
+            showFailSnackbar()
+        } else {
+            getSymptomNameFromCheck(symptomViewModel.selectCheckedImg.value!!)
+            navController.popBackStack()
+        }
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "증상을 선택해주세요.",
+        ).show()
     }
 
     fun getSymptomNameFromCheck(symptomImg: ImageView) {
@@ -144,6 +158,16 @@ class SymptomSelectFragment : Fragment() {
                 )
                 editor.apply()
             }
+
+            R.id.imageView_symptomSelect_check_etc -> {
+                editor.putInt("symptomItemImgId", R.drawable.symptom_etc_record)
+                editor.putString(
+                    "symptomItemTitle",
+                    fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString(),
+                )
+                editor.apply()
+            }
         }
     }
 }
+

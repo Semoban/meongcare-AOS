@@ -18,52 +18,33 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="28dp">
+            android:paddingVertical="20dp">
 
             <TextView
-                android:id="@+id/textview_weighteditdialog_title"
+                android:id="@+id/textview_feedstopdialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:text="체중을 입력해주세요"
+                android:layout_marginStart="24dp"
+                android:text="사료를 중단하시겠습니까?"
                 android:textAppearance="@style/Typography.Title3.SemiBold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
+            <TextView
                 android:id="@+id/edittext_weighteditdialog"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/all_rect_gray1_r5"
-                android:hint="숫자를 입력하세요"
-                android:maxLength="6"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="13dp"
-                android:textAppearance="@style/Typography.Body1.Regular"
-                android:inputType="numberDecimal"
+                android:layout_marginTop="4dp"
+                android:text="사료는 즉시 중단됩니다."
+                android:textAppearance="@style/Typography.Body2.Regular"
+                android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_weighteditdialog_title" />
-
-            <TextView
-                android:id="@+id/textview_weighteditdialog_weight_error"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/all_rect_gray1_r5_outline_sub1"
-                android:padding="13dp"
-                android:text="필수 입력 값입니다"
-                android:textAppearance="@style/Typography.Body1.Medium"
-                android:textColor="@color/sub1"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/edittext_weighteditdialog"
-                app:layout_constraintEnd_toEndOf="@id/edittext_weighteditdialog"
-                app:layout_constraintStart_toStartOf="@id/edittext_weighteditdialog"
-                app:layout_constraintTop_toTopOf="@id/edittext_weighteditdialog" />
+                app:layout_constraintTop_toBottomOf="@id/textview_feedstopdialog_title" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_weighteditdialog_cancel"
+                android:id="@+id/button_feedstopdialog_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:layout_marginEnd="8dp"
@@ -73,15 +54,15 @@
                 android:text="취소"
                 android:textAppearance="@style/Typography.Bottom2.SemiBold"
                 android:textColor="@color/gray5"
-                app:layout_constraintBottom_toBottomOf="@id/button_weighteditdialog_check"
-                app:layout_constraintEnd_toStartOf="@id/button_weighteditdialog_check"
-                app:layout_constraintTop_toTopOf="@id/button_weighteditdialog_check" />
+                app:layout_constraintBottom_toBottomOf="@id/button_feedstopdialog_check"
+                app:layout_constraintEnd_toStartOf="@id/button_feedstopdialog_check"
+                app:layout_constraintTop_toTopOf="@id/button_feedstopdialog_check" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_weighteditdialog_check"
+                android:id="@+id/button_feedstopdialog_check"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/all_rect_main4_r5"
                 android:paddingHorizontal="32dp"

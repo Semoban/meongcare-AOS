@@ -2,10 +2,13 @@ package com.project.meongcare.feed.model.utils
 
 import android.content.Context
 import android.net.Uri
+import android.view.View
 import android.widget.TextView
 import com.google.gson.Gson
+import com.project.meongcare.R
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedPutInfo
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -67,5 +70,27 @@ object FeedInfoUtils {
                     "$recommendIntake"
                 }
         }
+    }
+
+    fun showSuccessSnackBar(
+        view: View,
+        message: String,
+    ) {
+        CustomSnackBar.make(
+            view,
+            R.drawable.snackbar_success_16dp,
+            message,
+        ).show()
+    }
+
+    fun showFailureSnackBar(
+        view: View,
+        message: String,
+    ) {
+        CustomSnackBar.make(
+            view,
+            R.drawable.snackbar_error_16dp,
+            message,
+        ).show()
     }
 }

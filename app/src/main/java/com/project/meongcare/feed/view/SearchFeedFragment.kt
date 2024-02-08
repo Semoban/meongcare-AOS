@@ -14,6 +14,10 @@ import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.model.utils.FEED_CHANGE_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_CHANGE_SUCCESS
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPatchViewModel
 import com.project.meongcare.feed.viewmodel.FeedsGetViewModel
@@ -111,6 +115,15 @@ class SearchFeedFragment : Fragment() {
         feedPatchViewModel.feedPatched.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()
+                showSuccessSnackBar(
+                    requireView(),
+                    FEED_CHANGE_SUCCESS,
+                )
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    FEED_CHANGE_FAILURE,
+                )
             }
         }
     }
