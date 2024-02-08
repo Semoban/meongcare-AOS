@@ -22,6 +22,7 @@ import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
+import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
@@ -223,6 +224,10 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
 
+            buttonProfileShare.setOnClickListener {
+                showUpdateDialog()
+            }
+
             buttonProfileSetting.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
@@ -273,6 +278,21 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         dialog.show()
     }
+
+    private fun showUpdateDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonOk.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
     private fun getAccessToken() {
         lifecycleScope.launch {
             userPreferences.accessToken.collectLatest { accessToken ->
