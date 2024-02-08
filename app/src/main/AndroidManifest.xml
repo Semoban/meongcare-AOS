@@ -36,13 +36,13 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/semoban_logo" />
+            android:resource="@drawable/semoban_notification_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/main4" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="" />
+            android:value="@string/push_notification_channel_id" />
 
         <service
             android:name=".login.model.data.repository.FirebaseCloudMessagingService"

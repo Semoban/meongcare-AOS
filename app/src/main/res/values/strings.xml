@@ -2,4 +2,6 @@
     <string name="app_name">세모반</string>
     <string name="week_calendar">Week Calendar</string>
     <string name="text_selected_date">Selected Date</string>
+    <string name="push_notification_channel_id">SemobanNotificationChannel</string>
+    <string name="push_notification_channel_name">SemobanNotificationChannel</string>
 </resources>
