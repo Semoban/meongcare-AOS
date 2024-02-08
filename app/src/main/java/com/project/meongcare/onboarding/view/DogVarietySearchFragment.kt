@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -97,6 +98,7 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val dialogBinding = LayoutInputDogTypeDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
 
         val dialog = builder.create()
 
