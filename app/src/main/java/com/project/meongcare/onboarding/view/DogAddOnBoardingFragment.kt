@@ -146,7 +146,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         fragmentDogAddOnBoardingBinding.run {
-            when(isFirstRegister) {
+            when (isFirstRegister) {
                 true -> buttonCancel.visibility = View.GONE
                 false, null -> buttonCancel.visibility = View.VISIBLE
             }
@@ -167,7 +167,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
             // 날짜 등록
             textviewPetaddSelectBirthday.setOnClickListener {
-                val birthdayBottomSheet = BirthdayBottomSheetFragment(fragmentDogAddOnBoardingBinding.root, dogAddViewModel.dogBirthDate.value)
+                val birthdayBottomSheet = BirthdayBottomSheetFragment(
+                    fragmentDogAddOnBoardingBinding.root,
+                    dogAddViewModel.dogBirthDate.value,
+                )
                 birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
                 birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
                 birthdayBottomSheet.show(mainActivity.supportFragmentManager, birthdayBottomSheet.tag)
