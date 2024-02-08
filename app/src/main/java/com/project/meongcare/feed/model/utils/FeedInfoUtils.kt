@@ -2,6 +2,7 @@ package com.project.meongcare.feed.model.utils
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.google.gson.Gson
@@ -9,12 +10,16 @@ import com.project.meongcare.R
 import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedPutInfo
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.BufferedInputStream
 import java.io.File
+import java.net.URL
 
 object FeedInfoUtils {
     fun convertFeedPostDto(feedInfo: FeedInfo): RequestBody {
@@ -47,6 +52,33 @@ object FeedInfoUtils {
         val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    suspend fun convertFeedImageUrl(
+        context: Context,
+        urlString: String,
+    ): MultipartBody.Part {
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection()
+                val inputStream = BufferedInputStream(connection.getInputStream())
+                val file = File(context.cacheDir, "downloadedFile")
+                inputStream.use { input ->
+                    file.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("file", file.name, requestFile)
+            } catch (e: Exception) {
+                Log.d("사료 이미지 URL 변환 실패", e.message.toString())
+
+                val emptyFile = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("file", "", emptyFile)
+            }
+        }
     }
 
     fun calculateRecommendDailyIntake(
