@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
-import com.project.meongcare.CalendarBottomSheetFragment
+import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
@@ -151,10 +151,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
             // 날짜 등록
             textviewPetaddSelectBirthday.setOnClickListener {
-                val calendarBottomSheet = CalendarBottomSheetFragment()
-                calendarBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
-                calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
-                calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
+                val birthdayBottomSheet = BirthdayBottomSheetFragment(fragmentDogAddOnBoardingBinding.root, dogAddViewModel.dogBirthDate.value)
+                birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
+                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+                birthdayBottomSheet.show(mainActivity.supportFragmentManager, birthdayBottomSheet.tag)
             }
 
             checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
