@@ -506,9 +506,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAlert.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putBoolean("isFirstRegister", false)
-                findNavController().navigate(R.id.action_homeFragment_to_noticeFragment, bundle)
+                findNavController().navigate(R.id.action_homeFragment_to_noticeFragment)
             }
 
             imageviewHomeProfile.setOnClickListener {
@@ -516,7 +514,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAddDog.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_dogAddOnBoardingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("isFirstRegister", false)
+                findNavController().navigate(R.id.action_homeFragment_to_dogAddOnBoardingFragment, bundle)
             }
 
             recyclerviewHomeDog.run {
