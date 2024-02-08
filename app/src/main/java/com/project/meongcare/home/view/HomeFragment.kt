@@ -1,5 +1,7 @@
 package com.project.meongcare.home.view
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +42,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var currentAccessToken: String
+    private lateinit var loadingDialog: LoadingDialog
 
     private val getAccessTokenJob = Job()
     private val reissueAtProfileJob = Job()
@@ -71,6 +74,8 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         savedInstanceState: Bundle?,
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
+        loadingDialog = getLoadingDialog()
+        loadingDialog.show()
         return fragmentHomeBinding.root
     }
 
@@ -121,6 +126,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         homeViewModel.homeSelectedDate.observe(viewLifecycleOwner) { selectedDate ->
+            if (!loadingDialog.isShowing) {
+                loadingDialog.show()
+            }
             if (selectedDate != null) {
                 Log.d("homeViewmodel-selectedDate", selectedDate.toString())
                 // 가로 달력 날짜 selectedDate로 설정
@@ -282,7 +290,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
 
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
-            if (selectedDogPos != null && !homeViewModel.homeDogList.value?.body()?.dogs?.isEmpty()!!) {
+            if (selectedDogPos != null && !homeViewModel.homeDogList.value?.body()?.dogs?.isNullOrEmpty()!!) {
                 Log.d("homeSelectedDogName", homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].name)
                 homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].dogId)
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
@@ -495,6 +503,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             }
+            loadingDialog.dismiss()
         }
 
         fragmentHomeBinding.run {
@@ -556,6 +565,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!loadingDialog.isShowing) {
+            loadingDialog.show()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         getAccessTokenJob.cancel()
@@ -609,6 +625,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     override fun onItemClick(position: Int) {
         homeViewModel.setSelectedDatePos(position)
         homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![position])
+    }
+
+    fun getLoadingDialog(): LoadingDialog {
+        val progressDialog = LoadingDialog(requireContext())
+        progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.setCancelable(false)
+        return progressDialog
     }
 }
 
