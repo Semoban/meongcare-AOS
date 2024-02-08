@@ -263,11 +263,4 @@
 
     <include layout="@layout/bottomsheet_calendar" />
 
-    <include
-        android:id="@+id/include_medical_record_dialog"
-        layout="@layout/layout_medical_record_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
