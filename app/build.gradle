@@ -140,4 +140,6 @@ dependencies {
     // OkHttp3
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
 
+    // Loading Progress Bar
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }
