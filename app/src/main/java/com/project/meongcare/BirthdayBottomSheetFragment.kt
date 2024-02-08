@@ -19,20 +19,23 @@ class BirthdayBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBirthdayBottomSheetBinding
 
-    private val yearArray = arrayOf(
-        "2024년", "2023년", "2022년", "2021년", "2020년",
-        "2019년", "2018년", "2017년", "2016년", "2015년", "2014년", "2013년", "2012년", "2011년", "2010년",
-        "1999년", "1998년", "1997년", "1996년", "1995년", "1994년", "1993년", "1992년", "1991년", "1990년",
-    )
-    private val monthArray = arrayOf(
-        "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",
-    )
-    private val dayArray = arrayOf(
-        "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일",
-        "11일", "12일", "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일",
-        "21일", "22일", "23일", "24일", "25일", "26일", "27일", "28일", "29일", "30일",
-        "31일",
-    )
+    private val yearArray =
+        arrayOf(
+            "2024년", "2023년", "2022년", "2021년", "2020년",
+            "2019년", "2018년", "2017년", "2016년", "2015년", "2014년", "2013년", "2012년", "2011년", "2010년",
+            "1999년", "1998년", "1997년", "1996년", "1995년", "1994년", "1993년", "1992년", "1991년", "1990년",
+        )
+    private val monthArray = 
+        arrayOf(
+            "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",
+        )
+    private val dayArray =
+        arrayOf(
+            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일",
+            "11일", "12일", "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일",
+            "21일", "22일", "23일", "24일", "25일", "26일", "27일", "28일", "29일", "30일",
+            "31일",
+        )
 
     private var dateSubmitListener: DateSubmitListener? = null
     private var selectedYear: String? = null
@@ -73,7 +76,7 @@ class BirthdayBottomSheetFragment(
 
                 when {
                     ((birthYear == currentYear) && (birthMonth > currentMonth)) ||
-                            ((birthYear == currentYear) && (birthMonth == currentMonth) && (birthDay > currentDay)) -> {
+                        ((birthYear == currentYear) && (birthMonth == currentMonth) && (birthDay > currentDay)) -> {
                         dismiss()
                         CustomSnackBar.make(
                             parentView,
@@ -132,18 +135,24 @@ class BirthdayBottomSheetFragment(
         }
     }
 
-    private fun getBirthDate(year: Int, month: Int, day: Int): String {
-        val birthMonth = if (month.toString().length == 1) {
-            "0$month"
-        } else {
-            "$month"
-        }
+    private fun getBirthDate(
+        year: Int,
+        month: Int,
+        day: Int,
+    ): String {
+        val birthMonth =
+            if (month.toString().length == 1) {
+                "0$month"
+            } else {
+                "$month"
+            }
 
-        val birthDay = if (day.toString().length == 1) {
-            "0$day"
-        } else {
-            "$day"
-        }
+        val birthDay =
+            if (day.toString().length == 1) {
+                "0$day"
+            } else {
+                "$day"
+            }
 
         return "$year-$birthMonth-$birthDay"
     }
