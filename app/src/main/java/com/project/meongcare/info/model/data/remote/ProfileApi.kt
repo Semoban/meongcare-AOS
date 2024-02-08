@@ -82,7 +82,7 @@ interface ProfileApi {
     ): Response<Int>
 
     @Multipart
-    @PATCH("member/profile")
+    @PATCH("/member/profile")
     suspend fun patchProfileImage(
         @Header("AccessToken") accessToken: String,
         @Part file: MultipartBody.Part,
