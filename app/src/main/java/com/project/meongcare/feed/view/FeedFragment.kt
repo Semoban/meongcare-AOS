@@ -141,7 +141,7 @@ class FeedFragment : Fragment() {
             dialog = Dialog(requireContext(), R.style.CustomDialogTheme)
             val view = dialogBinding.root
 
-            if(view.parent != null){
+            if (view.parent != null) {
                 ((view.parent) as ViewGroup).removeView(view)
             }
 
