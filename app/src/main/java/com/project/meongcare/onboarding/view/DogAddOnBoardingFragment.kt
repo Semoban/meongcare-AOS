@@ -28,6 +28,7 @@ import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -46,6 +47,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
+    private val postDogCoroutineJob = Job()
+    private val dogAddCoroutineJob = Job()
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -96,6 +99,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
+            postDogCoroutineJob.cancel()
             if (response == 200) {
                 CustomSnackBar.make(
                     requireView(),
@@ -104,7 +108,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 ).show()
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
             } else if (response == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(dogAddCoroutineJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val reissueResponse = loginRepository.getNewAccessToken(refreshToken)
@@ -233,7 +237,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(mainActivity, dogAddViewModel.dogProfileImage.value)
 
-                lifecycleScope.launch {
+                lifecycleScope.launch(postDogCoroutineJob) {
                     userPreferences.accessToken.collectLatest { accessToken ->
                         if (accessToken != null) {
                             dogAddViewModel.postDogInfo(
@@ -248,6 +252,11 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         return fragmentDogAddOnBoardingBinding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dogAddCoroutineJob.cancel()
     }
 
     override fun onUriPassed(uri: Uri) {
