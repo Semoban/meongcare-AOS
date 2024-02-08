@@ -163,7 +163,7 @@ class SymptomSelectFragment : Fragment() {
                 editor.putInt("symptomItemImgId", R.drawable.symptom_etc_record)
                 editor.putString(
                     "symptomItemTitle",
-                    fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString()
+                    fragmentSymptomSelectBinding.editTextSymptomAddCustom.text.toString(),
                 )
                 editor.apply()
             }
