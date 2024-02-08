@@ -178,6 +178,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
             }
 
+            buttonCancel.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             // 완료
             buttonComplete.setOnClickListener {
                 // 입력 검사
