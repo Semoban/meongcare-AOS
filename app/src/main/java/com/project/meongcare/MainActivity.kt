@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.meongcare.databinding.ActivityMainBinding
+import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                             fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                         }
                         else -> {
-                            includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                            showUpdateDialog()
                         }
                     }
 
@@ -80,19 +82,8 @@ class MainActivity : AppCompatActivity() {
                     if (menuItem.itemId == R.id.menuMainBottomNavHome) {
                         fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                     } else {
-                        includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                        showUpdateDialog()
                     }
-                }
-            }
-
-            includeMedicalRecordDialog.run {
-                constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
-                }
-                buttonOk.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.GONE
-                    bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
                 }
             }
 
@@ -226,15 +217,36 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val accessToken = userPreferences.getAccessToken()
             val refreshToken = userPreferences.getRefreshToken()
+            val isFirstLogin = userPreferences.getIsFirstLogin()
 
             if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
                 activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
             } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
                 activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
             } else {
-                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                if (isFirstLogin == true) {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.dogAddOnBoardingFragment)
+                } else {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
+                }
             }
         }
+    }
+
+    private fun showUpdateDialog() {
+        val builder = MaterialAlertDialogBuilder(this@MainActivity)
+        val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonOk.setOnClickListener {
+            dialog.dismiss()
+            activityMainBinding.bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+        }
+
+        dialog.show()
     }
 
     private fun initNavController() {

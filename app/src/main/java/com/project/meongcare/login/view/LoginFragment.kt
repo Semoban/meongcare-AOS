@@ -73,8 +73,13 @@ class LoginFragment : Fragment() {
                             Log.e("isFirstLogin", loginResponse.body()?.isFirstLogin.toString())
                             userPreferences.setAccessToken(loginResponse.body()?.accessToken)
                             userPreferences.setRefreshToken(loginResponse.body()?.refreshToken)
+                            userPreferences.setIsFirstLogin(loginResponse.body()?.isFirstLogin)
                             when (loginResponse.body()?.isFirstLogin) {
-                                true -> findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment)
+                                true -> {
+                                    val bundle = Bundle()
+                                    bundle.putBoolean("isFirstRegister", true)
+                                    findNavController().navigate(R.id.action_loginFragment_to_dogAddOnBoardingFragment, bundle)
+                                }
                                 false -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                                 else -> {}
                             }

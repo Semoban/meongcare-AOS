@@ -1,6 +1,7 @@
 package com.project.meongcare.login.model.data.local
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.project.meongcare.login.view.userDataStore
@@ -23,6 +24,7 @@ class UserPreferences
         private val preferenceKeyEmail = stringPreferencesKey("email")
         private val preferenceKeyAccessToken = stringPreferencesKey("accessToken")
         private val preferenceKeyRefreshToken = stringPreferencesKey("refreshToken")
+        private val preferenceKeyIsFirstLogin = booleanPreferencesKey("isFirstLogin")
 
         // 값 저장(수정)
         private suspend fun editProvider(provider: String?) {
@@ -65,6 +67,16 @@ class UserPreferences
             }
         }
 
+        private suspend fun editIsFirstLogin(isFirstLogin: Boolean?) {
+            context.userDataStore.edit { preferences ->
+                if (isFirstLogin == null) {
+                    preferences.remove(preferenceKeyIsFirstLogin)
+                } else {
+                    preferences[preferenceKeyIsFirstLogin] = isFirstLogin
+                }
+            }
+        }
+
         fun setProvider(provider: String?) {
             CoroutineScope(Dispatchers.IO).launch {
                 editProvider(provider)
@@ -86,6 +98,12 @@ class UserPreferences
         fun setRefreshToken(refreshToken: String?) {
             CoroutineScope(Dispatchers.IO).launch {
                 editRefreshToken(refreshToken)
+            }
+        }
+
+        fun setIsFirstLogin(isFirstLogin: Boolean?) {
+            CoroutineScope(Dispatchers.IO).launch {
+                editIsFirstLogin(isFirstLogin)
             }
         }
 
@@ -121,5 +139,9 @@ class UserPreferences
 
         suspend fun getProvider(): String {
             return context.userDataStore.data.first()[preferenceKeyProvider] ?: ""
+        }
+
+        suspend fun getIsFirstLogin(): Boolean? {
+            return context.userDataStore.data.first()[preferenceKeyIsFirstLogin]
         }
     }

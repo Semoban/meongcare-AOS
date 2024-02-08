@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
+import com.project.meongcare.databinding.LayoutLogoutDialogBinding
+import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
@@ -221,6 +224,10 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
 
+            buttonProfileShare.setOnClickListener {
+                showUpdateDialog()
+            }
+
             buttonProfileSetting.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
@@ -228,26 +235,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
 
             buttonProfileLogout.setOnClickListener {
-                includeLogoutDialog.root.visibility = View.VISIBLE
-            }
-            includeLogoutDialog.run {
-                constraintlayoutBg.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.GONE
-                }
-                cardviewDialog.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.VISIBLE
-                }
-                buttonLogoutDialogCancel.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.GONE
-                }
-                buttonLogoutDialogLogout.setOnClickListener {
-                    lifecycleScope.launch(logoutCoroutineJob) {
-                        val refreshToken = userPreferences.getRefreshToken()
-                        if (refreshToken != null) {
-                            profileViewModel.logoutUser(refreshToken)
-                        }
-                    }
-                }
+                showLogoutDialog()
             }
         }
 
@@ -263,6 +251,46 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         profileUri = uri
         val multipartBody = createMultipartBody(requireContext(), uri)
         profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
+    }
+
+    private fun showLogoutDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutLogoutDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+
+        val dialog = builder.create()
+
+        dialogBinding.run {
+            buttonLogoutDialogLogout.setOnClickListener {
+                lifecycleScope.launch(logoutCoroutineJob) {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken != null) {
+                        dialog.dismiss()
+                        profileViewModel.logoutUser(refreshToken)
+                    }
+                }
+            }
+
+            buttonLogoutDialogCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showUpdateDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonOk.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun getAccessToken() {
