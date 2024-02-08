@@ -1,5 +1,6 @@
 package com.project.meongcare.feed.view
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.databinding.LayoutFeedNutrientBinding
+import com.project.meongcare.databinding.LayoutFeedStopDialogBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.utils.FEED_STOP_FAILURE
@@ -34,6 +36,9 @@ import kotlin.math.roundToInt
 class FeedFragment : Fragment() {
     private var _binding: FragmentFeedBinding? = null
     val binding get() = _binding!!
+
+    private lateinit var dialog: Dialog
+    private lateinit var dialogBinding: LayoutFeedStopDialogBinding
 
     private val feedGetViewModel: FeedGetViewModel by viewModels()
     private val feedPartGetViewModel: FeedPartGetViewModel by viewModels()
@@ -55,6 +60,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentFeedBinding.inflate(inflater, container, false)
+        dialogBinding = LayoutFeedStopDialogBinding.inflate((LayoutInflater.from(requireContext())))
         return binding.root
     }
 
@@ -101,6 +107,7 @@ class FeedFragment : Fragment() {
         initOldFeedPartRecyclerView()
         initChangeButton()
         initFeedStopButton()
+        initFeedStopDialog()
     }
 
     private fun updateVisibilityForEmptyFeed() {
@@ -131,7 +138,26 @@ class FeedFragment : Fragment() {
 
     private fun initFeedStopButton() {
         binding.textviewFeedSuspend.setOnClickListener {
-            stopFeed()
+            dialog = Dialog(requireContext(), R.style.CustomDialogTheme)
+            val view = dialogBinding.root
+
+            if(view.parent != null){
+                ((view.parent) as ViewGroup).removeView(view)
+            }
+
+            dialog.setContentView(dialogBinding.root)
+            dialog.show()
+        }
+    }
+
+    private fun initFeedStopDialog() {
+        dialogBinding.apply {
+            buttonFeedstopdialogCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            buttonFeedstopdialogCheck.setOnClickListener {
+                stopFeed()
+            }
         }
     }
 
@@ -142,6 +168,7 @@ class FeedFragment : Fragment() {
         )
         feedStopViewModel.feedStopped.observe(viewLifecycleOwner) { code ->
             if (code == SUCCESS) {
+                dialog.dismiss()
                 showSuccessSnackBar(
                     requireView(),
                     FEED_STOP_SUCCESS,
@@ -159,6 +186,7 @@ class FeedFragment : Fragment() {
                     initOldFeedPartRecyclerView()
                 }
             } else {
+                dialog.dismiss()
                 showFailureSnackBar(
                     requireView(),
                     FEED_STOP_FAILURE,
