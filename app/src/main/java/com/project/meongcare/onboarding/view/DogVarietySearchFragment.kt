@@ -2,10 +2,12 @@ package com.project.meongcare.onboarding.view
 
 import android.content.Context
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,11 +22,13 @@ import com.project.meongcare.onboarding.model.data.local.DogTypeSelectListener
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
     private lateinit var binding: FragmentDogVarietySearchBinding
 
+    private lateinit var inputMethodManager: InputMethodManager
     private val dogTypeViewModel: DogTypeViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
@@ -34,6 +38,8 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDogVarietySearchBinding.inflate(inflater)
+
+        initInputMethodManager()
 
         dogTypeViewModel.dogTypeList.observe(viewLifecycleOwner) { dogTypes ->
             if (dogTypes != null) {
@@ -92,6 +98,7 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val dialogBinding = LayoutInputDogTypeDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
 
         val dialog = builder.create()
 
@@ -125,11 +132,27 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
                 }
 
                 dogTypeSharedViewModel.setDogType(dogType)
+                hideSoftKeyboard()
                 dialog.dismiss()
                 findNavController().popBackStack()
             }
         }
 
         dialog.show()
+    }
+
+    private fun initInputMethodManager() {
+        thread {
+            SystemClock.sleep(300)
+            inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideSoftKeyboard()
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            requireActivity().currentFocus!!.clearFocus()
+        }
     }
 }
