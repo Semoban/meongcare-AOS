@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
@@ -33,6 +34,7 @@ import com.project.meongcare.feed.model.utils.FEED_PUT_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedImageUrl
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
@@ -48,6 +50,8 @@ import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -498,35 +502,51 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             createFeedInfo()
             val imageUri = feedPutViewModel.feedImage.value
 
-            val dto = convertFeedPutDto(feedPutInfo)
-            val file =
-                convertFeedFile(
-                    requireContext(),
-                    imageUri ?: Uri.EMPTY,
-                )
-
-            val feedUploadRequest =
-                FeedUploadRequest(
-                    dto,
-                    file,
-                )
-            feedPutViewModel.putFeed(
-                accessToken,
-                feedUploadRequest,
-            )
-            feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
-                if (response == SUCCESS) {
-                    findNavController().popBackStack()
-                    showSuccessSnackBar(
-                        requireView(),
-                        FEED_PUT_SUCCESS,
-                    )
-                } else {
-                    showFailureSnackBar(
-                        requireView(),
-                        FEED_PUT_FAILURE,
-                    )
+            if (imageUri == null) {
+                lifecycleScope.launch {
+                    val file =
+                        convertFeedImageUrl(
+                            requireContext(),
+                            feedInfo.imageURL,
+                        )
+                    val feedUploadRequest = createFeedPutRequest(file)
+                    putFeed(feedUploadRequest)
                 }
+            } else {
+                val file =
+                    convertFeedFile(
+                        requireContext(),
+                        imageUri,
+                    )
+                val feedUploadRequest = createFeedPutRequest(file)
+                putFeed(feedUploadRequest)
+            }
+        }
+    }
+
+    private fun createFeedPutRequest(file: MultipartBody.Part): FeedUploadRequest {
+        val dto = convertFeedPutDto(feedPutInfo)
+
+        return FeedUploadRequest(dto, file)
+    }
+
+    private fun putFeed(feedUploadRequest: FeedUploadRequest) {
+        feedPutViewModel.putFeed(
+            accessToken,
+            feedUploadRequest,
+        )
+        feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+                showSuccessSnackBar(
+                    requireView(),
+                    FEED_PUT_SUCCESS,
+                )
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    FEED_PUT_FAILURE,
+                )
             }
         }
     }
