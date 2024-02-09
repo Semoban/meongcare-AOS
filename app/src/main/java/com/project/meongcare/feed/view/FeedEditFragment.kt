@@ -81,7 +81,6 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var inputMethodManager: InputMethodManager
-    //private lateinit var file: MultipartBody.Part
 
     private var proteinValue = 0.0
     private var fatValue = 0.0
@@ -511,18 +510,20 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
             if (imageUri == null) {
                 lifecycleScope.launch {
-                    val file = convertFeedImageUrl(
-                        requireContext(),
-                        feedInfo.imageURL,
-                    )
+                    val file
+                        = convertFeedImageUrl(
+                            requireContext(),
+                            feedInfo.imageURL,
+                        )
                     val feedUploadRequest = createFeedPutRequest(file)
                     putFeed(feedUploadRequest)
                 }
             } else {
-                val file = convertFeedFile(
-                    requireContext(),
-                    imageUri,
-                )
+                val file =
+                    convertFeedFile(
+                        requireContext(),
+                        imageUri,
+                    )
                 val feedUploadRequest = createFeedPutRequest(file)
                 putFeed(feedUploadRequest)
             }
