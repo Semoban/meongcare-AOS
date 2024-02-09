@@ -504,8 +504,8 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
             if (imageUri == null) {
                 lifecycleScope.launch {
-                    val file
-                        = convertFeedImageUrl(
+                    val file =
+                        convertFeedImageUrl(
                             requireContext(),
                             feedInfo.imageURL,
                         )
