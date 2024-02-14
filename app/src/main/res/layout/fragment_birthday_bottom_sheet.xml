@@ -76,6 +76,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="33dp"
+        android:backgroundTint="@color/main4"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="완료"
