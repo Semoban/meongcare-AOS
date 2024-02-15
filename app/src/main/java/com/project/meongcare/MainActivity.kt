@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -16,7 +15,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
