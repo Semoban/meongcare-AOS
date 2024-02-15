@@ -73,7 +73,6 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
                     imageviewClearText.visibility = View.GONE
                     recyclerViewDogVariety.visibility = View.GONE
                 }
-
             }
 
             buttonInputDogType.setOnClickListener {
