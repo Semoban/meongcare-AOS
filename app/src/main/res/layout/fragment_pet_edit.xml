@@ -80,7 +80,7 @@
             <EditText
                 android:id="@+id/edittext_petedit_name"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:hint="@string/petadd_input_name"
@@ -117,7 +117,7 @@
             <EditText
                 android:id="@+id/edittext_petedit_type"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:editable="false"
@@ -290,7 +290,7 @@
             <View
                 android:id="@+id/view_petedit_weight"
                 android:layout_width="160dp"
-                android:layout_height="45dp"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 app:layout_constraintStart_toStartOf="@+id/guideline_petedit_start"
@@ -345,7 +345,7 @@
             <View
                 android:id="@+id/view_petedit_back_length"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:minHeight="46dp"
@@ -354,7 +354,7 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@+id/guideline_petedit_start"
                 app:layout_constraintTop_toBottomOf="@id/textview_petedit_size"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.25" />
 
             <EditText
                 android:id="@+id/edittext_petedit_back_length"
@@ -392,7 +392,7 @@
             <View
                 android:id="@+id/view_petedit_chest_circumference"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:minHeight="46dp"
@@ -401,7 +401,7 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toEndOf="@id/view_petedit_back_length"
                 app:layout_constraintTop_toBottomOf="@id/textview_petedit_size"
-                app:layout_constraintWidth_percent="0.3" />
+                app:layout_constraintWidth_percent="0.27" />
 
             <EditText
                 android:id="@+id/edittext_petedit_chest_circumference"
@@ -440,7 +440,7 @@
             <View
                 android:id="@+id/view_petedit_neck_circumference"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/all_rect_r5"
                 android:minHeight="46dp"
@@ -500,6 +500,8 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="72dp"
                 android:backgroundTint="@color/white"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:letterSpacing="-0.02"
                 android:text="취소"
                 android:textAppearance="@style/Typography.Bottom1.SemiBold"
@@ -522,6 +524,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="72dp"
                 android:backgroundTint="@color/main4"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:letterSpacing="-0.02"
                 android:text="완료"
                 android:textAppearance="@style/Typography.Bottom1.SemiBold"
