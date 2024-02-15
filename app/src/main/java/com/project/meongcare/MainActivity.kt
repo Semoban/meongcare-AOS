@@ -15,7 +15,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.meongcare.databinding.ActivityMainBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -237,6 +236,7 @@ class MainActivity : AppCompatActivity() {
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(getDrawable(R.drawable.all_rect_white_r10))
         builder.setCancelable(false)
 
         val dialog = builder.create()

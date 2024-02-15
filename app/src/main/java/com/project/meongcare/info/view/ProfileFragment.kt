@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -257,6 +258,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val dialogBinding = LayoutLogoutDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
 
         val dialog = builder.create()
 
@@ -283,6 +285,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
 
         val dialog = builder.create()
 

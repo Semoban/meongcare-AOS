@@ -66,12 +66,13 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
             editTextDogVariety.doOnTextChanged { text, start, before, count ->
                 val query = text.toString()
                 dogTypeViewModel.searchDogType(query)
-                imageviewClearText.visibility =
-                    if (count > 0) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
+                if (count > 0) {
+                    imageviewClearText.visibility = View.VISIBLE
+                    recyclerViewDogVariety.visibility = View.VISIBLE
+                } else {
+                    imageviewClearText.visibility = View.GONE
+                    recyclerViewDogVariety.visibility = View.GONE
+                }
             }
 
             buttonInputDogType.setOnClickListener {
@@ -91,6 +92,7 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
 
     override fun onDogTypeSelected(dogType: String) {
         dogTypeSharedViewModel.setDogType(dogType)
+        hideSoftKeyboard()
         findNavController().popBackStack()
     }
 
@@ -131,10 +133,8 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
                     return@setOnClickListener
                 }
 
-                dogTypeSharedViewModel.setDogType(dogType)
-                hideSoftKeyboard()
+                onDogTypeSelected(dogType)
                 dialog.dismiss()
-                findNavController().popBackStack()
             }
         }
 
