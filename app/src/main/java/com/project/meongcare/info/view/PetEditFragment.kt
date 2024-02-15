@@ -3,6 +3,7 @@ package com.project.meongcare.info.view
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -39,11 +41,17 @@ import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import java.net.URL
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -58,6 +66,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
 
     private var isCbxChecked = false
     private var isInitialized = false
+    private var isImageUpdated = false
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -297,10 +306,14 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
 
             edittextPeteditSelectBirthday.setOnClickListener {
-                val calendarBottomSheet = CalendarBottomSheetFragment()
-                calendarBottomSheet.setDateSubmitListener(this@PetEditFragment)
-                calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
-                calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
+                val birthdayBottomSheet =
+                    BirthdayBottomSheetFragment(
+                        binding.root,
+                        petEditViewModel.dogBirth.value,
+                    )
+                birthdayBottomSheet.setDateSubmitListener(this@PetEditFragment)
+                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+                birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
             }
 
             buttonPeteditCancel.setOnClickListener {
@@ -344,9 +357,17 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
 
                 val json = Gson().toJson(dog)
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                val filePart = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
-
-                petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
+                if (isImageUpdated) {
+                    // 새 이미지 등록된 경우
+                    val filePart: MultipartBody.Part = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
+                    petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
+                } else {
+                    // 기존 이미지인 경우
+                    lifecycleScope.launch {
+                        val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
+                        petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
+                    }
+                }
             }
         }
 
@@ -405,7 +426,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 petEditViewModel.setDogProfile(imageUri)
             }
             edittextPeteditName.setText(dogInfo.name)
-            edittextPeteditType.setText(dogInfo.type)
+            dogTypeSharedViewModel.setDogType(dogInfo.type)
             when (dogInfo.sex) {
                 Gender.FEMALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_female)
                 Gender.MALE.english -> chipgroupPeteditGroupGender.check(R.id.chip_petedit_male)
@@ -426,8 +447,28 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
     }
 
+    private suspend fun createMultipartFromUrl(url: String?): MultipartBody.Part {
+        return withContext(Dispatchers.IO){
+            if (url.isNullOrEmpty()) {
+                val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("file", "", emptyBody)
+            } else {
+                val inputStream = URL(url).openStream()
+                val file = File(requireContext().cacheDir, "url_image.jpg")
+                inputStream.use { input ->
+                    file.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("file", file.name, requestFile)
+            }
+        }
+    }
+
     override fun onUriPassed(uri: Uri) {
         petEditViewModel.setDogProfile(uri)
+        isImageUpdated = true
     }
 
     override fun onDateSubmit(str: String) {
