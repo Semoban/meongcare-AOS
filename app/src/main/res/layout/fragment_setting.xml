@@ -110,16 +110,5 @@
             app:layout_constraintStart_toStartOf="@id/guideline_setting_start"
             app:layout_constraintTop_toBottomOf="@id/divider_setting_urine_feces_image" />
 
-        <include
-            android:id="@+id/include_delete_account_dialog"
-            layout="@layout/layout_delete_account_dialog"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
