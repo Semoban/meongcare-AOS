@@ -10,23 +10,27 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
+import com.project.meongcare.databinding.LayoutDeleteAccountDialogBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,6 +41,7 @@ class SettingFragment : Fragment() {
     private lateinit var currentAccessToken: String
 
     private val settingViewModel: ProfileViewModel by viewModels()
+    private val deleteAccountCoroutineJob = Job()
     private var pushAgreement = false
 
     @Inject
@@ -143,29 +148,7 @@ class SettingFragment : Fragment() {
             }
 
             textviewSettingMembershipWithdrawal.setOnClickListener {
-                includeDeleteAccountDialog.root.visibility = View.VISIBLE
-            }
-
-            includeDeleteAccountDialog.run {
-                constraintlayoutBg.setOnClickListener {
-                    includeDeleteAccountDialog.root.visibility = View.GONE
-                }
-                cardviewDeleteAccountDialog.setOnClickListener {
-                    includeDeleteAccountDialog.root.visibility = View.VISIBLE
-                }
-                buttonDeleteAccountDialogCancel.setOnClickListener {
-                    includeDeleteAccountDialog.root.visibility = View.GONE
-                }
-                buttonDeleteAccountDialogDelete.setOnClickListener {
-                    lifecycleScope.launch {
-                        val currentProvider = userPreferences.getProvider()
-                        when (currentProvider) {
-                            "kakao" -> deleteKakaoAccount()
-                            "naver" -> deleteNaverAccount()
-                            "google" -> deleteGoogleAccount()
-                        }
-                    }
-                }
+                showDeleteAccountDialog()
             }
 
             buttonSettingNotification.setOnClickListener {
@@ -178,6 +161,38 @@ class SettingFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        deleteAccountCoroutineJob.cancel()
+    }
+
+    private fun showDeleteAccountDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutDeleteAccountDialogBinding.inflate(layoutInflater)
+
+        builder.setView(dialogBinding.root)
+        builder.setCancelable(true)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonDeleteAccountDialogCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogBinding.buttonDeleteAccountDialogDelete.setOnClickListener {
+            lifecycleScope.launch(deleteAccountCoroutineJob) {
+                val currentProvider = userPreferences.getProvider()
+                when (currentProvider) {
+                    "kakao" -> deleteKakaoAccount()
+                    "naver" -> deleteNaverAccount()
+                    "google" -> deleteGoogleAccount()
+                }
+            }
+        }
+
+        dialog.show()
     }
 
     private fun getAccessToken() {
