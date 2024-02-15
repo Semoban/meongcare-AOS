@@ -93,6 +93,7 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
 
     override fun onDogTypeSelected(dogType: String) {
         dogTypeSharedViewModel.setDogType(dogType)
+        hideSoftKeyboard()
         findNavController().popBackStack()
     }
 
@@ -133,10 +134,8 @@ class DogVarietySearchFragment : Fragment(), DogTypeSelectListener {
                     return@setOnClickListener
                 }
 
-                dogTypeSharedViewModel.setDogType(dogType)
-                hideSoftKeyboard()
+                onDogTypeSelected(dogType)
                 dialog.dismiss()
-                findNavController().popBackStack()
             }
         }
 
