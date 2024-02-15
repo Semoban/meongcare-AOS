@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -237,6 +238,7 @@ class MainActivity : AppCompatActivity() {
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+        builder.setBackground(getDrawable(R.drawable.all_rect_white_r10))
         builder.setCancelable(false)
 
         val dialog = builder.create()
