@@ -3,7 +3,6 @@ package com.project.meongcare.info.view
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
-import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
@@ -448,7 +446,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     }
 
     private suspend fun createMultipartFromUrl(url: String?): MultipartBody.Part {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             if (url.isNullOrEmpty()) {
                 val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("file", "", emptyBody)
