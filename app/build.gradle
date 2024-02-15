@@ -11,15 +11,19 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
+    lintOptions {
+        disable 'NullSafeMutableLiveData'
+    }
     namespace 'com.project.meongcare'
     compileSdk 34
 
     defaultConfig {
+        manifestPlaceholders
         applicationId "com.project.meongcare"
         minSdk 25
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName '1.1.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -28,6 +32,8 @@ android {
         buildConfigField "String", "NAVER_OAUTH_CLIENT_SECRET", properties['naver_oauth_client_secret']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_NAME", properties['naver_oauth_client_name']
         buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
+        buildConfigField "String", "SEMOBAN_BACK_DOMAIN", properties['semoban_back_domain']
+        signingConfig signingConfigs.debug
         manifestPlaceholders["kakaoNativeAppKeyManifest"] = properties["kakao_native_app_key_manifest"] as String
     }
 

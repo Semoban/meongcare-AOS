@@ -10,7 +10,7 @@ import retrofit2.http.Part
 
 interface DogAddApi {
     @Multipart
-    @POST("/dog")
+    @POST("dog")
     suspend fun postDogInfo(
         @Header("AccessToken") accessToken: String,
         @Part file: MultipartBody.Part,

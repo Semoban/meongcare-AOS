@@ -1,5 +1,6 @@
 package com.project.meongcare.supplement.model.data.remote
 
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object SupplementRetrofitInstance {
-    val BASE_URL = MainActivity.BASE_URL
+    val BASE_URL = BuildConfig.SEMOBAN_BACK_DOMAIN
 
     val nullOnEmptyConverterFactory =
         object : Converter.Factory() {

@@ -1,6 +1,6 @@
 package com.project.meongcare.symptom.model.data.remote
 
-import com.project.meongcare.MainActivity
+import com.project.meongcare.BuildConfig
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object SymptomRetrofitInstance {
-    val BASE_URL = MainActivity.BASE_URL
+    val BASE_URL = BuildConfig.SEMOBAN_BACK_DOMAIN
 
     val nullOnEmptyConverterFactory =
         object : Converter.Factory() {

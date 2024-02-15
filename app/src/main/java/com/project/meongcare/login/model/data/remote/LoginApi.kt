@@ -10,12 +10,12 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface LoginApi {
-    @POST("/auth/login")
+    @POST("auth/login")
     suspend fun postLoginInfo(
         @Body loginRequest: LoginRequest,
     ): Response<LoginResponse>
 
-    @GET("/auth/reissue")
+    @GET("auth/reissue")
     suspend fun getNewAccessToken(
         @Header("RefreshToken") refreshToken: String,
     ): Response<ReissueResponse>

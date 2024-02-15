@@ -18,60 +18,60 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface SupplementAPI {
-    @GET("/supplements")
+    @GET("supplements")
     suspend fun getResultSupplement(
         @Header("AccessToken") accessToken: String?,
         @Query("date") date: String,
         @Query("dogId") dogId: Long?,
     ): Response<ResultSupplement>
 
-    @GET("/supplements/{supplementsId}")
+    @GET("supplements/{supplementsId}")
     suspend fun getSupplementDetail(
         @Header("AccessToken") accessToken: String?,
         @Path("supplementsId") supplementsId: Int,
     ): Response<DetailSupplement>
 
-    @GET("/supplements/dog/{dogId}")
+    @GET("supplements/dog/{dogId}")
     suspend fun getSupplementDogs(
         @Header("AccessToken") accessToken: String?,
         @Path("dogId") dogId: Long?,
     ): Response<DogSupplement>
 
     @Multipart
-    @POST("/supplements")
+    @POST("supplements")
     suspend fun addSupplement(
         @Header("AccessToken") accessToken: String?,
         @Part filePart: MultipartBody.Part,
         @Part("dto") supplementDto: RequestBody,
     ): Response<ResponseBody>
 
-    @PATCH("/supplements/check")
+    @PATCH("supplements/check")
     suspend fun checkSupplement(
         @Header("AccessToken") accessToken: String?,
         @Query("supplementsRecordId") supplementsRecordId: Int,
     ): Response<ResponseBody>
 
-    @PATCH("/supplements/active")
+    @PATCH("supplements/active")
     suspend fun patchSupplementActiveStatus(
         @Header("AccessToken") accessToken: String?,
         @Query("supplementsId") supplementsId: Int,
         @Query("isActive") pushAgreement: Boolean,
     ): Response<ResponseBody>
 
-    @PATCH("/supplements/alarm")
+    @PATCH("supplements/alarm")
     suspend fun patchSupplementAlarmStatus(
         @Header("AccessToken") accessToken: String?,
         @Query("supplementsId") supplementsId: Int,
         @Query("pushAgreement") pushAgreement: Boolean,
     ): Response<ResponseBody>
 
-    @DELETE("/supplements/{supplementsId}")
+    @DELETE("supplements/{supplementsId}")
     suspend fun deleteSupplementById(
         @Header("AccessToken") accessToken: String?,
         @Path("supplementsId") supplementsId: Int,
     ): Response<ResponseBody>
 
-    @DELETE("/supplements")
+    @DELETE("supplements")
     suspend fun deleteSupplementsById(
         @Header("AccessToken") accessToken: String?,
         @Query("supplementsIds") supplementsId: IntArray,

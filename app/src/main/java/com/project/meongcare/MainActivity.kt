@@ -28,9 +28,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var toolbarViewModel: ToolbarViewModel
-    companion object {
-        const val BASE_URL = "https://dev.meongcare.com/"
-    }
 
     @Inject
     lateinit var userPreferences: UserPreferences
