@@ -1,5 +1,6 @@
 package com.project.meongcare.excreta.model.data.remote
 
+import com.project.meongcare.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object ExcretaClient {
-    private const val BASE_URL = "https://dev.meongcare.com/"
+    private const val BASE_URL = BuildConfig.SEMOBAN_DOMAIN
 
     private val logging =
         HttpLoggingInterceptor().apply {
