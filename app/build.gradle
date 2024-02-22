@@ -23,6 +23,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField "String", "SEMOBAN_DOMAIN", properties['semoban_domain']
+        buildConfigField "String", "SEMOBAN_DEV_DOMAIN", properties['semoban_dev_domain']
         buildConfigField "String", "KAKAO_NATIVE_APP_KEY", properties['kakao_native_app_key']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_ID", properties['naver_oauth_client_id']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_SECRET", properties['naver_oauth_client_secret']
