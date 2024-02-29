@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="12dp" />
+            app:layout_constraintGuide_begin="19dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_medicalrecordedit_start"
@@ -35,8 +35,8 @@
 
         <ImageButton
             android:id="@+id/imagebutton_medicalrecordedit_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:background="@null"
             android:src="@drawable/all_arrow_back_18dp"
             app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
@@ -46,10 +46,10 @@
             android:id="@+id/textview_medicalrecordedit_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
+            android:layout_marginStart="16dp"
             android:text="@{@string/medicalrecord_pet(`김먼지`)}"
             android:textAppearance="@style/Typography.Title2.SemiBold"
-            android:textSize="20sp"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordedit_back"
             app:layout_constraintStart_toEndOf="@id/imagebutton_medicalrecordedit_back"
             app:layout_constraintTop_toTopOf="@id/imagebutton_medicalrecordedit_back"
@@ -59,6 +59,7 @@
             android:id="@+id/button_medicalcrecordedit_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="27dp"
             android:background="@drawable/all_circle_border_gray"
             app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
@@ -80,7 +81,9 @@
             android:id="@+id/recyclerview_medicalrecordedit"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layout_medicalrecordedit_footer"
