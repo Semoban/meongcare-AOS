@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -16,97 +17,153 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="12dp" />
+            app:layout_constraintGuide_begin="14dp" />
 
         <TextView
             android:id="@+id/imagebutton_medicalrecord_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:text="@string/medicalrecord_header"
             android:textAppearance="@style/Typography.Title2.SemiBold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_medicalrecord_top" />
 
-        <CalendarView
-            android:id="@+id/calendarview_medicalrecord"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imagebutton_medicalrecord_back" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_medicalrecord_calendar"
-            android:layout_width="wrap_content"
-            android:layout_height="5dp"
-            android:layout_marginTop="20dp"
-            app:dividerColor="@color/gray1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarview_medicalrecord" />
-
-        <TextView
-            android:id="@+id/textview_medicalrecord_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:textAppearance="@style/Typography.Body2.Regular"
-            android:textColor="@color/gray4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_medicalrecord_calendar"
-            tools:text="2023. 08. 12" />
-
-        <TextView
-            android:id="@+id/textview_medicalrecord_pet_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/Typography.Title3.SemiBold"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_medicalrecord_date"
-            tools:text="김먼지님의 진료 기록" />
-
-        <TextView
-            android:id="@+id/textview_medicalrecord_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:text="@string/all_add"
-            android:textAppearance="@style/Typography.Body2.Regular"
-            android:textColor="@color/gray4"
-            app:layout_constraintBottom_toBottomOf="@id/textview_medicalrecord_edit"
-            app:layout_constraintEnd_toStartOf="@id/textview_medicalrecord_edit"
-            app:layout_constraintTop_toTopOf="@id/textview_medicalrecord_edit" />
-
-        <TextView
-            android:id="@+id/textview_medicalrecord_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="@string/all_edit"
-            android:textAppearance="@style/Typography.Body2.Regular"
-            android:textColor="@color/gray4"
-            app:layout_constraintBottom_toBottomOf="@id/textview_medicalrecord_pet_history"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/textview_medicalrecord_pet_history" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_medicalrecord_history"
-            android:layout_width="0dp"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="25dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_medicalrecord_pet_history"
-            tools:listitem="@layout/item_medical_record" />
+            android:layout_marginTop="16dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@+id/imagebutton_medicalrecord_back">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="150dp">
+
+                <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+                    android:id="@+id/calendarview_medicalrecord"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="32dp"
+                    custom:disable_date_color="@color/gray4"
+                    custom:layout_constraintEnd_toEndOf="parent"
+                    custom:layout_constraintStart_toStartOf="parent"
+                    custom:layout_constraintTop_toTopOf="parent"
+                    custom:range_color="@color/main1"
+                    custom:range_date_color="@color/main4"
+                    custom:selected_date_circle_color="@color/main4"
+                    custom:selected_date_color="@color/white"
+                    custom:text_size_date="16sp"
+                    custom:text_size_title="18sp"
+                    custom:text_size_week="16sp"
+                    custom:title_color="@color/black"
+                    custom:week_color="@color/black" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider_medicalrecord_calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="20dp"
+                    app:dividerColor="@color/gray1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarview_medicalrecord" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecord_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="24dp"
+                    android:textAppearance="@style/Typography.Body2.Regular"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_medicalrecord_calendar"
+                    tools:text="2023. 08. 12" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecord_pet_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/textview_medicalrecord_date"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_date"
+                    tools:text="김먼지님의 진료 기록" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecord_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="13dp"
+                    android:text="@string/all_add"
+                    android:textAppearance="@style/Typography.Body2.Regular"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    app:layout_constraintEnd_toStartOf="@+id/textview_medicalrecord_edit"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_history" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecord_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="@string/all_edit"
+                    android:textAppearance="@style/Typography.Body2.Regular"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_history" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="48dp"
+                    android:paddingBottom="48dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_history">
+
+                    <ImageView
+                        android:id="@+id/imageView21"
+                        android:layout_width="42dp"
+                        android:layout_height="35dp"
+                        app:srcCompat="@drawable/all_no_list_icon" />
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/medicalrecord_no_list"
+                        android:textAppearance="@style/Typography.Body1.Medium"
+                        android:textColor="@color/gray4" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_medicalrecord_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_medical_record" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
