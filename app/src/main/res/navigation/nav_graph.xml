@@ -250,7 +250,16 @@
         android:name="com.project.meongcare.MedicalRecordFragment"
         android:label="MedicalRecordFragment"
         tools:layout="@layout/fragment_medical_record">
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordEditFragment"
+            app:destination="@id/medicalRecordEditFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/medicalRecordEditFragment"
+        android:name="com.project.meongcare.MedicalRecordEditFragment"
+        android:label="MedicalRecordEditFragment"
+        tools:layout="@layout/fragment_medical_record_edit"/>
 
     <fragment
         android:id="@+id/feedFragment"
