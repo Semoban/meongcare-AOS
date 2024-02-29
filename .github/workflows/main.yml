@@ -24,4 +24,6 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter
-          ktlint_flags: "--format"
+          android: true
+          fail_on_error: true
+          level: warning
