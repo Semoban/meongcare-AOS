@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                             fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                         }
                         else -> {
-                            showUpdateDialog()
+                            fragmentContainerView.findNavController().navigate(R.id.medicalRecordFragment)
                         }
                     }
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                     if (menuItem.itemId == R.id.menuMainBottomNavHome) {
                         fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                     } else {
-                        showUpdateDialog()
+                        fragmentContainerView.findNavController().navigate(R.id.medicalRecordFragment)
                     }
                 }
             }
