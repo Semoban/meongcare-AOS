@@ -53,12 +53,7 @@ android {
     kapt {
         correctErrorTypes true
     }
-    buildFeatures {
-        dataBinding true
-    }
-    kapt {
-        correctErrorTypes true
-    }
+
     buildFeatures {
         dataBinding true
         viewBinding = true
