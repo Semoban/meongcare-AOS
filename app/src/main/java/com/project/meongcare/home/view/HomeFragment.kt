@@ -110,6 +110,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -122,6 +123,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
@@ -214,6 +216,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -274,6 +277,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -286,6 +290,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
@@ -321,6 +326,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -333,6 +339,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
@@ -357,6 +364,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -369,6 +377,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -395,6 +404,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -407,6 +417,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -433,6 +444,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -445,6 +457,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -475,6 +488,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -487,6 +501,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                     fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                     fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
                 }
@@ -500,6 +515,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             }
