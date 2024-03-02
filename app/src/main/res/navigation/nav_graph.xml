@@ -257,7 +257,7 @@
 
     <fragment
         android:id="@+id/medicalRecordEditFragment"
-        android:name="com.project.meongcare.MedicalRecordEditFragment"
+        android:name="com.project.meongcare.medicalrecord.view.MedicalRecordEditFragment"
         android:label="MedicalRecordEditFragment"
         tools:layout="@layout/fragment_medical_record_edit"/>
 
