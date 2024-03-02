@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.medicalrecord.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordBinding
 
 class MedicalRecordFragment : Fragment() {
