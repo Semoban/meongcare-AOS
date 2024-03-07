@@ -95,23 +95,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-                    <ImageView
-                        android:id="@+id/imageview_medicalrecordinfo_carrier"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="17dp"
-                        android:src="@drawable/medical_record_add_carrier" />
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textview_medicalrecordinfo_image_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|bottom"
-                        android:layout_marginBottom="23dp"
-                        android:text="@string/medicalrecord_image_description"
-                        android:textAppearance="@style/Typography.Body1.Medium"
-                        android:textColor="@color/gray4" />
+                        <ImageView
+                            android:id="@+id/imageview_medicalrecordinfo_carrier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/medical_record_add_carrier" />
+
+                        <TextView
+                            android:id="@+id/textview_medicalrecordinfo_image_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/medicalrecord_image_description"
+                            android:textAppearance="@style/Typography.Body1.Medium"
+                            android:textColor="@color/gray4" />
+                    </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
