@@ -32,6 +32,7 @@ class MedicalRecordFragment : Fragment() {
 
     private var accessToken = ""
     private var dogId = 0L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +60,7 @@ class MedicalRecordFragment : Fragment() {
             }
         }
 
+        initCurrentDate()
         getMedicalRecordList()
         initCalendarView()
         initMedicalRecordListEditButton()
@@ -66,9 +68,8 @@ class MedicalRecordFragment : Fragment() {
 
     private fun initMedicalRecordListEditButton() {
         binding.textviewMedicalrecordEdit.setOnClickListener {
-            // 선택된 날짜 번들 객체에 전달
             val bundle = Bundle()
-            bundle.putString("selectedDate", "")
+            bundle.putString("selectedDate", "${medicalRecordViewModel.selectedDate.value}")
             findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordEditFragment, bundle)
         }
     }
@@ -94,12 +95,7 @@ class MedicalRecordFragment : Fragment() {
 
                     override fun onFirstDateSelected(startDate: Calendar) {
                         val selectedDate = dateTimeToDate(startDate.time)
-                        initMedicalRecordDateTextView(selectedDate)
-                        medicalRecordViewModel.getMedicalRecordList(
-                            dogId,
-                            selectedDate + "T00:00:00",
-                            accessToken,
-                        )
+                        medicalRecordViewModel.getCurrentDate(selectedDate)
                     }
                 },
             )
@@ -126,8 +122,22 @@ class MedicalRecordFragment : Fragment() {
 
     private fun initMedicalRecordDateTextView(selectedDate: String) {
         val date = dateFormat(selectedDate)
-        binding.textviewMedicalrecordDate.setText(date)
+        binding.textviewMedicalrecordDate.text = date
     }
+
+    private fun initCurrentDate() {
+        medicalRecordViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            if (date != null) {
+                initMedicalRecordDateTextView(date)
+                medicalRecordViewModel.getMedicalRecordList(
+                    dogId,
+                    date + "T00:00:00",
+                    accessToken,
+                )
+            }
+        }
+    }
+
     private fun getMedicalRecordList() {
         medicalRecordViewModel.medicalRecordList.observe(viewLifecycleOwner) { response ->
             if (response != null) {
