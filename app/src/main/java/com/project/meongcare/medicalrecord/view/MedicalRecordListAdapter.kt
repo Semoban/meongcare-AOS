@@ -6,16 +6,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemMedicalRecordBinding
+import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemClickListener
 import com.project.meongcare.medicalrecord.model.entities.MedicalRecordListItem
 
-class MedicalRecordListAdapter() : ListAdapter<MedicalRecordListItem, MedicalRecordListAdapter.MedicalRecordViewHolder>(diffUtil) {
+class MedicalRecordListAdapter(
+    private val medicalRecordItemClickListener: MedicalRecordItemClickListener,
+) : ListAdapter<MedicalRecordListItem, MedicalRecordListAdapter.MedicalRecordViewHolder>(diffUtil) {
     inner class MedicalRecordViewHolder(private val binding: ItemMedicalRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MedicalRecordListItem) {
             binding.run {
                 textviewMedicalrecordTime.text = item.dateTime
                 viewMedicalrecord.setOnClickListener {
-
+                    medicalRecordItemClickListener.onMedicalRecordItemClick(item.medicalRecordId)
                 }
             }
         }
