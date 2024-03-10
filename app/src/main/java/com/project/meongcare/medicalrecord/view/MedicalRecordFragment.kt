@@ -65,6 +65,7 @@ class MedicalRecordFragment : Fragment() {
         initMedicalRecordPetName()
         initCalendarView()
         initMedicalRecordListEditButton()
+        initMedicalRecordListAddButton()
     }
 
     private fun initMedicalRecordListEditButton() {
@@ -72,6 +73,12 @@ class MedicalRecordFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("selectedDate", "${medicalRecordViewModel.selectedDate.value}")
             findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordEditFragment, bundle)
+        }
+    }
+
+    private fun initMedicalRecordListAddButton() {
+        binding.textviewMedicalrecordAdd.setOnClickListener {
+            // 진료기록 등록 화면으로 이동
         }
     }
 
