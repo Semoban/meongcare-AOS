@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordBinding
+import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemClickListener
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
@@ -29,6 +31,8 @@ class MedicalRecordFragment : Fragment() {
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+
+    private lateinit var medicalRecordListAdapter: MedicalRecordListAdapter
 
     private var accessToken = ""
     private var dogId = 0L
@@ -60,6 +64,18 @@ class MedicalRecordFragment : Fragment() {
             }
         }
 
+        medicalRecordListAdapter =
+            MedicalRecordListAdapter(
+                object : MedicalRecordItemClickListener {
+                    override fun onMedicalRecordItemClick(medicalRecordId: Long) {
+                        // 상세 화면으로 이동하면서 medicalRecordId 전달
+                        Log.d("medicalRecordItemClicked", "$medicalRecordId")
+                    }
+
+                }
+            )
+
+        initMedicalRecordRecyclerView()
         initCurrentDate()
         getMedicalRecordList()
         initMedicalRecordPetName()
@@ -99,9 +115,14 @@ class MedicalRecordFragment : Fragment() {
                         endDate: Calendar,
                     ) {
                         calendarviewMedicalrecord.resetAllSelectedViews()
+                        textviewMedicalrecordDate.text = ""
+                        linearLayout4.visibility = View.VISIBLE
+                        recyclerviewMedicalrecordHistory.visibility = View.GONE
                     }
 
                     override fun onFirstDateSelected(startDate: Calendar) {
+                        linearLayout4.visibility = View.GONE
+                        recyclerviewMedicalrecordHistory.visibility = View.VISIBLE
                         val selectedDate = dateTimeToDate(startDate.time)
                         medicalRecordViewModel.getCurrentDate(selectedDate)
                     }
@@ -158,9 +179,23 @@ class MedicalRecordFragment : Fragment() {
         medicalRecordViewModel.medicalRecordList.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 if (response.code() == 200) {
-                    Log.d("medicalRecordList", response.body()?.records?.size.toString())
+                    if (response.body()?.records?.size == 0) {
+                        binding.linearLayout4.visibility = View.VISIBLE
+                        binding.recyclerviewMedicalrecordHistory.visibility = View.GONE
+                    } else {
+                        binding.linearLayout4.visibility = View.GONE
+                        binding.recyclerviewMedicalrecordHistory.visibility = View.VISIBLE
+                        medicalRecordListAdapter.submitList(response.body()?.records)
+                    }
                 }
             }
+        }
+    }
+
+    private fun initMedicalRecordRecyclerView() {
+        binding.recyclerviewMedicalrecordHistory.run {
+            adapter = medicalRecordListAdapter
+            layoutManager = LinearLayoutManager(context)
         }
     }
 }
