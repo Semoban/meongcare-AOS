@@ -1,6 +1,7 @@
 package com.project.meongcare.medicalrecord.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,13 @@ import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
 
 class MedicalRecordEditFragment : Fragment() {
     private lateinit var binding: FragmentMedicalRecordEditBinding
+    private var selectedDate = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        selectedDate = arguments?.getString("selectedDate")!!
+        Log.d("selectedDate", selectedDate)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
