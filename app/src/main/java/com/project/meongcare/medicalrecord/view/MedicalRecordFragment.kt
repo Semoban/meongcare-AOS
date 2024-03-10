@@ -62,6 +62,7 @@ class MedicalRecordFragment : Fragment() {
 
         initCurrentDate()
         getMedicalRecordList()
+        initMedicalRecordPetName()
         initCalendarView()
         initMedicalRecordListEditButton()
     }
@@ -123,6 +124,14 @@ class MedicalRecordFragment : Fragment() {
     private fun initMedicalRecordDateTextView(selectedDate: String) {
         val date = dateFormat(selectedDate)
         binding.textviewMedicalrecordDate.text = date
+    }
+
+    private fun initMedicalRecordPetName() {
+        dogViewModel.dogNamePreferencesLiveData.observe(viewLifecycleOwner) { dogName ->
+            if (dogName != null) {
+                binding.textviewMedicalrecordPetName.text = dogName
+            }
+        }
     }
 
     private fun initCurrentDate() {
