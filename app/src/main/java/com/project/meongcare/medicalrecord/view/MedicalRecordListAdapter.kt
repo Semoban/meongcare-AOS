@@ -16,7 +16,7 @@ class MedicalRecordListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MedicalRecordListItem) {
             binding.run {
-                textviewMedicalrecordTime.text = item.dateTime
+                textviewMedicalrecordTime.text = showFormattedTime(item.dateTime)
                 viewMedicalrecord.setOnClickListener {
                     medicalRecordItemClickListener.onMedicalRecordItemClick(item.medicalRecordId)
                 }
@@ -37,6 +37,20 @@ class MedicalRecordListAdapter(
         position: Int,
     ) {
         holder.bind(currentList[position])
+    }
+
+    private fun showFormattedTime(dateTime: String): String {
+        val time = dateTime.substringAfterLast("T")
+        val hourMinute = time.substringBeforeLast(":")
+
+        val hour = hourMinute.substringBeforeLast(":")
+        val minute = hourMinute.substringAfterLast(":")
+
+        return if (hour.toInt() < 12){
+            "오전 $hour:$minute"
+        } else {
+            "오후 $hour:$minute"
+        }
     }
 
     companion object {
