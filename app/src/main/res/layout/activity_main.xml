@@ -49,6 +49,9 @@
                     android:background="@android:color/transparent"
                     app:itemIconSize="20dp"
                     app:itemIconTint="@color/color_bottom_nav_menu_item"
+                    app:itemPaddingBottom="10dp"
+                    app:itemTextAppearanceActive="@style/Typography.Body3.Medium"
+                    app:itemTextAppearanceInactive="@style/Typography.Body3.Medium"
                     app:itemTextColor="@color/color_bottom_nav_menu_item"
                     app:labelVisibilityMode="labeled"
                     app:menu="@menu/menu_main" />
