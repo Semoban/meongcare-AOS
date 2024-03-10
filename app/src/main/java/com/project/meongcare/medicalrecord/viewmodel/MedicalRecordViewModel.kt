@@ -21,6 +21,10 @@ class MedicalRecordViewModel
         val medicalRecordList: LiveData<Response<MedicalRecordGetResponse>>
             get() = _medicalRecordList
 
+        private val _selectedDate = MutableLiveData<String>()
+        val selectedDate: LiveData<String>
+            get() = _selectedDate
+
         fun getMedicalRecordList(
             dogId: Long,
             dateTime: String,
@@ -29,5 +33,9 @@ class MedicalRecordViewModel
             viewModelScope.launch {
                 _medicalRecordList.value = medicalRecordRepositoryImpl.getMedicalRecordList(dogId, dateTime, accessToken)
             }
+        }
+
+        fun getCurrentDate(date: String) {
+            _selectedDate.value = date
         }
 }
