@@ -47,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{@string/medicalrecord_pet(`김먼지`)}"
             android:textAppearance="@style/Typography.Title2.SemiBold"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordedit_back"
