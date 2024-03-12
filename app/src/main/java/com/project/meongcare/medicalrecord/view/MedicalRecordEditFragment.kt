@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
@@ -41,6 +42,7 @@ class MedicalRecordEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initMedicalRecordHeader()
+        initBackButton()
     }
 
     private fun initMedicalRecordHeader() {
@@ -49,6 +51,12 @@ class MedicalRecordEditFragment : Fragment() {
                 val str = getString(R.string.medicalrecord_pet)
                 binding.textviewMedicalrecordeditHeaderTitle.text = str.format(dogName)
             }
+        }
+    }
+
+    private fun initBackButton() {
+        binding.imagebuttonMedicalrecordeditBack.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }
