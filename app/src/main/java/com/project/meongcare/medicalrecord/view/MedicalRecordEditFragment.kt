@@ -43,6 +43,7 @@ class MedicalRecordEditFragment : Fragment() {
 
         initMedicalRecordHeader()
         initBackButton()
+        initCancelButton()
     }
 
     private fun initMedicalRecordHeader() {
@@ -56,6 +57,12 @@ class MedicalRecordEditFragment : Fragment() {
 
     private fun initBackButton() {
         binding.imagebuttonMedicalrecordeditBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun initCancelButton() {
+        binding.layoutMedicalrecordeditFooter.buttonFootertwoFirst.setOnClickListener {
             findNavController().popBackStack()
         }
     }
