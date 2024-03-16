@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
+import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemCheckListener
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
@@ -22,6 +25,8 @@ class MedicalRecordEditFragment : Fragment() {
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+
+    private lateinit var medicalRecordEditListAdapter: MedicalRecordEditListAdapter
 
     private var selectedDate = ""
     private var accessToken = ""
@@ -48,9 +53,21 @@ class MedicalRecordEditFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        medicalRecordEditListAdapter =
+            MedicalRecordEditListAdapter(
+                object : MedicalRecordItemCheckListener {
+                    override fun onMedicalRecordItemChecked(medicalRecordIds: IntArray) {
+                        for (id in medicalRecordIds) {
+                            Log.e("id", "$id")
+                        }
+                    }
+                }
+            )
+
         initMedicalRecordHeader()
         initBackButton()
         initCancelButton()
+        initMedicalRecordRecyclerView()
         initDogId()
     }
 
@@ -84,10 +101,19 @@ class MedicalRecordEditFragment : Fragment() {
         medicalRecordViewModel.medicalRecordList.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 if (response.code() == 200) {
+                    medicalRecordEditListAdapter.submitList(response.body()?.records)
                 }
             }
         }
     }
+
+    private fun initMedicalRecordRecyclerView() {
+        binding.recyclerviewMedicalrecordedit.run {
+            adapter = medicalRecordEditListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
     private fun initDogId() {
         dogViewModel.dogIdPreferencesLiveData.observe(viewLifecycleOwner) { dogId ->
             if (dogId != null) {
