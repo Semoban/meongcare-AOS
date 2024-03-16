@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
+import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,9 @@ class MedicalRecordEditFragment : Fragment() {
     private lateinit var binding: FragmentMedicalRecordEditBinding
 
     private val dogViewModel: DogViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private var selectedDate = ""
+    private var accessToken = ""
     private var dogId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +77,14 @@ class MedicalRecordEditFragment : Fragment() {
             if (dogId != null) {
                 this.dogId = dogId
                 initAccessToken()
+            }
+        }
+    }
+
+    private fun initAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
             }
         }
     }
