@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemMedicalRecordBinding
 import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemClickListener
 import com.project.meongcare.medicalrecord.model.entities.MedicalRecordListItem
+import com.project.meongcare.medicalrecord.model.utils.MedicalRecordDateUtils.showFormattedTime
 
 class MedicalRecordListAdapter(
     private val medicalRecordItemClickListener: MedicalRecordItemClickListener,
@@ -37,20 +38,6 @@ class MedicalRecordListAdapter(
         position: Int,
     ) {
         holder.bind(currentList[position])
-    }
-
-    private fun showFormattedTime(dateTime: String): String {
-        val time = dateTime.substringAfterLast("T")
-        val hourMinute = time.substringBeforeLast(":")
-
-        val hour = hourMinute.substringBeforeLast(":")
-        val minute = hourMinute.substringAfterLast(":")
-
-        return if (hour.toInt() < 12){
-            "오전 $hour:$minute"
-        } else {
-            "오후 $hour:$minute"
-        }
     }
 
     companion object {
