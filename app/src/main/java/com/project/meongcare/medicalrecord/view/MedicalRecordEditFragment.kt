@@ -57,6 +57,7 @@ class MedicalRecordEditFragment : Fragment() {
             MedicalRecordEditListAdapter(
                 object : MedicalRecordItemCheckListener {
                     override fun onMedicalRecordItemChecked(medicalRecordIds: IntArray) {
+                        setSelectAllCheckBoxState(medicalRecordIds)
                         for (id in medicalRecordIds) {
                             Log.e("id", "$id")
                         }
@@ -102,6 +103,8 @@ class MedicalRecordEditFragment : Fragment() {
             if (response != null) {
                 if (response.code() == 200) {
                     medicalRecordEditListAdapter.submitList(response.body()?.records)
+                    initSelectAllCheckBox()
+                    initSelectAllTextView()
                 }
             }
         }
@@ -129,6 +132,37 @@ class MedicalRecordEditFragment : Fragment() {
                 this.accessToken = accessToken
                 getMedicalRecordList()
             }
+        }
+    }
+
+    private fun initSelectAllCheckBox() {
+        binding.run {
+            // 전체 선택 체크 버튼 직접 클릭했을 때 제어
+            checkboxMedicalrecordeditSelectAll.setOnCheckedChangeListener { _, isChecked ->
+                medicalRecordEditListAdapter.changeAllItemsCheckState(isChecked)
+            }
+        }
+    }
+
+    private fun initSelectAllTextView() {
+        binding.run {
+            textviewMedicalrecordeditDeleteAll.setOnClickListener {
+                checkboxMedicalrecordeditSelectAll.isChecked = !checkboxMedicalrecordeditSelectAll.isChecked
+            }
+        }
+    }
+
+    private fun setSelectAllCheckBoxState(medicalRecordIds: IntArray) {
+        val checkedIdsCount = medicalRecordIds.size
+        val checkBoxCount = medicalRecordViewModel.medicalRecordList.value?.body()?.records?.size ?: 0
+
+        // 목록 체크 상태에 따른 전체 선택 체크 버튼 제어
+        binding.checkboxMedicalrecordeditSelectAll.checkedState = if (checkBoxCount == checkedIdsCount) {
+            MaterialCheckBox.STATE_CHECKED
+        } else if (checkedIdsCount == 0) {
+            MaterialCheckBox.STATE_UNCHECKED
+        } else {
+            MaterialCheckBox.STATE_INDETERMINATE
         }
     }
 }

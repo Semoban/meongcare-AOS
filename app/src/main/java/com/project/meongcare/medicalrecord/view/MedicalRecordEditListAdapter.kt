@@ -77,4 +77,12 @@ class MedicalRecordEditListAdapter(
             return oldItem == newItem
         }
     }
+
+    fun changeAllItemsCheckState(isChecked: Boolean) {
+        val medicalRecordList = currentList.toMutableList()
+        for (medicalRecord in medicalRecordList) {
+            medicalRecord.isChecked = isChecked
+        }
+        notifyDataSetChanged()
+    }
 }
