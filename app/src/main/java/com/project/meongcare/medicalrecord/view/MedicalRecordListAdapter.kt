@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemMedicalRecordBinding
 import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemClickListener
-import com.project.meongcare.medicalrecord.model.entities.MedicalRecordListItem
+import com.project.meongcare.medicalrecord.model.entities.MedicalRecord
 import com.project.meongcare.medicalrecord.model.utils.MedicalRecordDateUtils.showFormattedTime
 
 class MedicalRecordListAdapter(
     private val medicalRecordItemClickListener: MedicalRecordItemClickListener,
-) : ListAdapter<MedicalRecordListItem, MedicalRecordListAdapter.MedicalRecordViewHolder>(diffUtil) {
+) : ListAdapter<MedicalRecord, MedicalRecordListAdapter.MedicalRecordViewHolder>(diffUtil) {
     inner class MedicalRecordViewHolder(private val binding: ItemMedicalRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MedicalRecordListItem) {
+        fun bind(item: MedicalRecord) {
             binding.run {
                 textviewMedicalrecordTime.text = showFormattedTime(item.dateTime)
                 viewMedicalrecord.setOnClickListener {
@@ -42,17 +42,17 @@ class MedicalRecordListAdapter(
 
     companion object {
         val diffUtil =
-            object : DiffUtil.ItemCallback<MedicalRecordListItem>() {
+            object : DiffUtil.ItemCallback<MedicalRecord>() {
                 override fun areItemsTheSame(
-                    oldItem: MedicalRecordListItem,
-                    newItem: MedicalRecordListItem
+                    oldItem: MedicalRecord,
+                    newItem: MedicalRecord,
                 ): Boolean {
                     return oldItem == newItem
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: MedicalRecordListItem,
-                    newItem: MedicalRecordListItem
+                    oldItem: MedicalRecord,
+                    newItem: MedicalRecord,
                 ): Boolean {
                     return oldItem == newItem
                 }
