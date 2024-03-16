@@ -19,6 +19,7 @@ class MedicalRecordEditFragment : Fragment() {
 
     private val dogViewModel: DogViewModel by viewModels()
     private var selectedDate = ""
+    private var dogId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,7 @@ class MedicalRecordEditFragment : Fragment() {
         initMedicalRecordHeader()
         initBackButton()
         initCancelButton()
+        initDogId()
     }
 
     private fun initMedicalRecordHeader() {
@@ -64,6 +66,15 @@ class MedicalRecordEditFragment : Fragment() {
     private fun initCancelButton() {
         binding.layoutMedicalrecordeditFooter.buttonFootertwoFirst.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initDogId() {
+        dogViewModel.dogIdPreferencesLiveData.observe(viewLifecycleOwner) { dogId ->
+            if (dogId != null) {
+                this.dogId = dogId
+                initAccessToken()
+            }
         }
     }
 }
