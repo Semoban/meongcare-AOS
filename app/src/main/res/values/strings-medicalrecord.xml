@@ -13,4 +13,5 @@
     <string name="medicalrecord_terinarian_name_length">%d/10</string>
     <string name="medicalrecord_note_length">%d/500</string>
     <string name="medicalrecord_no_list">생성된 진료기록이 없습니다!</string>
+    <string name="medicalrecord_select_all">전체 선택</string>
 </resources>
