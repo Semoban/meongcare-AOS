@@ -8,7 +8,7 @@ object MedicalRecordDateUtils {
         val hour = hourMinute.substringBeforeLast(":")
         val minute = hourMinute.substringAfterLast(":")
 
-        return if (hour.toInt() < 12){
+        return if (hour.toInt() < 12) {
             "오전 $hour:$minute"
         } else {
             "오후 $hour:$minute"
