@@ -21,13 +21,17 @@ class MedicalRecordViewModel
         val medicalRecordList: LiveData<Response<MedicalRecordGetResponse>>
             get() = _medicalRecordList
 
-        private val _selectedDate = MutableLiveData<String>()
-        val selectedDate: LiveData<String>
+        private val _selectedDate = MutableLiveData<String?>()
+        val selectedDate: LiveData<String?>
             get() = _selectedDate
 
         private val _deleteMedicalRecordResponse = MutableLiveData<Int>()
         val deleteMedicalRecordResponse: LiveData<Int>
             get() = _deleteMedicalRecordResponse
+
+        init {
+            _selectedDate.value = null
+        }
 
         fun getMedicalRecordList(
             dogId: Long,
@@ -39,7 +43,7 @@ class MedicalRecordViewModel
             }
         }
 
-        fun getCurrentDate(date: String) {
+        fun getCurrentDate(date: String?) {
             _selectedDate.value = date
         }
 
