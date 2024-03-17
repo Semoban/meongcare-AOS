@@ -62,8 +62,8 @@ class DogPreferences
             }
         }
 
-        val dogId: Flow<Long?> = context.dogDataStore.data
-            .catch {exception ->
+        val dogId: Flow<Long?> =
+            context.dogDataStore.data.catch { exception ->
                 if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
@@ -74,8 +74,8 @@ class DogPreferences
                 preferences[preferenceDogId]
             }
 
-        val dogName: Flow<String?> = context.dogDataStore.data
-            .catch {exception ->
+        val dogName: Flow<String?> =
+            context.dogDataStore.data.catch { exception ->
                 if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
@@ -86,8 +86,8 @@ class DogPreferences
                 preferences[preferenceDogName]
             }
 
-        val dogWeight: Flow<Double?> = context.dogDataStore.data
-            .catch {exception ->
+        val dogWeight: Flow<Double?> =
+            context.dogDataStore.data.catch { exception ->
                 if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
