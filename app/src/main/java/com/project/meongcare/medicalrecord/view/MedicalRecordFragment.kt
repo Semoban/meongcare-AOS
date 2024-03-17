@@ -17,6 +17,7 @@ import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemCli
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -85,9 +86,23 @@ class MedicalRecordFragment : Fragment() {
 
     private fun initMedicalRecordListEditButton() {
         binding.textviewMedicalrecordEdit.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("selectedDate", "${medicalRecordViewModel.selectedDate.value}")
-            findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordEditFragment, bundle)
+            if (medicalRecordViewModel.selectedDate.value == null) {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.medicalrecrod_empty_date),
+                ).show()
+            } else if (medicalRecordViewModel.medicalRecordList.value?.body()?.records?.size == 0) {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.medicalrecord_no_list),
+                ).show()
+            } else {
+                val bundle = Bundle()
+                bundle.putString("selectedDate", "${medicalRecordViewModel.selectedDate.value}")
+                findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordEditFragment, bundle)
+            }
         }
     }
 
@@ -117,6 +132,7 @@ class MedicalRecordFragment : Fragment() {
                         textviewMedicalrecordDate.text = ""
                         linearLayout4.visibility = View.VISIBLE
                         recyclerviewMedicalrecordHistory.visibility = View.GONE
+                        medicalRecordViewModel.getCurrentDate(null)
                     }
 
                     override fun onFirstDateSelected(startDate: Calendar) {
