@@ -16,6 +16,7 @@ import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemChe
 import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,9 +59,7 @@ class MedicalRecordEditFragment : Fragment() {
                 object : MedicalRecordItemCheckListener {
                     override fun onMedicalRecordItemChecked(medicalRecordIds: IntArray) {
                         setSelectAllCheckBoxState(medicalRecordIds)
-                        for (id in medicalRecordIds) {
-                            Log.e("id", "$id")
-                        }
+                        deleteMedicalRecord(medicalRecordIds)
                     }
                 }
             )
@@ -163,6 +162,24 @@ class MedicalRecordEditFragment : Fragment() {
             MaterialCheckBox.STATE_UNCHECKED
         } else {
             MaterialCheckBox.STATE_INDETERMINATE
+        }
+    }
+
+    private fun deleteMedicalRecord(medicalRecordIds: IntArray) {
+        binding.run {
+            layoutMedicalrecordeditFooter.buttonFootertwoSecond.setOnClickListener {
+                medicalRecordViewModel.deleteMedicalRecordList(medicalRecordIds, accessToken)
+                medicalRecordViewModel.deleteMedicalRecordResponse.observe(viewLifecycleOwner) { response ->
+                    if (response != null && response == 200) {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.medicalrecord_delete_success),
+                        ).show()
+                        findNavController().popBackStack()
+                    }
+                }
+            }
         }
     }
 }
