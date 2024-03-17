@@ -47,6 +47,11 @@ interface FeedRepository {
         feedPatchRequest: FeedPatchRequest,
     ): Int?
 
+    suspend fun stopFeed(
+        accessToken: String,
+        feedRecordId: Long,
+    ): Int?
+
     suspend fun putFeed(
         accessToken: String,
         feedUploadRequest: FeedUploadRequest,

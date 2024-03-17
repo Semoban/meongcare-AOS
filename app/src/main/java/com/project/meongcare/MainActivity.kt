@@ -11,9 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.meongcare.databinding.ActivityMainBinding
+import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var toolbarViewModel: ToolbarViewModel
     companion object {
-        const val BASE_URL = "https://dev.meongcare.com/"
+        const val BASE_URL = BuildConfig.SEMOBAN_DOMAIN
     }
 
     @Inject
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.INTERNET,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.POST_NOTIFICATIONS,
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                             fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                         }
                         else -> {
-                            includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                            fragmentContainerView.findNavController().navigate(R.id.medicalRecordFragment)
                         }
                     }
 
@@ -79,17 +81,8 @@ class MainActivity : AppCompatActivity() {
                     if (menuItem.itemId == R.id.menuMainBottomNavHome) {
                         fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                     } else {
-                        includeMedicalRecordDialog.root.visibility = View.VISIBLE
+                        fragmentContainerView.findNavController().navigate(R.id.medicalRecordFragment)
                     }
-                }
-            }
-
-            includeMedicalRecordDialog.run {
-                constraintlayoutBg.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.VISIBLE
-                }
-                buttonOk.setOnClickListener {
-                    includeMedicalRecordDialog.root.visibility = View.GONE
                 }
             }
 
@@ -140,12 +133,7 @@ class MainActivity : AppCompatActivity() {
                     floatingButtonMenuIn(activityMainBinding)
                     delay(550L)
                     overlayLayout.visibility = View.GONE
-                    includeMedicalRecordDialog.run {
-                        root.visibility = View.VISIBLE
-                        constraintlayoutBg.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
-                        buttonOk.setOnClickListener { includeMedicalRecordDialog.root.visibility = View.GONE }
-                    }
-                    // fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
+                    fragmentContainerView.findNavController().navigate(R.id.excretaFragment)
                 }
             }
 
@@ -226,19 +214,39 @@ class MainActivity : AppCompatActivity() {
 
     fun autoLogin() {
         lifecycleScope.launch {
-            lifecycleScope.launch {
-                val accessToken = userPreferences.getAccessToken()
-                val refreshToken = userPreferences.getRefreshToken()
+            val accessToken = userPreferences.getAccessToken()
+            val refreshToken = userPreferences.getRefreshToken()
+            val isFirstLogin = userPreferences.getIsFirstLogin()
 
-                if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
-                } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
+            if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
+            } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
+                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
+            } else {
+                if (isFirstLogin == true) {
+                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.dogAddOnBoardingFragment)
                 } else {
                     activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
                 }
             }
         }
+    }
+
+    private fun showUpdateDialog() {
+        val builder = MaterialAlertDialogBuilder(this@MainActivity)
+        val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+        builder.setBackground(getDrawable(R.drawable.all_rect_white_r10))
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonOk.setOnClickListener {
+            dialog.dismiss()
+            activityMainBinding.bottomNavigationViewMain.selectedItemId = R.id.menuMainBottomNavHome
+        }
+
+        dialog.show()
     }
 
     private fun initNavController() {

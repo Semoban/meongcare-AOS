@@ -13,11 +13,14 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
+import com.project.meongcare.feed.model.utils.FEED_DELETE_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_DELETE_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
 import com.project.meongcare.feed.viewmodel.FeedDetailGetViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,9 +51,9 @@ class FeedInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.fetchAccessToken()
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
+        userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
             feedInfoFeedDetailGetViewModel.getFeedDetail(
@@ -74,6 +77,7 @@ class FeedInfoFragment : Fragment() {
                         response.fat,
                         response.crudeAsh,
                         response.moisture,
+                        response.etc,
                         response.kcal,
                         response.recommendIntake,
                         response.imageURL,
@@ -91,6 +95,7 @@ class FeedInfoFragment : Fragment() {
                 textviewFeedinfoCrudeFatRatio.text = feedInfo.fat.toString()
                 textviewFeedinfoMoistureRatio.text = feedInfo.moisture.toString()
                 textviewFeedinfoCrudeAshRatio.text = feedInfo.crudeAsh.toString()
+                textviewFeedinfoEtcRatio.text = feedInfo.etc.toString()
                 textviewFeedinfoKcalContent.text = feedInfo.kcal.toString()
                 textviewFeedinfoDailyIntakeContent.text = feedInfo.recommendIntake.toString()
                 textviewFeedinfoIntakePeriodStart.text = convertDateFormat(feedInfo.startDate)
@@ -141,18 +146,20 @@ class FeedInfoFragment : Fragment() {
     private fun deleteFeedInfo() {
         feedDeleteViewModel.deleteFeed(
             accessToken,
-            feedId,
+            feedRecordId,
         )
         feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 findNavController().popBackStack()
-                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보를 삭제하였습니다!").show()
-            } else {
-                CustomSnackBar.make(
+                showSuccessSnackBar(
                     requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    "서버가 불안정 하여 사료 정보 삭제에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                ).show()
+                    FEED_DELETE_SUCCESS,
+                )
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    FEED_DELETE_FAILURE,
+                )
             }
         }
     }

@@ -69,6 +69,12 @@ interface FeedService {
         @Body requestBody: FeedPatchRequest,
     ): Response<Int>
 
+    @PATCH("feed/stop/{feedRecordId}")
+    suspend fun stopFeed(
+        @Header("AccessToken") accessToken: String,
+        @Path("feedRecordId") feedRecordId: Long,
+    ): Response<Int>
+
     @Multipart
     @PUT("feed")
     suspend fun putFeed(
@@ -77,9 +83,9 @@ interface FeedService {
         @Part file: MultipartBody.Part,
     ): Response<Int>
 
-    @DELETE("feed/{feedId}")
+    @DELETE("feed/{feedRecordId}")
     suspend fun deleteFeed(
         @Header("AccessToken") accessToken: String,
-        @Path("feedId") feedId: Long,
+        @Path("feedRecordId") feedRecordId: Long,
     ): Response<Int>
 }

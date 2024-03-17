@@ -16,16 +16,22 @@ import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.utils.EXCRETA_PATCH_FAILURE
+import com.project.meongcare.excreta.utils.EXCRETA_PATCH_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
+import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.initCalendarModalBottomSheet
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
+import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showSuccessSnackBar
 import com.project.meongcare.excreta.utils.HOUR_END
 import com.project.meongcare.excreta.utils.HOUR_START
 import com.project.meongcare.excreta.utils.MINUTE_END
 import com.project.meongcare.excreta.utils.MINUTE_START
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
+import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,8 +41,12 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     val binding get() = _binding!!
 
     private val excretaPatchViewModel: ExcretaPatchViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val calendarModalBottomSheet = CalendarBottomSheetFragment()
+
     private lateinit var excretaInfo: ExcretaDetailGetResponse
     private var excretaDate = ""
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,14 +62,19 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        calendarModalBottomSheet.setDateSubmitListener(this@ExcretaEditFragment)
         excretaInfo = getExcretaInfo()
+        userViewModel.fetchAccessToken()
+        userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
+            accessToken = response
+        }
         initToolbar()
         initDate()
         initExcretaImage()
         initExcretaCheckBox(excretaInfo.excretaType)
         initTime()
         initPhotoAttachModalBottomSheet()
-        initCalendarModalBottomSheet()
+        setUpCalendarModalBottomSheet()
         toggleExcretaCheckboxesOnClick()
         observeAndUpdateExcretaDate()
         editExcretaInfo()
@@ -111,13 +126,13 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
-    private fun initCalendarModalBottomSheet() {
-        binding.textviewExcretaaddDate.setOnClickListener {
-            val calendarModalBottomSheet = CalendarBottomSheetFragment()
-            calendarModalBottomSheet.setDateSubmitListener(this@ExcretaEditFragment)
-            calendarModalBottomSheet.show(
-                requireActivity().supportFragmentManager,
-                calendarModalBottomSheet.tag,
+    private fun setUpCalendarModalBottomSheet() {
+        binding.apply {
+            initCalendarModalBottomSheet(
+                textviewExcretaaddDate,
+                calendarModalBottomSheet,
+                requireActivity(),
+                textviewExcretaaddDateError,
             )
         }
     }
@@ -162,27 +177,49 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun editExcretaInfo() {
         binding.apply {
             buttonExcretaaddCompletion.setOnClickListener {
-                val excretaType =
-                    if (checkboxExcretaaddUrine.isChecked) {
-                        Excreta.URINE.toString()
-                    } else {
-                        Excreta.FECES.toString()
+                var isValid = true
+
+                if (excretaDate.isEmpty()) {
+                    textviewExcretaaddDateError.apply {
+                        visibility = View.VISIBLE
                     }
+                    isValid = false
+                }
 
-                val excretaTime = ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
-                val excretaDateTime = "${excretaDate}T$excretaTime"
+                if (isValid) {
+                    val excretaType =
+                        if (checkboxExcretaaddUrine.isChecked) {
+                            Excreta.URINE.toString()
+                        } else {
+                            Excreta.FECES.toString()
+                        }
 
-                val currentImageUri = excretaPatchViewModel.excretaImage.value
-                excretaPatchViewModel.patchExcreta(
-                    getExcretaId(),
-                    excretaType,
-                    excretaDateTime,
-                    requireContext(),
-                    currentImageUri ?: Uri.EMPTY,
-                )
-                excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        findNavController().popBackStack()
+                    val excretaTime =
+                        ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
+                    val excretaDateTime = "${excretaDate}T$excretaTime"
+
+                    val currentImageUri = excretaPatchViewModel.excretaImage.value
+                    excretaPatchViewModel.patchExcreta(
+                        accessToken,
+                        getExcretaId(),
+                        excretaType,
+                        excretaDateTime,
+                        requireContext(),
+                        currentImageUri ?: Uri.EMPTY,
+                    )
+                    excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
+                        if (response == SUCCESS) {
+                            showSuccessSnackBar(
+                                requireView(),
+                                EXCRETA_PATCH_SUCCESS,
+                            )
+                            findNavController().popBackStack()
+                        } else {
+                            showFailureSnackBar(
+                                requireView(),
+                                EXCRETA_PATCH_FAILURE,
+                            )
+                        }
                     }
                 }
             }

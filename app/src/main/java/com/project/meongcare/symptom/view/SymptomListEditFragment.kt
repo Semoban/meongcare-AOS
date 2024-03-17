@@ -42,9 +42,6 @@ class SymptomListEditFragment : Fragment() {
 
         navController = findNavController()
 
-        // TODO : 강아지 이름 연결 필요
-        val dogName = "김대박"
-
         symptomViewModel.symptomList.value =
             arguments?.getParcelableArrayList<Parcelable>("symptomList") as MutableList<Symptom>
         Log.d("증상 리스트", symptomViewModel.symptomList.value.toString())
@@ -53,16 +50,14 @@ class SymptomListEditFragment : Fragment() {
             symptomIdList.observe(viewLifecycleOwner) {
                 Log.d("이상증상 변화", it.toString())
                 fragmentSymptomListEditBinding.run {
-                    if (it.isNotEmpty() && it.size == symptomList.value!!.size) {
-                        imageViewSymptomListEditDeleteAllCheck.isSelected = true
-                    }
+                    imageViewSymptomListEditDeleteAllCheck.isSelected = it.isNotEmpty() && it.size == symptomList.value!!.size
                     recyclerViewSymptomListEdit.run {
                         adapter = SymptomListEditRecyclerViewAdapter(symptomViewModel)
                         layoutManager = LinearLayoutManager(context)
                     }
                 }
             }
-            symptomViewModel.deleteSymptomCode.observe(viewLifecycleOwner) { code ->
+            deleteSymptomCode.observe(viewLifecycleOwner) { code ->
                 if (code == 200) {
                     CustomSnackBar.make(
                         requireView(),
@@ -72,20 +67,25 @@ class SymptomListEditFragment : Fragment() {
                     navController.popBackStack()
                 }
             }
+
+            dogName.observe(viewLifecycleOwner) {
+                fragmentSymptomListEditBinding.toolbarSymptomListEdit.run {
+                    title = "${it}님의 이상증상"
+                }
+            }
         }
 
         fragmentSymptomListEditBinding.run {
+            toolbarSymptomListEdit.run {
+                setNavigationOnClickListener {
+                    navController.popBackStack()
+                }
+            }
+
             if (symptomViewModel.symptomList.value.isNullOrEmpty()) {
                 scrollViewSymptomListEdit.visibility = View.GONE
                 layoutSymptomListEditButton.visibility = View.GONE
                 layoutSymptomListEditNoData.visibility = View.VISIBLE
-            }
-
-            toolbarSymptomListEdit.run {
-                title = "${dogName}님의 이상증상"
-                setNavigationOnClickListener {
-                    navController.navigate(R.id.action_symptomListEdit_to_symptom)
-                }
             }
 
             if (symptomViewModel.symptomIdListAllCheck.value!!) {
@@ -98,8 +98,10 @@ class SymptomListEditFragment : Fragment() {
                 setOnClickListener { view ->
                     view.isSelected = !view.isSelected
                     if (view.isSelected) {
+                        symptomViewModel.symptomIdList.value!!.clear()
                         symptomViewModel.symptomIdList.value = temp
                     } else {
+                        symptomViewModel.symptomIdList.value!!.clear()
                         symptomViewModel.symptomIdList.value = mutableListOf()
                     }
                 }

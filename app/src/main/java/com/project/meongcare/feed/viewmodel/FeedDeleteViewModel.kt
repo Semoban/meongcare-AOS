@@ -20,11 +20,11 @@ class FeedDeleteViewModel
 
         fun deleteFeed(
             accessToken: String,
-            feedId: Long,
+            feedRecordId: Long,
         ) {
             viewModelScope.launch {
                 _feedDeleted.value =
-                    feedRepositoryImpl.deleteFeed(accessToken, feedId)
+                    feedRepositoryImpl.deleteFeed(accessToken, feedRecordId)
             }
         }
     }

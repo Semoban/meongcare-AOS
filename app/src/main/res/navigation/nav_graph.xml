@@ -93,7 +93,8 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@+id/loginFragment"
-            app:popUpTo="@id/loginFragment"/>
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -247,7 +248,18 @@
     <fragment
         android:id="@+id/medicalRecordFragment"
         android:name="com.project.meongcare.MedicalRecordFragment"
-        android:label="MedicalRecordFragment" />
+        android:label="MedicalRecordFragment"
+        tools:layout="@layout/fragment_medical_record">
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordEditFragment"
+            app:destination="@id/medicalRecordEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/medicalRecordEditFragment"
+        android:name="com.project.meongcare.MedicalRecordEditFragment"
+        android:label="MedicalRecordEditFragment"
+        tools:layout="@layout/fragment_medical_record_edit"/>
 
     <fragment
         android:id="@+id/feedFragment"

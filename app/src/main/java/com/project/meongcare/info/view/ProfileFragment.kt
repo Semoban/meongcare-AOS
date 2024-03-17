@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,11 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
+import com.project.meongcare.databinding.LayoutLogoutDialogBinding
+import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
@@ -27,6 +31,7 @@ import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,6 +42,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var mainActivity: MainActivity
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val logoutCoroutineJob = Job()
     private lateinit var profileUri: Uri
     private lateinit var currentAccessToken: String
 
@@ -98,18 +104,19 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                             }
                         }
                     }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_get_profile_failure),
+                        ).show()
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure),
-                ).show()
             }
         }
 
         profileViewModel.dogList.observe(viewLifecycleOwner) { dogListResponse ->
-            if (dogListResponse != null) {
+            if (dogListResponse != null && dogListResponse.body() != null) {
                 when (dogListResponse.code()) {
                     200 -> {
                         binding.textViewNoDog.visibility = View.GONE
@@ -140,21 +147,24 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                             }
                         }
                     }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_get_dog_list_failure),
+                        ).show()
+                    }
                 }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_get_dog_list_failure),
-                ).show()
-                binding.textViewNoDog.visibility = View.VISIBLE
-                binding.recyclerviewProfilePetList.visibility = View.GONE
+                if (dogListResponse.body()?.dogs.isNullOrEmpty()) {
+                    binding.textViewNoDog.visibility = View.VISIBLE
+                    binding.recyclerviewProfilePetList.visibility = View.GONE
+                }
             }
         }
 
         profileViewModel.logoutResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(logoutCoroutineJob) {
                     userPreferences.provider.collect { provider ->
                         when (provider) {
                             "kakao" -> kakaoLogout()
@@ -215,6 +225,10 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
             }
 
+            buttonProfileShare.setOnClickListener {
+                showUpdateDialog()
+            }
+
             buttonProfileSetting.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
@@ -222,36 +236,64 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
 
             buttonProfileLogout.setOnClickListener {
-                includeLogoutDialog.root.visibility = View.VISIBLE
-            }
-            includeLogoutDialog.run {
-                constraintlayoutBg.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.GONE
-                }
-                cardviewDialog.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.VISIBLE
-                }
-                buttonLogoutDialogCancel.setOnClickListener {
-                    includeLogoutDialog.root.visibility = View.GONE
-                }
-                buttonLogoutDialogLogout.setOnClickListener {
-                    lifecycleScope.launch {
-                        val refreshToken = userPreferences.getRefreshToken()
-                        if (refreshToken != null) {
-                            profileViewModel.logoutUser(refreshToken)
-                        }
-                    }
-                }
+                showLogoutDialog()
             }
         }
 
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        logoutCoroutineJob.cancel()
+    }
+
     override fun onUriPassed(uri: Uri) {
         profileUri = uri
         val multipartBody = createMultipartBody(requireContext(), uri)
         profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
+    }
+
+    private fun showLogoutDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutLogoutDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
+
+        val dialog = builder.create()
+
+        dialogBinding.run {
+            buttonLogoutDialogLogout.setOnClickListener {
+                lifecycleScope.launch(logoutCoroutineJob) {
+                    val refreshToken = userPreferences.getRefreshToken()
+                    if (refreshToken != null) {
+                        dialog.dismiss()
+                        profileViewModel.logoutUser(refreshToken)
+                    }
+                }
+            }
+
+            buttonLogoutDialogCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showUpdateDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBinding = LayoutMedicalRecordDialogBinding.inflate(layoutInflater)
+        builder.setView(dialogBinding.root)
+        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
+
+        val dialog = builder.create()
+
+        dialogBinding.buttonOk.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun getAccessToken() {

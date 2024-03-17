@@ -58,6 +58,7 @@
                     android:layout_marginLeft="13dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center_vertical"
                     android:text="증상 타이틀"
                     android:textColor="@color/black"
                     android:textSize="16sp" />

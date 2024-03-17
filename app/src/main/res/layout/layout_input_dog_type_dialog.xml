@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/all_rect_white_r10">
+
+    <TextView
+        android:id="@+id/textview_dog_type_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="28dp"
+        android:text="품종을 입력해주세요"
+        android:textAppearance="@style/Typography.Title3.SemiBold"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_input"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/all_rect_gray1_r5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_dog_type_title">
+
+        <EditText
+            android:id="@+id/editText_dog_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:ems="10"
+            android:hint="강아지 품종을 입력해주세요"
+            android:inputType="text"
+            android:letterSpacing="-0.02"
+            android:singleLine="true"
+            android:textAppearance="@style/Typography.Body1.Regular"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_clear_dog_type"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageview_clear_dog_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/pet_food_search"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button_dog_type_submit"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/main4"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="확인"
+        android:textAppearance="@style/Typography.Bottom2.SemiBold"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintlayout_input" />
+
+    <Button
+        android:id="@+id/button_dog_type_cancel"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/gray2"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:stateListAnimator="@null"
+        android:text="취소"
+        android:textAppearance="@style/Typography.Bottom2.SemiBold"
+        android:textColor="@color/gray5"
+        android:textSize="16dp"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_dog_type_submit"
+        app:layout_constraintEnd_toStartOf="@+id/button_dog_type_submit"
+        app:layout_constraintTop_toTopOf="@+id/button_dog_type_submit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.project.meongcare.home.view
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentHomeBinding
 import com.project.meongcare.home.model.data.local.DogPreferences
@@ -27,7 +28,7 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -38,10 +39,20 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, HorizonCalendarItemClickListener {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
-    private lateinit var mainActivity: MainActivity
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var currentAccessToken: String
+    private lateinit var loadingDialog: LoadingDialog
+
+    private val getAccessTokenJob = Job()
+    private val reissueAtProfileJob = Job()
+    private val reissueAtDogListJob = Job()
+    private val reissueAtPostDogWeightJob = Job()
+    private val reissueAtGetDogWeightJob = Job()
+    private val reissueAtGetDogFeedJob = Job()
+    private val reissueAtGetDogSupplementJob = Job()
+    private val reissueAtGetDogExcretaJob = Job()
+    private val reissueAtGetDogSymptomJob = Job()
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -63,10 +74,16 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         savedInstanceState: Bundle?,
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
+        loadingDialog = getLoadingDialog()
+        loadingDialog.show()
+        return fragmentHomeBinding.root
+    }
 
-        homeViewModel.getUserProfile(currentAccessToken)
-        homeViewModel.getDogList(currentAccessToken)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
 
         homeViewModel.homeProfileResponse.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null && profileResponse.code() == 200) {
@@ -75,8 +92,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     .placeholder(R.drawable.home_profile_default_image)
                     .error(R.drawable.home_profile_default_image)
                     .into(fragmentHomeBinding.imageviewHomeProfile)
+                homeViewModel.getDogList(currentAccessToken)
             } else if (profileResponse != null && profileResponse.code() == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtProfileJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -84,6 +102,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             when (response.code()) {
                                 200 -> {
                                     userPreferences.setAccessToken(response.body()?.accessToken)
+                                    getAccessToken()
                                 }
                                 401 -> {
                                     CustomSnackBar.make(
@@ -91,6 +110,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -103,10 +123,14 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
         homeViewModel.homeSelectedDate.observe(viewLifecycleOwner) { selectedDate ->
+            if (!loadingDialog.isShowing) {
+                loadingDialog.show()
+            }
             if (selectedDate != null) {
                 Log.d("homeViewmodel-selectedDate", selectedDate.toString())
                 // 가로 달력 날짜 selectedDate로 설정
@@ -170,8 +194,13 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 ) {
                     homeViewModel.setSelectedDogPos(0)
                 }
+                if (dogListResponse.body()?.dogs.isNullOrEmpty()) {
+                    fragmentHomeBinding.recyclerviewHomeDog.visibility = View.GONE
+                    fragmentHomeBinding.linearlayoutDogExist.visibility = View.GONE
+                    fragmentHomeBinding.linearlayoutDogNotExist.visibility = View.VISIBLE
+                }
             } else if (dogListResponse != null && dogListResponse.code() == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtDogListJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -179,6 +208,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             when (response.code()) {
                                 200 -> {
                                     userPreferences.setAccessToken(response.body()?.accessToken!!)
+                                    getAccessToken()
                                 }
                                 401 -> {
                                     CustomSnackBar.make(
@@ -186,6 +216,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -231,7 +262,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     currentAccessToken,
                 )
             } else if (responseCode != null && responseCode == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtPostDogWeightJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -246,6 +277,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -258,11 +290,12 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { selectedDogPos ->
-            if (selectedDogPos != null && !homeViewModel.homeDogList.value?.body()?.dogs?.isEmpty()!!) {
+            if (selectedDogPos != null && !homeViewModel.homeDogList.value?.body()?.dogs?.isNullOrEmpty()!!) {
                 Log.d("homeSelectedDogName", homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].name)
                 homeViewModel.setSelectedDogId(homeViewModel.homeDogList.value?.body()!!.dogs[selectedDogPos].dogId)
                 val adapter = fragmentHomeBinding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
@@ -278,7 +311,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 fragmentHomeBinding.textviewHomeWeight.text = dogWeightResponse.body()?.weight?.toString()
                 dogPreferences.setDogWeight(dogWeightResponse.body()?.weight!!)
             } else if (dogWeightResponse != null && dogWeightResponse.code() == 400) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(reissueAtGetDogWeightJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val response = loginRepository.getNewAccessToken(refreshToken)
@@ -293,6 +326,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                         R.drawable.snackbar_error_16dp,
                                         getString(R.string.snack_bar_refresh_expire),
                                     ).show()
+                                    loadingDialog.dismiss()
                                     findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                 }
                             }
@@ -305,6 +339,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     R.drawable.snackbar_error_16dp,
                     getString(R.string.snack_bar_failure),
                 ).show()
+                loadingDialog.dismiss()
             }
         }
 
@@ -314,7 +349,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     Log.d("homeDogFeed", dogFeedResponse.body()?.recommendIntake.toString())
                     fragmentHomeBinding.textviewHomeFeed.text = dogFeedResponse.body()?.recommendIntake.toString()
                 } else if (dogFeedResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogFeedJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -329,6 +364,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -341,6 +377,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -352,7 +389,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.textviewHomeNutritionPercentage.text = dogSupplementsResponse.body()?.supplementsRate.toString()
                     fragmentHomeBinding.progressbarNutrition.progress = dogSupplementsResponse.body()?.supplementsRate ?: 0
                 } else if (dogSupplementsResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogSupplementJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -367,6 +404,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -379,6 +417,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -390,7 +429,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     fragmentHomeBinding.textviewHomeFecesCount.text = dogExcretaResponse.body()?.fecesCount.toString()
                     fragmentHomeBinding.textviewHomeUrineCount.text = dogExcretaResponse.body()?.urineCount.toString()
                 } else if (dogExcretaResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogExcretaJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -405,6 +444,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -417,6 +457,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
                 }
             }
         }
@@ -432,7 +473,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     val adapter = fragmentHomeBinding.recyclerviewHomeSymptom.adapter as HomeSymptomAdapter
                     adapter.updateSymptomList(dogSymptomResponse.body()?.symptomRecords!!)
                 } else if (dogSymptomResponse.code() == 401) {
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(reissueAtGetDogSymptomJob) {
                         val refreshToken = userPreferences.getRefreshToken()
                         if (refreshToken.isNotEmpty()) {
                             val response = loginRepository.getNewAccessToken(refreshToken)
@@ -447,6 +488,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                                             R.drawable.snackbar_error_16dp,
                                             getString(R.string.snack_bar_refresh_expire),
                                         ).show()
+                                        loadingDialog.dismiss()
                                         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
                                     }
                                 }
@@ -459,13 +501,25 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                         R.drawable.snackbar_error_16dp,
                         getString(R.string.snack_bar_failure),
                     ).show()
+                    loadingDialog.dismiss()
+                    fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
+                    fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
+                }
+                if (dogSymptomResponse.body()?.symptomRecords.isNullOrEmpty()) {
                     fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                     fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
                 }
             } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
+                loadingDialog.dismiss()
                 fragmentHomeBinding.textviewHomeSymptom2.setText(R.string.home_symptom_not_exist)
                 fragmentHomeBinding.recyclerviewHomeSymptom.visibility = View.GONE
             }
+            loadingDialog.dismiss()
         }
 
         fragmentHomeBinding.run {
@@ -473,7 +527,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 val modalBottomSheet = CalendarBottomSheetFragment()
                 modalBottomSheet.setDateSubmitListener(this@HomeFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
             }
 
             imageviewHomeAlert.setOnClickListener {
@@ -485,12 +539,14 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             imageviewHomeAddDog.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_dogAddOnBoardingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("isFirstRegister", false)
+                findNavController().navigate(R.id.action_homeFragment_to_dogAddOnBoardingFragment, bundle)
             }
 
             recyclerviewHomeDog.run {
                 adapter = HomeDogProfileAdapter(layoutInflater, context, this@HomeFragment)
-                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
             recyclerviewHorizonCalendar.run {
@@ -500,7 +556,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
             recyclerviewHomeSymptom.run {
                 adapter = HomeSymptomAdapter(layoutInflater, context)
-                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
             constraintlayoutHomeSymptom.setOnClickListener {
@@ -508,19 +564,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             }
 
             constraintlayoutHomeFeces.setOnClickListener {
-                // 대소변 기능 업데이트 후 삭제
-                fragmentHomeBinding.run {
-                    includeMedicalRecordDialog.run {
-                        root.visibility = View.VISIBLE
-                        constraintlayoutBg.setOnClickListener {
-                            includeMedicalRecordDialog.root.visibility = View.GONE
-                        }
-                        buttonOk.setOnClickListener {
-                            includeMedicalRecordDialog.root.visibility = View.GONE
-                        }
-                    }
-                }
-                // findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_excretaFragment)
             }
 
             constraintlayoutHomeNutrition.setOnClickListener {
@@ -535,28 +579,38 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 findNavController().navigate(R.id.action_homeFragment_to_feedFragment)
             }
         }
+    }
 
-        return fragmentHomeBinding.root
+    override fun onResume() {
+        super.onResume()
+        if (!loadingDialog.isShowing) {
+            loadingDialog.show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getAccessTokenJob.cancel()
+        reissueAtProfileJob.cancel()
+        reissueAtDogListJob.cancel()
+        reissueAtPostDogWeightJob.cancel()
+        reissueAtGetDogWeightJob.cancel()
+        reissueAtGetDogFeedJob.cancel()
+        reissueAtGetDogSupplementJob.cancel()
+        reissueAtGetDogExcretaJob.cancel()
+        reissueAtGetDogSymptomJob.cancel()
     }
 
     private fun getAccessToken() {
-        lifecycleScope.launch {
-            userPreferences.accessToken.collectLatest { accessToken ->
-                if (accessToken != null) {
-                    currentAccessToken = accessToken
-                }
-            }
+        lifecycleScope.launch(getAccessTokenJob) {
+            val accessToken = userPreferences.getAccessToken()
+            currentAccessToken = accessToken
+            homeViewModel.getUserProfile(currentAccessToken)
         }
     }
 
     override fun onDateSubmit(str: String) {
         homeViewModel.setSelectedDate(stringToDate(str))
-    }
-
-    fun getCurrentDate(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return currentDate.format(formatter)
     }
 
     fun dateFormatter(date: Date): String {
@@ -588,4 +642,17 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.setSelectedDatePos(position)
         homeViewModel.setSelectedDate(homeViewModel.homeDateList.value!![position])
     }
+
+    fun getLoadingDialog(): LoadingDialog {
+        val progressDialog = LoadingDialog(requireContext())
+        progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.setCancelable(false)
+        return progressDialog
+    }
+}
+
+fun getCurrentDate(): String {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return currentDate.format(formatter)
 }

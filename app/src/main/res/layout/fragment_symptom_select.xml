@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".symptom.view.SymptomSelectFragment" >
+    tools:context=".symptom.view.SymptomSelectFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_symptomSelect"
@@ -13,12 +13,14 @@
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="35dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintTop_toBottomOf="@id/toolbar_symptomSelect">
 
         <LinearLayout
@@ -75,14 +77,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="체중이 감소한다"
-                            android:textAppearance="@style/Typography.Body2.Medium"/>
+                            android:textAppearance="@style/Typography.Body2.Medium" />
 
                         <TextView
                             android:id="@+id/textView_symptomSelect_weight_subtext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="갑작스럽게 체중이 감소하는 증상이 나타난다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
@@ -145,7 +147,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="체온이 41도 이상인 상태가 오랫동안 지속된다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
@@ -202,14 +204,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="기침을 한다"
-                            android:textAppearance="@style/Typography.Body2.Medium"/>
+                            android:textAppearance="@style/Typography.Body2.Medium" />
 
                         <TextView
                             android:id="@+id/textView_symptomSelect_cough_subtext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="갑자기 켁켁거리며 기침이 많아진다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
@@ -266,14 +268,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="설사를 한다"
-                            android:textAppearance="@style/Typography.Body2.Medium"/>
+                            android:textAppearance="@style/Typography.Body2.Medium" />
 
                         <TextView
                             android:id="@+id/textView_symptomSelect_diarrhea_subtext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="갑자기 설사를 한다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
@@ -330,14 +332,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="식욕부진이 나타난다"
-                            android:textAppearance="@style/Typography.Body2.Medium"/>
+                            android:textAppearance="@style/Typography.Body2.Medium" />
 
                         <TextView
                             android:id="@+id/textView_symptomSelect_lossOfAppetite_subtext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="사료를 먹지 않는 행동을 보인다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
@@ -394,24 +396,66 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="활동량이 감소한다"
-                            android:textAppearance="@style/Typography.Body2.Medium"/>
+                            android:textAppearance="@style/Typography.Body2.Medium" />
 
                         <TextView
                             android:id="@+id/textView_symptomSelect_activityDecrease_subtext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="평소에 비해 활동량이 적어진다"
-                            android:textAppearance="@style/Typography.Body3.Regular"/>
+                            android:textAppearance="@style/Typography.Body3.Regular" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_symptomSelect_etc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView_symptomSelect_check_etc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/all_check_toggle_20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="9dp"
+                    android:background="@drawable/all_rect_gray2_r5_outline_gray3"
+                    android:padding="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_symptomAdd_select_symptom">
+
+                    <EditText
+                        android:id="@+id/editText_symptomAdd_custom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="항목에 없는 증상을 입력해주세요"
+                        android:inputType="text|textNoSuggestions"
+                        android:textAppearance="@style/Typography.Body2.Medium"
+                        android:textColorHint="@color/gray4"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginStart="22dp"
@@ -459,5 +503,4 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

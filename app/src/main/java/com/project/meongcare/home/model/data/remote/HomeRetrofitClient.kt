@@ -1,5 +1,6 @@
 package com.project.meongcare.home.model.data.remote
 
+import com.project.meongcare.BuildConfig
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -12,7 +13,7 @@ class HomeRetrofitClient
     constructor() {
         val homeApi: HomeApi by lazy {
             Retrofit.Builder()
-                .baseUrl("https://dev.meongcare.com")
+                .baseUrl(BuildConfig.SEMOBAN_DOMAIN)
                 .addConverterFactory(nullOnEmptyConverterFactory)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

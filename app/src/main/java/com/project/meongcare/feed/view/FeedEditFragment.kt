@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
@@ -25,21 +28,30 @@ import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedPutInfo
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.utils.END_DATE
+import com.project.meongcare.feed.model.utils.FEED_PUT_FAILURE
+import com.project.meongcare.feed.model.utils.FEED_PUT_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedImageUrl
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
+import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationBrandAndFeedName
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIngredient
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationIntakePeriod
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationKcal
 import com.project.meongcare.feed.model.utils.FeedValidationUtils.validationTotalIngredient
+import com.project.meongcare.feed.model.utils.INTAKE_PERIOD_ERROR
+import com.project.meongcare.feed.model.utils.START_DATE
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
-import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -68,6 +80,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var fatValue = 0.0
     private var ashValue = 0.0
     private var moistureValue = 0.0
+    private var etcValue = 0.0
     private var kcal = ""
     private var weight = 0.0
     private var accessToken = ""
@@ -101,6 +114,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         initToolbar()
         fetchFeedInfo()
         initPhotoAttachModalBottomSheet()
+        updateEtcPercentage()
         applyKcalContentEditorBehavior()
         updateCalendarVisibility()
         updateSelectedIntakePeriod()
@@ -122,6 +136,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             edittextFeedaddeditCrudeFatPercent.setText(feedInfo.fat.toString())
             edittextFeedaddeditCrudeAshPercent.setText(feedInfo.crudeAsh.toString())
             edittextFeedaddeditMoisturePercent.setText(feedInfo.moisture.toString())
+            textviewFeedaddeditEtcPercent.text = feedInfo.etc.toString()
             edittextFeedaddeditKcalContent.setText(feedInfo.kcal.toString())
             textviewFeedaddeditDailyIntakeContent.text = "$recommendIntake"
             textviewFeedaddeditIntakePeriodStart.apply {
@@ -163,10 +178,42 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         }
     }
 
+    private fun calculateEtcPercent(editText: EditText) {
+        binding.apply {
+            editText.doAfterTextChanged {
+                val protein = edittextFeedaddeditCrudeProteinPercentage.text.toString().toDoubleOrNull() ?: 0.0
+                val fat = edittextFeedaddeditCrudeFatPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val ash = edittextFeedaddeditCrudeAshPercent.text.toString().toDoubleOrNull() ?: 0.0
+                val moisture = edittextFeedaddeditMoisturePercent.text.toString().toDoubleOrNull() ?: 0.0
+                val etc = 100.0 - protein - fat - ash - moisture
+
+                if (etc in 0.0..100.0) {
+                    textviewFeedaddeditEtcPercent.text = etc.toString()
+                } else {
+                    validationTotalIngredient(
+                        textviewFeedaddeditIngredientAndKcalError,
+                        scrollviewFeedadd,
+                        textviewFeedaddeditKcalTitle,
+                    )
+                    editText.setText("")
+                }
+            }
+        }
+    }
+
+    private fun updateEtcPercentage() {
+        binding.apply {
+            calculateEtcPercent(edittextFeedaddeditCrudeProteinPercentage)
+            calculateEtcPercent(edittextFeedaddeditCrudeFatPercent)
+            calculateEtcPercent(edittextFeedaddeditCrudeAshPercent)
+            calculateEtcPercent(edittextFeedaddeditMoisturePercent)
+        }
+    }
+
     private fun applyKcalContentEditorBehavior() {
         binding.apply {
             edittextFeedaddeditKcalContent.apply {
-                setOnEditorActionListener { _, _, _ ->
+                doAfterTextChanged {
                     recommendIntake =
                         calculateRecommendDailyIntake(
                             weight,
@@ -176,8 +223,6 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                         recommendIntake,
                         textviewFeedaddeditDailyIntakeContent,
                     )
-                    hideSoftKeyboard()
-                    true
                 }
             }
         }
@@ -307,6 +352,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     fatValue,
                     ashValue,
                     moistureValue,
+                    etcValue,
                     kcal.toDouble(),
                     recommendIntake.toInt(),
                     selectedStartDate,
@@ -327,14 +373,14 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
 
                     if (startDate > endDate) {
                         textviewFeedaddeditIntakePeriodError.apply {
-                            text = "시작 일자가 종료 일자 이후 일 수 없습니다."
+                            text = INTAKE_PERIOD_ERROR
                             visibility = View.VISIBLE
                         }
                         isValid = false
                     }
                 }
 
-                if (textviewFeedaddeditIntakePeriodStart.text == "시작 일자") {
+                if (textviewFeedaddeditIntakePeriodStart.text == START_DATE) {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodStart,
                         textviewFeedaddeditIntakePeriodError,
@@ -342,7 +388,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (textviewFeedaddeditIntakePeriodEnd.text == "종료 일자") {
+                if (textviewFeedaddeditIntakePeriodEnd.text == END_DATE) {
                     validationIntakePeriod(
                         textviewFeedaddeditIntakePeriodEnd,
                         textviewFeedaddeditIntakePeriodError,
@@ -351,7 +397,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 }
 
                 kcal = edittextFeedaddeditKcalContent.text.toString()
-                if (kcal.isEmpty() || kcal == "000.00") {
+                if (kcal.isEmpty()) {
                     validationKcal(
                         edittextFeedaddeditKcalContent,
                         textviewFeedaddeditIngredientAndKcalError,
@@ -363,8 +409,9 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 val fat = edittextFeedaddeditCrudeFatPercent.text.toString()
                 val ash = edittextFeedaddeditCrudeAshPercent.text.toString()
                 val moisture = edittextFeedaddeditMoisturePercent.text.toString()
+                val etc = textviewFeedaddeditEtcPercent.text.toString()
 
-                if (protein.isEmpty() || protein == "0.00") {
+                if (protein.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeProteinPercentage,
@@ -374,7 +421,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (fat.isEmpty() || fat == "0.00") {
+                if (fat.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeFatPercent,
@@ -384,7 +431,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (ash.isEmpty() || ash == "0.00") {
+                if (ash.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditCrudeAshPercent,
@@ -394,7 +441,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     isValid = false
                 }
 
-                if (moisture.isEmpty() || moisture == "0.00") {
+                if (moisture.isEmpty()) {
                     validationIngredient(
                         textviewFeedaddeditIngredientAndKcalError,
                         edittextFeedaddeditMoisturePercent,
@@ -408,8 +455,9 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 fatValue = fat.toDoubleOrNull() ?: 0.0
                 ashValue = ash.toDoubleOrNull() ?: 0.0
                 moistureValue = moisture.toDoubleOrNull() ?: 0.0
+                etcValue = etc.toDoubleOrNull() ?: 0.0
 
-                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue
+                val totalIngredient = proteinValue + fatValue + ashValue + moistureValue + etcValue
 
                 if (totalIngredient > 100) {
                     validationTotalIngredient(
@@ -454,34 +502,51 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
             createFeedInfo()
             val imageUri = feedPutViewModel.feedImage.value
 
-            val dto = convertFeedPutDto(feedPutInfo)
-            val file =
-                convertFeedFile(
-                    requireContext(),
-                    imageUri ?: Uri.EMPTY,
-                )
-
-            val feedUploadRequest =
-                FeedUploadRequest(
-                    dto,
-                    file,
-                )
-            feedPutViewModel.putFeed(
-                accessToken,
-                feedUploadRequest,
-            )
-            feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
-                if (response == SUCCESS) {
-                    findNavController().popBackStack()
-                    CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "사료 정보가 수정되었습니다!")
-                        .show()
-                } else {
-                    CustomSnackBar.make(
-                        requireView(),
-                        R.drawable.snackbar_error_16dp,
-                        "서버가 불안정 하여 사료 정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-                    ).show()
+            if (imageUri == null) {
+                lifecycleScope.launch {
+                    val file =
+                        convertFeedImageUrl(
+                            requireContext(),
+                            feedInfo.imageURL,
+                        )
+                    val feedUploadRequest = createFeedPutRequest(file)
+                    putFeed(feedUploadRequest)
                 }
+            } else {
+                val file =
+                    convertFeedFile(
+                        requireContext(),
+                        imageUri,
+                    )
+                val feedUploadRequest = createFeedPutRequest(file)
+                putFeed(feedUploadRequest)
+            }
+        }
+    }
+
+    private fun createFeedPutRequest(file: MultipartBody.Part): FeedUploadRequest {
+        val dto = convertFeedPutDto(feedPutInfo)
+
+        return FeedUploadRequest(dto, file)
+    }
+
+    private fun putFeed(feedUploadRequest: FeedUploadRequest) {
+        feedPutViewModel.putFeed(
+            accessToken,
+            feedUploadRequest,
+        )
+        feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
+                showSuccessSnackBar(
+                    requireView(),
+                    FEED_PUT_SUCCESS,
+                )
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    FEED_PUT_FAILURE,
+                )
             }
         }
     }

@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
-import com.project.meongcare.CalendarBottomSheetFragment
+import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
@@ -28,6 +28,7 @@ import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -46,6 +47,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
+    private val postDogCoroutineJob = Job()
+    private val dogAddCoroutineJob = Job()
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -54,6 +57,12 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var loginRepository: LoginRepository
 
     private var isCbxChecked = false
+    private var isFirstRegister: Boolean? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isFirstRegister = arguments?.getBoolean("isFirstRegister")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,15 +105,17 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
+            postDogCoroutineJob.cancel()
             if (response == 200) {
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_success_16dp,
                     getString(R.string.snack_bar_dog_create_complete),
                 ).show()
+                userPreferences.setIsFirstLogin(false)
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
             } else if (response == 401) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(dogAddCoroutineJob) {
                     val refreshToken = userPreferences.getRefreshToken()
                     if (refreshToken.isNotEmpty()) {
                         val reissueResponse = loginRepository.getNewAccessToken(refreshToken)
@@ -135,6 +146,11 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         fragmentDogAddOnBoardingBinding.run {
+            when (isFirstRegister) {
+                true -> buttonCancel.visibility = View.GONE
+                false, null -> buttonCancel.visibility = View.VISIBLE
+            }
+
             // 사진 등록
             cardviewPetaddImage.setOnClickListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
@@ -151,10 +167,14 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
             // 날짜 등록
             textviewPetaddSelectBirthday.setOnClickListener {
-                val calendarBottomSheet = CalendarBottomSheetFragment()
-                calendarBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
-                calendarBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerCalendarDialogTheme)
-                calendarBottomSheet.show(mainActivity.supportFragmentManager, calendarBottomSheet.tag)
+                val birthdayBottomSheet =
+                    BirthdayBottomSheetFragment(
+                        fragmentDogAddOnBoardingBinding.root,
+                        dogAddViewModel.dogBirthDate.value,
+                    )
+                birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
+                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+                birthdayBottomSheet.show(mainActivity.supportFragmentManager, birthdayBottomSheet.tag)
             }
 
             checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -176,6 +196,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             }
             edittextPetaddSelectTypeError.setOnClickListener {
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
+            }
+
+            buttonCancel.setOnClickListener {
+                findNavController().popBackStack()
             }
 
             // 완료
@@ -229,7 +253,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(mainActivity, dogAddViewModel.dogProfileImage.value)
 
-                lifecycleScope.launch {
+                lifecycleScope.launch(postDogCoroutineJob) {
                     userPreferences.accessToken.collectLatest { accessToken ->
                         if (accessToken != null) {
                             dogAddViewModel.postDogInfo(
@@ -244,6 +268,11 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         return fragmentDogAddOnBoardingBinding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dogAddCoroutineJob.cancel()
     }
 
     override fun onUriPassed(uri: Uri) {

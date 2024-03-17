@@ -11,15 +11,15 @@ import javax.inject.Inject
 class LoginRepositoryImpl
     @Inject
     constructor(private val loginRetrofitClient: LoginRetrofitClient) : LoginRepository {
-        override suspend fun postLoginInfo(loginRequest: LoginRequest): LoginResponse? {
+        override suspend fun postLoginInfo(loginRequest: LoginRequest): Response<LoginResponse>? {
             try {
                 val response = loginRetrofitClient.loginApi.postLoginInfo(loginRequest)
                 if (response.isSuccessful) {
                     Log.d("LoginRepository", "통신 성공 : ${response.code()}")
-                    return response.body()
+                    return response
                 } else {
                     Log.d("LoginRepository", "통신 실패 : ${response.code()}")
-                    return null
+                    return response
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

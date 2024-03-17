@@ -54,6 +54,10 @@ class SymptomInfoFragment : Fragment() {
                     showFailSnackbar()
                 }
             }
+
+            dogName.observe(viewLifecycleOwner) {
+                fragmentSymptomInfoBinding.toolbarSymptominfo.title = "${it}님의 이상증상"
+            }
         }
         fragmentSymptomInfoBinding.run {
             val symptomData = arguments?.getParcelable<Symptom>("symptomData")

@@ -29,16 +29,26 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textview_excreta_name"
+                android:id="@+id/textview_excreta_title_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="46dp"
-                android:text="초코님의 기록"
-                android:textAppearance="@style/Typography.Title2.SemiBold"
+                android:text="OOO"
+                android:textAppearance="@style/Typography.Title2.Bold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_excreta_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="님의 기록"
+                android:textAppearance="@style/Typography.Title2.Bold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/textview_excreta_title_name"
+                app:layout_constraintTop_toTopOf="@id/textview_excreta_title_name" />
 
             <TextView
                 android:id="@+id/textview_excreta_addbutton"
@@ -48,11 +58,12 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="추가"
+                app:layout_goneMarginEnd="24dp"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/gray5"
-                app:layout_constraintBottom_toBottomOf="@id/textview_excreta_name"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excreta_title_name"
                 app:layout_constraintEnd_toStartOf="@id/textview_excreta_editbutton"
-                app:layout_constraintTop_toTopOf="@id/textview_excreta_name" />
+                app:layout_constraintTop_toTopOf="@id/textview_excreta_title_name" />
 
             <TextView
                 android:id="@+id/textview_excreta_editbutton"
@@ -64,9 +75,9 @@
                 android:text="편집"
                 android:textAppearance="@style/Typography.Body1.Medium"
                 android:textColor="@color/gray5"
-                app:layout_constraintBottom_toBottomOf="@id/textview_excreta_name"
+                app:layout_constraintBottom_toBottomOf="@id/textview_excreta_title_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textview_excreta_name" />
+                app:layout_constraintTop_toTopOf="@id/textview_excreta_title_name" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -79,7 +90,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_excreta_name">
+                app:layout_constraintTop_toBottomOf="@id/textview_excreta_title_name">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -95,7 +106,7 @@
                         android:backgroundTint="@color/main1"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="대변 1회"
+                        android:text="대변 0회"
                         android:textAppearance="@style/Typography.Body1.Medium"
                         android:textColor="@color/main4"
                         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +121,7 @@
                         android:backgroundTint="@color/sub2"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="소변 1회"
+                        android:text="소변 0회"
                         android:textAppearance="@style/Typography.Body1.Medium"
                         android:textColor="@color/sub3"
                         app:layout_constraintStart_toEndOf="@id/textview_excreta_numberfeces"

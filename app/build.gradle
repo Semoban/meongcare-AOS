@@ -23,12 +23,14 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField "String", "SEMOBAN_DOMAIN", properties['semoban_domain']
+        buildConfigField "String", "SEMOBAN_DEV_DOMAIN", properties['semoban_dev_domain']
         buildConfigField "String", "KAKAO_NATIVE_APP_KEY", properties['kakao_native_app_key']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_ID", properties['naver_oauth_client_id']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_SECRET", properties['naver_oauth_client_secret']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_NAME", properties['naver_oauth_client_name']
         buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
-        manifestPlaceholders = [kakaoNativeAppKey:"kakao_native_app_key"]
+        manifestPlaceholders["kakaoNativeAppKeyManifest"] = properties["kakao_native_app_key_manifest"] as String
     }
 
     buildTypes {
@@ -51,12 +53,7 @@ android {
     kapt {
         correctErrorTypes true
     }
-    buildFeatures {
-        dataBinding true
-    }
-    kapt {
-        correctErrorTypes true
-    }
+
     buildFeatures {
         dataBinding true
         viewBinding = true
@@ -140,4 +137,6 @@ dependencies {
     // OkHttp3
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
 
+    // Loading Progress Bar
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }

@@ -14,14 +14,15 @@
         android:layout_marginStart="32dp"
         android:letterSpacing="-0.02"
         android:text="기록을 통해\n변화를 알 수 있어요!"
+        android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="255dp"
-        android:layout_height="138dp"
-        android:layout_marginTop="115dp"
+        android:layout_width="217dp"
+        android:layout_height="274dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/onboarding_two"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

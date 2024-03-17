@@ -25,7 +25,7 @@
         <View
             android:id="@+id/view_medicalrecordedit"
             android:layout_width="0dp"
-            android:layout_height="51dp"
+            android:layout_height="52dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/all_rect_r5"
@@ -48,14 +48,14 @@
             app:layout_constraintEnd_toStartOf="@id/imageview_medicalrecordedit_arrow"
             app:layout_constraintStart_toStartOf="@id/view_medicalrecordedit"
             app:layout_constraintTop_toTopOf="@id/view_medicalrecordedit"
-            tools:text="08:00 AM" />
+            tools:text="오후 08:00" />
 
         <ImageView
             android:id="@+id/imageview_medicalrecordedit_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/all_arrow_forward"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/all_arrow_navigate_next"
             app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordedit"
             app:layout_constraintEnd_toEndOf="@id/view_medicalrecordedit"
             app:layout_constraintTop_toTopOf="@id/view_medicalrecordedit" />

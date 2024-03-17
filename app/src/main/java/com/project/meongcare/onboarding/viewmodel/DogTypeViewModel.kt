@@ -16,10 +16,6 @@ class DogTypeViewModel
         val dogTypeList
             get() = _dogTypeList
 
-        init {
-            _dogTypeList.value = dogTypeRepository.loadDogTypes()
-        }
-
         fun searchDogType(query: String) {
             _dogTypeList.value = dogTypeRepository.searchTypes(query)
         }

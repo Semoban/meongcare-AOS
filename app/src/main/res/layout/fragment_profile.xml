@@ -57,7 +57,7 @@
             android:id="@+id/imageview_profile_image"
             android:layout_width="89dp"
             android:layout_height="89dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="32dp"
             android:src="@drawable/profile_default_image"
             app:layout_constraintEnd_toEndOf="@id/guideline_profile_end"
             app:layout_constraintStart_toStartOf="@id/guideline_profile_start"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="32dp"
             android:text="@string/profile_pet_list"
             android:textAppearance="@style/Typography.Title3.SemiBold"
             android:textSize="16sp"
@@ -129,7 +129,7 @@
             android:id="@+id/divider_profile"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:dividerColor="#F8F8F8"
             app:layout_constraintEnd_toEndOf="@id/guideline_profile_end"
             app:layout_constraintStart_toStartOf="@id/guideline_profile_start"
@@ -139,7 +139,7 @@
             android:id="@+id/button_profile_share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:gravity="left|center_vertical"
             android:paddingStart="15dp"
@@ -164,6 +164,7 @@
             android:id="@+id/button_profile_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
             android:gravity="left|center_vertical"
             android:paddingStart="15dp"
@@ -189,6 +190,7 @@
             android:id="@+id/button_profile_logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
             android:gravity="left|center_vertical"
             android:paddingStart="15dp"
@@ -209,15 +211,5 @@
             app:layout_constraintEnd_toEndOf="@id/button_profile_logout"
             app:layout_constraintBottom_toBottomOf="@id/button_profile_logout"/>
 
-        <include
-            android:id="@+id/include_logout_dialog"
-            layout="@layout/layout_logout_dialog"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

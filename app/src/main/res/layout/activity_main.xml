@@ -49,6 +49,9 @@
                     android:background="@android:color/transparent"
                     app:itemIconSize="20dp"
                     app:itemIconTint="@color/color_bottom_nav_menu_item"
+                    app:itemPaddingBottom="10dp"
+                    app:itemTextAppearanceActive="@style/Typography.Body3.Medium"
+                    app:itemTextAppearanceInactive="@style/Typography.Body3.Medium"
                     app:itemTextColor="@color/color_bottom_nav_menu_item"
                     app:labelVisibilityMode="labeled"
                     app:menu="@menu/menu_main" />
@@ -262,12 +265,5 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/bottomsheet_calendar" />
-
-    <include
-        android:id="@+id/include_medical_record_dialog"
-        layout="@layout/layout_medical_record_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

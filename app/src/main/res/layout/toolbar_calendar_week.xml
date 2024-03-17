@@ -30,14 +30,25 @@
             android:textAppearance="@style/Typography.Title2.SemiBold"
             android:textColor="@color/black" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <androidx.cardview.widget.CardView
             android:id="@+id/button_toolbar_calendar_week_date_bottomsheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/toolbar_arrow_bottom_18dp" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            app:cardCornerRadius="50dp"
+            app:cardUseCompatPadding="false">
+
+            <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/toolbar_calendar_dropdown_stroke_10dp" />
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 
