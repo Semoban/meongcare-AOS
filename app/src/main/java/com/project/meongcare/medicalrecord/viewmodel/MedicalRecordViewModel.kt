@@ -25,6 +25,10 @@ class MedicalRecordViewModel
         val selectedDate: LiveData<String>
             get() = _selectedDate
 
+        private val _deleteMedicalRecordResponse = MutableLiveData<Int>()
+        val deleteMedicalRecordResponse: LiveData<Int>
+            get() = _deleteMedicalRecordResponse
+
         fun getMedicalRecordList(
             dogId: Long,
             dateTime: String,
@@ -37,5 +41,14 @@ class MedicalRecordViewModel
 
         fun getCurrentDate(date: String) {
             _selectedDate.value = date
+        }
+
+        fun deleteMedicalRecordList(
+            medicalRecordIds: IntArray,
+            accessToken: String,
+        ) {
+            viewModelScope.launch {
+                _deleteMedicalRecordResponse.value = medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken)
+            }
         }
 }
