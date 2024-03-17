@@ -13,4 +13,4 @@ class UserViewModel
         private val userPreferences: UserPreferences,
     ) : ViewModel() {
         val accessTokenPreferencesLiveData = userPreferences.accessToken.asLiveData()
-}
+    }
