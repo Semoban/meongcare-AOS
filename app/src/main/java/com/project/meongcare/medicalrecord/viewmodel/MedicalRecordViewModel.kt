@@ -51,4 +51,4 @@ class MedicalRecordViewModel
                 _deleteMedicalRecordResponse.value = medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken)
             }
         }
-}
+    }
