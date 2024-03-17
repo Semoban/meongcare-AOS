@@ -61,7 +61,7 @@ class MedicalRecordEditFragment : Fragment() {
                         setSelectAllCheckBoxState(medicalRecordIds)
                         deleteMedicalRecord(medicalRecordIds)
                     }
-                }
+                },
             )
 
         initMedicalRecordHeader()
@@ -156,13 +156,14 @@ class MedicalRecordEditFragment : Fragment() {
         val checkBoxCount = medicalRecordViewModel.medicalRecordList.value?.body()?.records?.size ?: 0
 
         // 목록 체크 상태에 따른 전체 선택 체크 버튼 제어
-        binding.checkboxMedicalrecordeditSelectAll.checkedState = if (checkBoxCount == checkedIdsCount) {
-            MaterialCheckBox.STATE_CHECKED
-        } else if (checkedIdsCount == 0) {
-            MaterialCheckBox.STATE_UNCHECKED
-        } else {
-            MaterialCheckBox.STATE_INDETERMINATE
-        }
+        binding.checkboxMedicalrecordeditSelectAll.checkedState =
+            if (checkBoxCount == checkedIdsCount) {
+                MaterialCheckBox.STATE_CHECKED
+            } else if (checkedIdsCount == 0) {
+                MaterialCheckBox.STATE_UNCHECKED
+            } else {
+                MaterialCheckBox.STATE_INDETERMINATE
+            }
     }
 
     private fun deleteMedicalRecord(medicalRecordIds: IntArray) {
