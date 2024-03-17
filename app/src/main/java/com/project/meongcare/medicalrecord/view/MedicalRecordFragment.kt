@@ -71,8 +71,7 @@ class MedicalRecordFragment : Fragment() {
                         // 상세 화면으로 이동하면서 medicalRecordId 전달
                         Log.d("medicalRecordItemClicked", "$medicalRecordId")
                     }
-
-                }
+                },
             )
 
         initMedicalRecordRecyclerView()
