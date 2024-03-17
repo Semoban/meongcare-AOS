@@ -41,7 +41,7 @@ class MedicalRecordRepositoryImpl
                     response.code()
                 } else {
                     val stringToJson = JSONObject(response.errorBody()?.string())
-                    Log.d("MedicalRepo-DeleteList", "통신 실패 : ${response.code()} \n${stringToJson}")
+                    Log.d("MedicalRepo-DeleteList", "통신 실패 : ${response.code()} \n$stringToJson")
                     response.code()
                 }
             } catch (e: Exception) {
