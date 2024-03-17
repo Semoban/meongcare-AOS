@@ -70,9 +70,9 @@ class DogPreferences
                     throw exception
                 }
             }
-            .map { preferences ->
-                preferences[preferenceDogId]
-            }
+                .map { preferences ->
+                    preferences[preferenceDogId]
+                }
 
         val dogName: Flow<String?> =
             context.dogDataStore.data.catch { exception ->
@@ -82,9 +82,9 @@ class DogPreferences
                     throw exception
                 }
             }
-            .map { preferences ->
-                preferences[preferenceDogName]
-            }
+                .map { preferences ->
+                    preferences[preferenceDogName]
+                }
 
         val dogWeight: Flow<Double?> =
             context.dogDataStore.data.catch { exception ->
@@ -94,7 +94,7 @@ class DogPreferences
                     throw exception
                 }
             }
-            .map { preferences ->
-                preferences[preferenceDogWeight]
-            }
+                .map { preferences ->
+                    preferences[preferenceDogWeight]
+                }
     }
