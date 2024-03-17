@@ -14,4 +14,4 @@ class DogViewModel
     ) : ViewModel() {
         val dogNamePreferencesLiveData = dogPreferences.dogName.asLiveData()
         val dogIdPreferencesLiveData = dogPreferences.dogId.asLiveData()
-}
+    }
