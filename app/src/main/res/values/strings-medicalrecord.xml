@@ -12,7 +12,8 @@
     <string name="medicalrecord_hospital_name_length">%d/50</string>
     <string name="medicalrecord_terinarian_name_length">%d/10</string>
     <string name="medicalrecord_note_length">%d/500</string>
-    <string name="medicalrecord_no_list">생성된 진료기록이 없습니다!</string>
+    <string name="medicalrecord_no_list">생성된 진료기록이 없습니다.</string>
     <string name="medicalrecord_select_all">전체 선택</string>
     <string name="medicalrecord_delete_success">진료기록이 삭제되었습니다.</string>
+    <string name="medicalrecrod_empty_date">날짜를 선택해주세요.</string>
 </resources>
