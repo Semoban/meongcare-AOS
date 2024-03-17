@@ -11,4 +11,9 @@ interface MedicalRecordRepository {
         dateTime: String,
         accessToken: String,
     ): Response<MedicalRecordGetResponse>?
+
+    suspend fun deleteMedicalRecordList(
+        medicalRecordIds: IntArray,
+        accessToken: String,
+    ): Int?
 }
