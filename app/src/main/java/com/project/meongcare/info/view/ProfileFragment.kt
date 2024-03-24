@@ -20,19 +20,23 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.MEMBER_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
+import com.project.meongcare.info.util.ProfileImageUtils.createMultipartFromUri
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,9 +44,11 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+
+    private lateinit var multipartImage: MultipartBody.Part
     private val logoutCoroutineJob = Job()
-    private lateinit var profileUri: Uri
     private var currentAccessToken = ""
 
     @Inject
@@ -206,6 +212,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
             }
 
             }
@@ -225,9 +233,13 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     }
 
     override fun onUriPassed(uri: Uri) {
-        profileUri = uri
-        val multipartBody = createMultipartBody(requireContext(), uri)
-        profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
+        multipartImage = createMultipartFromUri(requireContext(), uri)
+        val disposition = multipartImage.headers?.get("Content-Disposition")
+        val filename = disposition?.substringAfterLast("filename=")?.removeSurrounding("\"") ?: "tempFile"
+
+        val filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH$filename"
+        awsS3ViewModel.getPreSignedUrl(currentAccessToken, filePath)
+    }
 
     private fun initPetListRecyclerView() {
         binding.recyclerviewProfilePetList.run {
