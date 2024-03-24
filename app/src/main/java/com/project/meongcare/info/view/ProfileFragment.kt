@@ -214,8 +214,14 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
             if (response != null) {
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, multipartImage)
             }
+        }
 
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                // 저장된 이미지 경로를 데이터와 함께 서버로 전달
+                //        profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
             }
         }
 
