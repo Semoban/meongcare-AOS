@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
@@ -27,24 +26,24 @@ import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var mainActivity: MainActivity
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private val logoutCoroutineJob = Job()
     private lateinit var profileUri: Uri
-    private lateinit var currentAccessToken: String
+    private var currentAccessToken = ""
 
     @Inject
     lateinit var loginRepository: LoginRepository
@@ -52,22 +51,25 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     @Inject
     lateinit var userPreferences: UserPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        getAccessToken()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
+        return binding.root
+    }
 
-        profileViewModel.getUserProfile(currentAccessToken)
-        profileViewModel.getDogList(currentAccessToken)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                currentAccessToken = accessToken
+                profileViewModel.getUserProfile(currentAccessToken)
+                profileViewModel.getDogList(currentAccessToken)
+            }
+        }
 
         profileViewModel.userProfile.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null) {
@@ -184,11 +186,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         profileViewModel.patchProfileResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                binding.run {
-                    Glide.with(this@ProfileFragment)
-                        .load(profileUri)
-                        .into(imageviewProfileImage)
-                }
+                profileViewModel.getUserProfile(currentAccessToken)
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_success_16dp,
@@ -208,39 +206,17 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        binding.run {
-            imagebuttonProfileBack.setOnClickListener {
-                findNavController().popBackStack()
             }
 
-            imageviewProfileImage.setOnClickListener {
-                val modalBottomSheet = UserProfileSelectBottomSheetFragment()
-                modalBottomSheet.setPhotoMenuListener(this@ProfileFragment)
-                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
-            }
-
-            recyclerviewProfilePetList.run {
-                adapter = ProfileDogAdapter(layoutInflater, context)
-                layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            }
-
-            buttonProfileShare.setOnClickListener {
-                showUpdateDialog()
-            }
-
-            buttonProfileSetting.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
-                findNavController().navigate(R.id.action_profileFragment_to_settingFragment, bundle)
-            }
-
-            buttonProfileLogout.setOnClickListener {
-                showLogoutDialog()
             }
         }
 
-        return binding.root
+        initPetListRecyclerView()
+        initProfileImageView()
+        initBackButton()
+        initShareButton()
+        initSettingButton()
+        initLogoutButton()
     }
 
     override fun onDestroyView() {
@@ -252,6 +228,47 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         profileUri = uri
         val multipartBody = createMultipartBody(requireContext(), uri)
         profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
+
+    private fun initPetListRecyclerView() {
+        binding.recyclerviewProfilePetList.run {
+            adapter = ProfileDogAdapter(layoutInflater, context)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun initProfileImageView() {
+        binding.imageviewProfileImage.setOnClickListener {
+            val modalBottomSheet = UserProfileSelectBottomSheetFragment()
+            modalBottomSheet.setPhotoMenuListener(this@ProfileFragment)
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
+        }
+    }
+
+    private fun initBackButton() {
+        binding.imagebuttonProfileBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun initShareButton() {
+        binding.buttonProfileShare.setOnClickListener {
+            showUpdateDialog()
+        }
+    }
+
+    private fun initSettingButton() {
+        binding.buttonProfileSetting.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putBoolean("pushAgreement", profileViewModel.userProfile.value?.body()?.pushAgreement!!)
+            findNavController().navigate(R.id.action_profileFragment_to_settingFragment, bundle)
+        }
+    }
+
+    private fun initLogoutButton() {
+        binding.buttonProfileLogout.setOnClickListener {
+            showLogoutDialog()
+        }
     }
 
     private fun showLogoutDialog() {
@@ -294,16 +311,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         }
 
         dialog.show()
-    }
-
-    private fun getAccessToken() {
-        lifecycleScope.launch {
-            userPreferences.accessToken.collectLatest { accessToken ->
-                if (accessToken != null) {
-                    currentAccessToken = accessToken
-                }
-            }
-        }
     }
 
     private fun kakaoLogout() {
