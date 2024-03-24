@@ -28,13 +28,10 @@ import com.project.meongcare.databinding.LayoutLogoutDialogBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.info.util.ProfileImageUtils.createMultipartFromUri
 import com.project.meongcare.info.viewmodel.ProfileViewModel
-import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -42,20 +39,15 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var multipartImage: MultipartBody.Part
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
 
-    private lateinit var multipartImage: MultipartBody.Part
-    private val logoutCoroutineJob = Job()
     private var currentAccessToken = ""
-
-    @Inject
-    lateinit var loginRepository: LoginRepository
-
-    @Inject
-    lateinit var userPreferences: UserPreferences
+    private var currentRefreshToken = ""
+    private var currentProvider = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,13 +61,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
-            if (accessToken != null) {
-                currentAccessToken = accessToken
-                profileViewModel.getUserProfile(currentAccessToken)
-                profileViewModel.getDogList(currentAccessToken)
-            }
-        }
+        getAccessToken()
+        getProvider()
+        getEmail()
 
         profileViewModel.userProfile.observe(viewLifecycleOwner) { profileResponse ->
             if (profileResponse != null) {
@@ -86,29 +74,13 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                                 .load(profileResponse.body()?.imageUrl)
                                 .error(R.drawable.profile_default_image)
                                 .into(imageviewProfileImage)
-                            textviewProfileEmail.text = profileResponse.body()?.email
                         }
                     }
                     401 -> {
                         lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
+                            val refreshToken = currentRefreshToken
                             if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
+                                reissueAccessToken()
                             }
                         }
                     }
@@ -134,24 +106,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                     }
                     401 -> {
                         lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
+                            val refreshToken = currentRefreshToken
                             if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
+                                reissueAccessToken()
                             }
                         }
                     }
@@ -172,14 +129,10 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         profileViewModel.logoutResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                lifecycleScope.launch(logoutCoroutineJob) {
-                    userPreferences.provider.collect { provider ->
-                        when (provider) {
-                            "kakao" -> kakaoLogout()
-                            "naver" -> naverLogout()
-                            "google" -> googleLogout()
-                        }
-                    }
+                when (currentProvider) {
+                    "kakao" -> kakaoLogout()
+                    "naver" -> naverLogout()
+                    "google" -> googleLogout()
                 }
             } else {
                 CustomSnackBar.make(
@@ -199,11 +152,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                     getString(R.string.snack_bar_profile_update_complete),
                 ).show()
             } else {
-                binding.run {
-                    Glide.with(this@ProfileFragment)
-                        .load(R.drawable.profile_default_image)
-                        .into(imageviewProfileImage)
-                }
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_error_16dp,
@@ -233,11 +181,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         initLogoutButton()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        logoutCoroutineJob.cancel()
-    }
-
     override fun onUriPassed(uri: Uri) {
         multipartImage = createMultipartFromUri(requireContext(), uri)
         val disposition = multipartImage.headers?.get("Content-Disposition")
@@ -245,6 +188,60 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         val filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH$filename"
         awsS3ViewModel.getPreSignedUrl(currentAccessToken, filePath)
+    }
+
+    private fun reissueAccessToken() {
+        userViewModel.getNewAccessToken(currentRefreshToken)
+        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response.code()) {
+                    200 -> {
+                        userViewModel.setAccessToken(response.body()?.accessToken)
+                    }
+                    401 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_refresh_expire),
+                        ).show()
+                        findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                currentAccessToken = accessToken
+                getRefreshToken()
+            }
+        }
+    }
+
+    private fun getRefreshToken() {
+        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
+            if (refreshToken != null) {
+                currentRefreshToken = refreshToken
+                profileViewModel.getUserProfile(currentAccessToken)
+                profileViewModel.getDogList(currentAccessToken)
+            }
+        }
+    }
+
+    private fun getProvider() {
+        userViewModel.providerPreferencesLiveData.observe(viewLifecycleOwner) { provider ->
+            if (provider != null) {
+                currentProvider = provider
+            }
+        }
+    }
+
+    private fun getEmail() {
+        userViewModel.emailPreferencesLiveData.observe(viewLifecycleOwner) { email ->
+            binding.textviewProfileEmail.text = email ?: ""
+        }
     }
 
     private fun initPetListRecyclerView() {
@@ -299,13 +296,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
         dialogBinding.run {
             buttonLogoutDialogLogout.setOnClickListener {
-                lifecycleScope.launch(logoutCoroutineJob) {
-                    val refreshToken = userPreferences.getRefreshToken()
-                    if (refreshToken != null) {
-                        dialog.dismiss()
-                        profileViewModel.logoutUser(refreshToken)
-                    }
-                }
+                dialog.dismiss()
+                profileViewModel.logoutUser(currentRefreshToken)
             }
 
             buttonLogoutDialogCancel.setOnClickListener {
@@ -337,8 +329,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                 Log.e("Logout-kakao", "로그아웃 실패, SDK에서 토큰 삭제됨\n $error")
             } else {
                 Log.i("Logout-kakao", "로그아웃 성공, SDK에서 토큰 삭제됨")
-                userPreferences.setProvider(null)
-                userPreferences.setAccessToken(null)
+                userViewModel.setProvider(null)
+                userViewModel.setAccessToken(null)
                 findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
             }
         }
@@ -346,8 +338,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
     private fun naverLogout() {
         NaverIdLoginSDK.logout()
-        userPreferences.setProvider(null)
-        userPreferences.setAccessToken(null)
+        userViewModel.setProvider(null)
+        userViewModel.setAccessToken(null)
         findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
     }
 
@@ -365,8 +357,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("Logout-google", "로그아웃 성공")
-                    userPreferences.setProvider(null)
-                    userPreferences.setAccessToken(null)
+                    userViewModel.setProvider(null)
+                    userViewModel.setAccessToken(null)
                     findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
                 } else {
                     Log.e("Logout-google", "로그아웃 실패")
