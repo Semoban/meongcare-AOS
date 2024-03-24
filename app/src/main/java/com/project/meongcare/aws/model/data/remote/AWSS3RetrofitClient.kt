@@ -13,7 +13,7 @@ class AWSS3RetrofitClient
     constructor() {
         val awsS3Api: AWSS3Api by lazy {
             Retrofit.Builder()
-                .baseUrl(BuildConfig.SEMOBAN_DEV_DOMAIN)
+                .baseUrl(BuildConfig.SEMOBAN_DOMAIN)
                 .addConverterFactory(nullOnEmptyConverterFactory)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
