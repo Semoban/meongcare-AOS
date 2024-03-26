@@ -21,6 +21,10 @@ import com.project.meongcare.databinding.FragmentHomeBinding
 import com.project.meongcare.home.model.data.local.DogPreferences
 import com.project.meongcare.home.model.data.local.DogProfileClickListener
 import com.project.meongcare.home.model.data.local.HorizonCalendarItemClickListener
+import com.project.meongcare.home.util.HomeDateUtil.dateFormatter
+import com.project.meongcare.home.util.HomeDateUtil.dateToString
+import com.project.meongcare.home.util.HomeDateUtil.getCurrentDate
+import com.project.meongcare.home.util.HomeDateUtil.stringToDate
 import com.project.meongcare.home.viewmodel.HomeViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
