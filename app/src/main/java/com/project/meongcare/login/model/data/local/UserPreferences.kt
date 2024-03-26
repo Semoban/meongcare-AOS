@@ -27,7 +27,7 @@ class UserPreferences
         private val preferenceKeyIsFirstLogin = booleanPreferencesKey("isFirstLogin")
 
         // 값 저장(수정)
-        private suspend fun editProvider(provider: String?) {
+        suspend fun editProvider(provider: String?) {
             context.userDataStore.edit { preferences ->
                 if (provider == null) {
                     preferences.remove(preferenceKeyProvider)
@@ -37,7 +37,7 @@ class UserPreferences
             }
         }
 
-        private suspend fun editEmail(email: String?) {
+        suspend fun editEmail(email: String?) {
             context.userDataStore.edit { preferences ->
                 if (email == null) {
                     preferences.remove(preferenceKeyEmail)
@@ -47,7 +47,7 @@ class UserPreferences
             }
         }
 
-        private suspend fun editAccessToken(accessToken: String?) {
+        suspend fun editAccessToken(accessToken: String?) {
             context.userDataStore.edit { preferences ->
                 if (accessToken == null) {
                     preferences.remove(preferenceKeyAccessToken)
@@ -57,7 +57,7 @@ class UserPreferences
             }
         }
 
-        private suspend fun editRefreshToken(refreshToken: String?) {
+        suspend fun editRefreshToken(refreshToken: String?) {
             context.userDataStore.edit { preferences ->
                 if (refreshToken == null) {
                     preferences.remove(preferenceKeyRefreshToken)
@@ -67,7 +67,7 @@ class UserPreferences
             }
         }
 
-        private suspend fun editIsFirstLogin(isFirstLogin: Boolean?) {
+        suspend fun editIsFirstLogin(isFirstLogin: Boolean?) {
             context.userDataStore.edit { preferences ->
                 if (isFirstLogin == null) {
                     preferences.remove(preferenceKeyIsFirstLogin)
