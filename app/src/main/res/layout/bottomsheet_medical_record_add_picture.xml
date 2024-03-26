@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottomsheet_medical_record_add_picture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="사진을 설정해주세요"
+        android:textAppearance="@style/Typography.Title3.SemiBold"
+        android:textColor="@color/black" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/textView_medical_record_add_picture_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="1dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="기본 이미지로 변경"
+                android:textAppearance="@style/Typography.Body1.Medium"
+                android:textColor="@color/gray5"
+                android:visibility="gone" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray2" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView_medical_record_add_picture_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="1dp"
+            android:gravity="center_vertical"
+            android:text="카메라 선택"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray5" />
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2" />
+
+        <TextView
+            android:id="@+id/textView_medical_record_add_picture_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="1dp"
+            android:text="앨범 선택"
+            android:textAppearance="@style/Typography.Body1.Medium"
+            android:textColor="@color/gray5" />
+
+    </LinearLayout>
+
+</LinearLayout>
