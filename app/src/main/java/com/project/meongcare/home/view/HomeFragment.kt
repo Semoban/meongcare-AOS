@@ -30,6 +30,8 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 
 @AndroidEntryPoint
@@ -59,6 +61,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         super.onViewCreated(view, savedInstanceState)
 
         getAccessToken()
+
+        val currentDate = LocalDate.now()
+        setSelectedDate(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
 
         initCalendarImageView()
         initAlarmImageView()
