@@ -26,39 +26,33 @@ class DogPreferences
         private val preferenceDogName = stringPreferencesKey("dogName")
         private val preferenceDogWeight = doublePreferencesKey("dogWeight")
 
-        private suspend fun editDogId(dogId: Long) {
+        suspend fun editDogId(dogId: Long?) {
             context.dogDataStore.edit { preferences ->
-                preferences[preferenceDogId] = dogId
+                if (dogId == null) {
+                    preferences.remove(preferenceDogId)
+                } else {
+                    preferences[preferenceDogId] = dogId
+                }
             }
         }
 
-        private suspend fun editDogName(dogName: String) {
+        suspend fun editDogName(dogName: String?) {
             context.dogDataStore.edit { preferences ->
-                preferences[preferenceDogName] = dogName
+                if (dogName == null) {
+                    preferences.remove(preferenceDogName)
+                } else {
+                    preferences[preferenceDogName] = dogName
+                }
             }
         }
 
-        private suspend fun editDogWeight(dogWeight: Double) {
+        suspend fun editDogWeight(dogWeight: Double?) {
             context.dogDataStore.edit { preferences ->
-                preferences[preferenceDogWeight] = dogWeight
-            }
-        }
-
-        fun setDogId(dogId: Long) {
-            CoroutineScope(Dispatchers.IO).launch {
-                editDogId(dogId)
-            }
-        }
-
-        fun setDogName(dogName: String) {
-            CoroutineScope(Dispatchers.IO).launch {
-                editDogName(dogName)
-            }
-        }
-
-        fun setDogWeight(dogWeight: Double) {
-            CoroutineScope(Dispatchers.IO).launch {
-                editDogWeight(dogWeight)
+                if (dogWeight == null) {
+                    preferences.remove(preferenceDogWeight)
+                } else {
+                    preferences[preferenceDogWeight] = dogWeight
+                }
             }
         }
 
