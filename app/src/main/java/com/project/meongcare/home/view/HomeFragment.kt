@@ -30,8 +30,6 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.Date
 
 @AndroidEntryPoint
@@ -103,7 +101,6 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                 when (response.code()) {
                     200 -> {
                         userViewModel.setAccessToken(response.body()?.accessToken)
-                        /// getAccessToken 호출... 여기서 할 필요가 있을까?
                     }
                     401 -> {
                         CustomSnackBar.make(
@@ -301,7 +298,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     }
 
     private fun getDogFeed() {
-        homeViewModel.getDogFeed(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+        homeViewModel.getDogFeed(
+            homeViewModel.homeSelectedDogId.value!!,
+            dateToString(homeViewModel.homeSelectedDate.value!!),
+            currentAccessToken,
+        )
         homeViewModel.homeDogFeed.observe(viewLifecycleOwner) { dogFeedResponse ->
             if (dogFeedResponse != null) {
                 if (dogFeedResponse.code() == 200) {
@@ -321,7 +322,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     }
 
     private fun getDogSupplements() {
-        homeViewModel.getDogSupplements(homeViewModel.homeSelectedDogId.value!!, dateToString(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+        homeViewModel.getDogSupplements(
+            homeViewModel.homeSelectedDogId.value!!,
+            dateToString(homeViewModel.homeSelectedDate.value!!),
+            currentAccessToken,
+        )
         homeViewModel.homeDogSupplements.observe(viewLifecycleOwner) { dogSupplementsResponse ->
             if (dogSupplementsResponse != null) {
                 if (dogSupplementsResponse.code() == 200) {
@@ -344,7 +349,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     }
 
     private fun getDogExcreta() {
-        homeViewModel.getDogExcreta(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+        homeViewModel.getDogExcreta(
+            homeViewModel.homeSelectedDogId.value!!,
+            dateFormatter(homeViewModel.homeSelectedDate.value!!),
+            currentAccessToken,
+        )
         homeViewModel.homeDogExcreta.observe(viewLifecycleOwner) { dogExcretaResponse ->
             if (dogExcretaResponse != null) {
                 if (dogExcretaResponse.code() == 200) {
@@ -367,7 +376,11 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
     }
 
     private fun getDogSymptom() {
-        homeViewModel.getDogSymptom(homeViewModel.homeSelectedDogId.value!!, dateFormatter(homeViewModel.homeSelectedDate.value!!), currentAccessToken)
+        homeViewModel.getDogSymptom(
+            homeViewModel.homeSelectedDogId.value!!,
+            dateFormatter(homeViewModel.homeSelectedDate.value!!),
+            currentAccessToken,
+        )
         homeViewModel.homeDogSymptom.observe(viewLifecycleOwner) { dogSymptomResponse ->
             if (dogSymptomResponse != null) {
                 if (dogSymptomResponse.code() == 200) {
