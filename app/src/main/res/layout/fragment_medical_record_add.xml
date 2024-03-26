@@ -43,27 +43,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_medicalrecordadd_top" />
 
-        <ImageButton
-            android:id="@+id/imagebutton_medicalrecordadd_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:background="@null"
-            android:src="@drawable/all_edit"
-            app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordadd_delete"
-            app:layout_constraintEnd_toStartOf="@id/imagebutton_medicalrecordadd_delete"
-            app:layout_constraintTop_toTopOf="@id/imagebutton_medicalrecordadd_delete" />
-
-        <ImageButton
-            android:id="@+id/imagebutton_medicalrecordadd_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/all_delete"
-            app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordadd_back"
-            app:layout_constraintEnd_toEndOf="@id/guideline_medicalrecordadd_end"
-            app:layout_constraintTop_toTopOf="@id/imagebutton_medicalrecordadd_back" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
