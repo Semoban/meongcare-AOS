@@ -59,6 +59,15 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getProvider()
+        addListeners()
+        loginResponseProcess()
+    }
+
+    private fun loginResponseProcess() {
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
                 when (loginResponse.code()) {
@@ -112,6 +121,8 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
+    private fun addListeners() {
         binding.buttonKakaoLogin.setOnClickListener {
             kakaoLogin()
         }
