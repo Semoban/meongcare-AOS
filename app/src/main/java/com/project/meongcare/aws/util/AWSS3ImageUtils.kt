@@ -1,4 +1,4 @@
-package com.project.meongcare.info.util
+package com.project.meongcare.aws.util
 
 import android.content.Context
 import android.net.Uri
