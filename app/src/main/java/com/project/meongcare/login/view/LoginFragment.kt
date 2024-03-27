@@ -41,8 +41,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
+    private lateinit var binding: FragmentLoginBinding
 
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
     val googleAuthLauncher =
@@ -61,8 +61,10 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        binding = FragmentLoginBinding.inflate(inflater)
+        return binding.root
+    }
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
@@ -113,19 +115,19 @@ class LoginFragment : Fragment() {
             }
         }
 
-        fragmentLoginBinding.run {
-            buttonKakaoLogin.setOnClickListener {
-                kakaoLogin()
-            }
-            buttonNaverLogin.setOnClickListener {
-                naverLogin()
-            }
-            buttonGoogleLogin.setOnClickListener {
-                googleLogin()
             }
         }
+        binding.buttonKakaoLogin.setOnClickListener {
+            kakaoLogin()
+        }
 
-        return fragmentLoginBinding.root
+        binding.buttonNaverLogin.setOnClickListener {
+            naverLogin()
+        }
+
+        binding.buttonGoogleLogin.setOnClickListener {
+            googleLogin()
+        }
     }
 
     private fun kakaoLogin() {
