@@ -21,7 +21,7 @@ import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
-import com.project.meongcare.home.view.getCurrentDate
+import com.project.meongcare.home.util.HomeDateUtil.getCurrentDate
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences

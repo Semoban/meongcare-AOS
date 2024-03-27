@@ -85,7 +85,7 @@
                     tools:text="2023. 08. 12" />
 
                 <TextView
-                    android:id="@+id/textview_medicalrecord_pet_history"
+                    android:id="@+id/textview_medicalrecord_pet_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -93,7 +93,18 @@
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="@+id/textview_medicalrecord_date"
                     app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_date"
-                    tools:text="김먼지님의 진료 기록" />
+                    tools:text="김먼지" />
+
+                <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="님의 진료 기록"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_name"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecord_pet_name"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_name" />
 
                 <TextView
                     android:id="@+id/textview_medicalrecord_add"
@@ -103,9 +114,9 @@
                     android:text="@string/all_add"
                     android:textAppearance="@style/Typography.Body2.Regular"
                     android:textColor="@color/gray4"
-                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_name"
                     app:layout_constraintEnd_toStartOf="@+id/textview_medicalrecord_edit"
-                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_history" />
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_name" />
 
                 <TextView
                     android:id="@+id/textview_medicalrecord_edit"
@@ -115,9 +126,9 @@
                     android:text="@string/all_edit"
                     android:textAppearance="@style/Typography.Body2.Regular"
                     android:textColor="@color/gray4"
-                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecord_pet_name"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_history" />
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecord_pet_name" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout4"
@@ -130,7 +141,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_history">
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_name">
 
                     <ImageView
                         android:id="@+id/imageView21"
@@ -154,12 +165,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="24dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_history"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecord_pet_name"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_medical_record" />
             </androidx.constraintlayout.widget.ConstraintLayout>

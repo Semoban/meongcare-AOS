@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MedicalRecordEditFragment">
+        tools:context=".medicalrecord.view.MedicalRecordEditFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_medicalrecordedit_top"
@@ -47,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{@string/medicalrecord_pet(`김먼지`)}"
             android:textAppearance="@style/Typography.Title2.SemiBold"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@id/imagebutton_medicalrecordedit_back"
@@ -55,13 +54,14 @@
             app:layout_constraintTop_toTopOf="@id/imagebutton_medicalrecordedit_back"
             tools:text="김먼지님의 진료기록" />>
 
-        <ImageButton
-            android:id="@+id/button_medicalcrecordedit_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_medicalrecordedit_select_all"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="27dp"
-            android:background="@drawable/all_circle_border_gray"
+            android:background="@drawable/selector_checkbox_line_16dp"
+            android:buttonTint="@android:color/transparent"
             app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordedit_start"
             app:layout_constraintTop_toBottomOf="@id/imagebutton_medicalrecordedit_back" />
 
@@ -70,12 +70,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/all_deleteall"
+            android:text="@string/medicalrecord_select_all"
             android:textAppearance="@style/Typography.Body1.Medium"
             android:textColor="@color/gray4"
-            app:layout_constraintBottom_toBottomOf="@id/button_medicalcrecordedit_select"
-            app:layout_constraintStart_toEndOf="@id/button_medicalcrecordedit_select"
-            app:layout_constraintTop_toTopOf="@id/button_medicalcrecordedit_select" />
+            app:layout_constraintBottom_toBottomOf="@id/checkbox_medicalrecordedit_select_all"
+            app:layout_constraintStart_toEndOf="@id/checkbox_medicalrecordedit_select_all"
+            app:layout_constraintTop_toTopOf="@id/checkbox_medicalrecordedit_select_all" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_medicalrecordedit"
@@ -99,6 +99,7 @@
             layout="@layout/layout_footer_two_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
