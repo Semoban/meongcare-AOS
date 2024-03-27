@@ -27,6 +27,7 @@ import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
 import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
@@ -39,6 +40,7 @@ import okhttp3.MultipartBody
 class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var fileName: String
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private val awsS3ViewModel: AWSS3ViewModel by viewModels()
@@ -182,10 +184,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
 
     override fun onUriPassed(uri: Uri) {
         multipartImage = createMultipartFromUri(requireContext(), uri)
-        val disposition = multipartImage.headers?.get("Content-Disposition")
-        val filename = disposition?.substringAfterLast("filename=")?.removeSurrounding("\"") ?: "tempFile"
+        fileName = getMultipartFileName(multipartImage)
 
-        val filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH$filename"
+        val filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH$fileName"
         awsS3ViewModel.getPreSignedUrl(currentAccessToken, filePath)
     }
 
