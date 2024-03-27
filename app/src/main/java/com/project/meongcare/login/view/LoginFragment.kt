@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -28,19 +27,18 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentLoginBinding
-import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingService
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
+import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var provider: String
 
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
     val googleAuthLauncher =
@@ -49,10 +47,8 @@ class LoginFragment : Fragment() {
             getGoogleResult(task)
         }
     private val loginViewModel: LoginViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private val myFirebaseMessagingService = FirebaseCloudMessagingService()
-
-    @Inject
-    lateinit var userPreferences: UserPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,9 +66,9 @@ class LoginFragment : Fragment() {
                         // 로그인 성공
                         if (loginResponse.body() != null) {
                             Log.e("isFirstLogin", loginResponse.body()?.isFirstLogin.toString())
-                            userPreferences.setAccessToken(loginResponse.body()?.accessToken)
-                            userPreferences.setRefreshToken(loginResponse.body()?.refreshToken)
-                            userPreferences.setIsFirstLogin(loginResponse.body()?.isFirstLogin)
+                            userViewModel.setAccessToken(loginResponse.body()?.accessToken)
+                            userViewModel.setRefreshToken(loginResponse.body()?.refreshToken)
+                            userViewModel.setIsFirstLogin(loginResponse.body()?.isFirstLogin)
                             when (loginResponse.body()?.isFirstLogin) {
                                 true -> {
                                     val bundle = Bundle()
@@ -91,13 +87,10 @@ class LoginFragment : Fragment() {
                             R.drawable.snackbar_error_16dp,
                             getString(R.string.snack_bar_login_failure_deleted),
                         )
-                        lifecycleScope.launch {
-                            val provider = userPreferences.getProvider()
-                            when (provider) {
-                                "kakao" -> deleteKakaoAccount()
-                                "naver" -> deleteNaverAccount()
-                                "google" -> deleteGoogleAccount()
-                            }
+                        when (provider) {
+                            "kakao" -> deleteKakaoAccount()
+                            "naver" -> deleteNaverAccount()
+                            "google" -> deleteGoogleAccount()
                         }
                     }
                     else -> {
@@ -106,14 +99,19 @@ class LoginFragment : Fragment() {
                             R.drawable.snackbar_error_16dp,
                             getString(R.string.snack_bar_login_failure),
                         )
-                        Log.d("Login", "통신 실패")
                     }
                 }
             }
         }
+    }
 
+    private fun getProvider() {
+        userViewModel.providerPreferencesLiveData.observe(viewLifecycleOwner) { provider ->
+            if (provider != null) {
+                this.provider = provider
             }
         }
+    }
         binding.buttonKakaoLogin.setOnClickListener {
             kakaoLogin()
         }
@@ -173,8 +171,8 @@ class LoginFragment : Fragment() {
                 val deviceToken = getDeviceToken()
 
                 // data store에 저장
-                userPreferences.setEmail(user.kakaoAccount?.email!!)
-                userPreferences.setProvider("kakao")
+                userViewModel.setEmail(user.kakaoAccount?.email!!)
+                userViewModel.setProvider("kakao")
 
                 val loginRequest =
                     LoginRequest(
@@ -215,8 +213,8 @@ class LoginFragment : Fragment() {
                         val deviceToken = getDeviceToken()
 
                         // data store에 저장
-                        userPreferences.setEmail(result.profile?.email!!)
-                        userPreferences.setProvider("naver")
+                        userViewModel.setEmail(result.profile?.email!!)
+                        userViewModel.setProvider("naver")
 
                         // 서버에 로그인 정보 전송
                         val loginRequest =
@@ -281,8 +279,8 @@ class LoginFragment : Fragment() {
             val deviceToken = getDeviceToken()
 
             // data store에 저장
-            userPreferences.setEmail(account.email!!)
-            userPreferences.setProvider("google")
+            userViewModel.setEmail(account.email!!)
+            userViewModel.setProvider("google")
 
             val loginRequest =
                 LoginRequest(
