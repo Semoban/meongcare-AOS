@@ -33,4 +33,9 @@ object ProfileImageUtils {
         val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", "", emptyBody)
     }
+
+    fun getMultipartFileName(file: MultipartBody.Part): String {
+        val disposition = file.headers?.get("Content-Disposition")
+        return disposition?.substringAfterLast("filename=")?.removeSurrounding("\"") ?: "tempFile"
+    }
 }
