@@ -46,4 +46,22 @@ class UserViewModel
                 userPreferences.editProvider(provider)
             }
         }
+
+        fun setRefreshToken(refreshToken: String?) {
+            viewModelScope.launch {
+                userPreferences.editRefreshToken(refreshToken)
+            }
+        }
+
+        fun setIsFirstLogin(isFirstLogin: Boolean?) {
+            viewModelScope.launch {
+                userPreferences.editIsFirstLogin(isFirstLogin)
+            }
+        }
+
+        fun setEmail(email: String?) {
+            viewModelScope.launch {
+                userPreferences.editEmail(email)
+            }
+        }
     }
