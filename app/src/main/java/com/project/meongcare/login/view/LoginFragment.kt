@@ -26,7 +26,6 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.BuildConfig
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentLoginBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -41,7 +40,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    lateinit var mainActivity: MainActivity
     private lateinit var binding: FragmentLoginBinding
 
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
@@ -61,7 +59,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        mainActivity = activity as MainActivity
         binding = FragmentLoginBinding.inflate(inflater)
         return binding.root
     }
@@ -143,8 +140,8 @@ class LoginFragment : Fragment() {
         }
 
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(mainActivity)) {
-            UserApiClient.instance.loginWithKakaoTalk(mainActivity) { token, error ->
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) {
                     Log.e("Login-kakao", "카카오톡으로 로그인 실패", error)
 
@@ -155,14 +152,14 @@ class LoginFragment : Fragment() {
                     }
 
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(mainActivity, callback = callback)
+                    UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
                     Log.i("Login-kakao", "카카오톡으로 로그인 성공")
                     getKakaoLoginInfo()
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(mainActivity, callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
         }
     }
 
@@ -258,7 +255,7 @@ class LoginFragment : Fragment() {
                     NidOAuthLogin().callProfileApi(nidProfileCallback)
                 }
             }
-        NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
+        NaverIdLoginSDK.authenticate(requireContext(), oauthLoginCallback)
     }
 
     private fun googleLogin() {
@@ -275,7 +272,7 @@ class LoginFragment : Fragment() {
                 .requestServerAuthCode(BuildConfig.GOOGLE_CLIENT_ID)
                 .build()
 
-        return GoogleSignIn.getClient(mainActivity, googleSignInOptions)
+        return GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
     }
 
     private fun getGoogleResult(task: Task<GoogleSignInAccount>) {
