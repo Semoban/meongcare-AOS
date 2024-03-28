@@ -41,7 +41,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
-    lateinit var fragmentDogAddOnBoardingBinding: FragmentDogAddOnBoardingBinding
+    lateinit var binding: FragmentDogAddOnBoardingBinding
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
@@ -67,11 +67,11 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        fragmentDogAddOnBoardingBinding = FragmentDogAddOnBoardingBinding.inflate(inflater)
+        binding = FragmentDogAddOnBoardingBinding.inflate(inflater)
 
         dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
             if (uri != null) {
-                fragmentDogAddOnBoardingBinding.run {
+                binding.run {
                     Glide.with(this@DogAddOnBoardingFragment)
                         .load(uri)
                         .into(imageviewPetaddImage)
@@ -83,8 +83,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
-                fragmentDogAddOnBoardingBinding.textviewPetaddSelectBirthday.run {
-                    fragmentDogAddOnBoardingBinding.edittextPetaddSelectBirthdayError.visibility = View.INVISIBLE
+                binding.textviewPetaddSelectBirthday.run {
+                    binding.edittextPetaddSelectBirthdayError.visibility = View.INVISIBLE
                     text = dateFormat(date)
                     setTextAppearance(R.style.Typography_Body1_Medium)
                 }
@@ -93,8 +93,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
             if (dogType != null) {
-                fragmentDogAddOnBoardingBinding.edittextPetaddSelectType.run {
-                    fragmentDogAddOnBoardingBinding.edittextPetaddSelectTypeError.visibility = View.GONE
+                binding.edittextPetaddSelectType.run {
+                    binding.edittextPetaddSelectTypeError.visibility = View.GONE
                     text = dogType
                     setTextAppearance(R.style.Typography_Body1_Medium)
                 }
@@ -142,7 +142,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             }
         }
 
-        fragmentDogAddOnBoardingBinding.run {
+        binding.run {
             when (isFirstRegister) {
                 true -> buttonCancel.visibility = View.GONE
                 false, null -> buttonCancel.visibility = View.VISIBLE
@@ -166,7 +166,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             textviewPetaddSelectBirthday.setOnClickListener {
                 val birthdayBottomSheet =
                     BirthdayBottomSheetFragment(
-                        fragmentDogAddOnBoardingBinding.root,
+                        binding.root,
                         dogAddViewModel.dogBirthDate.value,
                     )
                 birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
@@ -228,7 +228,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
                 val dogName = edittextPetaddName.text.toString()
                 val dogType = edittextPetaddSelectType.text.toString()
-                val dogGender = getCheckedGender(fragmentDogAddOnBoardingBinding.root, chipgroupPetaddGroupGender.checkedChipId)
+                val dogGender = getCheckedGender(binding.root, chipgroupPetaddGroupGender.checkedChipId)
                 val dogBirth = dogAddViewModel.dogBirthDate.value!!
                 val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
                 val dogBack: Double? = bodySizeCheck(edittextPetaddBackLength.text.toString())
@@ -264,7 +264,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
             }
         }
 
-        return fragmentDogAddOnBoardingBinding.root
+        return binding.root
     }
 
     override fun onDestroy() {
