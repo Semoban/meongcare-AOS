@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.R
@@ -21,8 +20,9 @@ import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
-import com.project.meongcare.onboarding.model.entities.Gender
 import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.bodySizeCheck
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
@@ -303,16 +303,4 @@ fun createMultipartBody(
     }
     val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
     return MultipartBody.Part.createFormData("file", "", emptyBody)
-}
-
-fun getCheckedGender(
-    view: View,
-    checkedChipId: Int,
-): String {
-    val checkedChip = view.findViewById<Chip>(checkedChipId)
-    return if (checkedChip.text.toString() == Gender.FEMALE.korean) Gender.FEMALE.english else Gender.MALE.english
-}
-
-fun bodySizeCheck(str: String): Double? {
-    return if (str.isEmpty()) null else str.toDouble()
 }
