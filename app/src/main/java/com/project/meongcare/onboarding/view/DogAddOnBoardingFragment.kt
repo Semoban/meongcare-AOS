@@ -10,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
@@ -18,8 +17,6 @@ import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
-import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.login.model.data.repository.LoginRepository
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
@@ -28,9 +25,6 @@ import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,7 +32,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.text.SimpleDateFormat
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
@@ -47,9 +40,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
-
-    @Inject
-    lateinit var loginRepository: LoginRepository
 
     private var isCbxChecked = false
     private var isFirstRegister: Boolean? = null
