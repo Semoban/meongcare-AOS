@@ -20,6 +20,7 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
@@ -44,18 +45,16 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     lateinit var binding: FragmentDogAddOnBoardingBinding
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
-    private val postDogCoroutineJob = Job()
-    private val dogAddCoroutineJob = Job()
-
-    @Inject
-    lateinit var userPreferences: UserPreferences
 
     @Inject
     lateinit var loginRepository: LoginRepository
 
     private var isCbxChecked = false
     private var isFirstRegister: Boolean? = null
+    private lateinit var accessToken: String
+    private lateinit var refreshToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,36 +101,17 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
 
         dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
-            postDogCoroutineJob.cancel()
             if (response == 200) {
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_success_16dp,
                     getString(R.string.snack_bar_dog_create_complete),
                 ).show()
-                userPreferences.setIsFirstLogin(false)
+                userViewModel.setIsFirstLogin(false)
                 findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
             } else if (response == 401) {
-                lifecycleScope.launch(dogAddCoroutineJob) {
-                    val refreshToken = userPreferences.getRefreshToken()
-                    if (refreshToken.isNotEmpty()) {
-                        val reissueResponse = loginRepository.getNewAccessToken(refreshToken)
-                        if (reissueResponse != null && reissueResponse.code() == 200) {
-                            CustomSnackBar.make(
-                                requireView(),
-                                R.drawable.snackbar_error_16dp,
-                                getString(R.string.snack_bar_info_add_failure),
-                            ).show()
-                            userPreferences.setAccessToken(reissueResponse.body()?.accessToken!!)
-                        } else if (reissueResponse != null && reissueResponse.code() == 401) {
-                            CustomSnackBar.make(
-                                requireView(),
-                                R.drawable.snackbar_error_16dp,
-                                getString(R.string.snack_bar_refresh_expire),
-                            ).show()
-                            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_loginFragment)
-                        }
-                    }
+                if (refreshToken.isNotEmpty()) {
+                    reissueAccessToken()
                 }
             } else {
                 CustomSnackBar.make(
@@ -250,26 +230,59 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 val filePart = createMultipartBody(requireContext(), dogAddViewModel.dogProfileImage.value)
 
-                lifecycleScope.launch(postDogCoroutineJob) {
-                    userPreferences.accessToken.collectLatest { accessToken ->
-                        if (accessToken != null) {
-                            dogAddViewModel.postDogInfo(
-                                accessToken,
-                                filePart,
-                                requestBody,
-                            )
-                        }
+                if (accessToken.isNotEmpty()) {
+                    dogAddViewModel.postDogInfo(
+                        accessToken,
+                        filePart,
+                        requestBody,
+                    )
+                }
+            }
+        }
+        return binding.root
+    }
+
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+                getRefreshToken()
+            }
+        }
+    }
+
+    private fun getRefreshToken() {
+        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
+            if (refreshToken != null) {
+                this.refreshToken = refreshToken
+            }
+        }
+    }
+
+    private fun reissueAccessToken() {
+        userViewModel.getNewAccessToken(refreshToken)
+        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response.code()) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_info_add_failure),
+                        ).show()
+                        userViewModel.setAccessToken(response.body()?.accessToken)
+                    }
+                    401 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_refresh_expire),
+                        ).show()
+                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_loginFragment)
                     }
                 }
             }
         }
-
-        return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dogAddCoroutineJob.cancel()
     }
 
     override fun onUriPassed(uri: Uri) {
