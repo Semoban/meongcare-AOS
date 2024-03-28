@@ -21,6 +21,7 @@ import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
+import com.project.meongcare.onboarding.model.entities.Gender
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
@@ -282,11 +283,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     override fun onDateSubmit(str: String) {
         dogAddViewModel.getDogBirthDate(str)
     }
-}
-
-enum class Gender(val korean: String, val english: String) {
-    MALE("남성", "male"),
-    FEMALE("여성", "female"),
 }
 
 fun dateFormat(str: String): String {
