@@ -22,6 +22,7 @@ import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.model.entities.Gender
+import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
@@ -32,7 +33,6 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
 class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
@@ -283,14 +283,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     override fun onDateSubmit(str: String) {
         dogAddViewModel.getDogBirthDate(str)
     }
-}
-
-fun dateFormat(str: String): String {
-    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
-    val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-    val parsedDate = inputDateFormat.parse(str)
-    return outputDateFormat.format(parsedDate)
 }
 
 fun createMultipartBody(
