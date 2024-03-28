@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.login.model.data.local.UserPreferences
@@ -43,7 +42,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     lateinit var fragmentDogAddOnBoardingBinding: FragmentDogAddOnBoardingBinding
-    lateinit var mainActivity: MainActivity
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
@@ -70,7 +68,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         savedInstanceState: Bundle?,
     ): View? {
         fragmentDogAddOnBoardingBinding = FragmentDogAddOnBoardingBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
 
         dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
             if (uri != null) {
@@ -157,7 +154,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 modalBottomSheet.setPhotoMenuListener(this@DogAddOnBoardingFragment)
                 // 둥근 모서리 지정
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
             }
 
             // 품종 등록
@@ -174,7 +171,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                     )
                 birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
                 birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
-                birthdayBottomSheet.show(mainActivity.supportFragmentManager, birthdayBottomSheet.tag)
+                birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
             }
 
             checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -251,7 +248,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                     )
                 val json = Gson().toJson(dog)
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                val filePart = createMultipartBody(mainActivity, dogAddViewModel.dogProfileImage.value)
+                val filePart = createMultipartBody(requireContext(), dogAddViewModel.dogProfileImage.value)
 
                 lifecycleScope.launch(postDogCoroutineJob) {
                     userPreferences.accessToken.collectLatest { accessToken ->
