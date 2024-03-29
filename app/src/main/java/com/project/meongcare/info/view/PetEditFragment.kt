@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentPetEditBinding
 import com.project.meongcare.home.view.getCurrentDate
@@ -55,7 +54,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var binding: FragmentPetEditBinding
-    private lateinit var mainActivity: MainActivity
     private lateinit var dogInfo: GetDogInfoResponse
     private lateinit var currentAccessToken: String
 
@@ -84,7 +82,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPetEditBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
 
         if (!isInitialized) {
             initDogInfo(dogInfo)
@@ -288,7 +285,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 val modalBottomSheet = PhotoSelectBottomSheetFragment()
                 modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
                 modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
+                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
             }
 
             edittextPeteditType.setOnClickListener {
@@ -357,7 +354,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
                 if (isImageUpdated) {
                     // 새 이미지 등록된 경우
-                    val filePart: MultipartBody.Part = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
+                    val filePart: MultipartBody.Part = createMultipartBody(requireContext(), petEditViewModel.dogProfile.value)
                     petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
                 } else {
                     // 기존 이미지인 경우
