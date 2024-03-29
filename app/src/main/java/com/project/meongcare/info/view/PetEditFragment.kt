@@ -88,97 +88,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
 
         getAccessToken()
         initObserves()
-
-        binding.run {
-            editTextWatcher(edittextPeteditName, edittextPeteditName, "이름을 입력해주세요")
-            editTextWatcher(edittextPeteditType, edittextPeteditType, "품종을 입력해주세요")
-            editTextWatcher(edittextPeteditSelectBirthday, edittextPeteditSelectBirthday, "날짜를 선택해주세요")
-            editTextWatcher(edittextPeteditWeight, viewPeteditWeight, "")
-
-            cardviewPeteditImage.setOnClickListener {
-                val modalBottomSheet = PhotoSelectBottomSheetFragment()
-                modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
-                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
-            }
-
-            edittextPeteditType.setOnClickListener {
-                findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
-            }
-
-            checkboxPeteditNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
-                isCbxChecked = isChecked
-            }
-
-            textviewPeteditNeuterStatus.setOnClickListener {
-                checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
-            }
-
-            edittextPeteditSelectBirthday.setOnClickListener {
-                val birthdayBottomSheet =
-                    BirthdayBottomSheetFragment(
-                        binding.root,
-                        petEditViewModel.dogBirth.value,
-                    )
-                birthdayBottomSheet.setDateSubmitListener(this@PetEditFragment)
-                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
-                birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
-            }
-
-            buttonPeteditCancel.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            buttonPeteditSubmit.setOnClickListener {
-                if (edittextPeteditName.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditType.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditSelectBirthday.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditWeight.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-
-                val dogName = edittextPeteditName.text.toString()
-                val dogType = edittextPeteditType.text.toString()
-                val dogGender = getCheckedGender(binding.root, chipgroupPeteditGroupGender.checkedChipId)
-                val dogBirth = petEditViewModel.dogBirth.value!!
-                val dogWeight = edittextPeteditWeight.text.toString().toDouble()
-                val dogBack = bodySizeCheck(edittextPeteditBackLength.text.toString())
-                val dogNeck = bodySizeCheck(edittextPeteditNeckCircumference.text.toString())
-                val dogChest = bodySizeCheck(edittextPeteditChestCircumference.text.toString())
-                val dog =
-                    Dog(
-                        dogName,
-                        dogType,
-                        dogGender,
-                        dogBirth,
-                        isCbxChecked,
-                        dogWeight,
-                        dogBack,
-                        dogNeck,
-                        dogChest,
-                    )
-
-                val json = Gson().toJson(dog)
-                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                if (isImageUpdated) {
-                    // 새 이미지 등록된 경우
-                    val filePart: MultipartBody.Part = createMultipartBody(requireContext(), petEditViewModel.dogProfile.value)
-                    petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
-                } else {
-                    // 기존 이미지인 경우
-                    lifecycleScope.launch {
-                        val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
-                        petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
-                    }
-                }
-            }
-        }
+        initViews()
     }
 
     private fun getAccessToken() {
@@ -339,6 +249,97 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
             if (dogType != null) {
                 binding.edittextPeteditType.setText(dogType)
+            }
+        }
+    }
+
+    private fun initViews() {
+        editTextWatcher(binding.edittextPeteditName, binding.edittextPeteditName, "이름을 입력해주세요")
+        editTextWatcher(binding.edittextPeteditType, binding.edittextPeteditType, "품종을 입력해주세요")
+        editTextWatcher(binding.edittextPeteditSelectBirthday, binding.edittextPeteditSelectBirthday, "날짜를 선택해주세요")
+        editTextWatcher(binding.edittextPeteditWeight, binding.viewPeteditWeight, "")
+
+        binding.cardviewPeteditImage.setOnClickListener {
+            val modalBottomSheet = PhotoSelectBottomSheetFragment()
+            modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
+        }
+
+        binding.edittextPeteditType.setOnClickListener {
+            findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
+        }
+
+        binding.checkboxPeteditNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+            isCbxChecked = isChecked
+        }
+
+        binding.textviewPeteditNeuterStatus.setOnClickListener {
+            binding.checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
+        }
+
+        binding.edittextPeteditSelectBirthday.setOnClickListener {
+            val birthdayBottomSheet =
+                BirthdayBottomSheetFragment(
+                    binding.root,
+                    petEditViewModel.dogBirth.value,
+                )
+            birthdayBottomSheet.setDateSubmitListener(this@PetEditFragment)
+            birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+            birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
+        }
+
+        binding.buttonPeteditCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.buttonPeteditSubmit.setOnClickListener {
+            if (binding.edittextPeteditName.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditType.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditSelectBirthday.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditWeight.text.isEmpty()) {
+                return@setOnClickListener
+            }
+
+            val dogName = binding.edittextPeteditName.text.toString()
+            val dogType = binding.edittextPeteditType.text.toString()
+            val dogGender = getCheckedGender(binding.root, binding.chipgroupPeteditGroupGender.checkedChipId)
+            val dogBirth = petEditViewModel.dogBirth.value!!
+            val dogWeight = binding.edittextPeteditWeight.text.toString().toDouble()
+            val dogBack = bodySizeCheck(binding.edittextPeteditBackLength.text.toString())
+            val dogNeck = bodySizeCheck(binding.edittextPeteditNeckCircumference.text.toString())
+            val dogChest = bodySizeCheck(binding.edittextPeteditChestCircumference.text.toString())
+            val dog =
+                Dog(
+                    dogName,
+                    dogType,
+                    dogGender,
+                    dogBirth,
+                    isCbxChecked,
+                    dogWeight,
+                    dogBack,
+                    dogNeck,
+                    dogChest,
+                )
+
+            val json = Gson().toJson(dog)
+            val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+            if (isImageUpdated) {
+                // 새 이미지 등록된 경우
+                val filePart: MultipartBody.Part = createMultipartBody(requireContext(), petEditViewModel.dogProfile.value)
+                petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+            } else {
+                // 기존 이미지인 경우
+                lifecycleScope.launch {
+                    val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
+                    petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+                }
             }
         }
     }
