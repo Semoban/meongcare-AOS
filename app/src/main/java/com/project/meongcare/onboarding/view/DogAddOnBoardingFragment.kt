@@ -58,7 +58,126 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDogAddOnBoardingBinding.inflate(inflater)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getAccessToken()
+        initObserves()
+        initViews()
+    }
+
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+                getRefreshToken()
+            }
+        }
+    }
+
+    private fun getRefreshToken() {
+        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
+            if (refreshToken != null) {
+                this.refreshToken = refreshToken
+            }
+        }
+    }
+
+    private fun reissueAccessToken() {
+        userViewModel.getNewAccessToken(refreshToken)
+        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response.code()) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_info_add_failure),
+                        ).show()
+                        userViewModel.setAccessToken(response.body()?.accessToken)
+                    }
+                    401 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_refresh_expire),
+                        ).show()
+                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_loginFragment)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onUriPassed(uri: Uri) {
+        dogAddViewModel.getDogProfileImage(uri)
+    }
+
+    override fun onDateSubmit(str: String) {
+        dogAddViewModel.getDogBirthDate(str)
+    }
+
+    private fun initViews() {
+        // 사진 등록
+        binding.cardviewPetaddImage.setOnClickListener {
+            val modalBottomSheet = PhotoSelectBottomSheetFragment()
+            modalBottomSheet.setPhotoMenuListener(this@DogAddOnBoardingFragment)
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
+        }
+
+        // 품종 등록
+        binding.viewPetaddType.setOnClickListener {
+            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
+        }
+
+        // 날짜 등록
+        binding.textviewPetaddSelectBirthday.setOnClickListener {
+            val birthdayBottomSheet =
+                BirthdayBottomSheetFragment(
+                    binding.root,
+                    dogAddViewModel.dogBirthDate.value,
+                )
+            birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
+            birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+            birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
+        }
+
+        binding.checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+            isCbxChecked = isChecked
+        }
+
+        // 중성화 여부 텍스트 클릭 시 체크박스 반전
+        binding.textviewPetaddNeuterStatus.setOnClickListener {
+            binding.checkboxPetaddNeuterStatus.isChecked = !isCbxChecked
+        }
+
+        binding.edittextPetaddNameError.setOnClickListener {
+            it.visibility = View.INVISIBLE
+            binding.edittextPetaddName.requestFocus()
+        }
+
+        binding.edittextPetaddWeightError.setOnClickListener {
+            it.visibility = View.INVISIBLE
+            binding.edittextPetaddWeight.requestFocus()
+        }
+
+        binding.edittextPetaddSelectTypeError.setOnClickListener {
+            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
+        }
+
+        binding.buttonCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        initCancelButtonVisibility()
+        initCompleteButton()
+    }
+
+    private fun initObserves() {
         dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
             if (uri != null) {
                 binding.run {
@@ -112,176 +231,74 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 ).show()
             }
         }
-
-        binding.run {
-            when (isFirstRegister) {
-                true -> buttonCancel.visibility = View.GONE
-                false, null -> buttonCancel.visibility = View.VISIBLE
-            }
-
-            // 사진 등록
-            cardviewPetaddImage.setOnClickListener {
-                val modalBottomSheet = PhotoSelectBottomSheetFragment()
-                modalBottomSheet.setPhotoMenuListener(this@DogAddOnBoardingFragment)
-                // 둥근 모서리 지정
-                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
-            }
-
-            // 품종 등록
-            viewPetaddType.setOnClickListener {
-                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
-            }
-
-            // 날짜 등록
-            textviewPetaddSelectBirthday.setOnClickListener {
-                val birthdayBottomSheet =
-                    BirthdayBottomSheetFragment(
-                        binding.root,
-                        dogAddViewModel.dogBirthDate.value,
-                    )
-                birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
-                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
-                birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
-            }
-
-            checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
-                isCbxChecked = isChecked
-            }
-
-            // 중성화 여부 텍스트 클릭 시 체크박스 반전
-            textviewPetaddNeuterStatus.setOnClickListener {
-                checkboxPetaddNeuterStatus.isChecked = !isCbxChecked
-            }
-
-            edittextPetaddNameError.setOnClickListener {
-                it.visibility = View.INVISIBLE
-                edittextPetaddName.requestFocus()
-            }
-            edittextPetaddWeightError.setOnClickListener {
-                it.visibility = View.INVISIBLE
-                edittextPetaddWeight.requestFocus()
-            }
-            edittextPetaddSelectTypeError.setOnClickListener {
-                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
-            }
-
-            buttonCancel.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            // 완료
-            buttonComplete.setOnClickListener {
-                // 입력 검사
-                if (edittextPetaddName.text.isEmpty()) {
-                    edittextPetaddNameError.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
-                if (edittextPetaddSelectType.text.isEmpty()) {
-                    edittextPetaddSelectTypeError.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
-                if (chipgroupPetaddGroupGender.checkedChipId == View.NO_ID) {
-                    return@setOnClickListener
-                }
-
-                if (textviewPetaddSelectBirthday.text.isEmpty()) {
-                    edittextPetaddSelectBirthdayError.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
-                if (edittextPetaddWeight.text.isEmpty()) {
-                    edittextPetaddWeightError.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
-                val dogName = edittextPetaddName.text.toString()
-                val dogType = edittextPetaddSelectType.text.toString()
-                val dogGender = getCheckedGender(binding.root, chipgroupPetaddGroupGender.checkedChipId)
-                val dogBirth = dogAddViewModel.dogBirthDate.value!!
-                val dogWeight: Double = edittextPetaddWeight.text.toString().toDouble()
-                val dogBack: Double? = bodySizeCheck(edittextPetaddBackLength.text.toString())
-                val dogNeck: Double? = bodySizeCheck(edittextPetaddNeckCircumference.text.toString())
-                val dogChest: Double? = bodySizeCheck(edittextPetaddChestCircumference.text.toString())
-                val dog =
-                    Dog(
-                        dogName,
-                        dogType,
-                        dogGender,
-                        dogBirth,
-                        isCbxChecked,
-                        dogWeight,
-                        dogBack,
-                        dogNeck,
-                        dogChest,
-                    )
-                val json = Gson().toJson(dog)
-                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                val filePart = createMultipartBody(requireContext(), dogAddViewModel.dogProfileImage.value)
-
-                if (accessToken.isNotEmpty()) {
-                    dogAddViewModel.postDogInfo(
-                        accessToken,
-                        filePart,
-                        requestBody,
-                    )
-                }
-            }
-        }
-        return binding.root
     }
 
-    private fun getAccessToken() {
-        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
-            if (accessToken != null) {
-                this.accessToken = accessToken
-                getRefreshToken()
-            }
+    private fun initCancelButtonVisibility() {
+        when (isFirstRegister) {
+            true -> binding.buttonCancel.visibility = View.GONE
+            false, null -> binding.buttonCancel.visibility = View.VISIBLE
         }
     }
 
-    private fun getRefreshToken() {
-        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
-            if (refreshToken != null) {
-                this.refreshToken = refreshToken
+    private fun initCompleteButton() {
+        binding.buttonComplete.setOnClickListener {
+            // 입력 검사
+            if (binding.edittextPetaddName.text.isEmpty()) {
+                binding.edittextPetaddNameError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            if (binding.edittextPetaddSelectType.text.isEmpty()) {
+                binding.edittextPetaddSelectTypeError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            if (binding.chipgroupPetaddGroupGender.checkedChipId == View.NO_ID) {
+                return@setOnClickListener
+            }
+
+            if (binding.textviewPetaddSelectBirthday.text.isEmpty()) {
+                binding.edittextPetaddSelectBirthdayError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            if (binding.edittextPetaddWeight.text.isEmpty()) {
+                binding.edittextPetaddWeightError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            val dogName = binding.edittextPetaddName.text.toString()
+            val dogType = binding.edittextPetaddSelectType.text.toString()
+            val dogGender = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
+            val dogBirth = dogAddViewModel.dogBirthDate.value!!
+            val dogWeight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
+            val dogBack: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
+            val dogNeck: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
+            val dogChest: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
+            val dog =
+                Dog(
+                    dogName,
+                    dogType,
+                    dogGender,
+                    dogBirth,
+                    isCbxChecked,
+                    dogWeight,
+                    dogBack,
+                    dogNeck,
+                    dogChest,
+                )
+            val json = Gson().toJson(dog)
+            val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+            val filePart = createMultipartBody(requireContext(), dogAddViewModel.dogProfileImage.value)
+
+            if (accessToken.isNotEmpty()) {
+                dogAddViewModel.postDogInfo(
+                    accessToken,
+                    filePart,
+                    requestBody,
+                )
             }
         }
-    }
-
-    private fun reissueAccessToken() {
-        userViewModel.getNewAccessToken(refreshToken)
-        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                when (response.code()) {
-                    200 -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_info_add_failure),
-                        ).show()
-                        userViewModel.setAccessToken(response.body()?.accessToken)
-                    }
-                    401 -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_refresh_expire),
-                        ).show()
-                        findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_loginFragment)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onUriPassed(uri: Uri) {
-        dogAddViewModel.getDogProfileImage(uri)
-    }
-
-    override fun onDateSubmit(str: String) {
-        dogAddViewModel.getDogBirthDate(str)
     }
 }
 
