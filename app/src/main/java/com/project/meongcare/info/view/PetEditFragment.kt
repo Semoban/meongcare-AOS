@@ -82,6 +82,11 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPetEditBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         if (!isInitialized) {
             initDogInfo(dogInfo)
@@ -365,8 +370,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 }
             }
         }
-
-        return binding.root
     }
 
     private fun getAccessToken() {
