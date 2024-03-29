@@ -87,123 +87,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
 
         getAccessToken()
-
-        petEditViewModel.dogProfile.observe(viewLifecycleOwner) { uri ->
-            if (uri != null) {
-                Glide.with(this@PetEditFragment)
-                    .load(uri)
-                    .error(R.drawable.dog_profile_default)
-                    .into(binding.imageviewPeteditImage)
-            }
-        }
-
-        petEditViewModel.dogBirth.observe(viewLifecycleOwner) { birth ->
-            if (birth != null) {
-                binding.edittextPeteditSelectBirthday.setText(dateFormat(birth))
-            }
-        }
-
-        petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                when (response) {
-                    200 -> {
-                        val dogPostRequest =
-                            WeightPostRequest(
-                                dogInfo.dogId,
-                                getCurrentDate(),
-                                null,
-                            )
-                        petEditViewModel.postDogWeight(accessToken, dogPostRequest)
-                    }
-                    401 -> {
-                        if (refreshToken.isNotEmpty()) {
-                            reissueAccessToken()
-                        }
-                    }
-                    else -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_failure),
-                        ).show()
-                    }
-                }
-            }
-        }
-
-        petEditViewModel.postDogWeightResponse.observe(viewLifecycleOwner) { postResponse ->
-            if (postResponse != null) {
-                when (postResponse) {
-                    200 -> {
-                        // post 성공, patch 호출
-                        petEditViewModel.patchDogWeight(
-                            dogInfo.dogId,
-                            binding.edittextPeteditWeight.text.toString().toDouble(),
-                            getCurrentDate(),
-                            accessToken,
-                        )
-                    }
-                    401 -> {
-                        if (refreshToken.isNotEmpty()) {
-                            reissueAccessToken()
-                        }
-                    }
-                    else -> {
-                        // 강아지 정보 수정 실패
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_dog_weight_failure),
-                        ).show()
-                    }
-                }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure),
-                ).show()
-            }
-        }
-
-        petEditViewModel.patchDogWeightResponse.observe(viewLifecycleOwner) { patchResponse ->
-            if (patchResponse != null) {
-                when (patchResponse) {
-                    200 -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_success_16dp,
-                            getString(R.string.snack_bar_dog_edit_complete),
-                        ).show()
-                        findNavController().popBackStack()
-                    }
-                    401 -> {
-                        if (refreshToken.isNotEmpty()) {
-                            reissueAccessToken()
-                        }
-                    }
-                    else -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_error_16dp,
-                            getString(R.string.snack_bar_dog_weight_failure),
-                        ).show()
-                    }
-                }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure),
-                ).show()
-            }
-        }
-
-        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
-            if (dogType != null) {
-                binding.edittextPeteditType.setText(dogType)
-            }
-        }
+        initObserves()
 
         binding.run {
             editTextWatcher(edittextPeteditName, edittextPeteditName, "이름을 입력해주세요")
@@ -336,6 +220,125 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                         findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
                     }
                 }
+            }
+        }
+    }
+
+    private fun initObserves() {
+        petEditViewModel.dogProfile.observe(viewLifecycleOwner) { uri ->
+            if (uri != null) {
+                Glide.with(this@PetEditFragment)
+                    .load(uri)
+                    .error(R.drawable.dog_profile_default)
+                    .into(binding.imageviewPeteditImage)
+            }
+        }
+
+        petEditViewModel.dogBirth.observe(viewLifecycleOwner) { birth ->
+            if (birth != null) {
+                binding.edittextPeteditSelectBirthday.setText(dateFormat(birth))
+            }
+        }
+
+        petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response) {
+                    200 -> {
+                        val dogPostRequest =
+                            WeightPostRequest(
+                                dogInfo.dogId,
+                                getCurrentDate(),
+                                null,
+                            )
+                        petEditViewModel.postDogWeight(accessToken, dogPostRequest)
+                    }
+                    401 -> {
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_failure),
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        petEditViewModel.postDogWeightResponse.observe(viewLifecycleOwner) { postResponse ->
+            if (postResponse != null) {
+                when (postResponse) {
+                    200 -> {
+                        // post 성공, patch 호출
+                        petEditViewModel.patchDogWeight(
+                            dogInfo.dogId,
+                            binding.edittextPeteditWeight.text.toString().toDouble(),
+                            getCurrentDate(),
+                            accessToken,
+                        )
+                    }
+                    401 -> {
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
+                        }
+                    }
+                    else -> {
+                        // 강아지 정보 수정 실패
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_dog_weight_failure),
+                        ).show()
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
+            }
+        }
+
+        petEditViewModel.patchDogWeightResponse.observe(viewLifecycleOwner) { patchResponse ->
+            if (patchResponse != null) {
+                when (patchResponse) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_success_16dp,
+                            getString(R.string.snack_bar_dog_edit_complete),
+                        ).show()
+                        findNavController().popBackStack()
+                    }
+                    401 -> {
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
+                        }
+                    }
+                    else -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_dog_weight_failure),
+                        ).show()
+                    }
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
+            }
+        }
+
+        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
+            if (dogType != null) {
+                binding.edittextPeteditType.setText(dogType)
             }
         }
     }
