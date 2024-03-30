@@ -11,6 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.EXCRETA_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
@@ -28,6 +33,7 @@ import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MultipartBody
 
 @AndroidEntryPoint
 class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
@@ -37,11 +43,15 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val calendarModalBottomSheet = CalendarBottomSheetFragment()
 
     private var excretaDate = ""
     private var accessToken = ""
     private var dogId = 0L
+
+    private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var fileName: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -154,41 +164,65 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
                 }
 
                 if (isValid) {
-                    val excretaType =
-                        if (checkboxExcretaaddUrine.isChecked) {
-                            Excreta.URINE.toString()
-                        } else {
-                            Excreta.FECES.toString()
-                        }
-
-                    val excretaTime = convertTimeFormat(timepikerExcretaaddTime)
-                    val excretaDateTime = "${excretaDate}T$excretaTime"
-
-                    val currentImageUri = excretaAddViewModel.excretaImage.value
-
-                    excretaAddViewModel.postExcreta(
-                        dogId,
-                        accessToken,
-                        excretaType,
-                        excretaDateTime,
-                        requireContext(),
-                        currentImageUri ?: Uri.EMPTY,
-                    )
-                    excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
-                        if (response == SUCCESS) {
-                            showSuccessSnackBar(
-                                requireView(),
-                                EXCRETA_POST_SUCCESS,
-                            )
-                            findNavController().popBackStack()
-                        } else {
-                            showFailureSnackBar(
-                                requireView(),
-                                EXCRETA_POST_FAILURE,
-                            )
-                        }
-                    }
+                    getPreSignedUrl()
                 }
+            }
+        }
+    }
+
+    private fun getPreSignedUrl() {
+        multipartImage = createMultipartFromUri(requireContext(), excretaAddViewModel.excretaImage.value)
+        fileName = "$PARENT_FOLDER_PATH$EXCRETA_FOLDER_PATH${getMultipartFileName(multipartImage)}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                uploadImage(response.preSignedUrl, multipartImage)
+            }
+        }
+    }
+
+    private fun uploadImage(preSignedUrl: String, image: MultipartBody.Part) {
+        awsS3ViewModel.uploadImageToS3(preSignedUrl, image)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+//                postExcreta()
+            }
+        }
+    }
+
+    private fun postExcreta() {
+        val excretaType =
+            if (binding.checkboxExcretaaddUrine.isChecked) {
+                Excreta.URINE.toString()
+            } else {
+                Excreta.FECES.toString()
+            }
+
+        val excretaTime = convertTimeFormat(binding.timepikerExcretaaddTime)
+        val excretaDateTime = "${excretaDate}T$excretaTime"
+
+        val currentImageUri = excretaAddViewModel.excretaImage.value
+
+        excretaAddViewModel.postExcreta(
+            dogId,
+            accessToken,
+            excretaType,
+            excretaDateTime,
+            requireContext(),
+            currentImageUri ?: Uri.EMPTY,
+        )
+        excretaAddViewModel.excretaPosted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                showSuccessSnackBar(
+                    requireView(),
+                    EXCRETA_POST_SUCCESS,
+                )
+                findNavController().popBackStack()
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    EXCRETA_POST_FAILURE,
+                )
             }
         }
     }
