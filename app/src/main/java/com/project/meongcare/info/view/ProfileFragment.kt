@@ -26,8 +26,8 @@ import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
-import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener

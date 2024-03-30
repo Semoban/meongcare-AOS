@@ -21,8 +21,8 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.FEED_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
-import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS

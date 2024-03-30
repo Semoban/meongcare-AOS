@@ -12,7 +12,7 @@ import java.io.File
 import java.net.URL
 import java.util.UUID
 
-object ProfileImageUtils {
+object AWSS3ImageUtils {
     private fun createUUID(): String {
         return UUID.randomUUID().toString()
     }

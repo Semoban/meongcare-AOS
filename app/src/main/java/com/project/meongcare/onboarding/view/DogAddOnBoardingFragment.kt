@@ -16,8 +16,8 @@ import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.DOG_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
-import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
