@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -33,7 +32,6 @@ import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 
 @AndroidEntryPoint
@@ -78,11 +76,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                         }
                     }
                     401 -> {
-                        lifecycleScope.launch {
-                            val refreshToken = currentRefreshToken
-                            if (refreshToken.isNotEmpty()) {
-                                reissueAccessToken()
-                            }
+                        if (currentRefreshToken.isNotEmpty()) {
+                            reissueAccessToken()
                         }
                     }
                     else -> {
@@ -106,11 +101,8 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
                         adapter.updateDogList(dogListResponse.body()?.dogs!!)
                     }
                     401 -> {
-                        lifecycleScope.launch {
-                            val refreshToken = currentRefreshToken
-                            if (refreshToken.isNotEmpty()) {
-                                reissueAccessToken()
-                            }
+                        if (currentRefreshToken.isNotEmpty()) {
+                            reissueAccessToken()
                         }
                     }
                     else -> {
