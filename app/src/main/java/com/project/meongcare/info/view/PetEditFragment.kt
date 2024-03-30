@@ -16,9 +16,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.DOG_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUrl
+import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentPetEditBinding
 import com.project.meongcare.home.view.getCurrentDate
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
@@ -26,28 +31,15 @@ import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.model.entities.Dog
 import com.project.meongcare.onboarding.model.entities.Gender
 import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
-import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.bodySizeCheck
-import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.getCheckedGender
 import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
-import com.project.meongcare.onboarding.view.createMultipartBody
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
-import java.net.URL
 
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
@@ -55,7 +47,10 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var dogInfo: GetDogInfoResponse
     private lateinit var accessToken: String
     private lateinit var refreshToken: String
+    private lateinit var fileName: String
+    private lateinit var multipartImage: MultipartBody.Part
 
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val petEditViewModel: ProfileViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
@@ -251,6 +246,51 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 binding.edittextPeteditType.setText(dogType)
             }
         }
+
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, multipartImage)
+            }
+        }
+
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+//                val dogName = binding.edittextPeteditName.text.toString()
+//                val dogType = binding.edittextPeteditType.text.toString()
+//                val dogGender = getCheckedGender(binding.root, binding.chipgroupPeteditGroupGender.checkedChipId)
+//                val dogBirth = petEditViewModel.dogBirth.value!!
+//                val dogWeight = binding.edittextPeteditWeight.text.toString().toDouble()
+//                val dogBack = bodySizeCheck(binding.edittextPeteditBackLength.text.toString())
+//                val dogNeck = bodySizeCheck(binding.edittextPeteditNeckCircumference.text.toString())
+//                val dogChest = bodySizeCheck(binding.edittextPeteditChestCircumference.text.toString())
+//                val dog =
+//                    Dog(
+//                        dogName,
+//                        dogType,
+//                        dogGender,
+//                        dogBirth,
+//                        isCbxChecked,
+//                        dogWeight,
+//                        dogBack,
+//                        dogNeck,
+//                        dogChest,
+//                    )
+//
+//                val json = Gson().toJson(dog)
+//                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+//                if (isImageUpdated) {
+//                    // 새 이미지 등록된 경우
+//                    val filePart: MultipartBody.Part = createMultipartBody(requireContext(), petEditViewModel.dogProfile.value)
+//                    petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+//                } else {
+//                    // 기존 이미지인 경우
+//                    lifecycleScope.launch {
+//                        val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
+//                        petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+//                    }
+//                }
+            }
+        }
     }
 
     private fun initViews() {
@@ -307,38 +347,19 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 return@setOnClickListener
             }
 
-            val dogName = binding.edittextPeteditName.text.toString()
-            val dogType = binding.edittextPeteditType.text.toString()
-            val dogGender = getCheckedGender(binding.root, binding.chipgroupPeteditGroupGender.checkedChipId)
-            val dogBirth = petEditViewModel.dogBirth.value!!
-            val dogWeight = binding.edittextPeteditWeight.text.toString().toDouble()
-            val dogBack = bodySizeCheck(binding.edittextPeteditBackLength.text.toString())
-            val dogNeck = bodySizeCheck(binding.edittextPeteditNeckCircumference.text.toString())
-            val dogChest = bodySizeCheck(binding.edittextPeteditChestCircumference.text.toString())
-            val dog =
-                Dog(
-                    dogName,
-                    dogType,
-                    dogGender,
-                    dogBirth,
-                    isCbxChecked,
-                    dogWeight,
-                    dogBack,
-                    dogNeck,
-                    dogChest,
-                )
-
-            val json = Gson().toJson(dog)
-            val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             if (isImageUpdated) {
                 // 새 이미지 등록된 경우
-                val filePart: MultipartBody.Part = createMultipartBody(requireContext(), petEditViewModel.dogProfile.value)
-                petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+                multipartImage = createMultipartFromUri(requireContext(), petEditViewModel.dogProfile.value)
+                fileName = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${getMultipartFileName(multipartImage)}"
+                awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
             } else {
-                // 기존 이미지인 경우
                 lifecycleScope.launch {
-                    val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
-                    petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, filePart, requestBody)
+                    // 기존 이미지인 경우
+                    // 일단 받아온 이미지 형태가 url이기 때문에 새로운 multipart를 만들어서 이미지 전송하도록 했지만
+                    // 추후에 이미지 수신 형태가 파일 경로 형태이면 이미지 전송 없이 기존 파일 경로 포함해서 정보만 전송하도록 변경
+                    multipartImage = createMultipartFromUrl(requireContext(), dogInfo.imageUrl)
+                    fileName = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${getMultipartFileName(multipartImage)}"
+                    awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
                 }
             }
         }
@@ -350,7 +371,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         hint: String,
     ) {
         editText.addTextChangedListener {
-            editText.doAfterTextChanged { editable ->
+            editText.doAfterTextChanged {
                 updateEditTextStyle(editText, targetView, hint)
             }
         }
@@ -403,25 +424,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
             if (dogInfo.neckRound != null && dogInfo.neckRound != 0.0) {
                 edittextPeteditNeckCircumference.setText(dogInfo.neckRound.toString())
-            }
-        }
-    }
-
-    private suspend fun createMultipartFromUrl(url: String?): MultipartBody.Part {
-        return withContext(Dispatchers.IO) {
-            if (url.isNullOrEmpty()) {
-                val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file", "", emptyBody)
-            } else {
-                val inputStream = URL(url).openStream()
-                val file = File(requireContext().cacheDir, "url_image.jpg")
-                inputStream.use { input ->
-                    file.outputStream().use { output ->
-                        input.copyTo(output)
-                    }
-                }
-                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file", file.name, requestFile)
             }
         }
     }
