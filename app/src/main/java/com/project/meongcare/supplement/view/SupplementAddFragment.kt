@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -21,8 +22,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.util.SUPPLEMENTS_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
+import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
@@ -34,12 +41,23 @@ import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showTime
 import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MultipartBody
 
+@AndroidEntryPoint
 class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     lateinit var fragmentSupplementAddBinding: FragmentSupplementAddBinding
     lateinit var mainActivity: MainActivity
     lateinit var supplementViewModel: SupplementViewModel
     lateinit var navController: NavController
+
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+
+    private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var fileName: String
+
+    private var accessToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +67,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
         fragmentSupplementAddBinding = FragmentSupplementAddBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         navController = findNavController()
+        getAccessToken()
 
         val factory = SupplementViewModelFactory(SupplementRepository())
         supplementViewModel = ViewModelProvider(this, factory)[SupplementViewModel::class.java]
@@ -184,15 +203,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
             buttonSupplementAddComplete.setOnClickListener {
                 checkInput()
                 if (checkInput()) {
-                    val brandName = editTextSupplementAddBrandName.text.toString()
-                    val name = editTextSupplementAddName.text.toString()
-                    val imgUri = supplementViewModel.supplementAddImg.value
-
-                    supplementViewModel.addSupplement(
-                        brandName,
-                        name,
-                        imgUri ?: Uri.EMPTY,
-                    )
+                    getPreSignedUrl()
                 }
             }
         }
@@ -339,6 +350,47 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
                 setEditTextOriginal(this, hintText)
             }
         }
+    }
+
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+            }
+        }
+    }
+
+    private fun getPreSignedUrl() {
+        multipartImage = createMultipartFromUri(requireContext(), supplementViewModel.supplementAddImg.value)
+        fileName = "$PARENT_FOLDER_PATH$SUPPLEMENTS_FOLDER_PATH${getMultipartFileName(multipartImage)}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                uploadImage(response.preSignedUrl)
+                Log.d("uploadedImage", response.preSignedUrl)
+            }
+        }
+    }
+
+    private fun uploadImage(preSignedUrl: String) {
+        awsS3ViewModel.uploadImageToS3(preSignedUrl, multipartImage)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+//                postSupplement()
+            }
+        }
+    }
+
+    private fun postSupplement() {
+        val brandName = fragmentSupplementAddBinding.editTextSupplementAddBrandName.text.toString()
+        val name = fragmentSupplementAddBinding.editTextSupplementAddName.text.toString()
+        val imgUri = supplementViewModel.supplementAddImg.value
+
+        supplementViewModel.addSupplement(
+            brandName,
+            name,
+            imgUri ?: Uri.EMPTY,
+        )
     }
 
     private fun showPictureBottomSheet() {
