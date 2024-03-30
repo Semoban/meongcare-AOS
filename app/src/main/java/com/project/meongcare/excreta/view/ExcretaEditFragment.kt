@@ -8,10 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUrl
+import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
@@ -34,17 +39,22 @@ import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 @AndroidEntryPoint
 class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private var _binding: FragmentExcretaAddEditBinding? = null
     val binding get() = _binding!!
 
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val excretaPatchViewModel: ExcretaPatchViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val calendarModalBottomSheet = CalendarBottomSheetFragment()
 
     private lateinit var excretaInfo: ExcretaDetailGetResponse
+    private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var fileName: String
     private var excretaDate = ""
     private var accessToken = ""
 
@@ -187,41 +197,75 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                 }
 
                 if (isValid) {
-                    val excretaType =
-                        if (checkboxExcretaaddUrine.isChecked) {
-                            Excreta.URINE.toString()
-                        } else {
-                            Excreta.FECES.toString()
-                        }
-
-                    val excretaTime =
-                        ExcretaDateTimeUtils.convertTimeFormat(timepikerExcretaaddTime)
-                    val excretaDateTime = "${excretaDate}T$excretaTime"
-
-                    val currentImageUri = excretaPatchViewModel.excretaImage.value
-                    excretaPatchViewModel.patchExcreta(
-                        accessToken,
-                        getExcretaId(),
-                        excretaType,
-                        excretaDateTime,
-                        requireContext(),
-                        currentImageUri ?: Uri.EMPTY,
-                    )
-                    excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
-                        if (response == SUCCESS) {
-                            showSuccessSnackBar(
-                                requireView(),
-                                EXCRETA_PATCH_SUCCESS,
-                            )
-                            findNavController().popBackStack()
-                        } else {
-                            showFailureSnackBar(
-                                requireView(),
-                                EXCRETA_PATCH_FAILURE,
-                            )
-                        }
-                    }
+                    getPreSignedUrl()
                 }
+            }
+        }
+    }
+
+    private fun getPreSignedUrl() {
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                uploadImage(response.preSignedUrl)
+            }
+        }
+        val imageUri = excretaPatchViewModel.excretaImage.value
+
+        if (imageUri == null) {
+            lifecycleScope.launch {
+                multipartImage = createMultipartFromUrl(requireContext(), excretaInfo.excretaImageURL)
+                fileName = getMultipartFileName(multipartImage)
+                awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
+            }
+        } else {
+            multipartImage = createMultipartFromUri(requireContext(), imageUri)
+            fileName = getMultipartFileName(multipartImage)
+            awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
+        }
+    }
+
+    private fun uploadImage(preSignedUrl: String) {
+        awsS3ViewModel.uploadImageToS3(preSignedUrl, multipartImage)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+//                patchExcreta()
+            }
+        }
+    }
+
+    private fun patchExcreta() {
+        val excretaType =
+            if (binding.checkboxExcretaaddUrine.isChecked) {
+                Excreta.URINE.toString()
+            } else {
+                Excreta.FECES.toString()
+            }
+
+        val excretaTime =
+            ExcretaDateTimeUtils.convertTimeFormat(binding.timepikerExcretaaddTime)
+        val excretaDateTime = "${excretaDate}T$excretaTime"
+
+        val currentImageUri = excretaPatchViewModel.excretaImage.value
+        excretaPatchViewModel.patchExcreta(
+            accessToken,
+            getExcretaId(),
+            excretaType,
+            excretaDateTime,
+            requireContext(),
+            currentImageUri ?: Uri.EMPTY,
+        )
+        excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                showSuccessSnackBar(
+                    requireView(),
+                    EXCRETA_PATCH_SUCCESS,
+                )
+                findNavController().popBackStack()
+            } else {
+                showFailureSnackBar(
+                    requireView(),
+                    EXCRETA_PATCH_FAILURE,
+                )
             }
         }
     }
