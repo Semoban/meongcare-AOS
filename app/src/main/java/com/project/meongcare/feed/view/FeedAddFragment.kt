@@ -19,6 +19,11 @@ import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.FEED_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.util.ProfileImageUtils.createMultipartFromUri
+import com.project.meongcare.aws.util.ProfileImageUtils.getMultipartFileName
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
@@ -45,6 +50,7 @@ import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MultipartBody
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -56,9 +62,13 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     val binding get() = _binding!!
 
     private lateinit var inputMethodManager: InputMethodManager
+    private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var fileName: String
+
     private val feedPostViewModel: FeedPostViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
 
     private var recommendIntake = 0.0
     var selectedStartDate = ""
@@ -102,6 +112,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         dogViewModel.fetchDogWeight()
         dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
             weight = response
+        }
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                // 이미지 업로드 성공 시 데이터 전송 처리
+                // postFeedInfo() -> 함수 내 이미지 전송 로직 제거 필요
+            }
         }
         initInputMethodManager()
         initToolbar()
@@ -457,14 +473,13 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 }
 
                 if (isValid) {
-                    postFeedInfo()
+                    getPreSignedUrl()
                 }
             }
         }
     }
 
     private fun postFeedInfo() {
-        createFeedInfo()
         val dto = convertFeedPostDto(feedInfo)
         val file =
             convertFeedFile(
@@ -489,6 +504,18 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     requireView(),
                     FEED_POST_FAILURE,
                 )
+            }
+        }
+    }
+
+    private fun getPreSignedUrl() {
+        createFeedInfo()
+        multipartImage = createMultipartFromUri(requireContext(), imageUri)
+        fileName = "$PARENT_FOLDER_PATH$FEED_FOLDER_PATH${getMultipartFileName(multipartImage)}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, multipartImage)
             }
         }
     }
