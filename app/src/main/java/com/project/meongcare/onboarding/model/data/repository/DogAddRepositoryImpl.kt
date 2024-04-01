@@ -2,8 +2,7 @@ package com.project.meongcare.onboarding.model.data.repository
 
 import android.util.Log
 import com.project.meongcare.onboarding.model.data.remote.DogAddRetrofitClient
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import com.project.meongcare.onboarding.model.entities.DogPostRequest
 import javax.inject.Inject
 
 class DogAddRepositoryImpl
@@ -11,11 +10,10 @@ class DogAddRepositoryImpl
     constructor(private val dogAddRetrofitClient: DogAddRetrofitClient) : DogAddRepository {
         override suspend fun postDogInfo(
             accessToken: String,
-            file: MultipartBody.Part,
-            dto: RequestBody,
+            dogPostRequest: DogPostRequest,
         ): Int {
             try {
-                val response = dogAddRetrofitClient.dogAddApi.postDogInfo(accessToken, file, dto)
+                val response = dogAddRetrofitClient.dogAddApi.postDogInfo(accessToken, dogPostRequest)
                 if (response.isSuccessful) {
                     Log.d("DogAddRepository", "통신 성공(code-${response.code()})")
                     return response.code()
