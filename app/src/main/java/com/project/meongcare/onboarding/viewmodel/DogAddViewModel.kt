@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.onboarding.model.data.repository.DogAddRepository
+import com.project.meongcare.onboarding.model.entities.DogPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -40,11 +41,10 @@ class DogAddViewModel
 
         fun postDogInfo(
             accessToken: String,
-            file: MultipartBody.Part,
-            dto: RequestBody,
+            dogPostRequest: DogPostRequest,
         ) {
             viewModelScope.launch {
-                _dogAddResponse.value = dogAddRepository.postDogInfo(accessToken, file, dto)
+                _dogAddResponse.value = dogAddRepository.postDogInfo(accessToken, dogPostRequest)
             }
         }
     }
