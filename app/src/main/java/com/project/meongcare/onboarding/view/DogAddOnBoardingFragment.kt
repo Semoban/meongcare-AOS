@@ -23,7 +23,10 @@ import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
+import com.project.meongcare.onboarding.model.entities.DogPostRequest
 import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.bodySizeCheck
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
@@ -49,7 +52,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
     private lateinit var accessToken: String
     private lateinit var refreshToken: String
     private lateinit var multipartImage: MultipartBody.Part
-    private lateinit var fileName: String
+    private lateinit var filePath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +121,6 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     override fun onUriPassed(uri: Uri) {
         dogAddViewModel.getDogProfileImage(uri)
-        multipartImage = createMultipartFromUri(requireContext(), uri)
-        fileName = getMultipartFileName(multipartImage)
     }
 
     override fun onDateSubmit(str: String) {
@@ -246,38 +247,36 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                // 저장된 이미지 경로를 데이터와 함께 서버로 전달
-//                val dogName = binding.edittextPetaddName.text.toString()
-//                val dogType = binding.edittextPetaddSelectType.text.toString()
-//                val dogGender = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
-//                val dogBirth = dogAddViewModel.dogBirthDate.value!!
-//                val dogWeight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
-//                val dogBack: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
-//                val dogNeck: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
-//                val dogChest: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
-//                val dog =
-//                    Dog(
-//                        dogName,
-//                        dogType,
-//                        dogGender,
-//                        dogBirth,
-//                        isCbxChecked,
-//                        dogWeight,
-//                        dogBack,
-//                        dogNeck,
-//                        dogChest,
-//                    )
-//                val json = Gson().toJson(dog)
-//                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-//                val filePart = createMultipartBody(requireContext(), dogAddViewModel.dogProfileImage.value)
-//
-//                if (accessToken.isNotEmpty()) {
-//                    dogAddViewModel.postDogInfo(
-//                        accessToken,
-//                        filePart,
-//                        requestBody,
-//                    )
-//                }
+                val name = binding.edittextPetaddName.text.toString()
+                val type = binding.edittextPetaddSelectType.text.toString()
+                val sex = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
+                val birthDate = dogAddViewModel.dogBirthDate.value!!
+                val castrate = binding.checkboxPetaddNeuterStatus.isChecked
+                val weight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
+                val backRound: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
+                val neckRound: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
+                val chestRound: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
+
+                val dogPostRequest =
+                    DogPostRequest(
+                        name,
+                        type,
+                        sex,
+                        birthDate,
+                        castrate,
+                        weight,
+                        backRound,
+                        neckRound,
+                        chestRound,
+                        filePath,
+                    )
+
+                if (accessToken.isNotEmpty()) {
+                    dogAddViewModel.postDogInfo(
+                        accessToken,
+                        dogPostRequest,
+                    )
+                }
             }
         }
     }
@@ -316,7 +315,9 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 return@setOnClickListener
             }
 
-            val filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH$fileName"
+            multipartImage = createMultipartFromUri(requireContext(), dogAddViewModel.dogProfileImage.value)
+            val fileName = getMultipartFileName(multipartImage)
+            filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH$fileName"
             awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
         }
     }
