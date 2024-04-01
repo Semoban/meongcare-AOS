@@ -1,6 +1,6 @@
 package com.project.meongcare.onboarding.model.entities
 
-data class Dog(
+data class DogPostRequest(
     val name: String,
     val type: String,
     val sex: String,
