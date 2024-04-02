@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.medicalRecord.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.project.meongcare.databinding.FragmentMedicalRecordAddBinding
-import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
+import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

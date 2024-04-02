@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.medicalRecord.view.bottomSheet
 
 import android.app.Dialog
 import android.os.Bundle

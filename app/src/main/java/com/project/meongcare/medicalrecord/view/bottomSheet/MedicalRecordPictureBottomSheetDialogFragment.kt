@@ -1,4 +1,4 @@
-package com.project.meongcare
+package com.project.meongcare.medicalRecord.view.bottomSheet
 
 import android.app.Activity
 import android.app.Dialog
@@ -15,6 +15,7 @@ import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.project.meongcare.OnPictureChangedListener
 import com.project.meongcare.databinding.BottomsheetMedicalRecordAddPictureBinding
 import java.io.File
 import java.text.SimpleDateFormat
