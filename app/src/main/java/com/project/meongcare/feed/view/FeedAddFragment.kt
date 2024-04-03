@@ -28,14 +28,11 @@ import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedPostRequest
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.END_DATE
 import com.project.meongcare.feed.model.utils.FEED_POST_FAILURE
 import com.project.meongcare.feed.model.utils.FEED_POST_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
@@ -51,7 +48,6 @@ import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.text.SimpleDateFormat
