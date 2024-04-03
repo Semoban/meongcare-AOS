@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
@@ -32,15 +31,11 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedPutRequest
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.END_DATE
 import com.project.meongcare.feed.model.utils.FEED_PUT_FAILURE
 import com.project.meongcare.feed.model.utils.FEED_PUT_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedImageUrl
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPutDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
@@ -55,9 +50,7 @@ import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
