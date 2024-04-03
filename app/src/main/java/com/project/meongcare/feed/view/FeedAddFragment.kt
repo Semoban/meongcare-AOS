@@ -474,7 +474,7 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 if (isValid) {
                     val uri = feedPostViewModel.feedImage.value
                     if (uri == null) {
-
+                        postFeedInfo(null)
                     } else {
                         getPreSignedUrl(uri)
                     }
