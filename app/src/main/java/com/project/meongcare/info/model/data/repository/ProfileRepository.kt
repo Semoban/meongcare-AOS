@@ -3,6 +3,7 @@ package com.project.meongcare.info.model.data.repository
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import okhttp3.MultipartBody
@@ -27,8 +28,7 @@ interface ProfileRepository {
     suspend fun putDogInfo(
         dogId: Long,
         accessToken: String,
-        file: MultipartBody.Part,
-        dto: RequestBody,
+        dogPutRequest: DogPutRequest,
     ): Int?
 
     suspend fun postDogWeight(

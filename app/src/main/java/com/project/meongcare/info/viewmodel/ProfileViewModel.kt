@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.repository.ProfileRepository
+import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -114,11 +115,10 @@ class ProfileViewModel
         fun putDogInfo(
             dogId: Long,
             accessToken: String,
-            file: MultipartBody.Part,
-            dto: RequestBody,
+            dogPutRequest: DogPutRequest,
         ) {
             viewModelScope.launch {
-                _dogPutResponse.value = profileRepository.putDogInfo(dogId, accessToken, file, dto)
+                _dogPutResponse.value = profileRepository.putDogInfo(dogId, accessToken, dogPutRequest)
             }
         }
 

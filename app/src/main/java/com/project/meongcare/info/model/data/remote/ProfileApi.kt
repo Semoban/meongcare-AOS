@@ -3,9 +3,9 @@ package com.project.meongcare.info.model.data.remote
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -42,13 +42,11 @@ interface ProfileApi {
         @Header("AccessToken") accessToken: String,
     ): Response<Int>
 
-    @Multipart
     @PUT("dog/{dogId}")
     suspend fun putDogInfo(
         @Path("dogId") dogId: Long,
         @Header("AccessToken") accessToken: String,
-        @Part file: MultipartBody.Part,
-        @Part("dto") dto: RequestBody,
+        @Body dogPutRequest: DogPutRequest,
     ): Response<Int>
 
     @POST("weight")
