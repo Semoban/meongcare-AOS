@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.TextView
 import com.google.gson.Gson
 import com.project.meongcare.R
-import com.project.meongcare.feed.model.entities.FeedInfo
 import com.project.meongcare.feed.model.entities.FeedPutInfo
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +21,6 @@ import java.io.File
 import java.net.URL
 
 object FeedInfoUtils {
-    fun convertFeedPostDto(feedInfo: FeedInfo): RequestBody {
-        val json = Gson().toJson(feedInfo)
-        return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-    }
-
     fun convertFeedPutDto(feedPutInfo: FeedPutInfo): RequestBody {
         val json = Gson().toJson(feedPutInfo)
         return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
