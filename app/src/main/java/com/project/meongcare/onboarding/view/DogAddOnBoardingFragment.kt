@@ -247,37 +247,40 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                val name = binding.edittextPetaddName.text.toString()
-                val type = binding.edittextPetaddSelectType.text.toString()
-                val sex = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
-                val birthDate = dogAddViewModel.dogBirthDate.value!!
-                val castrate = binding.checkboxPetaddNeuterStatus.isChecked
-                val weight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
-                val backRound: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
-                val neckRound: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
-                val chestRound: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
-
-                val dogPostRequest =
-                    DogPostRequest(
-                        name,
-                        type,
-                        sex,
-                        birthDate,
-                        castrate,
-                        weight,
-                        backRound,
-                        neckRound,
-                        chestRound,
-                        filePath,
-                    )
-
-                if (accessToken.isNotEmpty()) {
-                    dogAddViewModel.postDogInfo(
-                        accessToken,
-                        dogPostRequest,
-                    )
-                }
             }
+        }
+    }
+
+    private fun postDogInfo(imageURL: String?) {
+        val name = binding.edittextPetaddName.text.toString()
+        val type = binding.edittextPetaddSelectType.text.toString()
+        val sex = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
+        val birthDate = dogAddViewModel.dogBirthDate.value!!
+        val castrate = binding.checkboxPetaddNeuterStatus.isChecked
+        val weight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
+        val backRound: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
+        val neckRound: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
+        val chestRound: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
+
+        val dogPostRequest =
+            DogPostRequest(
+                name,
+                type,
+                sex,
+                birthDate,
+                castrate,
+                weight,
+                backRound,
+                neckRound,
+                chestRound,
+                imageURL,
+            )
+
+        if (accessToken.isNotEmpty()) {
+            dogAddViewModel.postDogInfo(
+                accessToken,
+                dogPostRequest,
+            )
         }
     }
 
