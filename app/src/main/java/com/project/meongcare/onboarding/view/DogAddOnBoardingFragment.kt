@@ -1,6 +1,5 @@
 package com.project.meongcare.onboarding.view
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,11 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.BirthdayBottomSheetFragment
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.DOG_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
-import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
@@ -32,9 +31,7 @@ import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 @AndroidEntryPoint
@@ -51,7 +48,7 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
     private lateinit var accessToken: String
     private lateinit var refreshToken: String
-    private lateinit var multipartImage: MultipartBody.Part
+    private lateinit var imageFile: File
     private lateinit var filePath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -241,12 +238,15 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
 
         awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, multipartImage)
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, requestBody)
             }
         }
 
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                postDogInfo(imageURL)
             }
         }
     }
@@ -318,30 +318,13 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
                 return@setOnClickListener
             }
 
-            multipartImage = createMultipartFromUri(requireContext(), dogAddViewModel.dogProfileImage.value)
-            val fileName = getMultipartFileName(multipartImage)
-            filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH$fileName"
-            awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
-        }
-    }
-}
-
-fun createMultipartBody(
-    context: Context,
-    uri: Uri?,
-): MultipartBody.Part {
-    if (uri != null) {
-        val inputStream = context.contentResolver.openInputStream(uri)
-        val file = File(context.cacheDir, "tempFile")
-        inputStream.use { input ->
-            file.outputStream().use { output ->
-                input?.copyTo(output)
+            if (dogAddViewModel.dogProfileImage.value == null) {
+                postDogInfo(null)
+            } else {
+                imageFile = convertUriToFile(requireContext(), dogAddViewModel.dogProfileImage.value!!)
+                filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${imageFile.name}"
+                awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
             }
         }
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-        return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
-    val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-    return MultipartBody.Part.createFormData("file", "", emptyBody)
 }
