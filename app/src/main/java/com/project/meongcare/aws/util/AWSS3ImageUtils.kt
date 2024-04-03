@@ -9,6 +9,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URL
 import java.util.UUID
 
@@ -35,6 +36,23 @@ object AWSS3ImageUtils {
         }
         val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", "", emptyBody)
+    }
+
+    fun convertUriToFile(
+        context: Context,
+        uri: Uri,
+    ): File {
+        val contentResolver = context.contentResolver
+        val file = File(context.cacheDir, createUUID())
+        file.deleteOnExit()
+
+        contentResolver.openInputStream(uri).use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                inputStream?.copyTo(outputStream)
+            }
+        }
+
+        return file
     }
 
     suspend fun createMultipartFromUrl(
