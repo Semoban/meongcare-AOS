@@ -1,15 +1,11 @@
 package com.project.meongcare.excreta.viewmodel
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.excreta.model.data.repository.ExcretaRepositoryImpl
-import com.project.meongcare.excreta.model.entities.ExcretaInfo
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaFile
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaPostDto
+import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,27 +37,19 @@ class ExcretaAddViewModel
         }
 
         fun postExcreta(
-            dogId: Long,
             accessToken: String,
+            dogId: Long,
             excretaType: String,
             dateTime: String,
-            context: Context,
-            uri: Uri,
+            imageURL: String?,
         ) {
             viewModelScope.launch {
-                val excretaInfo =
-                    ExcretaInfo(
+                val excretaPostRequest =
+                    ExcretaPostRequest(
                         dogId,
                         excretaType,
                         dateTime,
-                    )
-                val dto = convertExcretaPostDto(excretaInfo)
-                val file = convertExcretaFile(context, uri)
-
-                val excretaPostRequest =
-                    ExcretaUploadRequest(
-                        dto,
-                        file,
+                        imageURL,
                     )
 
                 _excretaPosted.value = excretaRepositoryImpl.postExcreta(accessToken, excretaPostRequest)

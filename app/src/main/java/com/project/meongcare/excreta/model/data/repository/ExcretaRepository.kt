@@ -1,6 +1,7 @@
 package com.project.meongcare.excreta.model.data.repository
 
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
@@ -8,7 +9,7 @@ import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 interface ExcretaRepository {
     suspend fun postExcreta(
         accessToken: String,
-        excretaUploadRequest: ExcretaUploadRequest,
+        excretaPostRequest: ExcretaPostRequest,
     ): Int?
 
     suspend fun getExcretaRecord(
