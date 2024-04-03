@@ -3,7 +3,7 @@ package com.project.meongcare.aws.model.data.repository
 import android.util.Log
 import com.project.meongcare.aws.model.data.remote.AWSS3RetrofitClient
 import com.project.meongcare.aws.model.entities.AWSS3Response
-import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import java.lang.Exception
 import javax.inject.Inject
@@ -33,10 +33,10 @@ class AWSS3RepositoryImpl
 
         override suspend fun uploadImageToS3(
             preSignedUrl: String,
-            file: MultipartBody.Part,
+            image: RequestBody,
         ): Int? {
             return try {
-                val response = awsS3RetrofitClient.awsS3Api.uploadImageToS3(preSignedUrl, file)
+                val response = awsS3RetrofitClient.awsS3Api.uploadImageToS3(preSignedUrl, image)
                 if (response.isSuccessful) {
                     Log.d("AWSS3Repo-upload", "통신 성공 ${response.code()}")
                     response.code()

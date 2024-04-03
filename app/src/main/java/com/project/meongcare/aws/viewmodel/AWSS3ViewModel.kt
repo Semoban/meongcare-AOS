@@ -8,7 +8,7 @@ import com.project.meongcare.aws.model.data.repository.AWSS3Repository
 import com.project.meongcare.aws.model.entities.AWSS3Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,10 +34,10 @@ class AWSS3ViewModel
 
         fun uploadImageToS3(
             preSignedUrl: String,
-            file: MultipartBody.Part,
+            image: RequestBody,
         ) {
             viewModelScope.launch {
-                _uploadImageResponse.value = awsS3Repository.uploadImageToS3(preSignedUrl, file)
+                _uploadImageResponse.value = awsS3Repository.uploadImageToS3(preSignedUrl, image)
             }
         }
     }
