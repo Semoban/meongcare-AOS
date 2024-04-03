@@ -4,6 +4,7 @@ import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPartRecords
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.model.entities.FeedPostRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
 import com.project.meongcare.feed.model.entities.Feeds
 import okhttp3.MultipartBody
@@ -22,12 +23,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface FeedService {
-    @Multipart
     @POST("feed")
     suspend fun postFeed(
         @Header("AccessToken") accessToken: String,
-        @Part("dto") dto: RequestBody,
-        @Part file: MultipartBody.Part,
+        @Body feedPostRequest: FeedPostRequest,
     ): Response<Int>
 
     @GET("feed/{dogId}")
