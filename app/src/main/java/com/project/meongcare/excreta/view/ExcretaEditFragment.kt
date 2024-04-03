@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.R
-import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUrl
-import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
+import com.project.meongcare.aws.util.EXCRETA_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentExcretaAddEditBinding
 import com.project.meongcare.excreta.model.data.local.PhotoListener
@@ -39,8 +39,10 @@ import com.project.meongcare.excreta.viewmodel.ExcretaPatchViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 @AndroidEntryPoint
 class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
@@ -53,8 +55,8 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private val calendarModalBottomSheet = CalendarBottomSheetFragment()
 
     private lateinit var excretaInfo: ExcretaDetailGetResponse
-    private lateinit var multipartImage: MultipartBody.Part
-    private lateinit var fileName: String
+    private lateinit var imageFile: File
+    private lateinit var filePath: String
     private var excretaDate = ""
     private var accessToken = ""
 
@@ -107,7 +109,7 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
     private fun initExcretaImage() {
         val excretaImageURL = excretaInfo.excretaImageURL
         binding.apply {
-            if (excretaImageURL.isNotEmpty()) {
+            if (!excretaImageURL.isNullOrEmpty()) {
                 Glide.with(this@ExcretaEditFragment)
                     .load(excretaImageURL)
                     .into(imageviewExcretaaddPicture)
@@ -197,43 +199,44 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
                 }
 
                 if (isValid) {
-                    getPreSignedUrl()
+                    val uri = excretaPatchViewModel.excretaImage.value
+                    if (uri == null) { // 새로 등록된 이미지가 없을 때
+                        if (excretaInfo.excretaImageURL == null) { // 기존 이미지 null
+                            patchExcreta(null)
+                        } else {
+                            patchExcreta(excretaInfo.excretaImageURL)
+                        }
+                    } else {
+                        getPreSignedUrl(uri)
+                    }
                 }
             }
         }
     }
 
-    private fun getPreSignedUrl() {
+    private fun getPreSignedUrl(uri: Uri) {
+        imageFile = convertUriToFile(requireContext(), uri)
+        filePath = "$PARENT_FOLDER_PATH$EXCRETA_FOLDER_PATH${imageFile.name}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
         awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                uploadImage(response.preSignedUrl)
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
             }
-        }
-        val imageUri = excretaPatchViewModel.excretaImage.value
-
-        if (imageUri == null) {
-            lifecycleScope.launch {
-                multipartImage = createMultipartFromUrl(requireContext(), excretaInfo.excretaImageURL)
-                fileName = getMultipartFileName(multipartImage)
-                awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
-            }
-        } else {
-            multipartImage = createMultipartFromUri(requireContext(), imageUri)
-            fileName = getMultipartFileName(multipartImage)
-            awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
         }
     }
 
-    private fun uploadImage(preSignedUrl: String) {
-        awsS3ViewModel.uploadImageToS3(preSignedUrl, multipartImage)
+    private fun uploadImage(preSignedUrl: String, requestBody: RequestBody) {
+        awsS3ViewModel.uploadImageToS3(preSignedUrl, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-//                patchExcreta()
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                patchExcreta(imageURL)
             }
         }
     }
 
-    private fun patchExcreta() {
+    private fun patchExcreta(imageURL: String?) {
         val excretaType =
             if (binding.checkboxExcretaaddUrine.isChecked) {
                 Excreta.URINE.toString()
@@ -245,15 +248,14 @@ class ExcretaEditFragment : Fragment(), DateSubmitListener, PhotoListener {
             ExcretaDateTimeUtils.convertTimeFormat(binding.timepikerExcretaaddTime)
         val excretaDateTime = "${excretaDate}T$excretaTime"
 
-        val currentImageUri = excretaPatchViewModel.excretaImage.value
         excretaPatchViewModel.patchExcreta(
             accessToken,
             getExcretaId(),
             excretaType,
             excretaDateTime,
-            requireContext(),
-            currentImageUri ?: Uri.EMPTY,
+            imageURL,
         )
+
         excretaPatchViewModel.excretaPatched.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
                 showSuccessSnackBar(
