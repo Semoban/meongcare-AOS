@@ -1,6 +1,6 @@
 package com.project.meongcare.feed.model.entities
 
-data class FeedPutInfo(
+data class FeedPutRequest(
     val feedId: Long,
     val brand: String,
     val feedName: String,
@@ -14,4 +14,5 @@ data class FeedPutInfo(
     val startDate: String,
     val endDate: String? = null,
     val feedRecordId: Long,
+    val imageURL: String?,
 )
