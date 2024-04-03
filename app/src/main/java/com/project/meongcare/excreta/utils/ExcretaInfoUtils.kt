@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.View
 import com.google.gson.Gson
 import com.project.meongcare.R
-import com.project.meongcare.excreta.model.entities.ExcretaInfoPatch
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -15,11 +14,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 object ExcretaInfoUtils {
-    fun convertExcretaPatchDto(excretaInfoPatch: ExcretaInfoPatch): RequestBody {
-        val json = Gson().toJson(excretaInfoPatch)
-        return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-    }
-
     fun convertExcretaFile(
         context: Context,
         uri: Uri,
