@@ -21,9 +21,9 @@ import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
-import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.FEED_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
@@ -31,7 +31,7 @@ import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
-import com.project.meongcare.feed.model.entities.FeedPutInfo
+import com.project.meongcare.feed.model.entities.FeedPutRequest
 import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.utils.END_DATE
 import com.project.meongcare.feed.model.utils.FEED_PUT_FAILURE
@@ -56,7 +56,11 @@ import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -71,9 +75,9 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private var feedId = 0L
     private var feedRecordId = 0L
     private lateinit var feedInfo: FeedDetailGetResponse
-    private lateinit var feedPutInfo: FeedPutInfo
-    private lateinit var multipartImage: MultipartBody.Part
-    private lateinit var fileName: String
+    private lateinit var feedPutInfo: FeedPutRequest
+    private lateinit var imageFile: File
+    private lateinit var filePath: String
     private var recommendIntake = 0.0
     private var selectedStartDate = ""
     private var selectedEndDate: String? = null
@@ -132,7 +136,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     private fun fetchFeedInfo() {
         binding.apply {
             recommendIntake = feedInfo.recommendIntake.toDouble()
-            if (feedInfo.imageURL.isNotEmpty()) {
+            if (!feedInfo.imageURL.isNullOrEmpty()) {
                 Glide.with(this@FeedEditFragment)
                     .load(feedInfo.imageURL)
                     .into(imageviewFeedaddeditPicture)
@@ -347,12 +351,12 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
         }
     }
 
-    private fun createFeedInfo() {
+    private fun createFeedInfo(imageURL: String?) {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
             feedPutInfo =
-                FeedPutInfo(
+                FeedPutRequest(
                     feedId,
                     brand,
                     feedName,
@@ -366,6 +370,7 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                     selectedStartDate,
                     selectedEndDate,
                     feedRecordId,
+                    imageURL,
                 )
         }
     }
@@ -499,80 +504,50 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
                 }
 
                 if (isValid) {
-//                    editFeedInfo()
-                    getPreSignedUrl()
+                    val uri = feedPutViewModel.feedImage.value
+                    if (uri == null) { // 기존 이미지
+                        if (feedInfo.imageURL == null) {
+                            createFeedInfo(null)
+                            putFeed()
+                        } else {
+                            createFeedInfo(feedInfo.imageURL)
+                            putFeed()
+                        }
+                    } else { // 새 이미지
+                        getPreSignedUrl(uri)
+                    }
                 }
             }
         }
     }
 
-    private fun getPreSignedUrl() {
+    private fun getPreSignedUrl(uri: Uri) {
+        imageFile = convertUriToFile(requireContext(), uri)
+        filePath = "$PARENT_FOLDER_PATH$FEED_FOLDER_PATH${imageFile.name}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
         awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
             if (response != null) {
-                uploadImage(response.preSignedUrl)
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
             }
-        }
-        val imageUri = feedPutViewModel.feedImage.value
-
-        if (imageUri == null) {
-            lifecycleScope.launch {
-                multipartImage = convertFeedImageUrl(requireContext(), feedInfo.imageURL)
-                fileName = "$PARENT_FOLDER_PATH$FEED_FOLDER_PATH${getMultipartFileName(multipartImage)}"
-                awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
-            }
-        } else {
-            multipartImage = createMultipartFromUri(requireContext(), imageUri)
-            fileName = "$PARENT_FOLDER_PATH$FEED_FOLDER_PATH${getMultipartFileName(multipartImage)}"
-            awsS3ViewModel.getPreSignedUrl(accessToken, fileName)
         }
     }
 
-    private fun uploadImage(preSignedUrl: String) {
-        awsS3ViewModel.uploadImageToS3(preSignedUrl, multipartImage)
+    private fun uploadImage(preSignedUrl: String, requestBody: RequestBody) {
+        awsS3ViewModel.uploadImageToS3(preSignedUrl, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-//                editFeedInfo()
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                createFeedInfo(imageURL)
+                putFeed()
             }
         }
     }
 
-    private fun editFeedInfo() {
-        binding.apply {
-            createFeedInfo()
-            val imageUri = feedPutViewModel.feedImage.value
-
-            if (imageUri == null) {
-                lifecycleScope.launch {
-                    val file =
-                        convertFeedImageUrl(
-                            requireContext(),
-                            feedInfo.imageURL,
-                        )
-                    val feedUploadRequest = createFeedPutRequest(file)
-                    putFeed(feedUploadRequest)
-                }
-            } else {
-                val file =
-                    convertFeedFile(
-                        requireContext(),
-                        imageUri,
-                    )
-                val feedUploadRequest = createFeedPutRequest(file)
-                putFeed(feedUploadRequest)
-            }
-        }
-    }
-
-    private fun createFeedPutRequest(file: MultipartBody.Part): FeedUploadRequest {
-        val dto = convertFeedPutDto(feedPutInfo)
-
-        return FeedUploadRequest(dto, file)
-    }
-
-    private fun putFeed(feedUploadRequest: FeedUploadRequest) {
+    private fun putFeed() {
         feedPutViewModel.putFeed(
             accessToken,
-            feedUploadRequest,
+            feedPutInfo,
         )
         feedPutViewModel.feedPut.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
