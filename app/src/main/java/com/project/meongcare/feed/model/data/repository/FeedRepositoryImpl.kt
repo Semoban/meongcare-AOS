@@ -3,7 +3,7 @@ package com.project.meongcare.feed.model.data.repository
 import com.project.meongcare.feed.model.data.remote.FeedRemoteDataSource
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
 import com.project.meongcare.feed.model.entities.FeedPostRequest
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.entities.FeedPutRequest
 import javax.inject.Inject
 
 class FeedRepositoryImpl
@@ -56,8 +56,8 @@ class FeedRepositoryImpl
 
         override suspend fun putFeed(
             accessToken: String,
-            feedUploadRequest: FeedUploadRequest,
-        ) = feedRemoteDataSource.putFeed(accessToken, feedUploadRequest)
+            feedPutRequest: FeedPutRequest,
+        ): Int? = feedRemoteDataSource.putFeed(accessToken, feedPutRequest)
 
         override suspend fun deleteFeed(
             accessToken: String,
