@@ -35,7 +35,7 @@ class ExcretaInfoFragment : Fragment() {
     private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var excretaInfo: ExcretaDetailGetResponse
-    private var excretaImageURL = ""
+    private var excretaImageURL: String? = ""
     private var excretaDateTime = ""
     private var excretaType = ""
     private var accessToken = ""
@@ -125,9 +125,9 @@ class ExcretaInfoFragment : Fragment() {
         }
     }
 
-    private fun initExcretaImage(excretaImageURL: String) {
+    private fun initExcretaImage(excretaImageURL: String?) {
         binding.apply {
-            if (excretaImageURL.isNotEmpty()) {
+            if (!excretaImageURL.isNullOrEmpty()) {
                 cardviewExcretaInfoVisibilityOff.visibility = View.VISIBLE
                 imageviewExcretainfoFecesIllustration.visibility = View.INVISIBLE
                 Glide.with(this@ExcretaInfoFragment)
@@ -139,6 +139,9 @@ class ExcretaInfoFragment : Fragment() {
                 imageviewExcretainfoPicture.setOnClickListener {
                     cardviewExcretaInfoVisibilityOff.visibility = View.VISIBLE
                 }
+            } else {
+                cardviewExcretaInfoVisibilityOff.visibility = View.GONE
+                imageviewExcretainfoFecesIllustration.visibility = View.VISIBLE
             }
         }
     }
