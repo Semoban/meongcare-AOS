@@ -1,9 +1,9 @@
 package com.project.meongcare.excreta.model.data.repository
 
 import com.project.meongcare.excreta.model.data.remote.ExcretaRemoteDataSource
+import com.project.meongcare.excreta.model.entities.ExcretaPatchRequest
 import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import javax.inject.Inject
 
 class ExcretaRepositoryImpl
@@ -33,6 +33,6 @@ class ExcretaRepositoryImpl
 
         override suspend fun patchExcreta(
             accessToken: String,
-            excretaUploadRequest: ExcretaUploadRequest,
-        ) = excretaRemoteDataSource.patchExcreta(accessToken, excretaUploadRequest)
+            excretaPatchRequest: ExcretaPatchRequest
+        ): Int? = excretaRemoteDataSource.patchExcreta(accessToken, excretaPatchRequest)
     }
