@@ -1,30 +1,22 @@
 package com.project.meongcare.supplement.viewmodel
 
-import android.app.Activity
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import com.project.meongcare.R
 import com.project.meongcare.home.model.data.local.DogPreferences
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.IntakeInfo
-import com.project.meongcare.supplement.model.entities.RequestSupplement
 import com.project.meongcare.supplement.model.entities.Supplement
 import com.project.meongcare.supplement.model.entities.SupplementDog
-import com.project.meongcare.supplement.model.entities.SupplementDto
-import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertPictureToFile
-import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertSupplementDto
+import com.project.meongcare.supplement.model.entities.SupplementPostRequest
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.convertToDateToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
@@ -146,27 +138,11 @@ class SupplementViewModel
         }
 
         fun addSupplement(
-            brandName: String,
-            name: String,
-            uri: Uri,
+            accessToken: String,
+            supplementPostRequest: SupplementPostRequest,
         ) {
             viewModelScope.launch {
-                val accessToken: String? =
-                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-
-                val supplementDto =
-                    SupplementDto(dogId!!, brandName, name, supplementCycle.value!!, intakeTimeUnit.value!!, intakeTimeList.value!!)
-                val dto = convertSupplementDto(supplementDto)
-                val file = convertPictureToFile(GlobalApplication.applicationContext(), uri)
-
-                val requestSupplement =
-                    RequestSupplement(
-                        dto,
-                        file,
-                    )
-                Log.d("영양제 추가 확인", supplementDto.toString())
-                supplementCode.value = repository.addSupplement(accessToken, requestSupplement)
+                supplementCode.value = repository.addSupplement(accessToken, supplementPostRequest)
                 Log.d("영양제 추가 확인2", supplementCode.value.toString())
             }
         }
