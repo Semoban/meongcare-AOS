@@ -10,5 +10,5 @@ data class DogPostRequest(
     val backRound: Double?,
     val neckRound: Double?,
     val chestRound: Double?,
-    val imageURL: String,
+    val imageURL: String?,
 )
