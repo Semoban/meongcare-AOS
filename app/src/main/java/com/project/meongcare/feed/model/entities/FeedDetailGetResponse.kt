@@ -14,7 +14,7 @@ data class FeedDetailGetResponse(
     val etc: Double,
     val kcal: Double,
     val recommendIntake: Long,
-    val imageURL: String,
+    val imageURL: String?,
     val startDate: String,
     val endDate: String?,
 ) : Parcelable
