@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoBinding
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
@@ -36,13 +37,12 @@ class MedicalRecordInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         medicalRecordId = 1
-        accessToken =  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMyODIyNX0.0iSzVTXVbhAc2EhhLDUTDpUqS46e4qy7a3A4rdTOUe0"
-
+        accessToken =  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMzMjE4Mn0.EVtsKue6RNJ9B_5imPJRHwg1VzhyCTfT0b5B7LObDKA"
 
         medicalRecordViewModel.medicalRecord.observe(viewLifecycleOwner) {
             if (it.code() == 200) {
-                testGetRecord(it)
                 val record = it.body() as MedicalRecordGet
+                setImg(record)
                 setDate(record)
                 setTime(record)
                 setHospital(record)
@@ -53,6 +53,15 @@ class MedicalRecordInfoFragment : Fragment() {
 
         initMedicalRecord()
 
+    }
+
+    private fun setImg(record: MedicalRecordGet) {
+        if (!record.imageUrl.isNullOrBlank()) {
+            binding.imageviewMedicalrecordinfoCarrier.visibility = View.GONE
+            Glide.with(this@MedicalRecordInfoFragment)
+                .load(record.imageUrl)
+                .into(binding.imageviewMedicalrecordinfoImage)
+        }
     }
 
     private fun setNote(record: MedicalRecordGet) {
