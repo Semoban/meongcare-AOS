@@ -144,82 +144,85 @@ class MedicalRecordAddFragment :
     private fun initNote() {
         binding.edittextMedicalrecordaddNoteDetail.addTextChangedListener(
             object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
-            }
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
+                }
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int,
-            ) {
-                val textLength = s?.length ?: 0
-                binding.textviewMedicalrecordaddNoteCount.text =
-                    getString(R.string.medicalrecord_note_length, textLength)
-            }
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int,
+                ) {
+                    val textLength = s?.length ?: 0
+                    binding.textviewMedicalrecordaddNoteCount.text =
+                        getString(R.string.medicalrecord_note_length, textLength)
+                }
 
-            override fun afterTextChanged(s: Editable?) {
+                override fun afterTextChanged(s: Editable?) {
+                }
             }
-        })
+        )
     }
 
     private fun initVeterinarianName() {
         binding.edittextMedicalrecordaddVeterinarianName.addTextChangedListener(
             object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
-            }
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
+                }
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int,
-            ) {
-                val textLength = s?.length ?: 0
-                binding.textviewMedicalrecordaddVeterinarianNameCount.text =
-                    getString(R.string.medicalrecord_veterinarian_name_length, textLength)
-            }
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int,
+                ) {
+                    val textLength = s?.length ?: 0
+                    binding.textviewMedicalrecordaddVeterinarianNameCount.text =
+                        getString(R.string.medicalrecord_veterinarian_name_length, textLength)
+                }
 
-            override fun afterTextChanged(s: Editable?) {
+                override fun afterTextChanged(s: Editable?) {
+                }
             }
-        })
+        )
     }
 
     private fun initHospitalName() {
         binding.edittextMedicalrecordaddHospitalName.addTextChangedListener(
             object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
-            }
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
+                }
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int,
-            ) {
-                val textLength = s?.length ?: 0
-                binding.textviewMedicalrecordaddHospitalNameCount.text =
-                    getString(R.string.medicalrecord_hospital_name_length, textLength)
-            }
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int,
+                ) {
+                    val textLength = s?.length ?: 0
+                    binding.textviewMedicalrecordaddHospitalNameCount.text =
+                        getString(R.string.medicalrecord_hospital_name_length, textLength)
+                }
 
-            override fun afterTextChanged(s: Editable?) {
+                override fun afterTextChanged(s: Editable?) {
+                }
             }
-        })
+        )
     }
 
     private fun initDateBtn() {
