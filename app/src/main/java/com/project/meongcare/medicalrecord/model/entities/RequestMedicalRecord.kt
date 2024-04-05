@@ -6,4 +6,5 @@ import okhttp3.RequestBody
 data class RequestMedicalRecord(
     val dto: RequestBody,
     val file: MultipartBody.Part,
-)
+
+    )

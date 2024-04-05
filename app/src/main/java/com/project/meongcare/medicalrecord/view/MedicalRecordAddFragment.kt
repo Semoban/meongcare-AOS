@@ -1,6 +1,5 @@
 package com.project.meongcare.medicalRecord.view
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -9,12 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -47,7 +44,10 @@ class MedicalRecordAddFragment : Fragment(),
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initImg()
         initDateBtn()
@@ -96,7 +96,10 @@ class MedicalRecordAddFragment : Fragment(),
         }
     }
 
-    fun isEditTextNullOrEmpty(editText: EditText, layout: ConstraintLayout?, textCount: TextView) {
+    fun isEditTextNullOrEmpty(
+        editText: EditText,
+        layout: ConstraintLayout?,
+        textCount: TextView) {
         layout!!.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         textCount.visibility = View.INVISIBLE
         editText.run {
@@ -106,7 +109,11 @@ class MedicalRecordAddFragment : Fragment(),
         MedicalRecordUtils.hideKeyboard(editText)
     }
 
-    private fun setAddMode(view: Any, layout: ConstraintLayout?, textCount: TextView?) {
+    private fun setAddMode(
+        view: Any,
+        layout: ConstraintLayout?,
+        textCount: TextView?,
+    ) {
         when (view) {
             is TextView -> {
                 view.setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
@@ -134,10 +141,20 @@ class MedicalRecordAddFragment : Fragment(),
     private fun initNote() {
         binding.edittextMedicalrecordaddNoteDetail.addTextChangedListener(object :
             TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ) {
                 val textLength = s?.length ?: 0
                 binding.textviewMedicalrecordaddNoteCount.text =
                     getString(R.string.medicalrecord_note_length, textLength)
@@ -151,10 +168,20 @@ class MedicalRecordAddFragment : Fragment(),
     private fun initVeterinarianName() {
         binding.edittextMedicalrecordaddVeterinarianName.addTextChangedListener(object :
             TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ) {
                 val textLength = s?.length ?: 0
                 binding.textviewMedicalrecordaddVeterinarianNameCount.text =
                     getString(R.string.medicalrecord_veterinarian_name_length, textLength)
@@ -167,10 +194,20 @@ class MedicalRecordAddFragment : Fragment(),
 
     private fun initHospitalName() {
         binding.edittextMedicalrecordaddHospitalName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ) {
                 val textLength = s?.length ?: 0
                 binding.textviewMedicalrecordaddHospitalNameCount.text =
                     getString(R.string.medicalrecord_hospital_name_length, textLength)
@@ -206,10 +243,9 @@ class MedicalRecordAddFragment : Fragment(),
         bottomSheetDialogFragment.setOnDateSelecetedListener(onDateSelectedListener)
         bottomSheetDialogFragment.show(
             parentFragmentManager,
-            "MedicalRecordDateBottomSheetDialogFragment"
+            "MedicalRecordDateBottomSheetDialogFragment",
         )
     }
-
 
     override fun onDateSelected(date: LocalDate) {
         val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")

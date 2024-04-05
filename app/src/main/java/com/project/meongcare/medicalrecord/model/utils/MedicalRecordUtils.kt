@@ -5,9 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.gson.Gson
-import com.project.meongcare.medicalRecord.model.entities.MedicalRecord
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
-import com.project.meongcare.supplement.model.entities.SupplementDto
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -68,4 +66,5 @@ class MedicalRecordUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
+
 }

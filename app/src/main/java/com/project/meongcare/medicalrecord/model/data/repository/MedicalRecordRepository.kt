@@ -3,9 +3,6 @@ package com.project.meongcare.medicalRecord.model.data.repository
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
-import com.project.meongcare.supplement.model.data.repository.SupplementRepository
-import com.project.meongcare.supplement.model.entities.RequestSupplement
-import okhttp3.ResponseBody
 import retrofit2.Response
 
 interface MedicalRecordRepository {

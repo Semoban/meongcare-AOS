@@ -42,5 +42,4 @@ interface MedicalRecordApi {
         @Part filePart: MultipartBody.Part,
         @Part("dto") medicalRecordDto: RequestBody,
     ): Response<ResponseBody>
-
 }
