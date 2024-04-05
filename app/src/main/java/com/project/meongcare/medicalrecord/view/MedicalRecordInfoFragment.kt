@@ -38,10 +38,11 @@ class MedicalRecordInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Todo: 전달받은 진료기록 아이디 연결, 액세스 토큰 userViewModel로 연결
         medicalRecordId = 1
         accessToken =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMzMjE4Mn0.EVtsKue6RNJ9B_5imPJRHwg1VzhyCTfT0b5B7LObDKA"
-
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjM0MzYxOX0.qXPMWcqU8ZoLVwJEyxYd3WJFR8GgN0Tsr1fEg5jJgnA"
+        
         setMedicalRecord()
         getMedicalRecord()
         initBackBtn()
@@ -50,12 +51,24 @@ class MedicalRecordInfoFragment : Fragment() {
 
     private fun initDeleteBtn() {
         binding.imagebuttonMedicalrecordinfoDelete.setOnClickListener {
-            medicalRecordViewModel.deleteMedicalRecordList(
-                intArrayOf(medicalRecordId.toInt()),
-                accessToken
-            )
+            binding.includeMedicalrecordinfoDeleteDialog.root.visibility = View.VISIBLE
+            initDeleteDialog()
         }
-        isDeleteSuccess()
+    }
+
+    private fun initDeleteDialog() {
+        binding.includeMedicalrecordinfoDeleteDialog.run {
+            buttonDeleteDialogCancel.setOnClickListener {
+                binding.includeMedicalrecordinfoDeleteDialog.root.visibility = View.GONE
+            }
+            buttonDeleteDialogDelete.setOnClickListener {
+                medicalRecordViewModel.deleteMedicalRecordList(
+                    intArrayOf(medicalRecordId.toInt()),
+                    accessToken
+                )
+                isDeleteSuccess()
+            }
+        }
     }
 
     private fun isDeleteSuccess() {
