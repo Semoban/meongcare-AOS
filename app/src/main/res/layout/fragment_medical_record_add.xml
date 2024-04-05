@@ -214,12 +214,12 @@
                         android:textColorHint="@color/gray4"
                         android:hint="병원 이름"
                         app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_hospital_name"
-                        app:layout_constraintEnd_toStartOf="@id/edittext_medicalrecordadd_hospital_name_count"
+                        app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordadd_hospital_name_count"
                         app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_hospital_name"
                         app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_hospital_name" />
 
                     <TextView
-                        android:id="@+id/edittext_medicalrecordadd_hospital_name_count"
+                        android:id="@+id/textview_medicalrecordadd_hospital_name_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -277,12 +277,12 @@
                     android:textColorHint="@color/gray4"
                     android:hint="담당의 성함"
                     app:layout_constraintBottom_toBottomOf="@+id/view_medicalrecordadd_veterinarian_name"
-                    app:layout_constraintEnd_toStartOf="@id/edittext_medicalrecordadd_veterinarian_name_count"
+                    app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordadd_veterinarian_name_count"
                     app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_veterinarian_name"
                     app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_veterinarian_name" />
 
                 <TextView
-                    android:id="@+id/edittext_medicalrecordadd_veterinarian_name_count"
+                    android:id="@+id/textview_medicalrecordadd_veterinarian_name_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
