@@ -4,6 +4,10 @@ import android.util.Log
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordRetrofitClient
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
+import com.project.meongcare.supplement.model.data.repository.SupplementRepository
+import com.project.meongcare.supplement.model.entities.RequestSupplement
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -69,4 +73,18 @@ class MedicalRecordRepositoryImpl
                 null
             }
         }
+
+    override suspend fun addMedicalRecord(
+        accessToken: String?,
+        requestSupplement: RequestMedicalRecord,
+    ): Int {
+        val response =
+            medicalRecordRetrofitClient.medicalRecordApi.addMedicalRecord(
+                accessToken,
+                requestSupplement.file,
+                requestSupplement.dto,
+            )
+        return response.code()
     }
+
+}
