@@ -19,4 +19,8 @@
     <external-files-path
         name="supplement"
         path="Pictures/Supplement"/>
+
+    <external-files-path
+        name="medicalrecord"
+        path="Pictures/MedicalRecord"/>
 </paths>
