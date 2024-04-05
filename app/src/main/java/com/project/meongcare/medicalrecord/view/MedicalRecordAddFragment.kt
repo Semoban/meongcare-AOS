@@ -38,14 +38,17 @@ class MedicalRecordAddFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.cardviewMedicalrecordaddImage.setOnClickListener {
-            showPictureBottomSheet()
-        }
-
+        initImg()
         initDateBtn()
         initHospitalName()
         initVeterinarianName()
         initNote()
+    }
+
+    private fun initImg() {
+        binding.cardviewMedicalrecordaddImage.setOnClickListener {
+            showPictureBottomSheet()
+        }
     }
 
     private fun initNote() {
