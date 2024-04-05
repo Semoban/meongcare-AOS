@@ -66,5 +66,4 @@ class MedicalRecordUtils {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
-
 }

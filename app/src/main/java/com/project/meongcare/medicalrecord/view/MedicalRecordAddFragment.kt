@@ -27,8 +27,10 @@ import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class MedicalRecordAddFragment : Fragment(),
-    MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener, OnPictureChangedListener {
+class MedicalRecordAddFragment :
+    Fragment(),
+    MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
+    OnPictureChangedListener {
     private lateinit var binding: FragmentMedicalRecordAddBinding
     private lateinit var mainActivity: MainActivity
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
@@ -99,7 +101,8 @@ class MedicalRecordAddFragment : Fragment(),
     fun isEditTextNullOrEmpty(
         editText: EditText,
         layout: ConstraintLayout?,
-        textCount: TextView) {
+        textCount: TextView,
+    ) {
         layout!!.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         textCount.visibility = View.INVISIBLE
         editText.run {
@@ -139,8 +142,8 @@ class MedicalRecordAddFragment : Fragment(),
     }
 
     private fun initNote() {
-        binding.edittextMedicalrecordaddNoteDetail.addTextChangedListener(object :
-            TextWatcher {
+        binding.edittextMedicalrecordaddNoteDetail.addTextChangedListener(
+            object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -166,8 +169,8 @@ class MedicalRecordAddFragment : Fragment(),
     }
 
     private fun initVeterinarianName() {
-        binding.edittextMedicalrecordaddVeterinarianName.addTextChangedListener(object :
-            TextWatcher {
+        binding.edittextMedicalrecordaddVeterinarianName.addTextChangedListener(
+            object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -193,7 +196,8 @@ class MedicalRecordAddFragment : Fragment(),
     }
 
     private fun initHospitalName() {
-        binding.edittextMedicalrecordaddHospitalName.addTextChangedListener(object : TextWatcher {
+        binding.edittextMedicalrecordaddHospitalName.addTextChangedListener(
+            object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,

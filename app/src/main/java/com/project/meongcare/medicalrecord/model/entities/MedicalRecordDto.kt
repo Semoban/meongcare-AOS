@@ -6,5 +6,4 @@ data class MedicalRecordDto(
     val hospitalName: String,
     val doctorName: String,
     val note: String,
-
-    )
+)

@@ -4,5 +4,4 @@ import android.net.Uri
 
 interface OnPictureChangedListener {
     fun onPictureChanged(uri: Uri)
-
 }
