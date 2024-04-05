@@ -1,11 +1,12 @@
-package com.project.meongcare.medicalrecord.viewmodel
+package com.project.meongcare.medicalRecord.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.meongcare.medicalrecord.model.data.repository.MedicalRecordRepositoryImpl
-import com.project.meongcare.medicalrecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.data.repository.MedicalRecordRepositoryImpl
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -20,6 +21,10 @@ class MedicalRecordViewModel
         private val _medicalRecordList = MutableLiveData<Response<MedicalRecordGetResponse>>()
         val medicalRecordList: LiveData<Response<MedicalRecordGetResponse>>
             get() = _medicalRecordList
+
+        private val _medicalRecord = MutableLiveData<Response<MedicalRecordGet>>()
+        val medicalRecord: LiveData<Response<MedicalRecordGet>>
+        get() = _medicalRecord
 
         private val _selectedDate = MutableLiveData<String?>()
         val selectedDate: LiveData<String?>
@@ -40,6 +45,15 @@ class MedicalRecordViewModel
         ) {
             viewModelScope.launch {
                 _medicalRecordList.value = medicalRecordRepositoryImpl.getMedicalRecordList(dogId, dateTime, accessToken)
+            }
+        }
+
+        fun getMedicalRecord(
+            medicalRecordId: Long,
+            accessToken: String,
+        ) {
+            viewModelScope.launch {
+                _medicalRecord.value = medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken)
             }
         }
 
