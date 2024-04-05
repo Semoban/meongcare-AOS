@@ -22,7 +22,7 @@ class MedicalRecordAddFragment : Fragment(), MedicalRecordDateBottomSheetDialogF
         binding = FragmentMedicalRecordAddBinding.inflate(inflater)
 
         binding.run {
-            textvuewMedicalrecordaddSelectDate.setOnClickListener {
+            textviewMedicalrecordaddSelectDate.setOnClickListener {
                 showCalendarBottomSheet(parentFragmentManager, this@MedicalRecordAddFragment)
             }
         }
@@ -44,7 +44,7 @@ class MedicalRecordAddFragment : Fragment(), MedicalRecordDateBottomSheetDialogF
     override fun onDateSelected(date: LocalDate) {
         val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 //        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
-        binding.textvuewMedicalrecordaddSelectDate.text = date.format(formatter)
+        binding.textviewMedicalrecordaddSelectDate.text = date.format(formatter)
     }
 
 }
