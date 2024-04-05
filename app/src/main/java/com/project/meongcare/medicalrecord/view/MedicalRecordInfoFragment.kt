@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoBinding
@@ -39,6 +40,18 @@ class MedicalRecordInfoFragment : Fragment() {
         medicalRecordId = 1
         accessToken =  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMzMjE4Mn0.EVtsKue6RNJ9B_5imPJRHwg1VzhyCTfT0b5B7LObDKA"
 
+        setMedicalRecord()
+        getMedicalRecord()
+        initBackBtn()
+    }
+
+    private fun initBackBtn() {
+        binding.imagebuttonMedicalrecordinfoBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setMedicalRecord() {
         medicalRecordViewModel.medicalRecord.observe(viewLifecycleOwner) {
             if (it.code() == 200) {
                 val record = it.body() as MedicalRecordGet
@@ -50,9 +63,6 @@ class MedicalRecordInfoFragment : Fragment() {
                 setNote(record)
             }
         }
-
-        initMedicalRecord()
-
     }
 
     private fun setImg(record: MedicalRecordGet) {
@@ -68,10 +78,6 @@ class MedicalRecordInfoFragment : Fragment() {
         binding.textViewMedicalrecordinfoNoteDetail.text = record.note
         binding.textviewMedicalrecordinfoNoteCount.text =
             getString(R.string.medicalrecord_note_length, record.note.length)
-    }
-
-    private fun initMedicalRecord() {
-        medicalRecordViewModel.getMedicalRecord(medicalRecordId, accessToken)
     }
 
     private fun setVeterinarian(record: MedicalRecordGet) {
@@ -92,6 +98,10 @@ class MedicalRecordInfoFragment : Fragment() {
 
     private fun setDate(record: MedicalRecordGet) {
         binding.textvuewMedicalrecordinfoSelectDate.text = convertMDateToSimpleDate(record.dateTime)
+    }
+
+    private fun getMedicalRecord() {
+        medicalRecordViewModel.getMedicalRecord(medicalRecordId, accessToken)
     }
 
     private fun testGetRecord(it: Response<MedicalRecordGet>) {
