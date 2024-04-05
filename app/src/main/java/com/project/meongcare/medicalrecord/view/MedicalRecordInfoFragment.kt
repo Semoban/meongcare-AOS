@@ -15,6 +15,7 @@ import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleDate
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleTime
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Response
 
@@ -38,11 +39,36 @@ class MedicalRecordInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         medicalRecordId = 1
-        accessToken =  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMzMjE4Mn0.EVtsKue6RNJ9B_5imPJRHwg1VzhyCTfT0b5B7LObDKA"
+        accessToken =
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjMzMjE4Mn0.EVtsKue6RNJ9B_5imPJRHwg1VzhyCTfT0b5B7LObDKA"
 
         setMedicalRecord()
         getMedicalRecord()
         initBackBtn()
+        initDeleteBtn()
+    }
+
+    private fun initDeleteBtn() {
+        binding.imagebuttonMedicalrecordinfoDelete.setOnClickListener {
+            medicalRecordViewModel.deleteMedicalRecordList(
+                intArrayOf(medicalRecordId.toInt()),
+                accessToken
+            )
+        }
+        isDeleteSuccess()
+    }
+
+    private fun isDeleteSuccess() {
+        medicalRecordViewModel.deleteMedicalRecordResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null && response == 200) {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_success_16dp,
+                    getString(R.string.medicalrecord_delete_success),
+                ).show()
+                findNavController().popBackStack()
+            }
+        }
     }
 
     private fun initBackBtn() {
