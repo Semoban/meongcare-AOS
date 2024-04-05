@@ -136,11 +136,12 @@
                     android:background="@drawable/all_rect_r5"
                     android:paddingVertical="11dp"
                     android:paddingStart="16dp"
-                    android:text="@string/all_select_date"
+                    android:hint="@string/all_select_date"
                     android:textAppearance="@style/Typography.Body1.Medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray4"
                     app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordadd_date" />
 
                 <ImageView
@@ -192,46 +193,47 @@
                     app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordadd_hospital"
                     app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordadd_hospital" />
 
-                <View
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/view_medicalrecordadd_hospital_name"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/all_rect_r5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecordadd_hospital" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecordadd_hospital" >
+                    <EditText
+                        android:id="@+id/edittext_medicalrecordadd_hospital_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="13dp"
+                        android:background="@null"
+                        android:maxLength="50"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4"
+                        android:hint="병원 이름"
+                        app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_hospital_name"
+                        app:layout_constraintEnd_toStartOf="@id/edittext_medicalrecordadd_hospital_name_count"
+                        app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_hospital_name"
+                        app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_hospital_name" />
 
-                <EditText
-                    android:id="@+id/edittext_medicalrecordadd_hospital_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="13dp"
-                    android:background="@null"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:textAppearance="@style/Typography.Body1.Regular"
-                    android:textColorHint="@color/gray4"
-                    android:hint="병원 이름"
-                    app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_hospital_name"
-                    app:layout_constraintEnd_toStartOf="@id/edittext_medicalrecordadd_hospital_name_count"
-                    app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_hospital_name"
-                    app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_hospital_name" />
+                    <TextView
+                        android:id="@+id/edittext_medicalrecordadd_hospital_name_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:inputType="textMultiLine"
+                        android:maxLines="5"
+                        android:text="@{@string/medicalrecord_hospital_name_length(0)}"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_hospital_name"
+                        app:layout_constraintEnd_toEndOf="@id/view_medicalrecordadd_hospital_name"
+                        app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_hospital_name"
+                        tools:text="0/50" />
 
-                <TextView
-                    android:id="@+id/edittext_medicalrecordadd_hospital_name_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@{@string/medicalrecord_hospital_name_length(0)}"
-                    android:textAppearance="@style/Typography.Body2.Regular"
-                    android:textColor="@color/gray4"
-                    app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_hospital_name"
-                    app:layout_constraintEnd_toEndOf="@id/view_medicalrecordadd_hospital_name"
-                    app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_hospital_name"
-                    tools:text="0/50" />
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/textview_medicalrecordadd_veterinarian"
@@ -271,7 +273,6 @@
                     android:background="@null"
                     android:includeFontPadding="false"
                     android:maxLength="10"
-                    android:maxLines="1"
                     android:textAppearance="@style/Typography.Body1.Regular"
                     android:textColorHint="@color/gray4"
                     android:hint="담당의 성함"
@@ -312,47 +313,51 @@
                     app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordadd_note"
                     app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordadd_note"
                     app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordadd_note" />
-                <View
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/view_medicalrecordadd_note"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="58dp"
                     android:background="@drawable/all_rect_r5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordadd_note" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordadd_note" >
 
-                <EditText
-                    android:id="@+id/edittext_medicalrecordadd_note_detail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="13dp"
-                    android:background="@null"
-                    android:includeFontPadding="false"
-                    android:maxLength="500"
-                    android:textAppearance="@style/Typography.Body1.Regular"
-                    android:textColorHint="@color/gray4"
-                    android:hint="노트"
-                    app:layout_constraintBottom_toBottomOf="@id/textview_medicalrecordadd_note_count"
-                    app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordadd_note_count"
-                    app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_note"
-                    app:layout_constraintTop_toTopOf="@id/textview_medicalrecordadd_note_count" />
+                    <EditText
+                        android:id="@+id/edittext_medicalrecordadd_note_detail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="13dp"
+                        android:background="@null"
+                        android:hint="노트"
+                        android:includeFontPadding="false"
+                        android:maxLength="500"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_note"
+                        app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordadd_note_count"
+                        app:layout_constraintStart_toStartOf="@id/view_medicalrecordadd_note"
+                        app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_note" />
 
-                <TextView
-                    android:id="@+id/textview_medicalrecordadd_note_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@{@string/medicalrecord_note_length(0)}"
-                    android:textAppearance="@style/Typography.Body2.Regular"
-                    android:textColor="@color/gray4"
-                    app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_note"
-                    app:layout_constraintEnd_toEndOf="@id/view_medicalrecordadd_note"
-                    app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_note"
-                    tools:text="0/500" />
+                    <TextView
+                        android:id="@+id/textview_medicalrecordadd_note_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{@string/medicalrecord_note_length(0)}"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/view_medicalrecordadd_note"
+                        app:layout_constraintEnd_toEndOf="@id/view_medicalrecordadd_note"
+                        app:layout_constraintTop_toTopOf="@id/view_medicalrecordadd_note"
+                        tools:text="0/500" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
