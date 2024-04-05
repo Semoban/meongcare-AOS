@@ -165,7 +165,7 @@ class MedicalRecordAddFragment :
 
                 override fun afterTextChanged(s: Editable?) {
                 }
-            }
+            },
         )
     }
 
@@ -193,7 +193,7 @@ class MedicalRecordAddFragment :
 
                 override fun afterTextChanged(s: Editable?) {
                 }
-            }
+            },
         )
     }
 
@@ -221,7 +221,7 @@ class MedicalRecordAddFragment :
 
                 override fun afterTextChanged(s: Editable?) {
                 }
-            }
+            },
         )
     }
 
