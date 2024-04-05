@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.view
+package com.project.meongcare.medicalRecord.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.meongcare.databinding.ItemMedicalRecordEditBinding
-import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemCheckListener
-import com.project.meongcare.medicalrecord.model.entities.MedicalRecord
-import com.project.meongcare.medicalrecord.model.utils.MedicalRecordDateUtils.showFormattedTime
+import com.project.meongcare.medicalRecord.model.data.local.MedicalRecordItemCheckListener
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecord
+import com.project.meongcare.medicalRecord.model.utils.MedicalRecordDateUtils.showFormattedTime
 
 class MedicalRecordEditListAdapter(
     private val medicalRecordItemCheckListener: MedicalRecordItemCheckListener,
