@@ -76,13 +76,13 @@ class MedicalRecordRepositoryImpl
 
     override suspend fun addMedicalRecord(
         accessToken: String?,
-        requestSupplement: RequestMedicalRecord,
+        requestMedicalRecord: RequestMedicalRecord,
     ): Int {
         val response =
             medicalRecordRetrofitClient.medicalRecordApi.addMedicalRecord(
                 accessToken,
-                requestSupplement.file,
-                requestSupplement.dto,
+                requestMedicalRecord.file,
+                requestMedicalRecord.dto,
             )
         return response.code()
     }
