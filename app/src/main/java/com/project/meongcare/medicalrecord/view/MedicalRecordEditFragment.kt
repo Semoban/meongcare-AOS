@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.view
+package com.project.meongcare.medicalRecord.view
 
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordEditBinding
-import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemCheckListener
-import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
-import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
-import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.medicalRecord.model.data.local.MedicalRecordItemCheckListener
+import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
+import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 

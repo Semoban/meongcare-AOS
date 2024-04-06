@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.model.utils
+package com.project.meongcare.medicalRecord.model.utils
 
 object MedicalRecordDateUtils {
     fun showFormattedTime(dateTime: String): String {

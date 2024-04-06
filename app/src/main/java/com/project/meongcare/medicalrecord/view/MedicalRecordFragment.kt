@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.view
+package com.project.meongcare.medicalRecord.view
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordBinding
-import com.project.meongcare.medicalrecord.model.data.local.MedicalRecordItemClickListener
-import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
-import com.project.meongcare.medicalrecord.viewmodel.MedicalRecordViewModel
-import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.medicalRecord.model.data.local.MedicalRecordItemClickListener
+import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
+import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat

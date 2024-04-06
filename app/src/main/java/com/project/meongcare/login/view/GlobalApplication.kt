@@ -2,10 +2,12 @@ package com.project.meongcare.login.view
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
@@ -33,6 +35,9 @@ class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // 키 해시 얻기
+//        getKeyHash()
+
         // kakao sdk 초기화
         KakaoSdk.init(this, "${BuildConfig.KAKAO_NATIVE_APP_KEY}")
 
@@ -43,5 +48,10 @@ class GlobalApplication : Application() {
             "${BuildConfig.NAVER_OAUTH_CLIENT_SECRET}",
             "${BuildConfig.NAVER_OAUTH_CLIENT_NAME}",
         )
+    }
+
+    private fun getKeyHash() {
+        var keyHash = Utility.getKeyHash(this)
+        Log.i("GlobalApplication", "$keyHash")
     }
 }

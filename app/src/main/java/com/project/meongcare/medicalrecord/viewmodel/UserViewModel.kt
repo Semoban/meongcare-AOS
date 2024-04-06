@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.viewmodel
+package com.project.meongcare.medicalRecord.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
