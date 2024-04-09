@@ -76,7 +76,10 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         if (!isInitialized) {
