@@ -23,11 +23,11 @@ import com.project.meongcare.aws.util.DOG_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentPetEditBinding
-import com.project.meongcare.home.view.getCurrentDate
 import com.project.meongcare.info.model.entities.DogPutRequest
+import com.project.meongcare.home.util.HomeDateUtil.getCurrentDate
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
-import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.Gender

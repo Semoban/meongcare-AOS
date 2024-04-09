@@ -29,8 +29,8 @@ import com.project.meongcare.aws.util.SUPPLEMENTS_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.databinding.ItemSupplementAddTimeBinding
-import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
-import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import com.project.meongcare.supplement.model.data.repository.SupplementRepository
