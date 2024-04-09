@@ -325,7 +325,10 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         }
     }
 
-    private fun uploadImage(preSignedURL: String, requestBody: RequestBody) {
+    private fun uploadImage(
+        preSignedURL: String,
+        requestBody: RequestBody,
+    ) {
         awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
