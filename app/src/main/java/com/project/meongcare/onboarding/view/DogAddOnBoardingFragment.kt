@@ -65,7 +65,10 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         getAccessToken()
