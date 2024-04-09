@@ -408,7 +408,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     private fun postSupplement(imageURL: String?) {
         supplementViewModel.addSupplement(
             accessToken,
-            createSupplementInfo(imageURL)
+            createSupplementInfo(imageURL),
         )
     }
 
