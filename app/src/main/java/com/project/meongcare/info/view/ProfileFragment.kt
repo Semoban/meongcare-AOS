@@ -18,27 +18,31 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.MEMBER_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentProfileBinding
 import com.project.meongcare.databinding.LayoutLogoutDialogBinding
 import com.project.meongcare.databinding.LayoutMedicalRecordDialogBinding
-import com.project.meongcare.aws.util.AWSS3ImageUtils.createMultipartFromUri
-import com.project.meongcare.aws.util.AWSS3ImageUtils.getMultipartFileName
+import com.project.meongcare.info.model.entities.ProfilePatchRequest
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), PhotoMenuListener {
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var multipartImage: MultipartBody.Part
-    private lateinit var fileName: String
+    private lateinit var imageFile: File
+    private lateinit var filePath: String
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private val awsS3ViewModel: AWSS3ViewModel by viewModels()
@@ -153,19 +157,6 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
             }
         }
 
-        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, multipartImage)
-            }
-        }
-
-        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
-            if (response == 200) {
-                // 저장된 이미지 경로를 데이터와 함께 서버로 전달
-                //        profileViewModel.patchProfileImage(currentAccessToken, multipartBody)
-            }
-        }
-
         initPetListRecyclerView()
         initProfileImageView()
         initBackButton()
@@ -175,11 +166,29 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     }
 
     override fun onUriPassed(uri: Uri) {
-        multipartImage = createMultipartFromUri(requireContext(), uri)
-        fileName = getMultipartFileName(multipartImage)
+        imageFile = convertUriToFile(requireContext(), uri)
+        filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH${imageFile.name}"
+        getPreSignedURL()
+    }
 
-        val filePath = "$PARENT_FOLDER_PATH$MEMBER_FOLDER_PATH$fileName"
+    private fun getPreSignedURL() {
         awsS3ViewModel.getPreSignedUrl(currentAccessToken, filePath)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
+            }
+        }
+    }
+
+    private fun uploadImage(preSignedURL: String, requestBody: RequestBody) {
+        awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val profilePatchRequest = ProfilePatchRequest(BuildConfig.AWS_S3_BASE_URL + filePath)
+                profileViewModel.patchProfileImage(currentAccessToken, profilePatchRequest)
+            }
+        }
     }
 
     private fun reissueAccessToken() {
