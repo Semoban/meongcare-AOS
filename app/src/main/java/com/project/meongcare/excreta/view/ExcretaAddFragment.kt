@@ -190,7 +190,10 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         }
     }
 
-    private fun uploadImage(preSignedUrl: String, requestBody: RequestBody) {
+    private fun uploadImage(
+        preSignedUrl: String,
+        requestBody: RequestBody,
+    ) {
         awsS3ViewModel.uploadImageToS3(preSignedUrl, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
