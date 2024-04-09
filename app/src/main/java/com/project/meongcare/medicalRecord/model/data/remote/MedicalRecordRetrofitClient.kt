@@ -1,4 +1,4 @@
-package com.project.meongcare.medicalrecord.model.data.remote
+package com.project.meongcare.medicalRecord.model.data.remote
 
 import com.project.meongcare.BuildConfig
 import okhttp3.ResponseBody

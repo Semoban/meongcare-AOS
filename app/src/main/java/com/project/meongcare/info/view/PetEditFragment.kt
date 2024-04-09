@@ -13,52 +13,48 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.project.meongcare.BirthdayBottomSheetFragment
-import com.project.meongcare.MainActivity
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
+import com.project.meongcare.aws.util.DOG_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentPetEditBinding
+import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.home.util.HomeDateUtil.getCurrentDate
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
-import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.model.entities.Dog
-import com.project.meongcare.onboarding.view.Gender
+import com.project.meongcare.onboarding.model.entities.Gender
+import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.bodySizeCheck
+import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.getCheckedGender
 import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
-import com.project.meongcare.onboarding.view.bodySizeCheck
-import com.project.meongcare.onboarding.view.createMultipartBody
-import com.project.meongcare.onboarding.view.dateFormat
-import com.project.meongcare.onboarding.view.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.net.URL
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private lateinit var binding: FragmentPetEditBinding
-    private lateinit var mainActivity: MainActivity
     private lateinit var dogInfo: GetDogInfoResponse
-    private lateinit var currentAccessToken: String
+    private lateinit var accessToken: String
+    private lateinit var refreshToken: String
+    private lateinit var filePath: String
+    private lateinit var imageFile: File
 
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private val petEditViewModel: ProfileViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
@@ -66,16 +62,9 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private var isInitialized = false
     private var isImageUpdated = false
 
-    @Inject
-    lateinit var userPreferences: UserPreferences
-
-    @Inject
-    lateinit var loginRepository: LoginRepository
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dogInfo = getDogInfo()
-        getAccessToken()
     }
 
     override fun onCreateView(
@@ -84,13 +73,69 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPetEditBinding.inflate(inflater)
-        mainActivity = activity as MainActivity
+        return binding.root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
 
         if (!isInitialized) {
             initDogInfo(dogInfo)
             isInitialized = true
         }
 
+        getAccessToken()
+        initObserves()
+        initViews()
+    }
+
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+                getRefreshToken()
+            }
+        }
+    }
+
+    private fun getRefreshToken() {
+        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
+            if (refreshToken != null) {
+                this.refreshToken = refreshToken
+            }
+        }
+    }
+
+    private fun reissueAccessToken() {
+        userViewModel.getNewAccessToken(refreshToken)
+        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response.code()) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_info_edit_failure),
+                        ).show()
+                        userViewModel.setAccessToken(response.body()?.accessToken)
+                    }
+                    401 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_refresh_expire),
+                        ).show()
+                        findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initObserves() {
         petEditViewModel.dogProfile.observe(viewLifecycleOwner) { uri ->
             if (uri != null) {
                 Glide.with(this@PetEditFragment)
@@ -116,34 +161,11 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                                 getCurrentDate(),
                                 null,
                             )
-                        petEditViewModel.postDogWeight(currentAccessToken, dogPostRequest)
+                        petEditViewModel.postDogWeight(accessToken, dogPostRequest)
                     }
                     401 -> {
-                        lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
-                            if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_info_edit_failure),
-                                            ).show()
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
-                            }
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
                         }
                     }
                     else -> {
@@ -166,36 +188,12 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                             dogInfo.dogId,
                             binding.edittextPeteditWeight.text.toString().toDouble(),
                             getCurrentDate(),
-                            currentAccessToken,
+                            accessToken,
                         )
                     }
                     401 -> {
-                        // refresh reissue 호출
-                        lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
-                            if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_info_edit_failure),
-                                            ).show()
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
-                            }
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
                         }
                     }
                     else -> {
@@ -228,31 +226,8 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                         findNavController().popBackStack()
                     }
                     401 -> {
-                        lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
-                            if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_info_edit_failure),
-                                            ).show()
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
-                            }
+                        if (refreshToken.isNotEmpty()) {
+                            reissueAccessToken()
                         }
                     }
                     else -> {
@@ -277,109 +252,120 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 binding.edittextPeteditType.setText(dogType)
             }
         }
-
-        binding.run {
-            editTextWatcher(edittextPeteditName, edittextPeteditName, "이름을 입력해주세요")
-            editTextWatcher(edittextPeteditType, edittextPeteditType, "품종을 입력해주세요")
-            editTextWatcher(edittextPeteditSelectBirthday, edittextPeteditSelectBirthday, "날짜를 선택해주세요")
-            editTextWatcher(edittextPeteditWeight, viewPeteditWeight, "")
-
-            cardviewPeteditImage.setOnClickListener {
-                val modalBottomSheet = PhotoSelectBottomSheetFragment()
-                modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
-                modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-                modalBottomSheet.show(mainActivity.supportFragmentManager, modalBottomSheet.tag)
-            }
-
-            edittextPeteditType.setOnClickListener {
-                findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
-            }
-
-            checkboxPeteditNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
-                isCbxChecked = isChecked
-            }
-
-            textviewPeteditNeuterStatus.setOnClickListener {
-                checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
-            }
-
-            edittextPeteditSelectBirthday.setOnClickListener {
-                val birthdayBottomSheet =
-                    BirthdayBottomSheetFragment(
-                        binding.root,
-                        petEditViewModel.dogBirth.value,
-                    )
-                birthdayBottomSheet.setDateSubmitListener(this@PetEditFragment)
-                birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
-                birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
-            }
-
-            buttonPeteditCancel.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            buttonPeteditSubmit.setOnClickListener {
-                if (edittextPeteditName.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditType.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditSelectBirthday.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (edittextPeteditWeight.text.isEmpty()) {
-                    return@setOnClickListener
-                }
-
-                val dogName = edittextPeteditName.text.toString()
-                val dogType = edittextPeteditType.text.toString()
-                val dogGender = getCheckedGender(binding.root, chipgroupPeteditGroupGender.checkedChipId)
-                val dogBirth = petEditViewModel.dogBirth.value!!
-                val dogWeight = edittextPeteditWeight.text.toString().toDouble()
-                val dogBack = bodySizeCheck(edittextPeteditBackLength.text.toString())
-                val dogNeck = bodySizeCheck(edittextPeteditNeckCircumference.text.toString())
-                val dogChest = bodySizeCheck(edittextPeteditChestCircumference.text.toString())
-                val dog =
-                    Dog(
-                        dogName,
-                        dogType,
-                        dogGender,
-                        dogBirth,
-                        isCbxChecked,
-                        dogWeight,
-                        dogBack,
-                        dogNeck,
-                        dogChest,
-                    )
-
-                val json = Gson().toJson(dog)
-                val requestBody: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-                if (isImageUpdated) {
-                    // 새 이미지 등록된 경우
-                    val filePart: MultipartBody.Part = createMultipartBody(mainActivity, petEditViewModel.dogProfile.value)
-                    petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
-                } else {
-                    // 기존 이미지인 경우
-                    lifecycleScope.launch {
-                        val filePart: MultipartBody.Part = createMultipartFromUrl(dogInfo.imageUrl)
-                        petEditViewModel.putDogInfo(dogInfo.dogId, currentAccessToken, filePart, requestBody)
-                    }
-                }
-            }
-        }
-
-        return binding.root
     }
 
-    private fun getAccessToken() {
-        lifecycleScope.launch {
-            userPreferences.accessToken.collectLatest { accessToken ->
-                if (accessToken != null) {
-                    currentAccessToken = accessToken
-                }
+    private fun initViews() {
+        editTextWatcher(binding.edittextPeteditName, binding.edittextPeteditName, "이름을 입력해주세요")
+        editTextWatcher(binding.edittextPeteditType, binding.edittextPeteditType, "품종을 입력해주세요")
+        editTextWatcher(binding.edittextPeteditSelectBirthday, binding.edittextPeteditSelectBirthday, "날짜를 선택해주세요")
+        editTextWatcher(binding.edittextPeteditWeight, binding.viewPeteditWeight, "")
+
+        binding.cardviewPeteditImage.setOnClickListener {
+            val modalBottomSheet = PhotoSelectBottomSheetFragment()
+            modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
+        }
+
+        binding.edittextPeteditType.setOnClickListener {
+            findNavController().navigate(R.id.action_petEditFragment_to_dogVarietySearchFragment)
+        }
+
+        binding.checkboxPeteditNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+            isCbxChecked = isChecked
+        }
+
+        binding.textviewPeteditNeuterStatus.setOnClickListener {
+            binding.checkboxPeteditNeuterStatus.isChecked = !isCbxChecked
+        }
+
+        binding.edittextPeteditSelectBirthday.setOnClickListener {
+            val birthdayBottomSheet =
+                BirthdayBottomSheetFragment(
+                    binding.root,
+                    petEditViewModel.dogBirth.value,
+                )
+            birthdayBottomSheet.setDateSubmitListener(this@PetEditFragment)
+            birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+            birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
+        }
+
+        binding.buttonPeteditCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.buttonPeteditSubmit.setOnClickListener {
+            if (binding.edittextPeteditName.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditType.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditSelectBirthday.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (binding.edittextPeteditWeight.text.isEmpty()) {
+                return@setOnClickListener
+            }
+
+            if (isImageUpdated) { // 새 이미지 등록
+                getPreSignedURL(petEditViewModel.dogProfile.value!!)
+            } else { // 기존 이미지
+                putDogInfo(dogInfo.imageUrl)
             }
         }
+    }
+
+    private fun getPreSignedURL(uri: Uri) {
+        imageFile = convertUriToFile(requireContext(), uri)
+        filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${imageFile.name}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
+            }
+        }
+    }
+
+    private fun uploadImage(
+        preSignedURL: String,
+        requestBody: RequestBody,
+    ) {
+        awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                putDogInfo(imageURL)
+            }
+        }
+    }
+
+    private fun putDogInfo(imageURL: String?) {
+        val dogName = binding.edittextPeteditName.text.toString()
+        val dogType = binding.edittextPeteditType.text.toString()
+        val dogGender = getCheckedGender(binding.root, binding.chipgroupPeteditGroupGender.checkedChipId)
+        val dogBirth = petEditViewModel.dogBirth.value!!
+        val dogCastrate = binding.checkboxPeteditNeuterStatus.isChecked
+        val dogWeight = binding.edittextPeteditWeight.text.toString().toDouble()
+        val dogBack = bodySizeCheck(binding.edittextPeteditBackLength.text.toString())
+        val dogNeck = bodySizeCheck(binding.edittextPeteditNeckCircumference.text.toString())
+        val dogChest = bodySizeCheck(binding.edittextPeteditChestCircumference.text.toString())
+        val dogPutRequest =
+            DogPutRequest(
+                dogName,
+                dogType,
+                dogGender,
+                dogBirth,
+                dogCastrate,
+                dogWeight,
+                dogBack,
+                dogNeck,
+                dogChest,
+                imageURL,
+            )
+
+        petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, dogPutRequest)
     }
 
     private fun editTextWatcher(
@@ -388,7 +374,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         hint: String,
     ) {
         editText.addTextChangedListener {
-            editText.doAfterTextChanged { editable ->
+            editText.doAfterTextChanged {
                 updateEditTextStyle(editText, targetView, hint)
             }
         }
@@ -441,25 +427,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
             if (dogInfo.neckRound != null && dogInfo.neckRound != 0.0) {
                 edittextPeteditNeckCircumference.setText(dogInfo.neckRound.toString())
-            }
-        }
-    }
-
-    private suspend fun createMultipartFromUrl(url: String?): MultipartBody.Part {
-        return withContext(Dispatchers.IO) {
-            if (url.isNullOrEmpty()) {
-                val emptyBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file", "", emptyBody)
-            } else {
-                val inputStream = URL(url).openStream()
-                val file = File(requireContext().cacheDir, "url_image.jpg")
-                inputStream.use { input ->
-                    file.outputStream().use { output ->
-                        input.copyTo(output)
-                    }
-                }
-                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file", file.name, requestFile)
             }
         }
     }

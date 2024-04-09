@@ -24,8 +24,8 @@ import com.project.meongcare.home.util.HomeDateUtil.dateToString
 import com.project.meongcare.home.util.HomeDateUtil.getCurrentDate
 import com.project.meongcare.home.util.HomeDateUtil.stringToDate
 import com.project.meongcare.home.viewmodel.HomeViewModel
-import com.project.meongcare.medicalrecord.viewmodel.DogViewModel
-import com.project.meongcare.medicalrecord.viewmodel.UserViewModel
+import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest

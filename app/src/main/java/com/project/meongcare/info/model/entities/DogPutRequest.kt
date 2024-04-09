@@ -1,6 +1,6 @@
-package com.project.meongcare.onboarding.model.entities
+package com.project.meongcare.info.model.entities
 
-data class Dog(
+data class DogPutRequest(
     val name: String,
     val type: String,
     val sex: String,
@@ -10,4 +10,5 @@ data class Dog(
     val backRound: Double?,
     val neckRound: Double?,
     val chestRound: Double?,
+    val imageURL: String?,
 )

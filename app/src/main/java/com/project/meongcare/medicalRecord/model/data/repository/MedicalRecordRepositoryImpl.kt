@@ -2,9 +2,9 @@ package com.project.meongcare.medicalRecord.model.data.repository
 
 import android.util.Log
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
-import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordRetrofitClient
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
+import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordRetrofitClient
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject

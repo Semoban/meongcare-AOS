@@ -4,8 +4,9 @@ import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
 import com.project.meongcare.feed.model.entities.FeedPartRecords
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
+import com.project.meongcare.feed.model.entities.FeedPostRequest
+import com.project.meongcare.feed.model.entities.FeedPutRequest
 import com.project.meongcare.feed.model.entities.FeedRecords
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import com.project.meongcare.feed.model.entities.Feeds
 
 interface FeedRepository {
@@ -16,7 +17,7 @@ interface FeedRepository {
 
     suspend fun postFeed(
         accessToken: String,
-        feedUploadRequest: FeedUploadRequest,
+        feedPostRequest: FeedPostRequest,
     ): Int?
 
     suspend fun getFeedPart(
@@ -54,7 +55,7 @@ interface FeedRepository {
 
     suspend fun putFeed(
         accessToken: String,
-        feedUploadRequest: FeedUploadRequest,
+        feedPutRequest: FeedPutRequest,
     ): Int?
 
     suspend fun deleteFeed(

@@ -1,7 +1,7 @@
 package com.project.meongcare.feed.model.entities
 
-data class FeedPutInfo(
-    val feedId: Long,
+data class FeedPostRequest(
+    val dogId: Long,
     val brand: String,
     val feedName: String,
     val protein: Double,
@@ -13,5 +13,5 @@ data class FeedPutInfo(
     val recommendIntake: Int,
     val startDate: String,
     val endDate: String? = null,
-    val feedRecordId: Long,
+    val imageURL: String?,
 )

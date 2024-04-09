@@ -84,7 +84,7 @@ class FeedInfoFragment : Fragment() {
                         response.startDate,
                         response.endDate,
                     )
-                if (response.imageURL.isNotEmpty()) {
+                if (!response.imageURL.isNullOrEmpty()) {
                     Glide.with(this@FeedInfoFragment)
                         .load(response.imageURL)
                         .into(imageviewFeedinfo)

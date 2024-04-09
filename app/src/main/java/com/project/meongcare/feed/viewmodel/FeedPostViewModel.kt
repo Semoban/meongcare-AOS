@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.feed.model.data.repository.FeedRepositoryImpl
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.entities.FeedPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,11 +30,11 @@ class FeedPostViewModel
 
         fun postFeed(
             accessToken: String,
-            feedUploadRequest: FeedUploadRequest,
+            feedPostRequest: FeedPostRequest,
         ) {
             viewModelScope.launch {
                 _feedPosted.value =
-                    feedRepositoryImpl.postFeed(accessToken, feedUploadRequest)
+                    feedRepositoryImpl.postFeed(accessToken, feedPostRequest)
             }
         }
     }

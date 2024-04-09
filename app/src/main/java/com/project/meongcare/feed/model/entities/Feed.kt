@@ -4,5 +4,5 @@ data class Feed(
     val feedId: Long,
     val brandName: String,
     val feedName: String,
-    val imageURL: String,
+    val imageURL: String?,
 )

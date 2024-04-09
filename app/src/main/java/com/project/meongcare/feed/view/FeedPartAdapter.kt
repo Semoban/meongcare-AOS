@@ -14,7 +14,7 @@ class FeedPartAdapter : ListAdapter<FeedPartRecord, FeedPartAdapter.FeedPartView
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FeedPartRecord) {
             binding.run {
-                if (item.feedImageURL.isNotEmpty()) {
+                if (!item.feedImageURL.isNullOrEmpty()) {
                     Glide.with(itemView)
                         .load(item.feedImageURL)
                         .into(imageviewFeed)

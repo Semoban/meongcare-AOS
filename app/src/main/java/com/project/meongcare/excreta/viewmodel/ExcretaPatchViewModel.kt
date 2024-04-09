@@ -1,15 +1,11 @@
 package com.project.meongcare.excreta.viewmodel
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.excreta.model.data.repository.ExcretaRepositoryImpl
-import com.project.meongcare.excreta.model.entities.ExcretaInfoPatch
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaFile
-import com.project.meongcare.excreta.utils.ExcretaInfoUtils.convertExcretaPatchDto
+import com.project.meongcare.excreta.model.entities.ExcretaPatchRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,25 +41,16 @@ class ExcretaPatchViewModel
             excretaId: Long,
             excretaType: String,
             excretaDateTime: String,
-            context: Context,
-            uri: Uri,
+            imageURL: String?,
         ) {
             viewModelScope.launch {
-                val excretaInfoPatch =
-                    ExcretaInfoPatch(
+                val excretaPatchRequest =
+                    ExcretaPatchRequest(
                         excretaId,
                         excretaType,
                         excretaDateTime,
+                        imageURL,
                     )
-                val dto = convertExcretaPatchDto(excretaInfoPatch)
-                val file = convertExcretaFile(context, uri)
-
-                val excretaPatchRequest =
-                    ExcretaUploadRequest(
-                        dto,
-                        file,
-                    )
-
                 _excretaPatched.value = excretaRepositoryImpl.patchExcreta(accessToken, excretaPatchRequest)
             }
         }

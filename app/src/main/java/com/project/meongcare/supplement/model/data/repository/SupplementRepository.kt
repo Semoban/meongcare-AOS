@@ -4,8 +4,8 @@ import com.project.meongcare.supplement.model.data.remote.SupplementAPI
 import com.project.meongcare.supplement.model.data.remote.SupplementRetrofitInstance
 import com.project.meongcare.supplement.model.entities.DetailSupplement
 import com.project.meongcare.supplement.model.entities.DogSupplement
-import com.project.meongcare.supplement.model.entities.RequestSupplement
 import com.project.meongcare.supplement.model.entities.ResultSupplement
+import com.project.meongcare.supplement.model.entities.SupplementPostRequest
 import okhttp3.ResponseBody
 import javax.inject.Inject
 
@@ -162,13 +162,12 @@ class SupplementRepository
 
         suspend fun addSupplement(
             accessToken: String?,
-            requestSupplement: RequestSupplement,
+            supplementsPostRequest: SupplementPostRequest,
         ): Int {
             val response =
                 supplementAPI.addSupplement(
                     accessToken,
-                    requestSupplement.file,
-                    requestSupplement.dto,
+                    supplementsPostRequest,
                 )
             return response.code()
         }

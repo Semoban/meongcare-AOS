@@ -17,7 +17,7 @@ class PreviousFeedAdapter : ListAdapter<FeedRecord, PreviousFeedAdapter.Previous
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FeedRecord) {
             binding.run {
-                if (item.imageURL.isNotEmpty()) {
+                if (!item.imageURL.isNullOrEmpty()) {
                     Glide.with(itemView)
                         .load(item.imageURL)
                         .into(imageviewOldfeed)

@@ -6,6 +6,6 @@ data class FeedRecord(
     val startDate: String,
     val endDate: String,
     val feedRecordId: Long,
-    val imageURL: String,
+    val imageURL: String?,
     val feedId: Long,
 )
