@@ -1,15 +1,13 @@
 package com.project.meongcare.info.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.remote.ProfileRetrofitClient
 import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.entities.ProfilePatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -199,10 +197,10 @@ class ProfileRepositoryImpl
 
         override suspend fun patchProfileImage(
             accessToken: String,
-            file: MultipartBody.Part,
+            profilePatchRequest: ProfilePatchRequest,
         ): Int? {
             return try {
-                val response = profileRetrofitClient.profileApi.patchProfileImage(accessToken, file)
+                val response = profileRetrofitClient.profileApi.patchProfileImage(accessToken, profilePatchRequest)
                 if (response.code() == 200) {
                     Log.d("ProfileRepo-PatchProfile", "통신 성공")
                     response.code()

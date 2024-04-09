@@ -10,11 +10,10 @@ import com.project.meongcare.home.model.entities.GetUserProfileResponse
 import com.project.meongcare.info.model.data.repository.ProfileRepository
 import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.entities.ProfilePatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -165,10 +164,10 @@ class ProfileViewModel
 
         fun patchProfileImage(
             accessToken: String,
-            file: MultipartBody.Part,
+            profilePatchRequest: ProfilePatchRequest,
         ) {
             viewModelScope.launch {
-                _patchProfileResponse.value = profileRepository.patchProfileImage(accessToken, file)
+                _patchProfileResponse.value = profileRepository.patchProfileImage(accessToken, profilePatchRequest)
             }
         }
     }
