@@ -13,7 +13,7 @@ class ExcretaRepositoryImpl
     ) : ExcretaRepository {
         override suspend fun postExcreta(
             accessToken: String,
-            excretaPostRequest: ExcretaPostRequest
+            excretaPostRequest: ExcretaPostRequest,
         ): Int? = excretaRemoteDataSource.postExcreta(accessToken, excretaPostRequest)
 
         override suspend fun getExcretaRecord(
@@ -33,6 +33,6 @@ class ExcretaRepositoryImpl
 
         override suspend fun patchExcreta(
             accessToken: String,
-            excretaPatchRequest: ExcretaPatchRequest
+            excretaPatchRequest: ExcretaPatchRequest,
         ): Int? = excretaRemoteDataSource.patchExcreta(accessToken, excretaPatchRequest)
     }
