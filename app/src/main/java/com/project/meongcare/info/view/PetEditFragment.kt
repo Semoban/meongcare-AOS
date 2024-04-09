@@ -305,7 +305,7 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 return@setOnClickListener
             }
 
-            if (isImageUpdated) {// 새 이미지 등록
+            if (isImageUpdated) { // 새 이미지 등록
                 getPreSignedURL(petEditViewModel.dogProfile.value!!)
             } else { // 기존 이미지
                 putDogInfo(dogInfo.imageUrl)
