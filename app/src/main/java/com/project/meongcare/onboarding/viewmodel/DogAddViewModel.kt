@@ -9,8 +9,6 @@ import com.project.meongcare.onboarding.model.data.repository.DogAddRepository
 import com.project.meongcare.onboarding.model.entities.DogPostRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
