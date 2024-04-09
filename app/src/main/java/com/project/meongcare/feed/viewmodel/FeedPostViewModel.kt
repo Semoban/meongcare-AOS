@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.meongcare.feed.model.data.repository.FeedRepositoryImpl
 import com.project.meongcare.feed.model.entities.FeedPostRequest
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
