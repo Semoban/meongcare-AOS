@@ -43,8 +43,6 @@ class MedicalRecordInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Todo: 전달받은 진료기록 아이디 연결, 액세스 토큰 userViewModel로 연결
         medicalRecordId = 1
-        accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjM0MzYxOX0.qXPMWcqU8ZoLVwJEyxYd3WJFR8GgN0Tsr1fEg5jJgnA"
-
         setMedicalRecord()
         getMedicalRecord()
         initBackBtn()
@@ -142,7 +140,7 @@ class MedicalRecordInfoFragment : Fragment() {
     }
 
     private fun getMedicalRecord() {
-        medicalRecordViewModel.getMedicalRecord(medicalRecordId, accessToken)
+        medicalRecordViewModel.getMedicalRecord(medicalRecordId)
     }
 
     private fun testGetRecord(it: Response<MedicalRecordGet>) {

@@ -64,11 +64,12 @@ class MedicalRecordViewModel
             }
         }
 
-        fun getMedicalRecord(
-            medicalRecordId: Long,
-            accessToken: String,
-        ) {
+        fun getMedicalRecord(medicalRecordId: Long) {
             viewModelScope.launch {
+                //            val accessToken: String? =
+                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                val accessToken =
+                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU1MDQ1Mn0.WcYhge1qGfO5aIu3Vpc_3OjdR-WDUzDzBUJVuMqbnoU"
                 _medicalRecord.value =
                     medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken)
             }
