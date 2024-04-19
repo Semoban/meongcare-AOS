@@ -17,25 +17,40 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.util.SUPPLEMENTS_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentMedicalRecordAddBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class MedicalRecordAddFragment :
     Fragment(),
     MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
     OnPictureChangedListener {
     private lateinit var binding: FragmentMedicalRecordAddBinding
     private lateinit var mainActivity: MainActivity
+
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+
     private var addSelectedDate: String = ""
 
     override fun onCreateView(
@@ -58,11 +73,49 @@ class MedicalRecordAddFragment :
         initHospitalName()
         initVeterinarianName()
         initNote()
+        initCompleteBtn()
+    }
+
+    private fun initCompleteBtn() {
         binding.layoutMedicalrecordaddNoteRecord.buttonFooterone.setOnClickListener {
             if (checkMedicalRecordDataNull()) {
-                Log.d("작동널",checkMedicalRecordDataNull().toString())
+                postMedicalRecord()
+                showResultMessage()
             }
         }
+    }
+
+    private fun showResultMessage() {
+        medicalRecordViewModel.medicalRecordAddResponse.observe(viewLifecycleOwner) {
+            if (it == 200) {
+                findNavController().popBackStack()
+                showSuccessSnackbar()
+            } else {
+                showFailSnackbar()
+            }
+        }
+    }
+
+    private fun postMedicalRecord() {
+        val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
+        val date = addSelectedDate
+        val time = String.format(
+            "%02d:%02d:00",
+            binding.timepickerMedicalrecordaddTreatmentTime.hour,
+            binding.timepickerMedicalrecordaddTreatmentTime.minute,
+        )
+        val dateTime = "${date}T$time"
+        val hospitalName = binding.edittextMedicalrecordaddHospitalName.text.toString()
+        val doctorName = binding.edittextMedicalrecordaddVeterinarianName.text.toString()
+        val note = binding.edittextMedicalrecordaddNoteDetail.text.toString()
+
+        medicalRecordViewModel.addMedicalRecord(
+            dateTime,
+            hospitalName,
+            doctorName,
+            note,
+            uri ?: Uri.EMPTY
+        )
     }
 
     private fun checkMedicalRecordDataNull(): Boolean {
@@ -161,29 +214,24 @@ class MedicalRecordAddFragment :
 
     private fun setEditTextWatcher(editText: EditText, count: TextView, stringId: Int) {
         editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun afterTextChanged(p0: Editable?) {
                 count.text =
                     getString(stringId, p0?.length ?: 0)
             }
-
         })
     }
 
     private fun setEditTextClickLister(
         layout: ConstraintLayout,
         editText: EditText,
-        count: TextView
+        count: TextView,
     ) {
-        val clickListener = View.OnClickListener {
-            setEditTextAttributes(layout, editText, count)
-        }
+        val clickListener =
+            View.OnClickListener { setEditTextAttributes(layout, editText, count) }
         editText.setOnClickListener(clickListener)
         layout.setOnClickListener(clickListener)
     }
@@ -191,7 +239,7 @@ class MedicalRecordAddFragment :
     private fun setEditTextAttributes(
         layout: ConstraintLayout,
         editText: EditText,
-        count: TextView
+        count: TextView,
     ) {
         editText.inputType = InputType.TYPE_CLASS_TEXT
         layout.setBackgroundResource(R.drawable.all_rect_r5)
@@ -239,7 +287,10 @@ class MedicalRecordAddFragment :
         Log.d("MedicalRecordAddFragment", "Selected date: $addSelectedDate")
     }
 
-    private fun setDateAddMode(date: LocalDate, formatter: DateTimeFormatter?) {
+    private fun setDateAddMode(
+        date: LocalDate,
+        formatter: DateTimeFormatter?,
+    ) {
         binding.textviewMedicalrecordaddSelectDate.run {
             setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
             setTextAppearance(R.style.Typography_Body1_Medium)
@@ -248,7 +299,24 @@ class MedicalRecordAddFragment :
         }
     }
 
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "추가가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "추가에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
+    }
+
     override fun onPictureChanged(uri: Uri) {
+        medicalRecordViewModel.getMedicalRecordImgUri(uri)
         Glide.with(this@MedicalRecordAddFragment)
             .load(uri)
             .into(binding.imageviewMedicalrecordaddImage)
