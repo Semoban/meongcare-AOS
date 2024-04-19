@@ -169,7 +169,7 @@ class MedicalRecordEditFragment : Fragment() {
     private fun deleteMedicalRecord(medicalRecordIds: IntArray) {
         binding.run {
             layoutMedicalrecordeditFooter.buttonFootertwoSecond.setOnClickListener {
-                medicalRecordViewModel.deleteMedicalRecordList(medicalRecordIds, accessToken)
+                medicalRecordViewModel.deleteMedicalRecordList(medicalRecordIds)
                 medicalRecordViewModel.deleteMedicalRecordResponse.observe(viewLifecycleOwner) { response ->
                     if (response != null && response == 200) {
                         CustomSnackBar.make(
