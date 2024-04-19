@@ -1,14 +1,388 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".medicalRecord.view.MedicalRecordInfoEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordinfo_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="12dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordinfo_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="32dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_medicalrecordinfo_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="32dp" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_medicalrecordinfo_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:src="@drawable/all_arrow_back_18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_medicalrecordinfo_top" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_medicalrecordinfo_note_record"
+            app:layout_constraintEnd_toEndOf="@id/guideline_medicalrecordinfo_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_medicalrecordinfo_start"
+            app:layout_constraintTop_toBottomOf="@id/imagebutton_medicalrecordinfo_back">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_medicalrecordinfo_image"
+                    android:layout_width="0dp"
+                    android:layout_height="169dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:outlineSpotShadowColor="#F9F9F9"
+                    app:cardBackgroundColor="#F9F9F9"
+                    app:cardCornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/layout_medicalrecordinfo_picture_sample"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_medicalrecordinfo_carrier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/medical_record_add_carrier" />
+
+                        <TextView
+                            android:id="@+id/textview_medicalrecordinfo_image_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/medicalrecord_image_description"
+                            android:textAppearance="@style/Typography.Body1.Medium"
+                            android:textColor="@color/gray4" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imageview_medicalrecordinfo_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/medicalrecord_date"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardview_medicalrecordinfo_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/essential_input_element_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordinfo_date"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordinfo_date"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordinfo_date" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/essential_input_element_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordinfo_treatment_time"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordinfo_treatment_time"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordinfo_treatment_time" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_select_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_r5"
+                    android:paddingVertical="11dp"
+                    android:paddingStart="16dp"
+                    android:textAppearance="@style/Typography.Body1.Medium"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordinfo_date" />
+
+                <ImageView
+                    android:id="@+id/imageview_medicalrecordinfo_select_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/all_calendar_gray4"
+                    app:layout_constraintBottom_toBottomOf="@id/textview_medicalrecordinfo_select_date"
+                    app:layout_constraintEnd_toEndOf="@id/textview_medicalrecordinfo_select_date"
+                    app:layout_constraintTop_toTopOf="@id/textview_medicalrecordinfo_select_date" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_treatment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/medicalrecord_time"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordinfo_select_date" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_treatment_time_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_r5"
+                    android:paddingVertical="11dp"
+                    android:paddingStart="16dp"
+                    android:text="오전 00:00"
+                    android:textAppearance="@style/Typography.Body1.Medium"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecordinfo_treatment_time" />
+
+                <TimePicker
+                    android:id="@+id/timepicker_medicalrecordinfo_treatment_time"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:timePickerMode="spinner"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordinfo_treatment_time_value" />
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/medicalrecord_hospital"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/timepicker_medicalrecordinfo_treatment_time" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/essential_input_element_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordinfo_hospital"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordinfo_hospital"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordinfo_hospital" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_medicalrecordinfo_hospital_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_r5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_medicalrecordinfo_hospital" >
+                    <EditText
+                        android:id="@+id/edittext_medicalrecordinfo_hospital_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="13dp"
+                        android:background="@null"
+                        android:maxLength="50"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4"
+                        android:hint="병원 이름"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_medicalrecordinfo_hospital_name"
+                        app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordinfo_hospital_name_count"
+                        app:layout_constraintStart_toStartOf="@id/layout_medicalrecordinfo_hospital_name"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_hospital_name" />
+
+                    <TextView
+                        android:id="@+id/textview_medicalrecordinfo_hospital_name_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:inputType="textMultiLine"
+                        android:maxLines="5"
+                        android:text="@{@string/medicalrecord_hospital_name_length(0)}"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_medicalrecordinfo_hospital_name"
+                        app:layout_constraintEnd_toEndOf="@id/layout_medicalrecordinfo_hospital_name"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_hospital_name"
+                        tools:text="0/50" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_veterinarian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/medicalrecord_veterinarian"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_medicalrecordinfo_hospital_name" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/essential_input_element_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordinfo_veterinarian"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordinfo_veterinarian"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordinfo_veterinarian" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_medicalrecordinfo_veterinarian_name"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/all_rect_r5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordinfo_veterinarian" >
+                    <EditText
+                        android:id="@+id/edittext_medicalrecordinfo_veterinarian_name"
+                        android:layout_width="269dp"
+                        android:layout_height="22dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="13dp"
+                        android:background="@null"
+                        android:includeFontPadding="false"
+                        android:maxLength="10"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4"
+                        android:hint="담당의 성함"
+                        app:layout_constraintBottom_toBottomOf="@+id/layout_medicalrecordinfo_veterinarian_name"
+                        app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordinfo_veterinarian_name_count"
+                        app:layout_constraintStart_toStartOf="@id/layout_medicalrecordinfo_veterinarian_name"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_veterinarian_name" />
+
+                    <TextView
+                        android:id="@+id/textview_medicalrecordinfo_veterinarian_name_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{@string/medicalrecord_veterinarian_name_length(0)}"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_medicalrecordinfo_veterinarian_name"
+                        app:layout_constraintEnd_toEndOf="@id/layout_medicalrecordinfo_veterinarian_name"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_veterinarian_name"
+                        tools:text="0/10" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:id="@+id/textview_medicalrecordinfo_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/medicalrecord_note"
+                    android:textAppearance="@style/Typography.Title3.SemiBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_medicalrecordinfo_veterinarian_name" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/essential_input_element_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/textview_medicalrecordinfo_note"
+                    app:layout_constraintStart_toEndOf="@+id/textview_medicalrecordinfo_note"
+                    app:layout_constraintTop_toTopOf="@+id/textview_medicalrecordinfo_note" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_medicalrecordinfo_note"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="58dp"
+                    android:background="@drawable/all_rect_r5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_medicalrecordinfo_note" >
+
+                    <EditText
+                        android:id="@+id/edittext_medicalrecordinfo_note_detail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="13dp"
+                        android:background="@null"
+                        android:hint="노트"
+                        android:includeFontPadding="false"
+                        android:maxLength="500"
+                        android:textAppearance="@style/Typography.Body1.Regular"
+                        android:textColorHint="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_medicalrecordinfo_note"
+                        app:layout_constraintEnd_toStartOf="@id/textview_medicalrecordinfo_note_count"
+                        app:layout_constraintStart_toStartOf="@id/layout_medicalrecordinfo_note"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_note" />
+
+                    <TextView
+                        android:id="@+id/textview_medicalrecordinfo_note_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{@string/medicalrecord_note_length(0)}"
+                        android:textAppearance="@style/Typography.Body2.Regular"
+                        android:textColor="@color/gray4"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_medicalrecordinfo_note"
+                        app:layout_constraintEnd_toEndOf="@id/layout_medicalrecordinfo_note"
+                        app:layout_constraintTop_toTopOf="@id/layout_medicalrecordinfo_note"
+                        tools:text="0/500" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/layout_medicalrecordinfo_note_record"
+            bind:buttonText="@{@string/medicalrecord_record}"
+            layout="@layout/layout_footer_one_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
