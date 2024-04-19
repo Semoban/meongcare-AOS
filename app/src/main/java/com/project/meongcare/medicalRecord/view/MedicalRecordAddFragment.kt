@@ -13,19 +13,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
-import com.project.meongcare.aws.util.AWSS3ImageUtils
-import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
-import com.project.meongcare.aws.util.SUPPLEMENTS_FOLDER_PATH
-import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentMedicalRecordAddBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
@@ -34,10 +28,6 @@ import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPicture
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -165,7 +155,7 @@ class MedicalRecordAddFragment :
         }
     }
 
-    fun isEditTextNullOrEmpty(
+    private fun isEditTextNullOrEmpty(
         editText: EditText,
         layout: ConstraintLayout?,
         textCount: TextView,
@@ -212,11 +202,27 @@ class MedicalRecordAddFragment :
         setEditTextWatcher(editText, count, R.string.medicalrecord_hospital_name_length)
     }
 
-    private fun setEditTextWatcher(editText: EditText, count: TextView, stringId: Int) {
+    private fun setEditTextWatcher(
+        editText: EditText,
+        count: TextView,
+        stringId: Int
+    ) {
         editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(
+                p0: CharSequence?,
+                p1: Int,
+                p2: Int,
+                p3: Int,
+            ) {
+            }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(
+                p0: CharSequence?,
+                p1: Int,
+                p2: Int,
+                p3: Int,
+            ) {
+            }
 
             override fun afterTextChanged(p0: Editable?) {
                 count.text =
@@ -265,7 +271,7 @@ class MedicalRecordAddFragment :
         )
     }
 
-    fun showCalendarBottomSheet(
+    private fun showCalendarBottomSheet(
         parentFragmentManager: FragmentManager,
         onDateSelectedListener: MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
     ) {
