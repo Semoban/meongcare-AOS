@@ -25,7 +25,6 @@ class MedicalRecordInfoFragment : Fragment() {
     private lateinit var binding: FragmentMedicalRecordInfoBinding
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
 
-    private var accessToken = ""
     private var medicalRecordId = 0L
 
     override fun onCreateView(
@@ -74,7 +73,6 @@ class MedicalRecordInfoFragment : Fragment() {
             buttonDeleteDialogDelete.setOnClickListener {
                 medicalRecordViewModel.deleteMedicalRecordList(
                     intArrayOf(medicalRecordId.toInt()),
-                    accessToken,
                 )
                 isDeleteSuccess()
             }

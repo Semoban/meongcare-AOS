@@ -81,8 +81,12 @@ class MedicalRecordViewModel
 
         fun deleteMedicalRecordList(
             medicalRecordIds: IntArray,
-            accessToken: String,
         ) {
+            //            val accessToken: String? =
+            //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+            //            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
+            val accessToken =
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU0NTYzNH0.R4BmwumxzV01XhviD6yXJMuVCH2r35ecX4t4vdTbm-M"
             viewModelScope.launch {
                 _deleteMedicalRecordResponse.value =
                     medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken)
