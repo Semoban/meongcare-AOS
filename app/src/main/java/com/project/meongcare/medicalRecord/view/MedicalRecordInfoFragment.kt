@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -52,7 +53,9 @@ class MedicalRecordInfoFragment : Fragment() {
 
     private fun initMoveToEditBtn() {
         binding.imagebuttonMedicalrecordinfoEdit.setOnClickListener {
-            findNavController().navigate(R.id.action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment)
+            val bundle = Bundle()
+            bundle.putParcelable("medicalRecord", medicalRecordViewModel.medicalRecord.value!!.body())
+            findNavController().navigate(R.id.action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment, bundle)
         }
     }
 
