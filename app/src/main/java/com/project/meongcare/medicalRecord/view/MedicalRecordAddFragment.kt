@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -139,6 +140,7 @@ class MedicalRecordAddFragment :
         val layout = binding.layoutMedicalrecordaddNote
         val count = binding.textviewMedicalrecordaddNoteCount
         setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_note_length)
     }
 
     private fun initVeterinarianName() {
@@ -146,6 +148,7 @@ class MedicalRecordAddFragment :
         val layout = binding.layoutMedicalrecordaddVeterinarianName
         val count = binding.textviewMedicalrecordaddVeterinarianNameCount
         setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
     }
 
     private fun initHospitalName() {
@@ -153,6 +156,24 @@ class MedicalRecordAddFragment :
         val layout = binding.layoutMedicalrecordaddHospitalName
         val count = binding.textviewMedicalrecordaddHospitalNameCount
         setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_hospital_name_length)
+    }
+
+    private fun setEditTextWatcher(editText: EditText, count: TextView, stringId: Int) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                count.text =
+                    getString(stringId, p0?.length ?: 0)
+            }
+
+        })
     }
 
     private fun setEditTextClickLister(
@@ -163,7 +184,6 @@ class MedicalRecordAddFragment :
         val clickListener = View.OnClickListener {
             setEditTextAttributes(layout, editText, count)
         }
-
         editText.setOnClickListener(clickListener)
         layout.setOnClickListener(clickListener)
     }
