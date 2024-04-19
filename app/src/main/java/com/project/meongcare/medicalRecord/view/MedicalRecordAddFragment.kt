@@ -89,7 +89,7 @@ class MedicalRecordAddFragment :
     private fun postMedicalRecord() {
         val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
         val date = addSelectedDate
-        val time = 
+        val time =
             String.format(
                 "%02d:%02d:00",
                 binding.timepickerMedicalrecordaddTreatmentTime.hour,
@@ -230,7 +230,8 @@ class MedicalRecordAddFragment :
                     count.text =
                         getString(stringId, p0?.length ?: 0)
                 }
-        })
+            }
+        )
     }
 
     private fun setEditTextClickLister(
