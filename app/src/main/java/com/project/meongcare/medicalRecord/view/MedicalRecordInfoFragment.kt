@@ -47,6 +47,13 @@ class MedicalRecordInfoFragment : Fragment() {
         getMedicalRecord()
         initBackBtn()
         initDeleteBtn()
+        initMoveToEditBtn()
+    }
+
+    private fun initMoveToEditBtn() {
+        binding.imagebuttonMedicalrecordinfoEdit.setOnClickListener {
+            findNavController().navigate(R.id.action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment)
+        }
     }
 
     private fun initDeleteBtn() {
