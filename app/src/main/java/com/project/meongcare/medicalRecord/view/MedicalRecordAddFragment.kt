@@ -230,7 +230,7 @@ class MedicalRecordAddFragment :
                     count.text =
                         getString(stringId, p0?.length ?: 0)
                 }
-            }
+            },
         )
     }
 
