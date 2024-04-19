@@ -89,11 +89,12 @@ class MedicalRecordAddFragment :
     private fun postMedicalRecord() {
         val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
         val date = addSelectedDate
-        val time = String.format(
-            "%02d:%02d:00",
-            binding.timepickerMedicalrecordaddTreatmentTime.hour,
-            binding.timepickerMedicalrecordaddTreatmentTime.minute,
-        )
+        val time = 
+            String.format(
+                "%02d:%02d:00",
+                binding.timepickerMedicalrecordaddTreatmentTime.hour,
+                binding.timepickerMedicalrecordaddTreatmentTime.minute,
+            )
         val dateTime = "${date}T$time"
         val hospitalName = binding.edittextMedicalrecordaddHospitalName.text.toString()
         val doctorName = binding.edittextMedicalrecordaddVeterinarianName.text.toString()
@@ -104,7 +105,7 @@ class MedicalRecordAddFragment :
             hospitalName,
             doctorName,
             note,
-            uri ?: Uri.EMPTY
+            uri ?: Uri.EMPTY,
         )
     }
 
@@ -205,29 +206,30 @@ class MedicalRecordAddFragment :
     private fun setEditTextWatcher(
         editText: EditText,
         count: TextView,
-        stringId: Int
+        stringId: Int,
     ) {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                p0: CharSequence?,
-                p1: Int,
-                p2: Int,
-                p3: Int,
-            ) {
-            }
+        editText.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int,
+                ) {
+                }
 
-            override fun onTextChanged(
-                p0: CharSequence?,
-                p1: Int,
-                p2: Int,
-                p3: Int,
-            ) {
-            }
+                override fun onTextChanged(
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int,
+                ) {
+                }
 
-            override fun afterTextChanged(p0: Editable?) {
-                count.text =
-                    getString(stringId, p0?.length ?: 0)
-            }
+                override fun afterTextChanged(p0: Editable?) {
+                    count.text =
+                        getString(stringId, p0?.length ?: 0)
+                }
         })
     }
 
