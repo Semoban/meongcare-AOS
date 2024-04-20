@@ -52,19 +52,19 @@ class MedicalRecordInfoEditFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setMedicalRecord()
+        initMedicalRecord()
     }
 
-    private fun setMedicalRecord() {
-        setImg()
-        setDate()
-        setTime()
-        setHospital()
-        setVeterinarian()
-        setNote()
+    private fun initMedicalRecord() {
+        initImg()
+        initDate()
+        initTime()
+        initHospital()
+        initVeterinarian()
+        initNote()
     }
 
-    private fun setImg() {
+    private fun initImg() {
         if (!record.imageUrl.isNullOrBlank()) {
             binding.layoutMedicalrecordinfoeditPictureSample.visibility = View.GONE
             Glide.with(this@MedicalRecordInfoEditFragment)
@@ -76,7 +76,7 @@ class MedicalRecordInfoEditFragment :
         }
     }
 
-    private fun setNote() {
+    private fun initNote() {
         val editText = binding.edittextMedicalrecordinfoeditNoteDetail
         val count = binding.textviewMedicalrecordinfoeditNoteCount
         editText.setText(record.note)
@@ -85,7 +85,7 @@ class MedicalRecordInfoEditFragment :
         setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
     }
 
-    private fun setVeterinarian() {
+    private fun initVeterinarian() {
         val editText = binding.edittextMedicalrecordinfoeditVeterinarianName
         val count = binding.textviewMedicalrecordinfoeditVeterinarianNameCount
         editText.setText(record.doctorName)
@@ -94,7 +94,7 @@ class MedicalRecordInfoEditFragment :
         setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
     }
 
-    private fun setHospital() {
+    private fun initHospital() {
         val editText = binding.edittextMedicalrecordinfoeditHospitalName
         val count = binding.textviewMedicalrecordinfoeditHospitalNameCount
         editText.setText(record.hospitalName)
@@ -103,12 +103,12 @@ class MedicalRecordInfoEditFragment :
         setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
     }
 
-    private fun setTime() {
+    private fun initTime() {
         binding.textviewMedicalrecordinfoeditTreatmentTimeValue.text =
             MedicalRecordUtils.convertMDateToSimpleTime(record.dateTime)
     }
 
-    private fun setDate() {
+    private fun initDate() {
         binding.textviewMedicalrecordinfoeditSelectDate.text =
             MedicalRecordUtils.convertMDateToSimpleDate(record.dateTime)
         binding.textviewMedicalrecordinfoeditSelectDate.setOnClickListener {
