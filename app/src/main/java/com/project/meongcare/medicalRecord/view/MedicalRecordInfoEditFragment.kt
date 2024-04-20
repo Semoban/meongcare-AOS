@@ -106,6 +106,10 @@ class MedicalRecordInfoEditFragment :
     private fun initTime() {
         binding.textviewMedicalrecordinfoeditTreatmentTimeValue.text =
             MedicalRecordUtils.convertMDateToSimpleTime(record.dateTime)
+        binding.textviewMedicalrecordinfoeditTreatmentTimeValue.setOnClickListener {
+            it.visibility = View.GONE
+            binding.timepickerMedicalrecordinfoeditTreatmentTime.visibility = View.VISIBLE
+        }
     }
 
     private fun initDate() {
