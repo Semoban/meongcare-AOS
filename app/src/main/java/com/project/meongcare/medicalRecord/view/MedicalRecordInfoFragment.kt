@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoBinding
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
-import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleDate
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleTime
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
