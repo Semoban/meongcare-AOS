@@ -86,7 +86,7 @@ class MedicalRecordRepositoryImpl
 
         override suspend fun putMedicalRecord(
             accessToken: String?,
-            requestMedicalRecord: RequestMedicalRecord
+            requestMedicalRecord: RequestMedicalRecord,
         ): Int {
             val response =
                 medicalRecordRetrofitClient.medicalRecordApi.putMedicalRecord(
@@ -96,4 +96,4 @@ class MedicalRecordRepositoryImpl
                 )
             return response.code()
         }
-}
+    }
