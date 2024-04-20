@@ -48,8 +48,9 @@ class MedicalRecordInfoEditFragment :
     private var addTime: String = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         getMedicalRecordFromInfo()
         binding = FragmentMedicalRecordInfoEditBinding.inflate(inflater)
@@ -57,7 +58,10 @@ class MedicalRecordInfoEditFragment :
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initMedicalRecord()
         initCancelBtn()
@@ -72,7 +76,7 @@ class MedicalRecordInfoEditFragment :
             }
         }
     }
-    
+
     private fun putMedicalRecord() {
         if (checkMedicalRecordDataNull()) {
             val medicalRecordId = record.medicalRecordId
