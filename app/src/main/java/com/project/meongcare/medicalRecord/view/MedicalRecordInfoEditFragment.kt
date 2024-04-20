@@ -79,15 +79,16 @@ class MedicalRecordInfoEditFragment :
             val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
             val date = addSelectedDate
             val timePicker = binding.timepickerMedicalrecordinfoeditTreatmentTime
-            val time = if (timePicker.visibility != View.VISIBLE) {
-                addTime
-            } else {
-                String.format(
-                    "%02d:%02d:00",
-                    timePicker.hour,
-                    timePicker.minute,
-                )
-            }
+            val time =
+                if (timePicker.visibility != View.VISIBLE) {
+                    addTime
+                } else {
+                    String.format(
+                        "%02d:%02d:00",
+                        timePicker.hour,
+                        timePicker.minute,
+                    )
+                }
             val dateTime = "${date}T$time"
             val hospitalName = binding.edittextMedicalrecordinfoeditHospitalName.text.toString()
             val doctorName = binding.edittextMedicalrecordinfoeditVeterinarianName.text.toString()
@@ -95,7 +96,7 @@ class MedicalRecordInfoEditFragment :
 
             Log.d(
                 "수정 확인",
-                "$date $time $dateTime $hospitalName $doctorName $note ${record.imageUrl} "
+                "$date $time $dateTime $hospitalName $doctorName $note ${record.imageUrl}",
             )
 
             medicalRecordViewModel.putMedicalRecord(
@@ -381,5 +382,4 @@ class MedicalRecordInfoEditFragment :
 
         Log.d("MedicalRecordAddFragment", "Selected date: $addSelectedDate")
     }
-
 }
