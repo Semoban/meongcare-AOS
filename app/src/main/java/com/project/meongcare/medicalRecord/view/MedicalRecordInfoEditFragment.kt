@@ -24,6 +24,8 @@ import com.project.meongcare.databinding.FragmentMedicalRecordInfoEditBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
+import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToDBDate
+import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToDBTime
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
@@ -42,6 +44,7 @@ class MedicalRecordInfoEditFragment :
 
     lateinit var record: MedicalRecordGet
     private var addSelectedDate: String = ""
+    private var addTime: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +61,36 @@ class MedicalRecordInfoEditFragment :
         initMedicalRecord()
         initCancelBtn()
         binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoSecond.setOnClickListener {
-            checkMedicalRecordDataNull()
+            if(checkMedicalRecordDataNull()) {
+                val medicalRecordId = record.medicalRecordId
+                val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
+                val date = addSelectedDate
+                val timePicker = binding.timepickerMedicalrecordinfoeditTreatmentTime
+                val time = if (timePicker.visibility != View.VISIBLE) {
+                    addTime
+                } else {
+                    String.format(
+                        "%02d:%02d:00",
+                        timePicker.hour,
+                        timePicker.minute,
+                    )
+                }
+                val dateTime = "${date}T$time"
+                val hospitalName = binding.edittextMedicalrecordinfoeditHospitalName.text.toString()
+                val doctorName = binding.edittextMedicalrecordinfoeditVeterinarianName.text.toString()
+                val note = binding.edittextMedicalrecordinfoeditNoteDetail.text.toString()
+
+                Log.d("수정 확인", "$date $time $dateTime $hospitalName $doctorName $note ${record.imageUrl} ")
+
+                medicalRecordViewModel.putMedicalRecord(
+                    medicalRecordId,
+                    dateTime,
+                    hospitalName,
+                    doctorName,
+                    note,
+                    uri ?: Uri.parse(record.imageUrl),
+                )
+            }
         }
     }
 
@@ -217,6 +249,8 @@ class MedicalRecordInfoEditFragment :
             val medicalRecordGet = arguments?.getParcelable<MedicalRecordGet>("medicalRecord")
             if (medicalRecordGet != null) {
                 record = medicalRecordGet
+                addSelectedDate = convertMDateToDBDate(record.dateTime)
+                addTime = convertMDateToDBTime(record.dateTime)
                 Log.d("진료기록 수정 화면", record.toString())
             }
         }
@@ -300,7 +334,6 @@ class MedicalRecordInfoEditFragment :
     override fun onDateSelected(date: LocalDate) {
         val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
         val formatterToAdd = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
         addSelectedDate = date.format(formatterToAdd)
         setDateAddMode(date, formatter)
 

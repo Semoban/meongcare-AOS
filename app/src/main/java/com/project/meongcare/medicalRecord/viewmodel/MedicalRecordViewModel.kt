@@ -11,6 +11,7 @@ import com.project.meongcare.medicalRecord.model.data.repository.MedicalRecordRe
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,7 +70,7 @@ class MedicalRecordViewModel
                 //            val accessToken: String? =
                 //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
                 val accessToken =
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU1MDQ1Mn0.WcYhge1qGfO5aIu3Vpc_3OjdR-WDUzDzBUJVuMqbnoU"
+                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU4NzQ1NH0.YZNwJuZprJ2drk6Ymtqa8-DS0dkkSHNFWWQ1gcRSTwU"
                 _medicalRecord.value =
                     medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken)
             }
@@ -123,6 +124,38 @@ class MedicalRecordViewModel
                 _medicalRecordAddResponse.value =
                     medicalRecordRepositoryImpl.addMedicalRecord(accessToken, requestMedicalRecord)
                 Log.d("진료기록 추가 확인2", medicalRecordAddResponse.value.toString())
+            }
+        }
+
+        fun putMedicalRecord(
+            medicalRecordId: Long,
+            dateTime: String,
+            hospitalName: String,
+            doctorName: String,
+            note: String,
+            uri: Uri,
+        ) {
+            viewModelScope.launch {
+                //            val accessToken: String? =
+                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                val accessToken =
+                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU4NzQ1NH0.YZNwJuZprJ2drk6Ymtqa8-DS0dkkSHNFWWQ1gcRSTwU"
+
+                val medicalRecordPutDto =
+                    MedicalRecordPutDto(medicalRecordId, dateTime, hospitalName, doctorName, note)
+                val dto = MedicalRecordUtils.convertMedicalRecordPutDto(medicalRecordPutDto)
+                val file = MedicalRecordUtils.convertPictureToFile(GlobalApplication.applicationContext(), uri)
+
+                val requestMedicalRecord =
+                    RequestMedicalRecord(
+                        dto,
+                        file,
+                    )
+
+                Log.d("진료기록 수정 확인", medicalRecordPutDto.toString())
+                _medicalRecordAddResponse.value =
+                    medicalRecordRepositoryImpl.putMedicalRecord(accessToken, requestMedicalRecord)
+                Log.d("진료기록 수정 확인2", medicalRecordAddResponse.value.toString())
             }
         }
 
