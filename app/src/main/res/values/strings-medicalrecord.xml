@@ -18,4 +18,6 @@
     <string name="medicalrecord_select_all">전체 선택</string>
     <string name="medicalrecord_delete_success">진료기록이 삭제되었습니다.</string>
     <string name="medicalrecrod_empty_date">날짜를 선택해주세요.</string>
+    <string name="medicalrecord_cancel">취소</string>
+    <string name="medicalrecord_complete">완료</string>
 </resources>
