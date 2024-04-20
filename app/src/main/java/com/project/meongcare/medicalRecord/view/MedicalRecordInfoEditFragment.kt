@@ -1,5 +1,6 @@
 package com.project.meongcare.medicalRecord.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,13 +15,20 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoEditBinding
+import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
+import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
+import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
-class MedicalRecordInfoEditFragment : Fragment() {
+class MedicalRecordInfoEditFragment :
+    Fragment(),
+    MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
+    OnPictureChangedListener {
     lateinit var binding: FragmentMedicalRecordInfoEditBinding
     lateinit var record: MedicalRecordGet
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
@@ -50,10 +58,13 @@ class MedicalRecordInfoEditFragment : Fragment() {
 
     private fun setImg() {
         if (!record.imageUrl.isNullOrBlank()) {
-            binding.imageviewMedicalrecordinfoeditCarrier.visibility = View.GONE
+            binding.layoutMedicalrecordinfoeditPictureSample.visibility = View.GONE
             Glide.with(this@MedicalRecordInfoEditFragment)
                 .load(record.imageUrl)
                 .into(binding.imageviewMedicalrecordinfoeditImage)
+        }
+        binding.cardviewMedicalrecordinfoeditImage.setOnClickListener {
+            showPictureBottomSheet()
         }
     }
 
@@ -133,6 +144,29 @@ class MedicalRecordInfoEditFragment : Fragment() {
                 }
             },
         )
+    }
+
+    private fun showPictureBottomSheet() {
+        val bottomSheetFragment = MedicalRecordPictureBottomSheetDialogFragment()
+
+        bottomSheetFragment.setOnPictureChangedListener(this)
+
+        bottomSheetFragment.show(
+            parentFragmentManager,
+            "MedicalRecordPictureBottomSheetDialogFragment",
+        )
+    }
+    override fun onPictureChanged(uri: Uri) {
+        medicalRecordViewModel.getMedicalRecordImgUri(uri)
+        Glide.with(this@MedicalRecordInfoEditFragment)
+            .load(uri)
+            .into(binding.imageviewMedicalrecordinfoeditImage)
+        binding.imageviewMedicalrecordinfoeditImage.visibility = View.VISIBLE
+        binding.layoutMedicalrecordinfoeditPictureSample.visibility = View.GONE
+    }
+
+    override fun onDateSelected(date: LocalDate) {
+        TODO("Not yet implemented")
     }
 
 }
