@@ -41,9 +41,9 @@ class MedicalRecordViewModel
         val deleteMedicalRecordResponse: LiveData<Int>
             get() = _deleteMedicalRecordResponse
 
-        private val _medicalRecordAddResponse = MutableLiveData<Int>()
-        val medicalRecordAddResponse: LiveData<Int>
-            get() = _medicalRecordAddResponse
+        private val _medicalRecordResponse = MutableLiveData<Int>()
+        val medicalRecordResponse: LiveData<Int>
+            get() = _medicalRecordResponse
 
         private val _medicalRecordAddImgUri = MutableLiveData<Uri>()
         val medicalRecordAddImgUri: LiveData<Uri>
@@ -121,9 +121,9 @@ class MedicalRecordViewModel
                         file,
                     )
                 Log.d("진료기록 추가 확인", medicalRecordDto.toString())
-                _medicalRecordAddResponse.value =
+                _medicalRecordResponse.value =
                     medicalRecordRepositoryImpl.addMedicalRecord(accessToken, requestMedicalRecord)
-                Log.d("진료기록 추가 확인2", medicalRecordAddResponse.value.toString())
+                Log.d("진료기록 추가 확인2", medicalRecordResponse.value.toString())
             }
         }
 
@@ -153,9 +153,9 @@ class MedicalRecordViewModel
                     )
 
                 Log.d("진료기록 수정 확인", medicalRecordPutDto.toString())
-                _medicalRecordAddResponse.value =
+                _medicalRecordResponse.value =
                     medicalRecordRepositoryImpl.putMedicalRecord(accessToken, requestMedicalRecord)
-                Log.d("진료기록 수정 확인2", medicalRecordAddResponse.value.toString())
+                Log.d("진료기록 수정 확인2", medicalRecordResponse.value.toString())
             }
         }
 

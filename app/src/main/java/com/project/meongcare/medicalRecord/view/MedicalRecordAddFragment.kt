@@ -76,7 +76,7 @@ class MedicalRecordAddFragment :
     }
 
     private fun showResultMessage() {
-        medicalRecordViewModel.medicalRecordAddResponse.observe(viewLifecycleOwner) {
+        medicalRecordViewModel.medicalRecordResponse.observe(viewLifecycleOwner) {
             if (it == 200) {
                 findNavController().popBackStack()
                 showSuccessSnackbar()
