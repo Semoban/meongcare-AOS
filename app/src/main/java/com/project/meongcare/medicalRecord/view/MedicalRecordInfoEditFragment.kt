@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoEditBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
@@ -23,6 +26,7 @@ import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPicture
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MedicalRecordInfoEditFragment :
@@ -30,8 +34,11 @@ class MedicalRecordInfoEditFragment :
     MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
     OnPictureChangedListener {
     lateinit var binding: FragmentMedicalRecordInfoEditBinding
-    lateinit var record: MedicalRecordGet
+    private lateinit var mainActivity: MainActivity
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+
+    lateinit var record: MedicalRecordGet
+    private var addSelectedDate: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +46,7 @@ class MedicalRecordInfoEditFragment :
     ): View? {
         getMedicalRecordFromInfo()
         binding = FragmentMedicalRecordInfoEditBinding.inflate(inflater)
+        mainActivity = activity as MainActivity
         return binding.root
     }
 
@@ -103,6 +111,9 @@ class MedicalRecordInfoEditFragment :
     private fun setDate() {
         binding.textviewMedicalrecordinfoeditSelectDate.text =
             MedicalRecordUtils.convertMDateToSimpleDate(record.dateTime)
+        binding.textviewMedicalrecordinfoeditSelectDate.setOnClickListener {
+            showCalendarBottomSheet(parentFragmentManager, this@MedicalRecordInfoEditFragment)
+        }
     }
 
     private fun getMedicalRecordFromInfo() {
@@ -156,6 +167,31 @@ class MedicalRecordInfoEditFragment :
             "MedicalRecordPictureBottomSheetDialogFragment",
         )
     }
+
+    private fun showCalendarBottomSheet(
+        parentFragmentManager: FragmentManager,
+        onDateSelectedListener: MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
+    ) {
+        val bottomSheetDialogFragment = MedicalRecordDateBottomSheetDialogFragment()
+        bottomSheetDialogFragment.setOnDateSelecetedListener(onDateSelectedListener)
+        bottomSheetDialogFragment.show(
+            parentFragmentManager,
+            "MedicalRecordDateBottomSheetDialogFragment",
+        )
+    }
+
+    private fun setDateAddMode(
+        date: LocalDate,
+        formatter: DateTimeFormatter?,
+    ) {
+        binding.textviewMedicalrecordinfoeditSelectDate.run {
+            setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+            setTextAppearance(R.style.Typography_Body1_Medium)
+            setBackgroundResource(R.drawable.all_rect_r5)
+            text = date.format(formatter)
+        }
+    }
+
     override fun onPictureChanged(uri: Uri) {
         medicalRecordViewModel.getMedicalRecordImgUri(uri)
         Glide.with(this@MedicalRecordInfoEditFragment)
@@ -166,7 +202,13 @@ class MedicalRecordInfoEditFragment :
     }
 
     override fun onDateSelected(date: LocalDate) {
-        TODO("Not yet implemented")
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
+        val formatterToAdd = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
+        addSelectedDate = date.format(formatterToAdd)
+        setDateAddMode(date, formatter)
+
+        Log.d("MedicalRecordAddFragment", "Selected date: $addSelectedDate")
     }
 
 }
