@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.medicalRecord.model.data.repository.MedicalRecordRepositoryImpl
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
@@ -15,6 +17,7 @@ import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -67,12 +70,10 @@ class MedicalRecordViewModel
 
         fun getMedicalRecord(medicalRecordId: Long) {
             viewModelScope.launch {
-                //            val accessToken: String? =
-                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                val accessToken =
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU4NzQ1NH0.YZNwJuZprJ2drk6Ymtqa8-DS0dkkSHNFWWQ1gcRSTwU"
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
                 _medicalRecord.value =
-                    medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken)
+                    medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken!!)
             }
         }
 
@@ -83,14 +84,13 @@ class MedicalRecordViewModel
         fun deleteMedicalRecordList(
             medicalRecordIds: IntArray,
         ) {
-            //            val accessToken: String? =
-            //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-            //            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-            val accessToken =
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU0NTYzNH0.R4BmwumxzV01XhviD6yXJMuVCH2r35ecX4t4vdTbm-M"
             viewModelScope.launch {
-                _deleteMedicalRecordResponse.value =
-                    medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken)
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                viewModelScope.launch {
+                    _deleteMedicalRecordResponse.value =
+                        medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken!!)
+                }
             }
         }
 
@@ -102,15 +102,12 @@ class MedicalRecordViewModel
             uri: Uri,
         ) {
             viewModelScope.launch {
-                //            val accessToken: String? =
-                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                //            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-                val accessToken =
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU0NTYzNH0.R4BmwumxzV01XhviD6yXJMuVCH2r35ecX4t4vdTbm-M"
-                val dogId: Long = 6
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
 
                 val medicalRecordDto =
-                    MedicalRecordDto(dogId, dateTime, hospitalName, doctorName, note)
+                    MedicalRecordDto(dogId!!, dateTime, hospitalName, doctorName, note)
                 val dto = MedicalRecordUtils.convertMedicalRecordDto(medicalRecordDto)
                 val file =
                     MedicalRecordUtils.convertPictureToFile(GlobalApplication.applicationContext(), uri)
@@ -136,10 +133,8 @@ class MedicalRecordViewModel
             uri: Uri,
         ) {
             viewModelScope.launch {
-                //            val accessToken: String? =
-                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                val accessToken =
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMzU4NzQ1NH0.YZNwJuZprJ2drk6Ymtqa8-DS0dkkSHNFWWQ1gcRSTwU"
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
 
                 val medicalRecordPutDto =
                     MedicalRecordPutDto(medicalRecordId, dateTime, hospitalName, doctorName, note)
