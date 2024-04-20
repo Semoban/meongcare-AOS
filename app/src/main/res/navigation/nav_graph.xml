@@ -253,13 +253,29 @@
         <action
             android:id="@+id/action_medicalRecordFragment_to_medicalRecordEditFragment"
             app:destination="@id/medicalRecordEditFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordAddFragment"
+            app:destination="@id/medicalRecordAddFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordInfoFragment"
+            app:destination="@id/medicalRecordInfoFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/medicalRecordInfoFragment"
         android:name="com.project.meongcare.medicalRecord.view.MedicalRecordInfoFragment"
         android:label="MedicalRecordInfoFragment"
-        tools:layout="@layout/fragment_medical_record_info"/>
+        tools:layout="@layout/fragment_medical_record_info">
+        <action
+            android:id="@+id/action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment"
+            app:destination="@id/medicalRecordInfoEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/medicalRecordInfoEditFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordInfoEditFragment"
+        android:label="MedicalRecordEditFragment"
+        tools:layout="@layout/fragment_medical_record_edit"/>
 
     <fragment
         android:id="@+id/medicalRecordAddFragment"

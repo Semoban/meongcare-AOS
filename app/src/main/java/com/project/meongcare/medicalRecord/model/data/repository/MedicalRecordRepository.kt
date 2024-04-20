@@ -24,6 +24,11 @@ interface MedicalRecordRepository {
 
     suspend fun addMedicalRecord(
         accessToken: String?,
-        requestSupplement: RequestMedicalRecord,
+        requestMedicalRecord: RequestMedicalRecord,
+    ): Int
+
+    suspend fun putMedicalRecord(
+        accessToken: String?,
+        requestMedicalRecord: RequestMedicalRecord,
     ): Int
 }

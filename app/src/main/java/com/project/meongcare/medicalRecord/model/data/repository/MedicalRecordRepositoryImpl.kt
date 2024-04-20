@@ -83,4 +83,17 @@ class MedicalRecordRepositoryImpl
                 )
             return response.code()
         }
+
+        override suspend fun putMedicalRecord(
+            accessToken: String?,
+            requestMedicalRecord: RequestMedicalRecord,
+        ): Int {
+            val response =
+                medicalRecordRetrofitClient.medicalRecordApi.putMedicalRecord(
+                    accessToken,
+                    requestMedicalRecord.file,
+                    requestMedicalRecord.dto,
+                )
+            return response.code()
+        }
     }

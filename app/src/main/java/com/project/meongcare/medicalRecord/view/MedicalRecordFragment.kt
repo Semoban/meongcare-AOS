@@ -71,6 +71,9 @@ class MedicalRecordFragment : Fragment() {
                     override fun onMedicalRecordItemClick(medicalRecordId: Long) {
                         // 상세 화면으로 이동하면서 medicalRecordId 전달
                         Log.d("medicalRecordItemClicked", "$medicalRecordId")
+                        val bundle = Bundle()
+                        bundle.putLong("medicalRecordId", medicalRecordId)
+                        findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordInfoFragment, bundle)
                     }
                 },
             )
@@ -109,6 +112,7 @@ class MedicalRecordFragment : Fragment() {
     private fun initMedicalRecordListAddButton() {
         binding.textviewMedicalrecordAdd.setOnClickListener {
             // 진료기록 등록 화면으로 이동
+            findNavController().navigate(R.id.action_medicalRecordFragment_to_medicalRecordAddFragment)
         }
     }
 

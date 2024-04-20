@@ -6,14 +6,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.meongcare.home.model.data.local.DogPreferences
+import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.medicalRecord.model.data.repository.MedicalRecordRepositoryImpl
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -40,12 +44,17 @@ class MedicalRecordViewModel
         val deleteMedicalRecordResponse: LiveData<Int>
             get() = _deleteMedicalRecordResponse
 
-        private val _medicalRecordAddResponse = MutableLiveData<Int>()
-        val medicalRecordAddResponse: LiveData<Int>
-            get() = _medicalRecordAddResponse
+        private val _medicalRecordResponse = MutableLiveData<Int>()
+        val medicalRecordResponse: LiveData<Int>
+            get() = _medicalRecordResponse
+
+        private val _medicalRecordAddImgUri = MutableLiveData<Uri>()
+        val medicalRecordAddImgUri: LiveData<Uri>
+            get() = _medicalRecordAddImgUri
 
         init {
             _selectedDate.value = null
+            getMedicalRecordImgUri(Uri.EMPTY)
         }
 
         fun getMedicalRecordList(
@@ -59,13 +68,12 @@ class MedicalRecordViewModel
             }
         }
 
-        fun getMedicalRecord(
-            medicalRecordId: Long,
-            accessToken: String,
-        ) {
+        fun getMedicalRecord(medicalRecordId: Long) {
             viewModelScope.launch {
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
                 _medicalRecord.value =
-                    medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken)
+                    medicalRecordRepositoryImpl.getMedicalRecord(medicalRecordId, accessToken!!)
             }
         }
 
@@ -75,11 +83,14 @@ class MedicalRecordViewModel
 
         fun deleteMedicalRecordList(
             medicalRecordIds: IntArray,
-            accessToken: String,
         ) {
             viewModelScope.launch {
-                _deleteMedicalRecordResponse.value =
-                    medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken)
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                viewModelScope.launch {
+                    _deleteMedicalRecordResponse.value =
+                        medicalRecordRepositoryImpl.deleteMedicalRecordList(medicalRecordIds, accessToken!!)
+                }
             }
         }
 
@@ -91,15 +102,12 @@ class MedicalRecordViewModel
             uri: Uri,
         ) {
             viewModelScope.launch {
-                //            val accessToken: String? =
-                //                UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                //            val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-                val accessToken =
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImV4cCI6MTcxMjM0NTIwNH0.qVQGygykhhuu2O2op5Q7abe67z8YJNbHuuKS76EWtiY"
-                val dogId: Long = 6
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+                val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
 
                 val medicalRecordDto =
-                    MedicalRecordDto(dogId, dateTime, hospitalName, doctorName, note)
+                    MedicalRecordDto(dogId!!, dateTime, hospitalName, doctorName, note)
                 val dto = MedicalRecordUtils.convertMedicalRecordDto(medicalRecordDto)
                 val file =
                     MedicalRecordUtils.convertPictureToFile(GlobalApplication.applicationContext(), uri)
@@ -110,9 +118,43 @@ class MedicalRecordViewModel
                         file,
                     )
                 Log.d("진료기록 추가 확인", medicalRecordDto.toString())
-                _medicalRecordAddResponse.value =
+                _medicalRecordResponse.value =
                     medicalRecordRepositoryImpl.addMedicalRecord(accessToken, requestMedicalRecord)
-                Log.d("진료기록 추가 확인2", medicalRecordAddResponse.value.toString())
+                Log.d("진료기록 추가 확인2", medicalRecordResponse.value.toString())
             }
+        }
+
+        fun putMedicalRecord(
+            medicalRecordId: Long,
+            dateTime: String,
+            hospitalName: String,
+            doctorName: String,
+            note: String,
+            uri: Uri,
+        ) {
+            viewModelScope.launch {
+                val accessToken: String? =
+                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
+
+                val medicalRecordPutDto =
+                    MedicalRecordPutDto(medicalRecordId, dateTime, hospitalName, doctorName, note)
+                val dto = MedicalRecordUtils.convertMedicalRecordPutDto(medicalRecordPutDto)
+                val file = MedicalRecordUtils.convertPictureToFile(GlobalApplication.applicationContext(), uri)
+
+                val requestMedicalRecord =
+                    RequestMedicalRecord(
+                        dto,
+                        file,
+                    )
+
+                Log.d("진료기록 수정 확인", medicalRecordPutDto.toString())
+                _medicalRecordResponse.value =
+                    medicalRecordRepositoryImpl.putMedicalRecord(accessToken, requestMedicalRecord)
+                Log.d("진료기록 수정 확인2", medicalRecordResponse.value.toString())
+            }
+        }
+
+        fun getMedicalRecordImgUri(uri: Uri) {
+            _medicalRecordAddImgUri.value = uri
         }
     }

@@ -3,6 +3,7 @@ package com.project.meongcare.medicalRecord.view
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -24,16 +26,21 @@ import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class MedicalRecordAddFragment :
     Fragment(),
     MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
     OnPictureChangedListener {
     private lateinit var binding: FragmentMedicalRecordAddBinding
     private lateinit var mainActivity: MainActivity
+
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+
     private var addSelectedDate: String = ""
 
     override fun onCreateView(
@@ -56,36 +63,87 @@ class MedicalRecordAddFragment :
         initHospitalName()
         initVeterinarianName()
         initNote()
+        initCompleteBtn()
+    }
+
+    private fun initCompleteBtn() {
         binding.layoutMedicalrecordaddNoteRecord.buttonFooterone.setOnClickListener {
-            checkMedicalRecordDataNull()
+            if (checkMedicalRecordDataNull()) {
+                postMedicalRecord()
+                showResultMessage()
+            }
         }
     }
 
-    private fun checkMedicalRecordDataNull() {
-        if (addSelectedDate.isNullOrEmpty()) {
+    private fun showResultMessage() {
+        medicalRecordViewModel.medicalRecordResponse.observe(viewLifecycleOwner) {
+            if (it == 200) {
+                findNavController().popBackStack()
+                showSuccessSnackbar()
+            } else {
+                showFailSnackbar()
+            }
+        }
+    }
+
+    private fun postMedicalRecord() {
+        val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
+        val date = addSelectedDate
+        val time =
+            String.format(
+                "%02d:%02d:00",
+                binding.timepickerMedicalrecordaddTreatmentTime.hour,
+                binding.timepickerMedicalrecordaddTreatmentTime.minute,
+            )
+        val dateTime = "${date}T$time"
+        val hospitalName = binding.edittextMedicalrecordaddHospitalName.text.toString()
+        val doctorName = binding.edittextMedicalrecordaddVeterinarianName.text.toString()
+        val note = binding.edittextMedicalrecordaddNoteDetail.text.toString()
+
+        medicalRecordViewModel.addMedicalRecord(
+            dateTime,
+            hospitalName,
+            doctorName,
+            note,
+            uri ?: Uri.EMPTY,
+        )
+    }
+
+    private fun checkMedicalRecordDataNull(): Boolean {
+        val date = addSelectedDate
+        val hospitalName = binding.edittextMedicalrecordaddHospitalName.text
+        val doctorName = binding.edittextMedicalrecordaddVeterinarianName.text
+        val note = binding.edittextMedicalrecordaddNoteDetail.text
+
+        if (date.isNullOrEmpty()) {
             isDateNullOrEmpty()
         }
 
-        if (binding.edittextMedicalrecordaddHospitalName.text.isNullOrBlank()) {
+        if (hospitalName.isNullOrBlank()) {
             val editText = binding.edittextMedicalrecordaddHospitalName
             val layout = binding.layoutMedicalrecordaddHospitalName
             val count = binding.textviewMedicalrecordaddHospitalNameCount
             isEditTextNullOrEmpty(editText, layout, count)
         }
 
-        if (binding.edittextMedicalrecordaddVeterinarianName.text.isNullOrBlank()) {
+        if (doctorName.isNullOrBlank()) {
             val editText = binding.edittextMedicalrecordaddVeterinarianName
             val layout = binding.layoutMedicalrecordaddVeterinarianName
             val count = binding.textviewMedicalrecordaddVeterinarianNameCount
             isEditTextNullOrEmpty(editText, layout, count)
         }
 
-        if (binding.edittextMedicalrecordaddNoteDetail.text.isNullOrBlank()) {
+        if (note.isNullOrBlank()) {
             val editText = binding.edittextMedicalrecordaddNoteDetail
             val layout = binding.layoutMedicalrecordaddNote
             val count = binding.textviewMedicalrecordaddNoteCount
             isEditTextNullOrEmpty(editText, layout, count)
         }
+
+        if (date.isNotEmpty() && hospitalName.isNotBlank() && doctorName.isNotBlank() && note.isNotBlank()) {
+            return true
+        }
+        return false
     }
 
     private fun isDateNullOrEmpty() {
@@ -98,11 +156,14 @@ class MedicalRecordAddFragment :
         }
     }
 
-    fun isEditTextNullOrEmpty(
+    private fun isEditTextNullOrEmpty(
         editText: EditText,
         layout: ConstraintLayout?,
         textCount: TextView,
     ) {
+        editText.inputType = InputType.TYPE_NULL
+        editText.isClickable = true
+
         layout!!.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
         textCount.visibility = View.INVISIBLE
         editText.run {
@@ -112,29 +173,6 @@ class MedicalRecordAddFragment :
         MedicalRecordUtils.hideKeyboard(editText)
     }
 
-    private fun setAddMode(
-        view: Any,
-        layout: ConstraintLayout?,
-        textCount: TextView?,
-    ) {
-        when (view) {
-            is TextView -> {
-                view.setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                view.setTextAppearance(R.style.Typography_Body1_Medium)
-                view.setBackgroundResource(R.drawable.all_rect_r5)
-            }
-
-            is EditText -> {
-                layout!!.setBackgroundResource(R.drawable.all_rect_r5)
-                view.setHintTextColor(ContextCompat.getColor(mainActivity, R.color.black))
-                view.hint = ""
-                textCount!!.visibility = View.VISIBLE
-            }
-
-            else -> throw IllegalArgumentException("Unsupported view type")
-        }
-    }
-
     private fun initImg() {
         binding.cardviewMedicalrecordaddImage.setOnClickListener {
             showPictureBottomSheet()
@@ -142,87 +180,81 @@ class MedicalRecordAddFragment :
     }
 
     private fun initNote() {
-        binding.edittextMedicalrecordaddNoteDetail.addTextChangedListener(
-            object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    before: Int,
-                    count: Int,
-                ) {
-                    val textLength = s?.length ?: 0
-                    binding.textviewMedicalrecordaddNoteCount.text =
-                        getString(R.string.medicalrecord_note_length, textLength)
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            },
-        )
+        val editText = binding.edittextMedicalrecordaddNoteDetail
+        val layout = binding.layoutMedicalrecordaddNote
+        val count = binding.textviewMedicalrecordaddNoteCount
+        setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_note_length)
     }
 
     private fun initVeterinarianName() {
-        binding.edittextMedicalrecordaddVeterinarianName.addTextChangedListener(
+        val editText = binding.edittextMedicalrecordaddVeterinarianName
+        val layout = binding.layoutMedicalrecordaddVeterinarianName
+        val count = binding.textviewMedicalrecordaddVeterinarianNameCount
+        setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
+    }
+
+    private fun initHospitalName() {
+        val editText = binding.edittextMedicalrecordaddHospitalName
+        val layout = binding.layoutMedicalrecordaddHospitalName
+        val count = binding.textviewMedicalrecordaddHospitalNameCount
+        setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_hospital_name_length)
+    }
+
+    private fun setEditTextWatcher(
+        editText: EditText,
+        count: TextView,
+        stringId: Int,
+    ) {
+        editText.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int,
                 ) {
                 }
 
                 override fun onTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    before: Int,
-                    count: Int,
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int,
                 ) {
-                    val textLength = s?.length ?: 0
-                    binding.textviewMedicalrecordaddVeterinarianNameCount.text =
-                        getString(R.string.medicalrecord_veterinarian_name_length, textLength)
                 }
 
-                override fun afterTextChanged(s: Editable?) {
+                override fun afterTextChanged(p0: Editable?) {
+                    count.text =
+                        getString(stringId, p0?.length ?: 0)
                 }
             },
         )
     }
 
-    private fun initHospitalName() {
-        binding.edittextMedicalrecordaddHospitalName.addTextChangedListener(
-            object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
-                }
+    private fun setEditTextClickLister(
+        layout: ConstraintLayout,
+        editText: EditText,
+        count: TextView,
+    ) {
+        val clickListener =
+            View.OnClickListener { setEditTextAttributes(layout, editText, count) }
+        editText.setOnClickListener(clickListener)
+        layout.setOnClickListener(clickListener)
+    }
 
-                override fun onTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    before: Int,
-                    count: Int,
-                ) {
-                    val textLength = s?.length ?: 0
-                    binding.textviewMedicalrecordaddHospitalNameCount.text =
-                        getString(R.string.medicalrecord_hospital_name_length, textLength)
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            },
-        )
+    private fun setEditTextAttributes(
+        layout: ConstraintLayout,
+        editText: EditText,
+        count: TextView,
+    ) {
+        editText.inputType = InputType.TYPE_CLASS_TEXT
+        layout.setBackgroundResource(R.drawable.all_rect_r5)
+        editText.setHintTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+        editText.hint = ""
+        count.visibility = View.VISIBLE
     }
 
     private fun initDateBtn() {
@@ -242,7 +274,7 @@ class MedicalRecordAddFragment :
         )
     }
 
-    fun showCalendarBottomSheet(
+    private fun showCalendarBottomSheet(
         parentFragmentManager: FragmentManager,
         onDateSelectedListener: MedicalRecordDateBottomSheetDialogFragment.OnDateSelectedListener,
     ) {
@@ -259,13 +291,41 @@ class MedicalRecordAddFragment :
         val formatterToAdd = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 //        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'00:00:00")
         addSelectedDate = date.format(formatterToAdd)
-        setAddMode(binding.textviewMedicalrecordaddSelectDate, null, null)
-        binding.textviewMedicalrecordaddSelectDate.text = date.format(formatter)
+        setDateAddMode(date, formatter)
 
         Log.d("MedicalRecordAddFragment", "Selected date: $addSelectedDate")
     }
 
+    private fun setDateAddMode(
+        date: LocalDate,
+        formatter: DateTimeFormatter?,
+    ) {
+        binding.textviewMedicalrecordaddSelectDate.run {
+            setTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+            setTextAppearance(R.style.Typography_Body1_Medium)
+            setBackgroundResource(R.drawable.all_rect_r5)
+            text = date.format(formatter)
+        }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "추가가 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "추가에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
+    }
+
     override fun onPictureChanged(uri: Uri) {
+        medicalRecordViewModel.getMedicalRecordImgUri(uri)
         Glide.with(this@MedicalRecordAddFragment)
             .load(uri)
             .into(binding.imageviewMedicalrecordaddImage)

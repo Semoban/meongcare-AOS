@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.gson.Gson
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,8 +35,29 @@ class MedicalRecordUtils {
             return dateTime.format(outputFormatter)
         }
 
+        fun convertMDateToDBDate(localMili: String): String {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
+
+            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+            return dateTime.format(outputFormatter)
+        }
+
+        fun convertMDateToDBTime(localMili: String): String {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val dateTime = LocalDateTime.parse(localMili, inputFormatter)
+
+            val outputFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
+            return dateTime.format(outputFormatter)
+        }
+
         fun convertMedicalRecordDto(medicalRecordDto: MedicalRecordDto): RequestBody {
             val json = Gson().toJson(medicalRecordDto)
+            return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        }
+
+        fun convertMedicalRecordPutDto(medicalRecordPutDto: MedicalRecordPutDto): RequestBody {
+            val json = Gson().toJson(medicalRecordPutDto)
             return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         }
 
