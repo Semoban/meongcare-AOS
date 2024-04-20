@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,7 +41,7 @@ class MedicalRecordInfoFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         // Todo: 전달받은 진료기록 아이디 연결, 액세스 토큰 userViewModel로 연결
-        medicalRecordId = 1
+        medicalRecordId = 11
         setMedicalRecord()
         getMedicalRecord()
         initBackBtn()
