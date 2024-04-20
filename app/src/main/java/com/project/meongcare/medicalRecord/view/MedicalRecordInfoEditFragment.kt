@@ -29,6 +29,7 @@ import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Compan
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -60,38 +61,79 @@ class MedicalRecordInfoEditFragment :
         super.onViewCreated(view, savedInstanceState)
         initMedicalRecord()
         initCancelBtn()
+        initCompleteBtn()
+    }
+
+    private fun initCompleteBtn() {
         binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoSecond.setOnClickListener {
-            if(checkMedicalRecordDataNull()) {
-                val medicalRecordId = record.medicalRecordId
-                val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
-                val date = addSelectedDate
-                val timePicker = binding.timepickerMedicalrecordinfoeditTreatmentTime
-                val time = if (timePicker.visibility != View.VISIBLE) {
-                    addTime
-                } else {
-                    String.format(
-                        "%02d:%02d:00",
-                        timePicker.hour,
-                        timePicker.minute,
-                    )
-                }
-                val dateTime = "${date}T$time"
-                val hospitalName = binding.edittextMedicalrecordinfoeditHospitalName.text.toString()
-                val doctorName = binding.edittextMedicalrecordinfoeditVeterinarianName.text.toString()
-                val note = binding.edittextMedicalrecordinfoeditNoteDetail.text.toString()
-
-                Log.d("수정 확인", "$date $time $dateTime $hospitalName $doctorName $note ${record.imageUrl} ")
-
-                medicalRecordViewModel.putMedicalRecord(
-                    medicalRecordId,
-                    dateTime,
-                    hospitalName,
-                    doctorName,
-                    note,
-                    uri ?: Uri.parse(record.imageUrl),
-                )
+            if (checkMedicalRecordDataNull()) {
+                putMedicalRecord()
+                showResultMessage()
             }
         }
+    }
+    
+    private fun putMedicalRecord() {
+        if (checkMedicalRecordDataNull()) {
+            val medicalRecordId = record.medicalRecordId
+            val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
+            val date = addSelectedDate
+            val timePicker = binding.timepickerMedicalrecordinfoeditTreatmentTime
+            val time = if (timePicker.visibility != View.VISIBLE) {
+                addTime
+            } else {
+                String.format(
+                    "%02d:%02d:00",
+                    timePicker.hour,
+                    timePicker.minute,
+                )
+            }
+            val dateTime = "${date}T$time"
+            val hospitalName = binding.edittextMedicalrecordinfoeditHospitalName.text.toString()
+            val doctorName = binding.edittextMedicalrecordinfoeditVeterinarianName.text.toString()
+            val note = binding.edittextMedicalrecordinfoeditNoteDetail.text.toString()
+
+            Log.d(
+                "수정 확인",
+                "$date $time $dateTime $hospitalName $doctorName $note ${record.imageUrl} "
+            )
+
+            medicalRecordViewModel.putMedicalRecord(
+                medicalRecordId,
+                dateTime,
+                hospitalName,
+                doctorName,
+                note,
+                uri ?: Uri.parse(record.imageUrl),
+            )
+        }
+    }
+
+    private fun showResultMessage() {
+        medicalRecordViewModel.medicalRecordResponse.observe(viewLifecycleOwner) {
+            if (it == 200) {
+                findNavController().popBackStack()
+                showSuccessSnackbar()
+            } else {
+                showFailSnackbar()
+            }
+        }
+    }
+
+    private fun showSuccessSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_success_16dp,
+            "수정이 완료되었습니다",
+        ).show()
+    }
+
+    private fun showFailSnackbar() {
+        CustomSnackBar.make(
+            activity?.findViewById(android.R.id.content)!!,
+            R.drawable.snackbar_error_16dp,
+            "수정에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+        ).show()
     }
 
     private fun setEditTextClickLister(
