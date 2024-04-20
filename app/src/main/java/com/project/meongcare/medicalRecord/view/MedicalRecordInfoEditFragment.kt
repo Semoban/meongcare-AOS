@@ -3,6 +3,7 @@ package com.project.meongcare.medicalRecord.view
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -55,6 +57,82 @@ class MedicalRecordInfoEditFragment :
         super.onViewCreated(view, savedInstanceState)
         initMedicalRecord()
         initCancelBtn()
+        binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoSecond.setOnClickListener {
+            checkMedicalRecordDataNull()
+        }
+    }
+
+    private fun setEditTextClickLister(
+        layout: ConstraintLayout,
+        editText: EditText,
+        count: TextView,
+    ) {
+        val clickListener =
+            View.OnClickListener { setEditTextAttributes(layout, editText, count) }
+        editText.setOnClickListener(clickListener)
+        layout.setOnClickListener(clickListener)
+    }
+
+    private fun setEditTextAttributes(
+        layout: ConstraintLayout,
+        editText: EditText,
+        count: TextView,
+    ) {
+        editText.inputType = InputType.TYPE_CLASS_TEXT
+        layout.setBackgroundResource(R.drawable.all_rect_r5)
+        editText.requestFocus()
+        editText.setHintTextColor(ContextCompat.getColor(mainActivity, R.color.black))
+        editText.hint = ""
+        count.visibility = View.VISIBLE
+    }
+
+    private fun isEditTextNullOrEmpty(
+        editText: EditText,
+        layout: ConstraintLayout?,
+        textCount: TextView,
+    ) {
+        editText.inputType = InputType.TYPE_NULL
+        editText.isClickable = true
+
+        layout!!.setBackgroundResource(R.drawable.all_rect_gray1_r5_outline_sub1)
+        textCount.visibility = View.INVISIBLE
+        editText.run {
+            setHintTextColor(ContextCompat.getColor(mainActivity, R.color.sub1))
+            hint = "필수 입력 값입니다"
+        }
+        MedicalRecordUtils.hideKeyboard(editText)
+    }
+
+    private fun checkMedicalRecordDataNull(): Boolean {
+        val hospitalName = binding.edittextMedicalrecordinfoeditHospitalName.text
+        val doctorName = binding.edittextMedicalrecordinfoeditVeterinarianName.text
+        val note = binding.edittextMedicalrecordinfoeditNoteDetail.text
+
+        if (hospitalName.isNullOrBlank()) {
+            val editText = binding.edittextMedicalrecordinfoeditHospitalName
+            val layout = binding.layoutMedicalrecordinfoeditHospitalName
+            val count = binding.textviewMedicalrecordinfoeditHospitalNameCount
+            isEditTextNullOrEmpty(editText, layout, count)
+        }
+
+        if (doctorName.isNullOrBlank()) {
+            val editText = binding.edittextMedicalrecordinfoeditVeterinarianName
+            val layout = binding.layoutMedicalrecordinfoeditVeterinarianName
+            val count = binding.textviewMedicalrecordinfoeditVeterinarianNameCount
+            isEditTextNullOrEmpty(editText, layout, count)
+        }
+
+        if (note.isNullOrBlank()) {
+            val editText = binding.edittextMedicalrecordinfoeditNoteDetail
+            val layout = binding.layoutMedicalrecordinfoeditNote
+            val count = binding.textviewMedicalrecordinfoeditNoteCount
+            isEditTextNullOrEmpty(editText, layout, count)
+        }
+
+        if (hospitalName.isNotBlank() && doctorName.isNotBlank() && note.isNotBlank()) {
+            return true
+        }
+        return false
     }
 
     private fun initCancelBtn() {
@@ -86,29 +164,35 @@ class MedicalRecordInfoEditFragment :
 
     private fun initNote() {
         val editText = binding.edittextMedicalrecordinfoeditNoteDetail
+        val layout = binding.layoutMedicalrecordinfoeditNote
         val count = binding.textviewMedicalrecordinfoeditNoteCount
         editText.setText(record.note)
         count.text =
             getString(R.string.medicalrecord_note_length, record.note.length)
-        setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
+        setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_note_length)
     }
 
     private fun initVeterinarian() {
         val editText = binding.edittextMedicalrecordinfoeditVeterinarianName
+        val layout = binding.layoutMedicalrecordinfoeditVeterinarianName
         val count = binding.textviewMedicalrecordinfoeditVeterinarianNameCount
         editText.setText(record.doctorName)
         count.text =
             getString(R.string.medicalrecord_veterinarian_name_length, record.doctorName.length)
+        setEditTextClickLister(layout, editText, count)
         setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
     }
 
     private fun initHospital() {
         val editText = binding.edittextMedicalrecordinfoeditHospitalName
+        val layout = binding.layoutMedicalrecordinfoeditHospitalName
         val count = binding.textviewMedicalrecordinfoeditHospitalNameCount
         editText.setText(record.hospitalName)
         count.text =
             getString(R.string.medicalrecord_hospital_name_length, record.hospitalName.length)
-        setEditTextWatcher(editText, count, R.string.medicalrecord_veterinarian_name_length)
+        setEditTextClickLister(layout, editText, count)
+        setEditTextWatcher(editText, count, R.string.medicalrecord_hospital_name_length)
     }
 
     private fun initTime() {
