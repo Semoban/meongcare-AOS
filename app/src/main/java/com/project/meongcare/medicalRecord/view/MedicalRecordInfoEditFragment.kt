@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
@@ -53,6 +54,13 @@ class MedicalRecordInfoEditFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMedicalRecord()
+        initCancelBtn()
+    }
+
+    private fun initCancelBtn() {
+        binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoFirst.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initMedicalRecord() {
