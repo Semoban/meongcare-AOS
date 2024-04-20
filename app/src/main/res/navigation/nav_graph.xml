@@ -253,6 +253,12 @@
         <action
             android:id="@+id/action_medicalRecordFragment_to_medicalRecordEditFragment"
             app:destination="@id/medicalRecordEditFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordAddFragment"
+            app:destination="@id/medicalRecordAddFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordInfoFragment"
+            app:destination="@id/medicalRecordInfoFragment" />
     </fragment>
 
     <fragment

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoBinding
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
+import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleDate
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleTime
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
@@ -40,13 +41,18 @@ class MedicalRecordInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        // Todo: 전달받은 진료기록 아이디 연결, 액세스 토큰 userViewModel로 연결
-        medicalRecordId = 11
+        getMedicalRecordId()
         setMedicalRecord()
         getMedicalRecord()
         initBackBtn()
         initDeleteBtn()
         initMoveToEditBtn()
+    }
+
+    private fun getMedicalRecordId() {
+        if (arguments != null) {
+            medicalRecordId = arguments?.getLong("medicalRecordId")!!
+        }
     }
 
     private fun initMoveToEditBtn() {
