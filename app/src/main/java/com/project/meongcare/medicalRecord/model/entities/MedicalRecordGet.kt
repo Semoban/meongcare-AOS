@@ -10,5 +10,5 @@ data class MedicalRecordGet(
     val hospitalName: String,
     val doctorName: String,
     val note: String,
-    val imageUrl: String,
+    val imageUrl: String?,
 ) : Parcelable
