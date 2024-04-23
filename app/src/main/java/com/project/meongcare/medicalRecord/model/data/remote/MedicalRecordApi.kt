@@ -3,6 +3,7 @@ package com.project.meongcare.medicalRecord.model.data.remote
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -44,11 +45,9 @@ interface MedicalRecordApi {
         @Body medicalRecordDto: MedicalRecordDto
     ): Response<ResponseBody>
 
-    @Multipart
     @PUT("medical-record")
     suspend fun putMedicalRecord(
         @Header("AccessToken") accessToken: String?,
-        @Part filePart: MultipartBody.Part,
-        @Part("dto") medicalRecordPutDto: RequestBody,
+        @Body medicalRecordPutDto: MedicalRecordPutDto,
     ): Response<ResponseBody>
 }
