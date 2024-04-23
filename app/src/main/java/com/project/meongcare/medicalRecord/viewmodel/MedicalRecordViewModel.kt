@@ -95,31 +95,20 @@ class MedicalRecordViewModel
         }
 
         fun addMedicalRecord(
+            accessToken: String,
+            dogId: Long,
             dateTime: String,
             hospitalName: String,
             doctorName: String,
             note: String,
-            uri: Uri,
+            imageURL: String?,
         ) {
             viewModelScope.launch {
-                val accessToken: String? =
-                    UserPreferences(GlobalApplication.applicationContext()).accessToken.first()
-                val dogId: Long? = DogPreferences(GlobalApplication.applicationContext()).dogId.first()
-
                 val medicalRecordDto =
-                    MedicalRecordDto(dogId!!, dateTime, hospitalName, doctorName, note)
-                val dto = MedicalRecordUtils.convertMedicalRecordDto(medicalRecordDto)
-                val file =
-                    MedicalRecordUtils.convertPictureToFile(GlobalApplication.applicationContext(), uri)
+                    MedicalRecordDto(dogId, dateTime, hospitalName, doctorName, note, imageURL)
 
-                val requestMedicalRecord =
-                    RequestMedicalRecord(
-                        dto,
-                        file,
-                    )
-                Log.d("진료기록 추가 확인", medicalRecordDto.toString())
                 _medicalRecordResponse.value =
-                    medicalRecordRepositoryImpl.addMedicalRecord(accessToken, requestMedicalRecord)
+                    medicalRecordRepositoryImpl.addMedicalRecord(accessToken, medicalRecordDto)
                 Log.d("진료기록 추가 확인2", medicalRecordResponse.value.toString())
             }
         }

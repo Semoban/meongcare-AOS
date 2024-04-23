@@ -5,6 +5,7 @@ import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
 import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
 import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordRetrofitClient
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -73,13 +74,12 @@ class MedicalRecordRepositoryImpl
 
         override suspend fun addMedicalRecord(
             accessToken: String?,
-            requestMedicalRecord: RequestMedicalRecord,
+            medicalRecordDto: MedicalRecordDto
         ): Int {
             val response =
                 medicalRecordRetrofitClient.medicalRecordApi.addMedicalRecord(
                     accessToken,
-                    requestMedicalRecord.file,
-                    requestMedicalRecord.dto,
+                    medicalRecordDto,
                 )
             return response.code()
         }
