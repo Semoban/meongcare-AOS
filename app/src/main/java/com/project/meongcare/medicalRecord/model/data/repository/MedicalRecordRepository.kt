@@ -1,8 +1,9 @@
 package com.project.meongcare.medicalRecord.model.data.repository
 
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
-import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import retrofit2.Response
 
 interface MedicalRecordRepository {
@@ -24,11 +25,11 @@ interface MedicalRecordRepository {
 
     suspend fun addMedicalRecord(
         accessToken: String?,
-        requestMedicalRecord: RequestMedicalRecord,
+        medicalRecordDto: MedicalRecordDto,
     ): Int
 
     suspend fun putMedicalRecord(
         accessToken: String?,
-        requestMedicalRecord: RequestMedicalRecord,
+        medicalRecordPutDto: MedicalRecordPutDto,
     ): Int
 }

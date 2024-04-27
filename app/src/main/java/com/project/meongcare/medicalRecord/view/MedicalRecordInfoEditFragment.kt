@@ -18,8 +18,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.MainActivity
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
+import com.project.meongcare.aws.util.MEDICAL_RECORD_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoEditBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
@@ -29,8 +34,13 @@ import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Compan
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -42,10 +52,16 @@ class MedicalRecordInfoEditFragment :
     lateinit var binding: FragmentMedicalRecordInfoEditBinding
     private lateinit var mainActivity: MainActivity
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     lateinit var record: MedicalRecordGet
     private var addSelectedDate: String = ""
     private var addTime: String = ""
+    private var accessToken: String = ""
+
+    private lateinit var filePath: String
+    private lateinit var imageFile: File
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,24 +79,71 @@ class MedicalRecordInfoEditFragment :
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        getAccessToken()
         initMedicalRecord()
         initCancelBtn()
         initCompleteBtn()
     }
 
-    private fun initCompleteBtn() {
-        binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoSecond.setOnClickListener {
-            if (checkMedicalRecordDataNull()) {
-                putMedicalRecord()
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+            }
+        }
+    }
+
+    private fun getPreSignedURL() {
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
+            }
+        }
+    }
+
+    private fun uploadImage(
+        preSignedURL: String,
+        requestBody: RequestBody,
+    ) {
+        awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                putMedicalRecord(imageURL)
                 showResultMessage()
             }
         }
     }
 
-    private fun putMedicalRecord() {
+    private fun initCompleteBtn() {
+        binding.layoutMedicalrecordinfoeditNoteRecord.buttonFootertwoSecond.setOnClickListener {
+            if (checkMedicalRecordDataNull() && accessToken.isNotEmpty()) {
+                val uri = medicalRecordViewModel.medicalRecordAddImgUri.value ?: Uri.EMPTY
+                if (uri == Uri.EMPTY) {
+                    if (record.imageUrl.isNullOrEmpty()) {
+                        Log.d("btnclick", "기존 이미지 없")
+                        putMedicalRecord(null)
+                        showResultMessage()
+                    } else {
+                        Log.d("btnclick", "기존 이미지 있")
+                        putMedicalRecord(record.imageUrl)
+                        showResultMessage()
+                    }
+                } else {
+                    Log.d("btnclick", "새로운 이미지")
+                    imageFile = convertUriToFile(requireContext(), uri)
+                    filePath = "$PARENT_FOLDER_PATH$MEDICAL_RECORD_FOLDER_PATH${imageFile.name}"
+                    getPreSignedURL()
+                }
+            }
+        }
+    }
+
+    private fun putMedicalRecord(imageURL: String?) {
         if (checkMedicalRecordDataNull()) {
             val medicalRecordId = record.medicalRecordId
-            val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
             val date = addSelectedDate
             val timePicker = binding.timepickerMedicalrecordinfoeditTreatmentTime
             val time =
@@ -104,12 +167,13 @@ class MedicalRecordInfoEditFragment :
             )
 
             medicalRecordViewModel.putMedicalRecord(
+                accessToken,
                 medicalRecordId,
                 dateTime,
                 hospitalName,
                 doctorName,
                 note,
-                uri ?: Uri.parse(record.imageUrl),
+                imageURL,
             )
         }
     }

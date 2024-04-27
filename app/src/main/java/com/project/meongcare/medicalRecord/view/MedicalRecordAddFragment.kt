@@ -19,15 +19,26 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
+import com.project.meongcare.aws.util.MEDICAL_RECORD_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentMedicalRecordAddBinding
 import com.project.meongcare.medicalRecord.model.data.local.OnPictureChangedListener
 import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordDateBottomSheetDialogFragment
 import com.project.meongcare.medicalRecord.view.bottomSheet.MedicalRecordPictureBottomSheetDialogFragment
+import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -38,10 +49,17 @@ class MedicalRecordAddFragment :
     OnPictureChangedListener {
     private lateinit var binding: FragmentMedicalRecordAddBinding
     private lateinit var mainActivity: MainActivity
+    private lateinit var filePath: String
+    private lateinit var imageFile: File
 
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val dogViewModel: DogViewModel by viewModels()
 
     private var addSelectedDate: String = ""
+    private var accessToken = ""
+    private var dogId = -1L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +76,8 @@ class MedicalRecordAddFragment :
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        getAccessToken()
+        getDogId()
         initImg()
         initDateBtn()
         initHospitalName()
@@ -66,11 +86,58 @@ class MedicalRecordAddFragment :
         initCompleteBtn()
     }
 
+    private fun getAccessToken() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+            }
+        }
+    }
+
+    private fun getDogId() {
+        dogViewModel.dogIdPreferencesLiveData.observe(viewLifecycleOwner) { dogId ->
+            if (dogId != null) {
+                this.dogId = dogId
+            }
+        }
+    }
+
+    private fun getPreSignedURL() {
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                uploadImage(response.preSignedUrl, requestBody)
+            }
+        }
+    }
+
+    private fun uploadImage(
+        preSignedURL: String,
+        requestBody: RequestBody,
+    ) {
+        awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                postMedicalRecord(imageURL)
+                showResultMessage()
+            }
+        }
+    }
+
     private fun initCompleteBtn() {
         binding.layoutMedicalrecordaddNoteRecord.buttonFooterone.setOnClickListener {
-            if (checkMedicalRecordDataNull()) {
-                postMedicalRecord()
-                showResultMessage()
+            if (checkMedicalRecordDataNull() && accessToken.isNotEmpty() && dogId != -1L) {
+                val uri = medicalRecordViewModel.medicalRecordAddImgUri.value!!
+                if (uri == Uri.EMPTY) {
+                    postMedicalRecord(null)
+                    showResultMessage()
+                } else {
+                    imageFile = convertUriToFile(requireContext(), uri)
+                    filePath = "$PARENT_FOLDER_PATH$MEDICAL_RECORD_FOLDER_PATH${imageFile.name}"
+                    getPreSignedURL()
+                }
             }
         }
     }
@@ -86,8 +153,7 @@ class MedicalRecordAddFragment :
         }
     }
 
-    private fun postMedicalRecord() {
-        val uri = medicalRecordViewModel.medicalRecordAddImgUri.value
+    private fun postMedicalRecord(imageURL: String?) {
         val date = addSelectedDate
         val time =
             String.format(
@@ -101,11 +167,13 @@ class MedicalRecordAddFragment :
         val note = binding.edittextMedicalrecordaddNoteDetail.text.toString()
 
         medicalRecordViewModel.addMedicalRecord(
+            accessToken,
+            dogId,
             dateTime,
             hospitalName,
             doctorName,
             note,
-            uri ?: Uri.EMPTY,
+            imageURL,
         )
     }
 

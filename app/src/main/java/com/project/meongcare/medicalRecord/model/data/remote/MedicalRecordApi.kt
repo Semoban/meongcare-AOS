@@ -1,11 +1,14 @@
 package com.project.meongcare.medicalRecord.model.data.remote
 
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -36,19 +39,15 @@ interface MedicalRecordApi {
         @Header("AccessToken") accessToken: String,
     ): Response<Int>
 
-    @Multipart
     @POST("medical-record")
     suspend fun addMedicalRecord(
         @Header("AccessToken") accessToken: String?,
-        @Part filePart: MultipartBody.Part?,
-        @Part("dto") medicalRecordDto: RequestBody,
+        @Body medicalRecordDto: MedicalRecordDto,
     ): Response<ResponseBody>
 
-    @Multipart
     @PUT("medical-record")
     suspend fun putMedicalRecord(
         @Header("AccessToken") accessToken: String?,
-        @Part filePart: MultipartBody.Part,
-        @Part("dto") medicalRecordPutDto: RequestBody,
+        @Body medicalRecordPutDto: MedicalRecordPutDto,
     ): Response<ResponseBody>
 }
