@@ -42,7 +42,7 @@ interface MedicalRecordApi {
     @POST("medical-record")
     suspend fun addMedicalRecord(
         @Header("AccessToken") accessToken: String?,
-        @Body medicalRecordDto: MedicalRecordDto
+        @Body medicalRecordDto: MedicalRecordDto,
     ): Response<ResponseBody>
 
     @PUT("medical-record")
