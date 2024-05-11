@@ -1,11 +1,8 @@
 package com.project.meongcare.recordShare.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.home.model.entities.GetDogListResponse
-import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
-import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
+import com.project.meongcare.recordShare.model.entities.GetDogListResponse
 import com.project.meongcare.recordShare.model.data.remote.RecordShareRetrofitClient
-import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 
