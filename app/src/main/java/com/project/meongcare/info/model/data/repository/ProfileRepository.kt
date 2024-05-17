@@ -1,12 +1,11 @@
 package com.project.meongcare.info.model.data.repository
 
-import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.GetUserProfileResponse
+import com.project.meongcare.info.model.entities.DogPutRequest
 import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.model.entities.ProfilePatchRequest
 import com.project.meongcare.weight.model.entities.WeightPostRequest
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 
 interface ProfileRepository {
@@ -27,8 +26,7 @@ interface ProfileRepository {
     suspend fun putDogInfo(
         dogId: Long,
         accessToken: String,
-        file: MultipartBody.Part,
-        dto: RequestBody,
+        dogPutRequest: DogPutRequest,
     ): Int?
 
     suspend fun postDogWeight(
@@ -54,6 +52,6 @@ interface ProfileRepository {
 
     suspend fun patchProfileImage(
         accessToken: String,
-        file: MultipartBody.Part,
+        profilePatchRequest: ProfilePatchRequest,
     ): Int?
 }

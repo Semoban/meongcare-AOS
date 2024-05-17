@@ -15,8 +15,8 @@ import com.project.meongcare.info.model.entities.GetDogInfoResponse
 import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.login.model.data.local.UserPreferences
 import com.project.meongcare.login.model.data.repository.LoginRepository
-import com.project.meongcare.onboarding.view.Gender
-import com.project.meongcare.onboarding.view.dateFormat
+import com.project.meongcare.onboarding.model.entities.Gender
+import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

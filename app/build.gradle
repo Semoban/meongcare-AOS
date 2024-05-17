@@ -30,6 +30,7 @@ android {
         buildConfigField "String", "NAVER_OAUTH_CLIENT_SECRET", properties['naver_oauth_client_secret']
         buildConfigField "String", "NAVER_OAUTH_CLIENT_NAME", properties['naver_oauth_client_name']
         buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
+        buildConfigField "String", "AWS_S3_BASE_URL", properties['aws_s3_base_url']
         manifestPlaceholders["kakaoNativeAppKeyManifest"] = properties["kakao_native_app_key_manifest"] as String
     }
 

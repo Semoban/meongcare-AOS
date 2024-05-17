@@ -18,19 +18,21 @@ import androidx.navigation.fragment.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
+import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
+import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
+import com.project.meongcare.aws.util.FEED_FOLDER_PATH
+import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
+import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.data.local.FeedPhotoListener
-import com.project.meongcare.feed.model.entities.FeedInfo
-import com.project.meongcare.feed.model.entities.FeedUploadRequest
+import com.project.meongcare.feed.model.entities.FeedPostRequest
 import com.project.meongcare.feed.model.utils.END_DATE
 import com.project.meongcare.feed.model.utils.FEED_POST_FAILURE
 import com.project.meongcare.feed.model.utils.FEED_POST_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedFile
-import com.project.meongcare.feed.model.utils.FeedInfoUtils.convertFeedPostDto
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.initRecommendDailyIntake
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
@@ -45,6 +47,9 @@ import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPostViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -56,14 +61,17 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
     val binding get() = _binding!!
 
     private lateinit var inputMethodManager: InputMethodManager
+    private lateinit var imageFile: File
+    private lateinit var filePath: String
+
     private val feedPostViewModel: FeedPostViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val awsS3ViewModel: AWSS3ViewModel by viewModels()
 
     private var recommendIntake = 0.0
     var selectedStartDate = ""
     private var selectedEndDate: String? = null
-    private lateinit var feedInfo: FeedInfo
     private var imageUri: Uri? = null
 
     private var proteinValue = 0.0
@@ -102,6 +110,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         dogViewModel.fetchDogWeight()
         dogViewModel.dogWeight.observe(viewLifecycleOwner) { response ->
             weight = response
+        }
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                postFeedInfo(imageURL)
+            }
         }
         initInputMethodManager()
         initToolbar()
@@ -305,12 +319,12 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
         }
     }
 
-    private fun createFeedInfo() {
+    private fun createFeedInfo(imageURL: String?): FeedPostRequest {
         binding.apply {
             val brand = edittextFeedaddeditBrand.text.toString()
             val feedName = edittextFeedaddeditName.text.toString()
-            feedInfo =
-                FeedInfo(
+            val feedPostRequest =
+                FeedPostRequest(
                     dogId,
                     brand,
                     feedName,
@@ -323,8 +337,9 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     recommendIntake.toInt(),
                     selectedStartDate,
                     selectedEndDate,
+                    imageURL,
                 )
-            imageUri = feedPostViewModel.feedImage.value
+            return feedPostRequest
         }
     }
 
@@ -457,25 +472,21 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                 }
 
                 if (isValid) {
-                    postFeedInfo()
+                    val uri = feedPostViewModel.feedImage.value
+                    if (uri == null) {
+                        postFeedInfo(null)
+                    } else {
+                        getPreSignedUrl(uri)
+                    }
                 }
             }
         }
     }
 
-    private fun postFeedInfo() {
-        createFeedInfo()
-        val dto = convertFeedPostDto(feedInfo)
-        val file =
-            convertFeedFile(
-                requireContext(),
-                imageUri ?: Uri.EMPTY,
-            )
-        val uploadRequest = FeedUploadRequest(dto, file)
-
+    private fun postFeedInfo(imageURL: String?) {
         feedPostViewModel.postFeed(
             accessToken,
-            uploadRequest,
+            createFeedInfo(imageURL),
         )
         feedPostViewModel.feedPosted.observe(viewLifecycleOwner) { response ->
             if (response == SUCCESS) {
@@ -489,6 +500,18 @@ class FeedAddFragment : Fragment(), FeedPhotoListener {
                     requireView(),
                     FEED_POST_FAILURE,
                 )
+            }
+        }
+    }
+
+    private fun getPreSignedUrl(uri: Uri) {
+        imageFile = convertUriToFile(requireContext(), uri)
+        filePath = "$PARENT_FOLDER_PATH$FEED_FOLDER_PATH${imageFile.name}"
+        awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, requestBody)
             }
         }
     }

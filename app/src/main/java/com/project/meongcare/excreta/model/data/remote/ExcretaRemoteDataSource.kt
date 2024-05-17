@@ -2,9 +2,10 @@ package com.project.meongcare.excreta.model.data.remote
 
 import android.util.Log
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
+import com.project.meongcare.excreta.model.entities.ExcretaPatchRequest
+import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetRequest
 import com.project.meongcare.excreta.model.entities.ExcretaRecordGetResponse
-import com.project.meongcare.excreta.model.entities.ExcretaUploadRequest
 import com.project.meongcare.excreta.utils.SUCCESS
 import org.json.JSONObject
 import javax.inject.Inject
@@ -16,14 +17,13 @@ class ExcretaRemoteDataSource
 
         suspend fun postExcreta(
             accessToken: String,
-            excretaPostRequest: ExcretaUploadRequest,
+            excretaPostRequest: ExcretaPostRequest,
         ): Int? {
             try {
                 val postResponse =
                     excretaApiService.postExcreta(
                         accessToken,
-                        excretaPostRequest.dto,
-                        excretaPostRequest.file,
+                        excretaPostRequest,
                     )
 
                 if (postResponse.code() != SUCCESS) {
@@ -120,14 +120,13 @@ class ExcretaRemoteDataSource
 
         suspend fun patchExcreta(
             accessToken: String,
-            excretaUploadRequest: ExcretaUploadRequest,
+            excretaPatchRequest: ExcretaPatchRequest,
         ): Int? {
             try {
                 val patchResponse =
                     excretaApiService.patchExcreta(
                         accessToken,
-                        excretaUploadRequest.dto,
-                        excretaUploadRequest.file,
+                        excretaPatchRequest,
                     )
 
                 if (patchResponse.code() != SUCCESS) {

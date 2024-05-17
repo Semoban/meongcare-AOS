@@ -18,7 +18,7 @@ class FeedsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Feed) {
             binding.run {
-                if (item.imageURL.isNotEmpty()) {
+                if (!item.imageURL.isNullOrEmpty()) {
                     Glide.with(itemView)
                         .load(item.imageURL)
                         .into(imageviewOldfeed)

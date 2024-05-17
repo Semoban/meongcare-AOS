@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ExcretaDetailGetResponse(
-    val excretaImageURL: String,
+    val excretaImageURL: String?,
     val dateTime: String,
     val excretaType: String,
 ) : Parcelable

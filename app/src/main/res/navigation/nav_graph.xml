@@ -227,7 +227,7 @@
             android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
     </fragment>
-    
+
     <fragment
         android:id="@+id/excretaEditFragment"
         android:name="com.project.meongcare.excreta.view.ExcretaEditFragment"
@@ -247,17 +247,45 @@
 
     <fragment
         android:id="@+id/medicalRecordFragment"
-        android:name="com.project.meongcare.medicalrecord.view.MedicalRecordFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordFragment"
         android:label="MedicalRecordFragment"
         tools:layout="@layout/fragment_medical_record">
         <action
             android:id="@+id/action_medicalRecordFragment_to_medicalRecordEditFragment"
             app:destination="@id/medicalRecordEditFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordAddFragment"
+            app:destination="@id/medicalRecordAddFragment" />
+        <action
+            android:id="@+id/action_medicalRecordFragment_to_medicalRecordInfoFragment"
+            app:destination="@id/medicalRecordInfoFragment" />
     </fragment>
 
     <fragment
+        android:id="@+id/medicalRecordInfoFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordInfoFragment"
+        android:label="MedicalRecordInfoFragment"
+        tools:layout="@layout/fragment_medical_record_info">
+        <action
+            android:id="@+id/action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment"
+            app:destination="@id/medicalRecordInfoEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/medicalRecordInfoEditFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordInfoEditFragment"
+        android:label="MedicalRecordEditFragment"
+        tools:layout="@layout/fragment_medical_record_edit"/>
+
+    <fragment
+        android:id="@+id/medicalRecordAddFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordAddFragment"
+        android:label="MedicalRecordAddFragment"
+        tools:layout="@layout/fragment_medical_record_add"/>
+
+    <fragment
         android:id="@+id/medicalRecordEditFragment"
-        android:name="com.project.meongcare.medicalrecord.view.MedicalRecordEditFragment"
+        android:name="com.project.meongcare.medicalRecord.view.MedicalRecordEditFragment"
         android:label="MedicalRecordEditFragment"
         tools:layout="@layout/fragment_medical_record_edit"/>
 
@@ -331,7 +359,7 @@
             android:id="@+id/action_settingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
-  
+
   <fragment
         android:id="@+id/supplementFragment"
         android:name="com.project.meongcare.supplement.view.SupplementFragment"
