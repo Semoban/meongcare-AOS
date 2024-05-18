@@ -68,7 +68,7 @@ class HomeHorizonCalendarAdapter(
         holder.itemDate.text = getDate(dateList[position])
         holder.itemDay.text = getDay(dateList[position])
         holder.itemLayout.setOnClickListener {
-            itemClickListener.onItemClick(position)
+            itemClickListener.onItemClick(dateList[position])
         }
         updateDateLayout(holder.itemDate, holder.itemDay, holder.itemLayout, position)
     }
