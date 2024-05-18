@@ -6,4 +6,5 @@ data class MedicalRecordPutDto(
     val hospitalName: String,
     val doctorName: String,
     val note: String,
+    val imageURL: String?,
 )
