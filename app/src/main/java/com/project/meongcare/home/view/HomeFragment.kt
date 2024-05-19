@@ -347,7 +347,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     CustomSnackBar.make(
                         requireView(),
                         R.drawable.snackbar_error_16dp,
-                        getString(R.string.snack_bar_failure)
+                        getString(R.string.snack_bar_failure),
                     ).show()
                 }
             }
@@ -364,7 +364,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             if (response != null) {
                 if (response.code() == 200) {
                     binding.textviewHomeNutritionPercentage.text = response.body()?.supplementsRate.toString()
-                    binding.progressbarNutrition.progress = response.body()?.supplementsRate ?:0
+                    binding.progressbarNutrition.progress = response.body()?.supplementsRate ?: 0
                 } else if (response.code() == 401) {
                     if (currentRefreshToken.isNotEmpty()) {
                         reissueAccessToken()
@@ -399,7 +399,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                     CustomSnackBar.make(
                         requireView(),
                         R.drawable.snackbar_error_16dp,
-                        getString(R.string.snack_bar_failure)
+                        getString(R.string.snack_bar_failure),
                     ).show()
                 }
             }
