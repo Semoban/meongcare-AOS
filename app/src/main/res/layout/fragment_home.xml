@@ -172,7 +172,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textview_home_symptom2"
+                    android:id="@+id/textview_home_symptom_sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
@@ -193,7 +193,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom2"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_home_symptom_sub"
                     tools:itemCount="4"
                     tools:listitem="@layout/item_home_symptom" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -261,7 +261,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="-0.02"
-                        android:text="1"
+                        android:text="0"
                         android:textAppearance="@style/Typography.Body3.Medium"
                         android:textColor="@color/main4"
                         app:layout_constraintBottom_toBottomOf="parent"
