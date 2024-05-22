@@ -1,6 +1,7 @@
 package com.project.meongcare.feed.model.data.remote
 
 import android.util.Log
+import com.project.meongcare.RetrofitClient
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedGetResponse
@@ -15,8 +16,8 @@ import javax.inject.Inject
 
 class FeedRemoteDataSource
     @Inject
-    constructor() {
-        private val feedApiService = FeedClient.feedService
+    constructor(retrofitClient: RetrofitClient) {
+        private val feedApiService = retrofitClient.createApi<FeedService>()
 
         suspend fun postFeed(
             accessToken: String,
