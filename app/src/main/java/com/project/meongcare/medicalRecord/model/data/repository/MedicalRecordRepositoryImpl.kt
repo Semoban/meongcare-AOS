@@ -1,10 +1,10 @@
 package com.project.meongcare.medicalRecord.model.data.repository
 
 import android.util.Log
+import com.project.meongcare.RetrofitClient
+import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordApi
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGetResponse
-import com.project.meongcare.medicalRecord.model.entities.RequestMedicalRecord
-import com.project.meongcare.medicalRecord.model.data.remote.MedicalRecordRetrofitClient
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
 import org.json.JSONObject
@@ -13,14 +13,15 @@ import javax.inject.Inject
 
 class MedicalRecordRepositoryImpl
     @Inject
-    constructor(private val medicalRecordRetrofitClient: MedicalRecordRetrofitClient) : MedicalRecordRepository {
+    constructor(retrofitClient: RetrofitClient) : MedicalRecordRepository {
+        private val medicalRecordApi = retrofitClient.createApi<MedicalRecordApi>()
         override suspend fun getMedicalRecordList(
             dogId: Long,
             dateTime: String,
             accessToken: String,
         ): Response<MedicalRecordGetResponse>? {
             return try {
-                val response = medicalRecordRetrofitClient.medicalRecordApi.getMedicalRecordList(dogId, dateTime, accessToken)
+                val response = medicalRecordApi.getMedicalRecordList(dogId, dateTime, accessToken)
                 if (response.isSuccessful) {
                     Log.d("MedicalRepo-GetList", "통신 성공 : ${response.code()}")
                     response
@@ -39,7 +40,7 @@ class MedicalRecordRepositoryImpl
             accessToken: String,
         ): Response<MedicalRecordGet>? {
             return try {
-                val response = medicalRecordRetrofitClient.medicalRecordApi.getMedicalRecord(medicalRecordId, accessToken)
+                val response = medicalRecordApi.getMedicalRecord(medicalRecordId, accessToken)
                 if (response.isSuccessful) {
                     Log.d("MedicalRepo-Get", "통신 성공 : ${response.code()}")
                     response
@@ -58,7 +59,7 @@ class MedicalRecordRepositoryImpl
             accessToken: String,
         ): Int? {
             return try {
-                val response = medicalRecordRetrofitClient.medicalRecordApi.deleteMedicalRecordList(medicalRecordIds, accessToken)
+                val response = medicalRecordApi.deleteMedicalRecordList(medicalRecordIds, accessToken)
                 if (response.isSuccessful) {
                     Log.d("MedicalRepo-DeleteList", "통신 성공 : ${response.code()}")
                     response.code()
@@ -78,7 +79,7 @@ class MedicalRecordRepositoryImpl
             medicalRecordDto: MedicalRecordDto,
         ): Int {
             val response =
-                medicalRecordRetrofitClient.medicalRecordApi.addMedicalRecord(
+                medicalRecordApi.addMedicalRecord(
                     accessToken,
                     medicalRecordDto,
                 )
@@ -90,7 +91,7 @@ class MedicalRecordRepositoryImpl
             medicalRecordPutDto: MedicalRecordPutDto,
         ): Int {
             val response =
-                medicalRecordRetrofitClient.medicalRecordApi.putMedicalRecord(
+                medicalRecordApi.putMedicalRecord(
                     accessToken,
                     medicalRecordPutDto,
                 )
