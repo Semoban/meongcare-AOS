@@ -1,6 +1,7 @@
 package com.project.meongcare.weight.model.data.remote
 
 import android.util.Log
+import com.project.meongcare.RetrofitClient
 import com.project.meongcare.weight.model.entities.WeightDayResponse
 import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightMonthResponse
@@ -12,8 +13,8 @@ import javax.inject.Inject
 
 class WeightRemoteDataSource
     @Inject
-    constructor() {
-        private val weightApiService = WeightClient.weightService
+    constructor(retrofitClient: RetrofitClient) {
+        private val weightApiService = retrofitClient.createApi<WeightService>()
 
         suspend fun postWeight(
             accessToken: String,

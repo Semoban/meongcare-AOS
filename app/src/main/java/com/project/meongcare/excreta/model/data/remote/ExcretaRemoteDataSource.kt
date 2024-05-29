@@ -1,6 +1,7 @@
 package com.project.meongcare.excreta.model.data.remote
 
 import android.util.Log
+import com.project.meongcare.RetrofitClient
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
 import com.project.meongcare.excreta.model.entities.ExcretaPatchRequest
 import com.project.meongcare.excreta.model.entities.ExcretaPostRequest
@@ -12,8 +13,8 @@ import javax.inject.Inject
 
 class ExcretaRemoteDataSource
     @Inject
-    constructor() {
-        private val excretaApiService = ExcretaClient.excretaService
+    constructor(retrofitClient: RetrofitClient) {
+        private val excretaApiService = retrofitClient.createApi<ExcretaService>()
 
         suspend fun postExcreta(
             accessToken: String,

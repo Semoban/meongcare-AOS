@@ -1,24 +1,37 @@
-package com.project.meongcare.home.model.data.remote
+package com.project.meongcare
 
-import com.project.meongcare.BuildConfig
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class HomeRetrofitClient
+class RetrofitClient
     @Inject
     constructor() {
-        val homeApi: HomeApi by lazy {
+        private val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+
+        private val okHttpClient =
+            OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build()
+
+        val retrofit: Retrofit by lazy {
             Retrofit.Builder()
                 .baseUrl(BuildConfig.SEMOBAN_DOMAIN)
+                .client(okHttpClient)
                 .addConverterFactory(nullOnEmptyConverterFactory)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(HomeApi::class.java)
         }
+
+        inline fun <reified T> createApi(): T = retrofit.create(T::class.java)
 
         private val nullOnEmptyConverterFactory =
             object : Converter.Factory() {

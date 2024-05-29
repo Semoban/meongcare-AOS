@@ -1,8 +1,8 @@
 package com.project.meongcare.home.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.home.model.data.remote.HomeRetrofitClient
-import com.project.meongcare.home.model.entities.DogProfile
+import com.project.meongcare.RetrofitClient
+import com.project.meongcare.home.model.data.remote.HomeApi
 import com.project.meongcare.home.model.entities.GetDogListResponse
 import com.project.meongcare.home.model.entities.HomeGetExcretaResponse
 import com.project.meongcare.home.model.entities.HomeGetFeedResponse
@@ -17,10 +17,11 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl
     @Inject
-    constructor(private val homeRetrofitClient: HomeRetrofitClient) : HomeRepository {
+    constructor(retrofitClient: RetrofitClient) : HomeRepository {
+        private val homeApi = retrofitClient.createApi<HomeApi>()
         override suspend fun getUserProfile(accessToken: String): Response<GetUserProfileResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getUserProfile(accessToken)
+                val response = homeApi.getUserProfile(accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-UserProfile", "통신 성공 : ${response.code()}")
                     return response
@@ -36,7 +37,7 @@ class HomeRepositoryImpl
 
         override suspend fun getDogList(accessToken: String): Response<GetDogListResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogList(accessToken)
+                val response = homeApi.getDogList(accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-DogList", "통신 성공 : ${response.code()}")
                     return response
@@ -55,7 +56,7 @@ class HomeRepositoryImpl
             weightRequest: WeightPostRequest,
         ): Int? {
             try {
-                val response = homeRetrofitClient.homeApi.postDogWeight(accessToken, weightRequest)
+                val response = homeApi.postDogWeight(accessToken, weightRequest)
                 if (response.code() == 200) {
                     Log.d("HomeRepo-PostDogWeight", "통신 성공 : ${response.code()}")
                     return response.code()
@@ -77,7 +78,7 @@ class HomeRepositoryImpl
             accessToken: String,
         ): Response<HomeGetWeightResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogWeight(dogId, date, accessToken)
+                val response = homeApi.getDogWeight(dogId, date, accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-GetDogWeight", "통신 성공 : ${response.code()}")
                     return response
@@ -97,7 +98,7 @@ class HomeRepositoryImpl
             accessToken: String,
         ): Response<HomeGetFeedResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogFeed(dogId, date, accessToken)
+                val response = homeApi.getDogFeed(dogId, date, accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-DogFeed", "통신 성공 : ${response.code()}")
                     return response
@@ -117,7 +118,7 @@ class HomeRepositoryImpl
             accessToken: String,
         ): Response<HomeGetSupplementsResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogSupplements(dogId, date, accessToken)
+                val response = homeApi.getDogSupplements(dogId, date, accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-DogSupplements", "통신 성공 : ${response.code()}")
                     return response
@@ -137,7 +138,7 @@ class HomeRepositoryImpl
             accessToken: String,
         ): Response<HomeGetExcretaResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogExcreta(dogId, dateTime, accessToken)
+                val response = homeApi.getDogExcreta(dogId, dateTime, accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-DogExcreta", "통신 성공 : ${response.code()}")
                     return response
@@ -157,7 +158,7 @@ class HomeRepositoryImpl
             accessToken: String,
         ): Response<HomeGetSymptomResponse>? {
             try {
-                val response = homeRetrofitClient.homeApi.getDogSymptom(dogId, dateTime, accessToken)
+                val response = homeApi.getDogSymptom(dogId, dateTime, accessToken)
                 if (response.isSuccessful) {
                     Log.d("HomeRepo-DogSymptom", "통신 성공 : ${response.code()}")
                     return response
