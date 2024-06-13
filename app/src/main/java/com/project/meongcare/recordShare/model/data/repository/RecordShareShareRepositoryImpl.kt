@@ -1,8 +1,8 @@
 package com.project.meongcare.recordShare.model.data.repository
 
 import android.util.Log
-import com.project.meongcare.recordShare.model.entities.GetDogListResponse
 import com.project.meongcare.recordShare.model.data.remote.RecordShareRetrofitClient
+import com.project.meongcare.recordShare.model.entities.GetDogListResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -25,4 +25,20 @@ class RecordShareShareRepositoryImpl
             }
         }
 
+    override suspend fun getIsValidEmail(email: String, accessToken: String): Response<Int>? {
+        try {
+            val response =
+                recordShareRetrofitClient.recordShareApi.getIsValidEmail(email, accessToken)
+            return if (response.isSuccessful) {
+                Log.d("RecordShareRepo-IsValidEmail", "통신 성공 : ${response.code()}")
+                response
+            } else {
+                Log.d("RecordShareRepo-IsValidEmail", "통신 실패 : ${response.code()}")
+                response
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
 }

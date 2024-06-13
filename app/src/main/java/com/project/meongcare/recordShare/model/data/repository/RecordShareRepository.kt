@@ -5,4 +5,6 @@ import retrofit2.Response
 
 interface RecordShareRepository {
     suspend fun getDogList(accessToken: String): Response<GetDogListResponse>?
+
+    suspend fun getIsValidEmail(email: String, accessToken: String): Response<Int>?
 }
