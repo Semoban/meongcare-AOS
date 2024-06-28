@@ -1,5 +1,6 @@
 package com.project.meongcare
 
+import com.project.meongcare.MainActivity.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,7 +25,7 @@ class RetrofitClient
 
         val retrofit: Retrofit by lazy {
             Retrofit.Builder()
-                .baseUrl(BuildConfig.SEMOBAN_DOMAIN)
+                .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(nullOnEmptyConverterFactory)
                 .addConverterFactory(GsonConverterFactory.create())

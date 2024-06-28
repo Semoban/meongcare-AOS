@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var toolbarViewModel: ToolbarViewModel
     companion object {
         const val BASE_URL = BuildConfig.SEMOBAN_DOMAIN
+        const val AWS_BASE_URL = BuildConfig.AWS_S3_BASE_URL
     }
 
     @Inject

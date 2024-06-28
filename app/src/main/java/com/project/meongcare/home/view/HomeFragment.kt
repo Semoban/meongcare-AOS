@@ -84,11 +84,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
             if (datePos != null) {
                 val adapter = binding.recyclerviewHorizonCalendar.adapter as HomeHorizonCalendarAdapter
                 adapter.updateSelectedPos(datePos)
-                if (homeViewModel.homeDogList.value?.body()?.dogs.isNullOrEmpty()) {
-                    getDogList()
-                } else {
-                    getDogInfo()
-                }
+                getDogList()
             }
         }
         homeViewModel.homeSelectedDogPos.observe(viewLifecycleOwner) { dogPos ->
@@ -136,7 +132,10 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             R.drawable.snackbar_error_16dp,
                             getString(R.string.snack_bar_refresh_expire),
                         ).show()
-                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id != R.id.loginFragment) {
+                            navController.navigate(R.id.action_homeFragment_to_loginFragment)
+                        }
                     }
                 }
             }
@@ -252,20 +251,19 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         homeViewModel.homeDogList.observe(viewLifecycleOwner) { response ->
             // 통신 성공
             if (response != null && response.code() == 200) {
-                if (response.body() != null && !response.body()?.dogs.isNullOrEmpty() &&
-                    homeViewModel.homeSelectedDogPos.value == null
-                ) {
+                if (response.body()?.dogs.isNullOrEmpty()) {
+                    binding.recyclerviewHomeDog.visibility = View.GONE
+                    binding.linearlayoutDogExist.visibility = View.GONE
+                    binding.linearlayoutDogNotExist.visibility = View.VISIBLE
+                } else {
                     binding.recyclerviewHomeDog.visibility = View.VISIBLE
                     binding.linearlayoutDogExist.visibility = View.VISIBLE
                     binding.linearlayoutDogNotExist.visibility = View.GONE
                     val adapter = binding.recyclerviewHomeDog.adapter as HomeDogProfileAdapter
                     adapter.updateDogProfileList(response.body()?.dogs!!)
-                    homeViewModel.setSelectedDogPos(0)
-                }
-                if (response.body()?.dogs.isNullOrEmpty()) {
-                    binding.recyclerviewHomeDog.visibility = View.GONE
-                    binding.linearlayoutDogExist.visibility = View.GONE
-                    binding.linearlayoutDogNotExist.visibility = View.VISIBLE
+                    if (homeViewModel.homeSelectedDogPos.value == null) {
+                        homeViewModel.setSelectedDogPos(0)
+                    }
                 }
             } else if (response != null && response.code() == 401) {
                 reissueAccessToken()
