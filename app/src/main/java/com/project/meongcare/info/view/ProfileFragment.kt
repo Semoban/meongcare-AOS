@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.MainActivity.Companion.AWS_BASE_URL
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.MEMBER_FOLDER_PATH
@@ -191,7 +192,7 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
         awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                val profilePatchRequest = ProfilePatchRequest(BuildConfig.AWS_S3_BASE_URL + filePath)
+                val profilePatchRequest = ProfilePatchRequest(AWS_BASE_URL + filePath)
                 profileViewModel.patchProfileImage(currentAccessToken, profilePatchRequest)
             }
         }

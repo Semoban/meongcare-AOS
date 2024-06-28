@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.meongcare.MainActivity
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.MainActivity.Companion.AWS_BASE_URL
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.MEDICAL_RECORD_FOLDER_PATH
@@ -119,7 +120,7 @@ class MedicalRecordAddFragment :
         awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
         awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                val imageURL = AWS_BASE_URL + filePath
                 postMedicalRecord(imageURL)
                 showResultMessage()
             }
