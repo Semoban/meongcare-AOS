@@ -3,6 +3,7 @@ package com.project.meongcare.designsystem.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme =
     lightColorScheme(
@@ -13,6 +14,7 @@ private val LightColorScheme =
         background = Gray2,
         onBackground = Black,
         surface = White,
+        surfaceTint = Color.Transparent,
         onSurface = Black,
         error = Sub1,
         onError = White,

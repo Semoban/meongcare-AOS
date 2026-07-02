@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +16,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
-import com.project.meongcare.designsystem.theme.Gray5
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
@@ -66,10 +65,10 @@ fun SymptomScreen(
             )
         } else {
             LazyColumn(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 22.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(top = 22.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 itemsIndexed(
@@ -132,12 +131,12 @@ private fun SymptomItemCard(
     symptom: Symptom,
     onClick: () -> Unit,
 ) {
-    Card(
-        onClick = onClick,
+    Surface(
         modifier = Modifier.fillMaxWidth(),
+        color = White,
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shadowElevation = 4.dp,
+        onClick = onClick
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(
@@ -164,27 +163,6 @@ private fun SymptomItemCard(
                     modifier = Modifier.padding(start = 13.dp),
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun SymptomNoData(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(R.drawable.all_paws),
-                contentDescription = null,
-            )
-            Text(
-                text = "이상증상을 발견하지 못했어요!",
-                style = SemobanTypography.body1Medium,
-                color = Gray5,
-                modifier = Modifier.padding(top = 16.dp),
-            )
         }
     }
 }
