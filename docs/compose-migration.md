@@ -17,6 +17,7 @@
 5. `@Preview` 컴포저블(데이터 있음/없음 상태)을 함께 작성한다.
 6. URL/Uri 이미지는 Coil 미도입 상태이므로 `AndroidView` + Glide 인터롭(`ExcretaComponents.kt`의 `GlideImage`)을 사용한다.
 7. 화면 전용 재사용 컴포넌트는 `<feature>/view/<Feature>Components.kt`에 `internal`로 모아 두고, 공용화는 12단계에서 일괄 처리한다.
+8. 카드형 컨테이너는 `Card` 대신 `Surface(color, shape, shadowElevation)`를 사용한다. 그림자 없는 카드(elevation 0)는 `shadowElevation`을 생략한다.
 
 ### 디자인 시스템 (`designsystem/theme/`)
 
