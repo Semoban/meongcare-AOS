@@ -40,7 +40,7 @@
 | 2 | `symptom` — 나머지 (Add/Edit/Info/ListEdit/Select/SelectCustom/BottomSheet) | 7 | ✅ 완료 |
 | 3 | `excreta` (메인/Add/Edit/Info/RecordEdit — Add·Edit는 `ExcretaAddEditScreen` 공유) | 5 | ✅ 완료 |
 | 4 | `notice` (탭 2개 → `NoticeScreen` 단일 화면, TabRow+HorizontalPager) | 1 | ✅ 완료 |
-| 5 | `weight` (MPAndroidChart는 `AndroidView` 인터롭 유지) | ~3 | |
+| 5 | `weight` (MPAndroidChart는 `AndroidView` 인터롭 유지, 편집 다이얼로그는 Compose `Dialog`) | 1 | ✅ 완료 |
 | 6 | `feed` | ~5 | |
 | 7 | `medicalRecord` | ~5 | |
 | 8 | `supplement` (FCM 연계 주의) | ~8 | |
