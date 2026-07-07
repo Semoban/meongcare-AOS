@@ -2,10 +2,10 @@ package com.project.meongcare.home.view
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.Window
-import android.widget.ProgressBar
-import com.github.ybq.android.spinkit.sprite.Sprite
-import com.github.ybq.android.spinkit.style.ThreeBounce
+import android.view.WindowManager
 import com.project.meongcare.R
 
 class LoadingDialog(
@@ -15,8 +15,10 @@ class LoadingDialog(
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.loading_dialog)
 
-        val progressBar = findViewById<ProgressBar>(R.id.progress_view)
-        val threeBounce: Sprite = ThreeBounce()
-        progressBar.indeterminateDrawable = threeBounce
+        window?.run {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+            setDimAmount(0.6f)
+        }
     }
 }
