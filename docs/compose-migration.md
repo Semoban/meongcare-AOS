@@ -15,6 +15,8 @@
 3. `ComposeView`에는 반드시 `ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed`를 설정한다.
 4. 루트에 `SemobanTheme`을 감싼다.
 5. `@Preview` 컴포저블(데이터 있음/없음 상태)을 함께 작성한다.
+6. URL/Uri 이미지는 Coil 미도입 상태이므로 `AndroidView` + Glide 인터롭(`ExcretaComponents.kt`의 `GlideImage`)을 사용한다.
+7. 화면 전용 재사용 컴포넌트는 `<feature>/view/<Feature>Components.kt`에 `internal`로 모아 두고, 공용화는 12단계에서 일괄 처리한다.
 
 ### 디자인 시스템 (`designsystem/theme/`)
 
@@ -34,9 +36,9 @@
 |---|---|---|---|
 | 0 | Compose 빌드 설정 + 디자인 시스템 | - | ✅ 완료 |
 | 1 | `symptom` — 메인 리스트 | 1 | ✅ 완료 |
-| 2 | `symptom` — 나머지 (Add/Edit/Info/ListEdit/Select/SelectCustom/BottomSheet) | 7 | 진행 예정 |
-| 3 | `excreta` | ~4 | |
-| 4 | `notice` | ~2 | |
+| 2 | `symptom` — 나머지 (Add/Edit/Info/ListEdit/Select/SelectCustom/BottomSheet) | 7 | ✅ 완료 |
+| 3 | `excreta` (메인/Add/Edit/Info/RecordEdit — Add·Edit는 `ExcretaAddEditScreen` 공유) | 5 | ✅ 완료 |
+| 4 | `notice` (탭 2개 → `NoticeScreen` 단일 화면, TabRow+HorizontalPager) | 1 | ✅ 완료 |
 | 5 | `weight` (MPAndroidChart는 `AndroidView` 인터롭 유지) | ~3 | |
 | 6 | `feed` | ~5 | |
 | 7 | `medicalRecord` | ~5 | |
