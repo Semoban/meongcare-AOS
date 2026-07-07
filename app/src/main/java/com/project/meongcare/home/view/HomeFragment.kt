@@ -61,6 +61,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         super.onViewCreated(view, savedInstanceState)
 
         getAccessToken()
+        observeReissueResponse()
 
         val currentDate = LocalDate.now()
         setSelectedDate(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
@@ -101,6 +102,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private fun reissueAccessToken() {
         userViewModel.getNewAccessToken(currentRefreshToken)
+    }
+
+    private fun observeReissueResponse() {
         userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 when (response.code()) {
@@ -113,7 +117,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             R.drawable.snackbar_error_16dp,
                             getString(R.string.snack_bar_refresh_expire),
                         ).show()
-                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                        if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                        }
                     }
                 }
             }
