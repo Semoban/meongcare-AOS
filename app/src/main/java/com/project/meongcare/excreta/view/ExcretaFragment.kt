@@ -95,7 +95,9 @@ class ExcretaFragment : Fragment() {
     }
 
     private fun navigateToExcretaAdd() {
-        findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment)
+        val bundle = Bundle()
+        bundle.putString("selectedDateTime", dateTime)
+        findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment, bundle)
     }
 
     private fun navigateToExcretaRecordEdit() {

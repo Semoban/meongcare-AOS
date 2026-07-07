@@ -97,9 +97,17 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
+        initSelectedDate()
         observeExcretaDate()
         observeImageUpload()
         observeExcretaPosted()
+    }
+
+    private fun initSelectedDate() {
+        if (excretaAddViewModel.excretaDate.value != null) return
+
+        val selectedDateTime = arguments?.getString("selectedDateTime") ?: return
+        excretaAddViewModel.getExcretaDate(selectedDateTime.substringBefore("T"))
     }
 
     private fun observeExcretaDate() {
