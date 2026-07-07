@@ -213,6 +213,10 @@ private fun MedicalRecordCalendar(
             pastMonth.add(Calendar.MONTH, -282)
             calendar.setVisibleMonthRange(pastMonth, currentMonth)
             calendar.setCurrentMonth(currentMonth)
+
+            // 진입 시 오늘 날짜를 선택 상태로 표시
+            val today = Calendar.getInstance()
+            calendar.setSelectedDateRange(today, today)
             calendar
         },
         update = { calendar ->

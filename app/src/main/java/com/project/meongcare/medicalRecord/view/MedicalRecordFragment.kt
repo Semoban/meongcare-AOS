@@ -18,6 +18,9 @@ import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class MedicalRecordFragment : Fragment() {
@@ -48,6 +51,14 @@ class MedicalRecordFragment : Fragment() {
         initComposeView()
         fetchUserAndDogInfo()
         observeSelectedDate()
+        initTodayDate()
+    }
+
+    private fun initTodayDate() {
+        if (medicalRecordViewModel.selectedDate.value == null) {
+            val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            medicalRecordViewModel.getCurrentDate(today)
+        }
     }
 
     private fun initComposeView() {
@@ -77,11 +88,13 @@ class MedicalRecordFragment : Fragment() {
         dogViewModel.dogIdPreferencesLiveData.observe(viewLifecycleOwner) { dogId ->
             if (dogId != null) {
                 this.dogId = dogId
+                fetchMedicalRecordListIfReady()
             }
         }
         userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
             if (accessToken != null) {
                 this.accessToken = accessToken
+                fetchMedicalRecordListIfReady()
             }
         }
     }
@@ -89,13 +102,21 @@ class MedicalRecordFragment : Fragment() {
     private fun observeSelectedDate() {
         medicalRecordViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
             if (date != null) {
-                medicalRecordViewModel.getMedicalRecordList(
-                    dogId,
-                    date + "T00:00:00",
-                    accessToken,
-                )
+                fetchMedicalRecordListIfReady()
             }
         }
+    }
+
+    // 날짜·토큰·dogId가 모두 준비된 시점에만 목록을 조회한다
+    private fun fetchMedicalRecordListIfReady() {
+        val date = medicalRecordViewModel.selectedDate.value ?: return
+        if (accessToken.isEmpty() || dogId == 0L) return
+
+        medicalRecordViewModel.getMedicalRecordList(
+            dogId,
+            date + "T00:00:00",
+            accessToken,
+        )
     }
 
     private fun navigateToMedicalRecordAdd() {
