@@ -116,8 +116,7 @@
     <fragment
         android:id="@+id/symptomAddFragment"
         android:name="com.project.meongcare.symptom.view.SymptomAddFragment"
-        android:label="fragment_symptom_add"
-        tools:layout="@layout/fragment_symptom_add" >
+        android:label="fragment_symptom_add" >
         <action
             android:id="@+id/action_symptomAdd_to_symptom"
             app:destination="@+id/symptomFragment" />
@@ -129,8 +128,7 @@
     <fragment
         android:id="@+id/symptomSelectFragment"
         android:name="com.project.meongcare.symptom.view.SymptomSelectFragment"
-        android:label="fragment_symptom_select"
-        tools:layout="@layout/fragment_symptom_select">
+        android:label="fragment_symptom_select">
         <action
             android:id="@+id/action_symptomSelect_to_symptomAdd"
             app:destination="@+id/symptomAddFragment" />
@@ -143,8 +141,7 @@
     <fragment
         android:id="@+id/symptomInfoFragment"
         android:name="com.project.meongcare.symptom.view.SymptomInfoFragment"
-        android:label="fragment_symptom_info"
-        tools:layout="@layout/fragment_symptom_info">
+        android:label="fragment_symptom_info">
         <action
             android:id="@+id/action_symptomInfo_to_symptom"
             app:destination="@+id/symptomFragment" />
@@ -156,8 +153,7 @@
     <fragment
         android:id="@+id/symptomListEditFragment"
         android:name="com.project.meongcare.symptom.view.SymptomListEditFragment"
-        android:label="fragment_symptom_list_edit"
-        tools:layout="@layout/fragment_symptom_list_edit" >
+        android:label="fragment_symptom_list_edit" >
         <action
             android:id="@+id/action_symptomListEdit_to_symptom"
             app:destination="@+id/symptomFragment" />
@@ -166,8 +162,7 @@
     <fragment
         android:id="@+id/symptomEditFragment"
         android:name="com.project.meongcare.symptom.view.SymptomEditFragment"
-        android:label="fragment_symptom_edit"
-        tools:layout="@layout/fragment_symptom_edit" >
+        android:label="fragment_symptom_edit" >
         <action
             android:id="@+id/action_symptomEdit_to_symptomSelect"
             app:destination="@+id/symptomSelectFragment" />
@@ -198,8 +193,7 @@
     <fragment
         android:id="@+id/excretaAddFragment"
         android:name="com.project.meongcare.excreta.view.ExcretaAddFragment"
-        android:label="fragment_excreta_add"
-        tools:layout="@layout/fragment_excreta_add_edit" >
+        android:label="fragment_excreta_add" >
         <action
             android:id="@+id/action_excretaAddFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
@@ -208,8 +202,7 @@
     <fragment
         android:id="@+id/excretaInfoFragment"
         android:name="com.project.meongcare.excreta.view.ExcretaInfoFragment"
-        android:label="fragment_excreta_info"
-        tools:layout="@layout/fragment_excreta_info" >
+        android:label="fragment_excreta_info" >
         <action
             android:id="@+id/action_excretaInfoFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
@@ -221,8 +214,7 @@
     <fragment
         android:id="@+id/excretaRecordEditFragment"
         android:name="com.project.meongcare.excreta.view.ExcretaRecordEditFragment"
-        android:label="fragment_excreta_record_edit"
-        tools:layout="@layout/fragment_excreta_record_edit" >
+        android:label="fragment_excreta_record_edit" >
         <action
             android:id="@+id/action_excretaRecordEditFragment_to_excretaFragment"
             app:destination="@id/excretaFragment" />
