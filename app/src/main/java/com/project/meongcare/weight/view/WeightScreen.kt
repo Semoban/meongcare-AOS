@@ -26,6 +26,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.input.KeyboardType
@@ -69,6 +70,7 @@ fun WeightScreen(
     weeklyWeights: WeightWeeksResponse?,
     monthlyWeight: WeightMonthResponse?,
     thisMonth: Float,
+    isEditable: Boolean,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -80,6 +82,7 @@ fun WeightScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 10.dp),
     ) {
+        // 미래 날짜에서는 편집 버튼을 숨기되 자리는 유지해 카드 위치가 흔들리지 않게 한다
         Text(
             text = "편집",
             style = SemobanTypography.body1Medium,
@@ -88,7 +91,8 @@ fun WeightScreen(
                 Modifier
                     .align(Alignment.End)
                     .padding(top = 32.dp, end = 17.dp)
-                    .clickable { onEditClick() },
+                    .alpha(if (isEditable) 1f else 0f)
+                    .clickable(enabled = isEditable) { onEditClick() },
         )
         DailyWeightCard(
             dogName = dogName,
@@ -541,6 +545,7 @@ private fun WeightScreenPreview() {
                 ),
             monthlyWeight = WeightMonthResponse(5.0, 5.2),
             thisMonth = 7F,
+            isEditable = true,
             onEditClick = {},
         )
     }

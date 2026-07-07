@@ -86,6 +86,7 @@ class WeightFragment : Fragment() {
                         weeklyWeights = weeklyWeights,
                         monthlyWeight = monthlyWeight,
                         thisMonth = selectedDate?.let { convertThisMonth(it) } ?: 0F,
+                        isEditable = selectedDate?.let { !isFutureDate(it) } ?: false,
                         onEditClick = { showEditDialog = true },
                     )
 
@@ -163,10 +164,12 @@ class WeightFragment : Fragment() {
             WeightPatchRequest(
                 dogId,
                 weight,
-                LocalDate.now().toString(),
+                date,
             )
         weightViewModel.patchWeight(accessToken, weightPatchRequest)
     }
+
+    private fun isFutureDate(selectedDate: Date): Boolean = LocalDate.parse(convertSelectedDate(selectedDate)).isAfter(LocalDate.now())
 
     private fun weightGetRequest() = WeightGetRequest(dogId, date)
 
