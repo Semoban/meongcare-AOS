@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -224,23 +225,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun autoLogin() {
-        lifecycleScope.launch {
-            val accessToken = userPreferences.getAccessToken()
-            val refreshToken = userPreferences.getRefreshToken()
-            val isFirstLogin = userPreferences.getIsFirstLogin()
-
-            if (accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()) {
-                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.onBoardingFragment)
-            } else if (accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
-                activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.loginFragment)
-            } else {
-                if (isFirstLogin == true) {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.dogAddOnBoardingFragment)
-                } else {
-                    activityMainBinding.fragmentContainerView.findNavController().navigate(R.id.homeFragment)
-                }
-            }
+        val accessToken: String?
+        val refreshToken: String?
+        val isFirstLogin: Boolean?
+        runBlocking {
+            accessToken = userPreferences.getAccessToken()
+            refreshToken = userPreferences.getRefreshToken()
+            isFirstLogin = userPreferences.getIsFirstLogin()
         }
+
+        val destinationId =
+            when {
+                // 로그인 이력이 없을 때만 안내(온보딩) 화면을 그대로 표시
+                accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty() -> return
+                accessToken.isNullOrEmpty() -> R.id.loginFragment
+                isFirstLogin == true -> R.id.dogAddOnBoardingFragment
+                else -> R.id.homeFragment
+            }
+
+        // 안내 화면을 백스택에서 제거해 뒤로가기로 돌아오지 않게 처리
+        val navOptions =
+            NavOptions.Builder()
+                .setPopUpTo(R.id.onBoardingFragment, true)
+                .build()
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navHostFragment.navController.navigate(destinationId, null, navOptions)
     }
 
     private fun showUpdateDialog() {

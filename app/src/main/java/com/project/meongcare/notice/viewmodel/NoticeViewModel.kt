@@ -18,9 +18,19 @@ class NoticeViewModel
         val noticeList: LiveData<NoticeGetListResponse>
             get() = _noticeList
 
-        fun getNoticeList(type: String) {
+        private val _eventList = MutableLiveData<NoticeGetListResponse>()
+        val eventList: LiveData<NoticeGetListResponse>
+            get() = _eventList
+
+        fun getNoticeList() {
             viewModelScope.launch {
-                _noticeList.value = noticeRepository.getNoticeList(type)
+                _noticeList.value = noticeRepository.getNoticeList("notice")
+            }
+        }
+
+        fun getEventList() {
+            viewModelScope.launch {
+                _eventList.value = noticeRepository.getNoticeList("event")
             }
         }
     }

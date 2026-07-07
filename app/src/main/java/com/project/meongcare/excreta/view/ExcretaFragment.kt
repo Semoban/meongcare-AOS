@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentExcretaBinding
-import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.utils.TIME
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -25,14 +26,13 @@ import java.util.Locale
 @AndroidEntryPoint
 class ExcretaFragment : Fragment() {
     private var _binding: FragmentExcretaBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
     lateinit var toolbarViewModel: ToolbarViewModel
 
-    private lateinit var excretaAdapter: ExcretaAdapter
     private var accessToken = ""
     private var dogId = 0L
     private var dateTime = ""
@@ -51,8 +51,7 @@ class ExcretaFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initDogId()
-        initDogName()
+        initDogInfo()
         toolbarViewModel = ViewModelProvider(requireActivity())[ToolbarViewModel::class.java]
         toolbarViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
             dateTime = convertSelectedDate(date)
@@ -61,73 +60,62 @@ class ExcretaFragment : Fragment() {
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
             excretaRecordViewModel.getExcretaRecord(dogId, accessToken, dateTime)
-            initExcretaRecordRecyclerView()
         }
-        fetchExcretaRecord()
-        excretaAdapter = ExcretaAdapter()
-        initExcretaAddButton()
-        initExcretaEditButton()
+        initComposeView()
     }
 
-    private fun initDogId() {
+    private fun initDogInfo() {
         dogViewModel.fetchDogId()
+        dogViewModel.fetchDogName()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
     }
 
-    private fun initDogName() {
-        dogViewModel.fetchDogName()
-        dogViewModel.dogName.observe(viewLifecycleOwner) { response ->
-            binding.textviewExcretaTitleName.text = response
-        }
-    }
+    private fun initComposeView() {
+        binding.composeViewExcreta.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val dogName by dogViewModel.dogName.observeAsState()
+                    val excretaRecord by excretaRecordViewModel.excretaRecordGet.observeAsState()
 
-    private fun initExcretaAddButton() {
-        binding.textviewExcretaAddbutton.setOnClickListener {
-            findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment)
-        }
-    }
-
-    private fun initExcretaEditButton() {
-        binding.textviewExcretaEditbutton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("selectedDateTime", dateTime)
-            findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment, bundle)
-        }
-    }
-
-    private fun initExcretaRecordRecyclerView() {
-        binding.recyclerviewExcretaRecord.run {
-            adapter = excretaAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-    }
-
-    private fun fetchExcretaRecord() {
-        excretaRecordViewModel.excretaRecordGet.observe(viewLifecycleOwner) { response ->
-            binding.apply {
-                if (response.excretaRecords.isNullOrEmpty()) {
-                    textviewExcretaEditbutton.visibility = View.GONE
-                } else {
-                    textviewExcretaEditbutton.visibility = View.VISIBLE
+                    ExcretaScreen(
+                        dogName = dogName,
+                        fecesCount = excretaRecord?.fecesCount ?: 0,
+                        urineCount = excretaRecord?.urineCount ?: 0,
+                        excretaRecords = excretaRecord?.excretaRecords.orEmpty(),
+                        onAddClick = ::navigateToExcretaAdd,
+                        onEditClick = ::navigateToExcretaRecordEdit,
+                        onItemClick = ::navigateToExcretaInfo,
+                    )
                 }
-                textviewExcretaNumberfeces.text = formatExcretaCount(Excreta.FECES.type, response.fecesCount)
-                textviewExcretaNumberurine.text = formatExcretaCount(Excreta.URINE.type, response.urineCount)
-                excretaAdapter.submitList(response.excretaRecords)
             }
         }
+    }
+
+    private fun navigateToExcretaAdd() {
+        val bundle = Bundle()
+        bundle.putString("selectedDateTime", dateTime)
+        findNavController().navigate(R.id.action_excretaFragment_to_excretaAddFragment, bundle)
+    }
+
+    private fun navigateToExcretaRecordEdit() {
+        val bundle = Bundle()
+        bundle.putString("selectedDateTime", dateTime)
+        findNavController().navigate(R.id.action_excretaFragment_to_excretaRecordEditFragment, bundle)
+    }
+
+    private fun navigateToExcretaInfo(excretaId: Long) {
+        val bundle = Bundle()
+        bundle.putLong("excretaId", excretaId)
+        findNavController().navigate(R.id.action_excretaFragment_to_excretaInfoFragment, bundle)
     }
 
     private fun convertSelectedDate(selectedDate: Date): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         return dateFormat.format(selectedDate.time)
     }
-
-    private fun formatExcretaCount(
-        type: String,
-        count: Int,
-    ) = "$type $count$TIME"
 
     override fun onDestroyView() {
         super.onDestroyView()

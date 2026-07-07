@@ -27,6 +27,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentLoginBinding
+import com.project.meongcare.home.view.LoadingDialog
 import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingService
 import com.project.meongcare.login.model.entities.LoginRequest
 import com.project.meongcare.login.viewmodel.LoginViewModel
@@ -39,6 +40,7 @@ import kotlinx.coroutines.runBlocking
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var provider: String
+    private var loadingDialog: LoadingDialog? = null
 
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
     val googleAuthLauncher =
@@ -70,8 +72,20 @@ class LoginFragment : Fragment() {
         loginResponseProcess()
     }
 
+    private fun showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog(requireContext())
+        }
+        loadingDialog?.show()
+    }
+
+    private fun dismissLoadingDialog() {
+        loadingDialog?.dismiss()
+    }
+
     private fun loginResponseProcess() {
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
+            dismissLoadingDialog()
             if (loginResponse == null) {
                 Log.e("LoginFragment", "서버 응답 없음 (네트워크 오류)")
                 CustomSnackBar.make(
@@ -195,6 +209,7 @@ class LoginFragment : Fragment() {
             } else if (user != null) {
                 Log.d("Login-kakao", "사용자 정보 요청 성공")
 
+                showLoadingDialog()
                 val deviceToken = getDeviceToken()
 
                 // data store에 저장
@@ -237,6 +252,7 @@ class LoginFragment : Fragment() {
                     if (result.profile != null) {
                         Log.d("Login-naver", "프로필 가져오기 성공 ${result.profile?.profileImage}")
 
+                        showLoadingDialog()
                         val deviceToken = getDeviceToken()
 
                         // data store에 저장
@@ -303,6 +319,7 @@ class LoginFragment : Fragment() {
     private fun getGoogleResult(task: Task<GoogleSignInAccount>) {
         try {
             val account = task.getResult(ApiException::class.java)
+            showLoadingDialog()
             val deviceToken = getDeviceToken()
 
             // data store에 저장
@@ -321,6 +338,12 @@ class LoginFragment : Fragment() {
         } catch (e: ApiException) {
             Log.e("Login-google", e.stackTraceToString())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dismissLoadingDialog()
+        loadingDialog = null
     }
 
     fun getDeviceToken(): String {

@@ -4,5 +4,4 @@ data class ExcretaRecord(
     val excretaId: Long,
     val time: String,
     val excretaType: String,
-    var isChecked: Boolean = false,
 )

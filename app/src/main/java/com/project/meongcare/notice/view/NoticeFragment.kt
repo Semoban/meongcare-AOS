@@ -4,61 +4,67 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.project.meongcare.databinding.FragmentNoticeBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
+import com.project.meongcare.notice.viewmodel.NoticeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NoticeFragment : Fragment() {
-    lateinit var fragmentNoticeBinding: FragmentNoticeBinding
+    private var _binding: FragmentNoticeBinding? = null
+    private val binding get() = _binding!!
 
-    val tabName = arrayOf("공지사항", "이벤트")
+    private val noticeViewModel: NoticeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        fragmentNoticeBinding = FragmentNoticeBinding.inflate(inflater)
+    ): View {
+        _binding = FragmentNoticeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val noticeViewPagerAdapter = NoticeViewPagerAdapter(this@NoticeFragment)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        initComposeView()
+        fetchNoticeList()
+    }
 
-        fragmentNoticeBinding.run {
-            viewpagerNotice.adapter = noticeViewPagerAdapter
+    private fun initComposeView() {
+        binding.composeViewNotice.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val noticeResponse by noticeViewModel.noticeList.observeAsState()
+                    val eventResponse by noticeViewModel.eventList.observeAsState()
 
-            TabLayoutMediator(tablayoutNotice, viewpagerNotice) { tab: TabLayout.Tab, i: Int ->
-                tab.text = tabName[i]
-                viewpagerNotice.currentItem = tab.position
-            }.attach()
-
-            tablayoutNotice.addOnTabSelectedListener(
-                object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) { }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) { }
-
-                    override fun onTabReselected(tab: TabLayout.Tab?) { }
-                },
-            )
-
-            imageviewNoticeBack.setOnClickListener {
-                findNavController().popBackStack()
+                    NoticeScreen(
+                        notices = noticeResponse?.records.orEmpty(),
+                        events = eventResponse?.records.orEmpty(),
+                        onBackClick = { findNavController().popBackStack() },
+                    )
+                }
             }
         }
-
-        return fragmentNoticeBinding.root
     }
-}
 
-class NoticeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 2
+    private fun fetchNoticeList() {
+        noticeViewModel.getNoticeList()
+        noticeViewModel.getEventList()
+    }
 
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> NoticeTabNoticeFragment()
-            else -> NoticeTabEventFragment()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

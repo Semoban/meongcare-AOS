@@ -4,30 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.meongcare.databinding.FragmentExcretaRecordEditBinding
-import com.project.meongcare.excreta.model.data.local.ExcretaItemCheckedListener
+import com.project.meongcare.R
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.excreta.viewmodel.ExcretaDeleteViewModel
 import com.project.meongcare.excreta.viewmodel.ExcretaRecordViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ExcretaRecordEditFragment : Fragment() {
-    private var _binding: FragmentExcretaRecordEditBinding? = null
-    val binding get() = _binding!!
-
     private val excretaRecordViewModel: ExcretaRecordViewModel by viewModels()
     private val excretaDeleteViewModel: ExcretaDeleteViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
 
-    private lateinit var excretaAdapter: ExcretaRecordEditAdapter
+    private val checkedIds = MutableLiveData<List<Long>>(emptyList())
     private var accessToken = ""
     private var dogId = 0L
 
@@ -36,8 +38,27 @@ class ExcretaRecordEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentExcretaRecordEditBinding.inflate(inflater, container, false)
-        return binding.root
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val dogName by dogViewModel.dogName.observeAsState()
+                    val excretaRecord by excretaRecordViewModel.excretaRecordGet.observeAsState()
+                    val checked by checkedIds.observeAsState(emptyList())
+
+                    ExcretaRecordEditScreen(
+                        dogName = dogName,
+                        excretaRecords = excretaRecord?.excretaRecords.orEmpty(),
+                        checkedIds = checked,
+                        onBack = { findNavController().popBackStack() },
+                        onToggleAll = ::toggleAll,
+                        onToggleItem = ::toggleItem,
+                        onCancel = { findNavController().popBackStack() },
+                        onDelete = ::deleteCheckedRecords,
+                    )
+                }
+            }
+        }
     }
 
     override fun onViewCreated(
@@ -46,86 +67,54 @@ class ExcretaRecordEditFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         dogViewModel.fetchDogId()
+        dogViewModel.fetchDogName()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
             dogId = response
         }
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
-            fetchExcretaRecord()
+            excretaRecordViewModel.getExcretaRecord(dogId, accessToken, getSelectedDateTime())
         }
-        excretaAdapter =
-            ExcretaRecordEditAdapter(
-                object : ExcretaItemCheckedListener {
-                    override fun onItemChecked(checkedIds: IntArray) {
-                        deleteExcretaRecords(checkedIds)
-                    }
-                })
-
-        initToolbar()
-        initSelectAllCheckBox()
-        initExcretaRecordEditRecyclerView()
-        initCancelButton()
-    }
-
-    private fun initToolbar() {
-        binding.toolbarExcretarecordedit.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun initSelectAllCheckBox() {
-        binding.apply {
-            checkboxExcretarecordeditSelectall.setOnClickListener {
-                excretaAdapter.currentList.map {
-                    it.isChecked = checkboxExcretarecordeditSelectall.isChecked
-                }
-                // notifyDataSetChanged 사용하지 않는 방법으로 수정 필요
-                excretaAdapter.notifyDataSetChanged()
+        excretaDeleteViewModel.excretaDeleted.observe(viewLifecycleOwner) { response ->
+            if (response == SUCCESS) {
+                findNavController().popBackStack()
             }
         }
     }
 
-    private fun initExcretaRecordEditRecyclerView() {
-        binding.recyclerviewExcretarecordeditRecord.run {
-            adapter = excretaAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
+    private fun toggleAll() {
+        val excretaIds =
+            excretaRecordViewModel.excretaRecordGet.value
+                ?.excretaRecords
+                .orEmpty()
+                .map { it.excretaId }
+        val allChecked = checkedIds.value!!.size == excretaIds.size
+        checkedIds.value = if (allChecked) emptyList() else excretaIds
     }
 
-    private fun fetchExcretaRecord() {
-        val dateTime = getSelectedDateTime()
-        excretaRecordViewModel.apply {
-            getExcretaRecord(dogId, accessToken, dateTime)
-            excretaRecordGet.observe(viewLifecycleOwner) { response ->
-                excretaAdapter.submitList(response.excretaRecords)
-            }
+    private fun toggleItem(excretaId: Long) {
+        val currentIds = checkedIds.value!!.toMutableList()
+        if (currentIds.contains(excretaId)) {
+            currentIds.remove(excretaId)
+        } else {
+            currentIds.add(excretaId)
         }
+        checkedIds.value = currentIds
     }
 
-    private fun initCancelButton() {
-        binding.buttonExcretarecordeditCancel.setOnClickListener {
-            findNavController().popBackStack()
+    private fun deleteCheckedRecords() {
+        val ids = checkedIds.value!!
+        if (ids.isEmpty()) {
+            CustomSnackBar.make(
+                requireView(),
+                R.drawable.snackbar_error_16dp,
+                "선택된 항목이 없습니다.\n항목을 선택하고 삭제해주세요.",
+            ).show()
+            return
         }
-    }
-
-    private fun deleteExcretaRecords(checkIds: IntArray) {
-        binding.buttonExcretarecordeditDelete.setOnClickListener {
-            excretaDeleteViewModel.deleteExcreta(accessToken, checkIds)
-            excretaDeleteViewModel.apply {
-                excretaDeleted.observe(viewLifecycleOwner) { response ->
-                    if (response == SUCCESS) {
-                        findNavController().popBackStack()
-                    }
-                }
-            }
-        }
+        excretaDeleteViewModel.deleteExcreta(accessToken, ids.map { it.toInt() }.toIntArray())
     }
 
     private fun getSelectedDateTime() = arguments?.getString("selectedDateTime")!!
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

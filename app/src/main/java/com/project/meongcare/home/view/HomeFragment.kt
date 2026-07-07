@@ -28,10 +28,12 @@ import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.toolbar.view.WeekSwipeListener
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
 
 @AndroidEntryPoint
@@ -61,6 +63,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         super.onViewCreated(view, savedInstanceState)
 
         getAccessToken()
+        observeReissueResponse()
 
         val currentDate = LocalDate.now()
         setSelectedDate(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
@@ -71,6 +74,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         initAddDogImageView()
         initDogRecyclerView()
         initCalendarRecyclerView()
+        observeSelectedDatePos()
         initSymptomRecyclerView()
         initSymptomLayout()
         initExcretaLayout()
@@ -101,6 +105,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private fun reissueAccessToken() {
         userViewModel.getNewAccessToken(currentRefreshToken)
+    }
+
+    private fun observeReissueResponse() {
         userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 when (response.code()) {
@@ -113,7 +120,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
                             R.drawable.snackbar_error_16dp,
                             getString(R.string.snack_bar_refresh_expire),
                         ).show()
-                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                        if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                        }
                     }
                 }
             }
@@ -216,6 +225,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private fun setSelectedDatePos(position: Int) {
         homeViewModel.setSelectedDatePos(position)
+    }
+
+    private fun observeSelectedDatePos() {
         homeViewModel.homeSelectedDatePos.observe(viewLifecycleOwner) { selectedDatePos ->
             if (selectedDatePos != null) {
                 Log.d("homeSelectedDatePos", selectedDatePos.toString())
@@ -485,7 +497,20 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         binding.recyclerviewHorizonCalendar.run {
             adapter = HomeHorizonCalendarAdapter(layoutInflater, context, this@HomeFragment)
             layoutManager = GridLayoutManager(context, 7)
+            addOnItemTouchListener(
+                WeekSwipeListener(requireContext()) { days ->
+                    moveCalendarWeek(days)
+                },
+            )
         }
+    }
+
+    private fun moveCalendarWeek(days: Int) {
+        val baseDate = homeViewModel.homeSelectedDate.value ?: return
+        val calendar = Calendar.getInstance()
+        calendar.time = baseDate
+        calendar.add(Calendar.DAY_OF_YEAR, days)
+        homeViewModel.setSelectedDate(calendar.time)
     }
 
     private fun initSymptomRecyclerView() {
