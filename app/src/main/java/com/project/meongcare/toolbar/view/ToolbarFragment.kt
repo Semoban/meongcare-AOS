@@ -14,6 +14,7 @@ import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToLocal
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.time.LocalDate
+import java.util.Calendar
 
 class ToolbarFragment : Fragment() {
     lateinit var fragmentToolbarBinding: ToolbarCalendarWeekBinding
@@ -54,10 +55,23 @@ class ToolbarFragment : Fragment() {
             recyclerViewToolbarCalendarWeek.run {
                 adapter = ToolbarDateRecyclerViewAdapter(mainActivity)
                 layoutManager = GridLayoutManager(requireContext(), 7)
+                addOnItemTouchListener(
+                    WeekSwipeListener(requireContext()) { days ->
+                        moveWeek(days)
+                    },
+                )
             }
         }
 
         return fragmentToolbarBinding.root
+    }
+
+    private fun moveWeek(days: Int) {
+        val baseDate = toolbarViewModel.selectedDate.value ?: return
+        val calendar = Calendar.getInstance()
+        calendar.time = baseDate
+        calendar.add(Calendar.DAY_OF_YEAR, days)
+        toolbarViewModel.updateDateList(calendar.time)
     }
 
     private fun showCalendarBottomSheet() {

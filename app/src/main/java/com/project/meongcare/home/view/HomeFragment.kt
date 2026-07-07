@@ -28,10 +28,12 @@ import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.toolbar.view.WeekSwipeListener
 import com.project.meongcare.weight.model.entities.WeightPostRequest
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
 
 @AndroidEntryPoint
@@ -495,7 +497,20 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         binding.recyclerviewHorizonCalendar.run {
             adapter = HomeHorizonCalendarAdapter(layoutInflater, context, this@HomeFragment)
             layoutManager = GridLayoutManager(context, 7)
+            addOnItemTouchListener(
+                WeekSwipeListener(requireContext()) { days ->
+                    moveCalendarWeek(days)
+                },
+            )
         }
+    }
+
+    private fun moveCalendarWeek(days: Int) {
+        val baseDate = homeViewModel.homeSelectedDate.value ?: return
+        val calendar = Calendar.getInstance()
+        calendar.time = baseDate
+        calendar.add(Calendar.DAY_OF_YEAR, days)
+        homeViewModel.setSelectedDate(calendar.time)
     }
 
     private fun initSymptomRecyclerView() {
