@@ -91,7 +91,10 @@ class FeedFragment : Fragment() {
                     )
 
                     if (showStopDialog) {
-                        FeedStopDialog(
+                        FeedConfirmDialog(
+                            title = "사료를 중단하시겠습니까?",
+                            description = "사료는 즉시 중단됩니다.",
+                            confirmText = "확인",
                             onCancel = { showStopDialog = false },
                             onConfirm = {
                                 showStopDialog = false

@@ -135,7 +135,10 @@ internal fun FeedGuideButton(
 }
 
 @Composable
-internal fun FeedStopDialog(
+internal fun FeedConfirmDialog(
+    title: String,
+    description: String,
+    confirmText: String,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
 ) {
@@ -147,12 +150,12 @@ internal fun FeedStopDialog(
         ) {
             Column(modifier = Modifier.padding(vertical = 20.dp)) {
                 Text(
-                    text = "사료를 중단하시겠습니까?",
+                    text = title,
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.padding(start = 24.dp),
                 )
                 Text(
-                    text = "사료는 즉시 중단됩니다.",
+                    text = description,
                     style = SemobanTypography.body2Regular,
                     color = Gray4,
                     modifier = Modifier.padding(start = 24.dp, top = 4.dp, end = 24.dp),
@@ -171,7 +174,7 @@ internal fun FeedStopDialog(
                         onClick = onCancel,
                     )
                     FeedDialogButton(
-                        text = "확인",
+                        text = confirmText,
                         backgroundColor = Main4,
                         textColor = White,
                         onClick = onConfirm,

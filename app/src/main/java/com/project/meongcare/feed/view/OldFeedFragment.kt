@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentOldFeedBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.PreviousFeedGetViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
@@ -17,12 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OldFeedFragment : Fragment() {
     private var _binding: FragmentOldFeedBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val previousFeedGetViewModel: PreviousFeedGetViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
-    private lateinit var previousFeedAdapter: PreviousFeedAdapter
 
     private var dogId = 0L
     private var accessToken = ""
@@ -41,6 +44,28 @@ class OldFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initComposeView()
+        fetchPreviousFeed()
+    }
+
+    private fun initComposeView() {
+        binding.composeViewOldFeed.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val previousFeeds by previousFeedGetViewModel.previousFeedGet.observeAsState()
+
+                    OldFeedScreen(
+                        feedRecords = previousFeeds?.feedRecords.orEmpty(),
+                        onBackClick = { findNavController().popBackStack() },
+                        onItemClick = ::navigateToFeedInfo,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun fetchPreviousFeed() {
         val feedRecordId = getFeedRecordId()
         dogViewModel.fetchDogId()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
@@ -55,31 +80,16 @@ class OldFeedFragment : Fragment() {
                 feedRecordId,
             )
         }
-        previousFeedAdapter = PreviousFeedAdapter()
-        previousFeedGetViewModel.previousFeedGet.observe(viewLifecycleOwner) { response ->
-            if (response.feedRecords.isEmpty()) {
-                binding.apply {
-                    imageviewOldfeedBowlIllustration.visibility = View.VISIBLE
-                    textviewOldfeedMessage.visibility = View.VISIBLE
-                }
-            }
-            previousFeedAdapter.submitList(response.feedRecords)
-        }
-        initToolbar()
-        initPreviousFeedRecyclerView()
     }
 
-    private fun initToolbar() {
-        binding.toolbarOldfeed.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun initPreviousFeedRecyclerView() {
-        binding.recyclerviewOldfeed.run {
-            adapter = previousFeedAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
+    private fun navigateToFeedInfo(
+        feedId: Long,
+        feedRecordId: Long,
+    ) {
+        val bundle = Bundle()
+        bundle.putLong("feedId", feedId)
+        bundle.putLong("feedRecordId", feedRecordId)
+        findNavController().navigate(R.id.action_oldFeedFragment_to_feedInfoFragment, bundle)
     }
 
     private fun getFeedRecordId() = arguments?.getLong("feedRecordId")!!
