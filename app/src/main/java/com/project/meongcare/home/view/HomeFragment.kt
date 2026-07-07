@@ -72,6 +72,7 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
         initAddDogImageView()
         initDogRecyclerView()
         initCalendarRecyclerView()
+        observeSelectedDatePos()
         initSymptomRecyclerView()
         initSymptomLayout()
         initExcretaLayout()
@@ -222,6 +223,9 @@ class HomeFragment : Fragment(), DateSubmitListener, DogProfileClickListener, Ho
 
     private fun setSelectedDatePos(position: Int) {
         homeViewModel.setSelectedDatePos(position)
+    }
+
+    private fun observeSelectedDatePos() {
         homeViewModel.homeSelectedDatePos.observe(viewLifecycleOwner) { selectedDatePos ->
             if (selectedDatePos != null) {
                 Log.d("homeSelectedDatePos", selectedDatePos.toString())
