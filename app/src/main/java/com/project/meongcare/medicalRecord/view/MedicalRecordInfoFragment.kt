@@ -1,27 +1,30 @@
 package com.project.meongcare.medicalRecord.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentMedicalRecordInfoBinding
-import com.project.meongcare.medicalRecord.model.entities.MedicalRecordGet
-import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleDate
-import com.project.meongcare.medicalRecord.model.utils.MedicalRecordUtils.Companion.convertMDateToSimpleTime
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.medicalRecord.viewmodel.MedicalRecordViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Response
 
 @AndroidEntryPoint
 class MedicalRecordInfoFragment : Fragment() {
-    private lateinit var binding: FragmentMedicalRecordInfoBinding
+    private var _binding: FragmentMedicalRecordInfoBinding? = null
+    private val binding get() = _binding!!
+
     private val medicalRecordViewModel: MedicalRecordViewModel by viewModels()
 
     private var medicalRecordId = 0L
@@ -31,7 +34,7 @@ class MedicalRecordInfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMedicalRecordInfoBinding.inflate(inflater)
+        _binding = FragmentMedicalRecordInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,50 +43,52 @@ class MedicalRecordInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        getMedicalRecordId()
-        setMedicalRecord()
-        getMedicalRecord()
-        initBackBtn()
-        initDeleteBtn()
-        initMoveToEditBtn()
+        medicalRecordId = arguments?.getLong("medicalRecordId") ?: 0L
+        initComposeView()
+        medicalRecordViewModel.getMedicalRecord(medicalRecordId)
+        observeMedicalRecordDeleted()
     }
 
-    private fun getMedicalRecordId() {
-        if (arguments != null) {
-            medicalRecordId = arguments?.getLong("medicalRecordId")!!
-        }
-    }
+    private fun initComposeView() {
+        binding.composeViewMedicalRecordInfo.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val medicalRecordResponse by medicalRecordViewModel.medicalRecord.observeAsState()
 
-    private fun initMoveToEditBtn() {
-        binding.imagebuttonMedicalrecordinfoEdit.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable("medicalRecord", medicalRecordViewModel.medicalRecord.value!!.body())
-            findNavController().navigate(R.id.action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment, bundle)
-        }
-    }
+                    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
-    private fun initDeleteBtn() {
-        binding.imagebuttonMedicalrecordinfoDelete.setOnClickListener {
-            binding.includeMedicalrecordinfoDeleteDialog.root.visibility = View.VISIBLE
-            initDeleteDialog()
-        }
-    }
+                    MedicalRecordInfoScreen(
+                        record = medicalRecordResponse?.body(),
+                        onBackClick = { findNavController().popBackStack() },
+                        onEditClick = ::navigateToMedicalRecordInfoEdit,
+                        onDeleteClick = { showDeleteDialog = true },
+                    )
 
-    private fun initDeleteDialog() {
-        binding.includeMedicalrecordinfoDeleteDialog.run {
-            buttonDeleteDialogCancel.setOnClickListener {
-                binding.includeMedicalrecordinfoDeleteDialog.root.visibility = View.GONE
-            }
-            buttonDeleteDialogDelete.setOnClickListener {
-                medicalRecordViewModel.deleteMedicalRecordList(
-                    intArrayOf(medicalRecordId.toInt()),
-                )
-                isDeleteSuccess()
+                    if (showDeleteDialog) {
+                        MedicalRecordDeleteDialog(
+                            onCancel = { showDeleteDialog = false },
+                            onConfirm = {
+                                showDeleteDialog = false
+                                medicalRecordViewModel.deleteMedicalRecordList(
+                                    intArrayOf(medicalRecordId.toInt()),
+                                )
+                            },
+                        )
+                    }
+                }
             }
         }
     }
 
-    private fun isDeleteSuccess() {
+    private fun navigateToMedicalRecordInfoEdit() {
+        val record = medicalRecordViewModel.medicalRecord.value?.body() ?: return
+        val bundle = Bundle()
+        bundle.putParcelable("medicalRecord", record)
+        findNavController().navigate(R.id.action_medicalRecordInfoFragment_to_medicalRecordInfoEditFragment, bundle)
+    }
+
+    private fun observeMedicalRecordDeleted() {
         medicalRecordViewModel.deleteMedicalRecordResponse.observe(viewLifecycleOwner) { response ->
             if (response != null && response == 200) {
                 CustomSnackBar.make(
@@ -96,67 +101,8 @@ class MedicalRecordInfoFragment : Fragment() {
         }
     }
 
-    private fun initBackBtn() {
-        binding.imagebuttonMedicalrecordinfoBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun setMedicalRecord() {
-        medicalRecordViewModel.medicalRecord.observe(viewLifecycleOwner) {
-            if (it.code() == 200) {
-                val record = it.body() as MedicalRecordGet
-                setImg(record)
-                setDate(record)
-                setTime(record)
-                setHospital(record)
-                setVeterinarian(record)
-                setNote(record)
-            }
-        }
-    }
-
-    private fun setImg(record: MedicalRecordGet) {
-        if (!record.imageUrl.isNullOrBlank()) {
-            binding.imageviewMedicalrecordinfoCarrier.visibility = View.GONE
-            Glide.with(this@MedicalRecordInfoFragment)
-                .load(record.imageUrl)
-                .into(binding.imageviewMedicalrecordinfoImage)
-        }
-    }
-
-    private fun setNote(record: MedicalRecordGet) {
-        binding.textViewMedicalrecordinfoNoteDetail.text = record.note
-        binding.textviewMedicalrecordinfoNoteCount.text =
-            getString(R.string.medicalrecord_note_length, record.note.length)
-    }
-
-    private fun setVeterinarian(record: MedicalRecordGet) {
-        binding.textViewMedicalrecordinfoVeterinarianName.text = record.doctorName
-        binding.textviewMedicalrecordinfoVeterinarianNameCount.text =
-            getString(R.string.medicalrecord_veterinarian_name_length, record.doctorName.length)
-    }
-
-    private fun setHospital(record: MedicalRecordGet) {
-        binding.textviewMedicalrecordinfoHospitalName.text = record.hospitalName
-        binding.textviewMedicalrecordinfoHospitalNameCount.text =
-            getString(R.string.medicalrecord_hospital_name_length, record.hospitalName.length)
-    }
-
-    private fun setTime(record: MedicalRecordGet) {
-        binding.textvuewMedicalrecordinfoTime.text = convertMDateToSimpleTime(record.dateTime)
-    }
-
-    private fun setDate(record: MedicalRecordGet) {
-        binding.textvuewMedicalrecordinfoSelectDate.text = convertMDateToSimpleDate(record.dateTime)
-    }
-
-    private fun getMedicalRecord() {
-        medicalRecordViewModel.getMedicalRecord(medicalRecordId)
-    }
-
-    private fun testGetRecord(it: Response<MedicalRecordGet>) {
-        Log.d("진료기록 테스트", it.toString())
-        Log.d("진료기록 테스트2", it.body().toString())
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
