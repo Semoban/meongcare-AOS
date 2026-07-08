@@ -43,7 +43,7 @@
 | 5 | `weight` (MPAndroidChart는 `AndroidView` 인터롭 유지, 편집 다이얼로그는 Compose `Dialog`) | 1 | ✅ 완료 |
 | 6 | `feed` (메인/Add/Edit/Info/OldFeed/SearchFeed — Add·Edit는 `FeedAddEditScreen` 공유, DateRangeCalendarView는 `AndroidView` 인터롭) | 6 | ✅ 완료 |
 | 7 | `medicalRecord` (메인/Add/Info/InfoEdit/ListEdit — Add·InfoEdit는 `MedicalRecordFormScreen` 공유, 캘린더·TimePicker는 `AndroidView` 인터롭, 날짜·사진 바텀시트는 기존 Fragment 유지) | 5 | ✅ 완료 |
-| 8 | `supplement` (FCM 연계 주의) | ~8 | |
+| 8 | `supplement` (메인/Add/Info/RoutineEdit — 주기·시간·사진 바텀시트는 기존 Fragment 유지, static Retrofit → Hilt `SupplementRetrofitClient` 전환, 미사용 SearchFragment 삭제) | 4 | ✅ 완료 |
 | 9 | `info` / `login` / `onboarding` | ~10 | |
 | 10 | `home` (dog selector, 날짜 스트립, 요약 카드) | ~3 | |
 | 11 | `toolbar` 공유 Fragment → 공용 컴포저블 전환 | 1 | |
@@ -59,6 +59,6 @@
 ## 마이그레이션 시 함께 정리할 것
 
 - 구형 ViewModel 패턴(`GlobalApplication.applicationContext()` 직접 호출)은 화면 전환 시 CLAUDE.md의 신규 패턴(Hilt 주입 `UserPreferences` + `asLiveData()`)으로 교체
-- `supplement`/`symptom`의 static Retrofit 싱글톤 → Hilt 주입 `RetrofitClient`로 교체
+- `symptom`의 static Retrofit 싱글톤 → Hilt 주입 `RetrofitClient`로 교체 (`supplement`는 8단계에서 완료)
 - RecyclerView Adapter는 컴포저블 `LazyColumn`으로 대체되므로 삭제
 - LiveData는 화면 전환이 끝난 feature부터 StateFlow 전환 검토
