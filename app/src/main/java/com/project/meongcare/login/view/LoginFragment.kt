@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentLoginBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.home.view.LoadingDialog
 import com.project.meongcare.login.model.data.repository.FirebaseCloudMessagingService
 import com.project.meongcare.login.model.entities.LoginRequest
@@ -38,7 +40,8 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    private lateinit var binding: FragmentLoginBinding
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
     private lateinit var provider: String
     private var loadingDialog: LoadingDialog? = null
 
@@ -57,7 +60,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentLoginBinding.inflate(inflater)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -67,8 +70,8 @@ class LoginFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        initComposeView()
         getProvider()
-        addListeners()
         loginResponseProcess()
     }
 
@@ -152,17 +155,17 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun addListeners() {
-        binding.buttonKakaoLogin.setOnClickListener {
-            kakaoLogin()
-        }
-
-        binding.buttonNaverLogin.setOnClickListener {
-            naverLogin()
-        }
-
-        binding.buttonGoogleLogin.setOnClickListener {
-            googleLogin()
+    private fun initComposeView() {
+        binding.composeViewLogin.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    LoginScreen(
+                        onKakaoLoginClick = ::kakaoLogin,
+                        onNaverLoginClick = ::naverLogin,
+                    )
+                }
+            }
         }
     }
 
@@ -344,6 +347,7 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         dismissLoadingDialog()
         loadingDialog = null
+        _binding = null
     }
 
     fun getDeviceToken(): String {
