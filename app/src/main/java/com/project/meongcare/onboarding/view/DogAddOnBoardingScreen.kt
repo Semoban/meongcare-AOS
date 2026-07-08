@@ -95,6 +95,7 @@ fun DogAddOnBoardingScreen(
             modifier =
                 Modifier
                     .padding(top = 32.dp)
+                    .align(Alignment.CenterHorizontally)
                     .width(178.dp)
                     .height(125.dp)
                     .clip(RoundedCornerShape(30.dp))
