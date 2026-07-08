@@ -1,5 +1,6 @@
-package com.project.meongcare.info.view
+package com.project.meongcare.onboarding.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
@@ -37,11 +37,16 @@ import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
-import com.project.meongcare.info.model.entities.GetDogInfoResponse
+import com.project.meongcare.info.view.GenderChip
+import com.project.meongcare.info.view.InfoFormClickBox
+import com.project.meongcare.info.view.InfoFormNumberField
+import com.project.meongcare.info.view.InfoFormTextField
+import com.project.meongcare.info.view.InfoGlideImage
+import com.project.meongcare.info.view.NeuterCheckbox
 import com.project.meongcare.onboarding.model.entities.Gender
 import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
 
-data class PetEditFormResult(
+data class DogAddFormResult(
     val name: String,
     val gender: String,
     val castrate: Boolean,
@@ -52,25 +57,26 @@ data class PetEditFormResult(
 )
 
 @Composable
-fun PetEditScreen(
-    initialDogInfo: GetDogInfoResponse,
+fun DogAddOnBoardingScreen(
     imageModel: Any?,
     dogType: String?,
     birthDate: String?,
-    onBackClick: () -> Unit,
+    showCancelButton: Boolean,
     onImageClick: () -> Unit,
     onTypeClick: () -> Unit,
     onBirthdayClick: () -> Unit,
-    onComplete: (PetEditFormResult) -> Unit,
+    onCancelClick: () -> Unit,
+    onComplete: (DogAddFormResult) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var name by rememberSaveable { mutableStateOf(initialDogInfo.name) }
-    var weight by rememberSaveable { mutableStateOf(initialDogInfo.weight.toString()) }
-    var backRound by rememberSaveable { mutableStateOf(formatBodySize(initialDogInfo.backRound)) }
-    var chestRound by rememberSaveable { mutableStateOf(formatBodySize(initialDogInfo.chestRound)) }
-    var neckRound by rememberSaveable { mutableStateOf(formatBodySize(initialDogInfo.neckRound)) }
-    var selectedGender by rememberSaveable { mutableStateOf(initialDogInfo.sex) }
-    var castrate by rememberSaveable { mutableStateOf(initialDogInfo.castrate) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var weight by rememberSaveable { mutableStateOf("") }
+    var backRound by rememberSaveable { mutableStateOf("") }
+    var chestRound by rememberSaveable { mutableStateOf("") }
+    var neckRound by rememberSaveable { mutableStateOf("") }
+    var selectedGender by rememberSaveable { mutableStateOf<String?>(null) }
+    var castrate by rememberSaveable { mutableStateOf(false) }
+    var submitAttempted by remember { mutableStateOf(false) }
 
     Column(
         modifier =
@@ -78,51 +84,62 @@ fun PetEditScreen(
                 .fillMaxSize()
                 .background(White)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 36.dp),
+                .padding(horizontal = 32.dp),
     ) {
-        Row(
+        Text(
+            text = "반려견에 대해 알려주세요",
+            style = SemobanTypography.title2SemiBold,
+            modifier = Modifier.padding(top = 32.dp),
+        )
+        Box(
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .padding(top = 15.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                    .padding(top = 32.dp)
+                    .width(178.dp)
+                    .height(125.dp)
+                    .clip(RoundedCornerShape(30.dp))
+                    .background(Gray2)
+                    .clickable { onImageClick() },
+            contentAlignment = Alignment.Center,
         ) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+            if (imageModel == null) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(R.drawable.pet_add_dog),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = "사진을 첨부해주세요",
+                        style = SemobanTypography.body3Regular,
+                        color = Gray5,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
+            } else {
+                InfoGlideImage(
+                    model = imageModel,
+                    errorRes = R.drawable.dog_profile_default,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
-        InfoGlideImage(
-            model = imageModel,
-            errorRes = R.drawable.dog_profile_default,
-            modifier =
-                Modifier
-                    .padding(top = 42.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .width(250.dp)
-                    .height(151.dp)
-                    .clip(RoundedCornerShape(30.dp))
-                    .clickable { onImageClick() },
-        )
-        PetFormLabel(text = "이름", modifier = Modifier.padding(top = 32.dp))
+        DogAddFormLabel(text = "이름", modifier = Modifier.padding(top = 24.dp))
         InfoFormTextField(
             value = name,
             onValueChange = { name = it },
             hint = "이름을 입력해주세요",
-            showError = name.isEmpty(),
+            showError = submitAttempted && name.isEmpty(),
             modifier = Modifier.padding(top = 8.dp),
         )
-        PetFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
         InfoFormClickBox(
             value = dogType.orEmpty(),
             hint = "품종을 입력해주세요",
-            showError = dogType.isNullOrEmpty(),
+            showError = submitAttempted && dogType.isNullOrEmpty(),
             onClick = onTypeClick,
             modifier = Modifier.padding(top = 8.dp),
         )
-        PetFormLabel(text = "성별", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = "성별", modifier = Modifier.padding(top = 24.dp))
         Row(
             modifier = Modifier.padding(top = 8.dp),
             verticalAlignment = Alignment.Top,
@@ -144,11 +161,11 @@ fun PetEditScreen(
                 modifier = Modifier.padding(start = 8.dp, top = 7.dp),
             )
         }
-        PetFormLabel(text = "생일을 알려주세요", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = "생일을 알려주세요", modifier = Modifier.padding(top = 24.dp))
         InfoFormClickBox(
             value = birthDate?.let { dateFormat(it) }.orEmpty(),
             hint = "날짜를 선택해주세요",
-            showError = birthDate.isNullOrEmpty(),
+            showError = submitAttempted && birthDate.isNullOrEmpty(),
             onClick = onBirthdayClick,
             modifier = Modifier.padding(top = 4.dp),
         )
@@ -158,19 +175,23 @@ fun PetEditScreen(
             color = Gray5,
             modifier = Modifier.padding(top = 4.dp),
         )
-        PetFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
         InfoFormNumberField(
             value = weight,
             onValueChange = { weight = it },
             hint = "",
             unit = "Kg",
-            showError = weight.isEmpty(),
+            showError = submitAttempted && weight.isEmpty(),
             modifier =
                 Modifier
                     .padding(top = 4.dp)
                     .width(148.dp),
         )
-        PetFormLabel(text = "치수", modifier = Modifier.padding(top = 24.dp))
+        Text(
+            text = "치수",
+            style = SemobanTypography.body1SemiBold,
+            modifier = Modifier.padding(top = 24.dp),
+        )
         Row(modifier = Modifier.padding(top = 8.dp)) {
             InfoFormNumberField(
                 value = backRound,
@@ -207,42 +228,46 @@ fun PetEditScreen(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 40.dp, bottom = 72.dp)
-                    .height(45.dp),
+                    .padding(top = 42.dp, bottom = 56.dp)
+                    .height(44.dp),
         ) {
-            Box(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .fillMaxSize()
-                        .background(White, RoundedCornerShape(4.dp))
-                        .border(1.dp, Gray3, RoundedCornerShape(4.dp))
-                        .clickable { onBackClick() },
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "취소",
-                    style = SemobanTypography.bottom1SemiBold,
-                    color = Gray4,
-                )
+            if (showCancelButton) {
+                Box(
+                    modifier =
+                        Modifier
+                            .width(112.dp)
+                            .fillMaxSize()
+                            .background(White, RoundedCornerShape(5.dp))
+                            .border(1.dp, Gray3, RoundedCornerShape(5.dp))
+                            .clickable { onCancelClick() },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "취소",
+                        style = SemobanTypography.bottom1SemiBold,
+                        color = Gray4,
+                    )
+                }
             }
             Box(
                 modifier =
                     Modifier
                         .weight(1f)
                         .fillMaxSize()
-                        .padding(start = 8.dp)
-                        .background(Main4, RoundedCornerShape(4.dp))
+                        .padding(start = if (showCancelButton) 8.dp else 0.dp)
+                        .background(Main4, RoundedCornerShape(5.dp))
                         .clickable {
+                            submitAttempted = true
                             if (name.isNotEmpty() &&
                                 !dogType.isNullOrEmpty() &&
+                                selectedGender != null &&
                                 !birthDate.isNullOrEmpty() &&
                                 weight.isNotEmpty()
                             ) {
                                 onComplete(
-                                    PetEditFormResult(
+                                    DogAddFormResult(
                                         name = name,
-                                        gender = selectedGender,
+                                        gender = selectedGender!!,
                                         castrate = castrate,
                                         weight = weight.toDouble(),
                                         backRound = backRound.toDoubleOrNull(),
@@ -264,32 +289,37 @@ fun PetEditScreen(
     }
 }
 
+@Composable
+private fun DogAddFormLabel(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = text, style = SemobanTypography.body1SemiBold)
+        Image(
+            painter = painterResource(R.drawable.essential_input_element_icon),
+            contentDescription = "필수 입력",
+            modifier = Modifier.padding(start = 8.dp),
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun PetEditScreenPreview() {
+private fun DogAddOnBoardingScreenPreview() {
     SemobanTheme {
-        PetEditScreen(
-            initialDogInfo =
-                GetDogInfoResponse(
-                    dogId = 1,
-                    name = "몽실이",
-                    imageUrl = null,
-                    type = "말티즈",
-                    sex = "female",
-                    castrate = true,
-                    birthDate = "2020-05-01",
-                    backRound = 30.0,
-                    neckRound = 20.0,
-                    chestRound = 40.0,
-                    weight = 3.5,
-                ),
+        DogAddOnBoardingScreen(
             imageModel = null,
-            dogType = "말티즈",
-            birthDate = "2020-05-01",
-            onBackClick = {},
+            dogType = null,
+            birthDate = null,
+            showCancelButton = true,
             onImageClick = {},
             onTypeClick = {},
             onBirthdayClick = {},
+            onCancelClick = {},
             onComplete = {},
         )
     }

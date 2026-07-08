@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -28,17 +30,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.bumptech.glide.Glide
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Black30
+import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
 import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTypography
+import com.project.meongcare.designsystem.theme.Sub1
 import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.onboarding.model.entities.Gender
 
@@ -305,6 +312,144 @@ internal fun GenderChip(
             text = if (gender == Gender.FEMALE) "여아" else "남아",
             style = SemobanTypography.body1Medium,
             color = if (isSelected) Main4 else Gray4,
+        )
+    }
+}
+
+@Composable
+internal fun InfoFormTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    showError: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    var fieldModifier =
+        Modifier
+            .fillMaxWidth()
+            .height(45.dp)
+            .background(Gray1, RoundedCornerShape(5.dp))
+    if (showError) {
+        fieldModifier = fieldModifier.border(1.dp, Sub1, RoundedCornerShape(5.dp))
+    }
+
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        textStyle = SemobanTypography.body2Medium.copy(color = Black),
+        singleLine = true,
+        modifier = modifier.fillMaxWidth(),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = fieldModifier.padding(horizontal = 20.dp),
+                contentAlignment = Alignment.CenterStart,
+            ) {
+                if (value.isEmpty()) {
+                    Text(
+                        text = if (showError) "필수 입력 값입니다" else hint,
+                        style = SemobanTypography.body2Medium,
+                        color = if (showError) Sub1 else Gray4,
+                    )
+                }
+                innerTextField()
+            }
+        },
+    )
+}
+
+@Composable
+internal fun InfoFormClickBox(
+    value: String,
+    hint: String,
+    showError: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var boxModifier =
+        modifier
+            .fillMaxWidth()
+            .height(45.dp)
+            .background(Gray1, RoundedCornerShape(5.dp))
+    if (showError) {
+        boxModifier = boxModifier.border(1.dp, Sub1, RoundedCornerShape(5.dp))
+    }
+    Box(
+        modifier =
+            boxModifier
+                .clickable { onClick() }
+                .padding(horizontal = 20.dp),
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        val text =
+            when {
+                showError && value.isEmpty() -> "필수 입력 값입니다"
+                value.isEmpty() -> hint
+                else -> value
+            }
+        Text(
+            text = text,
+            style = SemobanTypography.body2Medium,
+            color =
+                when {
+                    showError && value.isEmpty() -> Sub1
+                    value.isEmpty() -> Gray4
+                    else -> Black
+                },
+        )
+    }
+}
+
+@Composable
+internal fun InfoFormNumberField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    unit: String,
+    showError: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    var fieldModifier =
+        modifier
+            .height(46.dp)
+            .background(Gray1, RoundedCornerShape(5.dp))
+    if (showError) {
+        fieldModifier = fieldModifier.border(1.dp, Sub1, RoundedCornerShape(5.dp))
+    }
+    Row(
+        modifier = fieldModifier.padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            textStyle =
+                SemobanTypography.body2Medium.copy(
+                    color = Black,
+                    textAlign = TextAlign.End,
+                ),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            modifier = Modifier.weight(1f),
+            decorationBox = { innerTextField ->
+                Box(contentAlignment = Alignment.CenterEnd) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = if (showError) "필수 입력 값입니다" else hint,
+                            style = SemobanTypography.body2Medium,
+                            color = if (showError) Sub1 else Gray4,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+        )
+        Text(
+            text = unit,
+            style = SemobanTypography.body1Regular,
+            color = Gray4,
+            modifier = Modifier.padding(start = 4.dp),
         )
     }
 }

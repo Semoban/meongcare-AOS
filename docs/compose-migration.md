@@ -44,7 +44,7 @@
 | 6 | `feed` (메인/Add/Edit/Info/OldFeed/SearchFeed — Add·Edit는 `FeedAddEditScreen` 공유, DateRangeCalendarView는 `AndroidView` 인터롭) | 6 | ✅ 완료 |
 | 7 | `medicalRecord` (메인/Add/Info/InfoEdit/ListEdit — Add·InfoEdit는 `MedicalRecordFormScreen` 공유, 캘린더·TimePicker는 `AndroidView` 인터롭, 날짜·사진 바텀시트는 기존 Fragment 유지) | 5 | ✅ 완료 |
 | 8 | `supplement` (메인/Add/Info/RoutineEdit — 주기·시간·사진 바텀시트는 기존 Fragment 유지, static Retrofit → Hilt `SupplementRetrofitClient` 전환, 미사용 SearchFragment 삭제) | 4 | ✅ 완료 |
-| 9 | `info` / `login` / `onboarding` | ~10 | |
+| 9 | `info` / `login` / `onboarding` (Profile/Setting/PetInfo/PetEdit/Login/OnBoarding 페이저/Complete/DogAdd/DogVarietySearch — 사진·생일 바텀시트는 기존 Fragment 유지, 온보딩 ViewPager2 → `HorizontalPager`, PetEdit·DogAdd 폼 필드는 `InfoComponents.kt` 공유) | 10 | ✅ 완료 |
 | 10 | `home` (dog selector, 날짜 스트립, 요약 카드) | ~3 | |
 | 11 | `toolbar` 공유 Fragment → 공용 컴포저블 전환 | 1 | |
 | 12 | 다이얼로그·바텀시트·스낵바(`CustomSnackBar`) 공용 컴포넌트화 | - | |
