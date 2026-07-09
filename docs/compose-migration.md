@@ -56,11 +56,33 @@
 - 의존성: ui, ui-tooling-preview, foundation, material3, runtime-livedata, lifecycle-viewmodel-compose, activity-compose
 - Kotlin/AGP 업그레이드 시 [compiler ↔ Kotlin 호환표](https://developer.android.com/jetpack/androidx/releases/compose-kotlin) 확인 필요. Kotlin 2.0 이상으로 올리면 `org.jetbrains.kotlin.plugin.compose` 플러그인 방식으로 교체한다.
 
-## 마이그레이션 시 함께 정리할 것
+## 후속 과제 (로드맵 완료 이후)
 
-- 구형 ViewModel 패턴(`GlobalApplication.applicationContext()` 직접 호출)은 화면 전환 시 CLAUDE.md의 신규 패턴(Hilt 주입 `UserPreferences` + `asLiveData()`)으로 교체
-- `symptom`의 static Retrofit 싱글톤 → Hilt 주입 `RetrofitClient`로 교체 (`supplement`는 8단계에서 완료)
-- RecyclerView Adapter는 컴포저블 `LazyColumn`으로 대체되므로 삭제
-- LiveData는 화면 전환이 끝난 feature부터 StateFlow 전환 검토
-- `CustomSnackBar`는 Fragment 호스트 구조에서는 View 기반으로 유지한다. Compose Scaffold/SnackbarHost 전환은 Navigation Compose 도입과 함께 검토
-- 날짜 계열 바텀시트 3종(`CalendarBottomSheetFragment`/`CalendarBottomSheetDialogFragment`/`MedicalRecordDateBottomSheetDialogFragment`)과 `BirthdayBottomSheetFragment`, supplement 주기·시간 바텀시트는 동작 차이가 있어 미통합 — 추후 통합 후보
+0~13단계 완료(2026-07-09) 시점 기준 남은 작업. 우선순위 순.
+
+### 1. 구형 패턴 정리 (소규모·안전, 먼저 진행)
+
+- [ ] `symptom`의 static Retrofit 싱글톤(`SymptomRetrofitInstance.getInstance()`) → Hilt 주입 `RetrofitClient`로 교체 (`supplement`는 8단계에서 완료). `SymptomRepository`가 인터페이스 없이 직접 생성되는 구조도 함께 interface + impl + Module 3파일 구조로 정리
+- [ ] `GlobalApplication.applicationContext()` 직접 호출 잔재 제거 — `SymptomViewModel`, `MedicalRecordViewModel` 2곳. CLAUDE.md 신규 패턴(Hilt 주입 `UserPreferences` + `asLiveData()`)으로 교체
+- [ ] 구형 토큰 패턴(`fetchAccessToken()` + collect) 정리 — excreta 5개·feed 계열·weight Fragment. `accessTokenPreferencesLiveData` 관찰 방식으로 통일
+
+### 2. 상태 관리 현대화
+
+- [ ] LiveData → StateFlow 전환 — 화면 전환이 끝났으므로 feature 단위로 점진 진행. `observeAsState()` → `collectAsStateWithLifecycle()` 교체 (`lifecycle-runtime-compose` 의존성 추가 필요)
+
+### 3. Navigation Compose 도입 (대규모, 마지막)
+
+- [ ] Fragment 껍데기 제거 + Navigation Compose 전환. 이때 함께 처리:
+  - `CustomSnackBar` → Compose `SnackbarHost` 전환 (Fragment 호스트 구조에서는 View 기반 유지가 결정 사항)
+  - 날짜 계열 바텀시트 통합 — `CalendarBottomSheetFragment` / `CalendarBottomSheetDialogFragment` / `MedicalRecordDateBottomSheetDialogFragment` 3종 + `BirthdayBottomSheetFragment`, supplement 주기·시간 바텀시트 (동작 차이가 있어 12단계에서 미통합)
+  - `MainActivity`의 바텀 내비게이션·FAB Compose 전환
+
+### 4. 빌드 인프라
+
+- [ ] Kotlin 2.x 업그레이드 — `org.jetbrains.kotlin.plugin.compose` 플러그인 방식으로 교체하고 compiler extension 버전 제거 (위 "빌드 설정" 참고)
+
+### 참고: 관찰된 정리 후보 (선택)
+
+- feature별 TopBar 컴포저블(`InfoTopBar`/`ExcretaTopBar`/`SupplementTopBar` 등) 중복 — designsystem 통합 후보
+- `medicalRecord/MedicalRecordDeleteDialog`는 공용 `DeleteDialogOverlay`와 별개 구현으로 잔존 — 디자인 확인 후 통합 검토
+- 미사용 문자열·색상 리소스 정리 (13단계는 레이아웃/drawable만 수행)
