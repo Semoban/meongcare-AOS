@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -318,7 +319,7 @@ private fun HomeDogNotExist(modifier: Modifier = Modifier) {
             modifier = Modifier.size(width = 88.dp, height = 103.dp),
         )
         Text(
-            text = "등록된 강아지가 없습니다. 강아지를 등록해주세요.",
+            text = stringResource(R.string.home_dog_not_exist),
             style = SemobanTypography.body3Medium,
             color = Gray5,
             modifier = Modifier.padding(top = 16.dp),
@@ -342,15 +343,15 @@ private fun HomeSymptomCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "이상 증상",
+                text = stringResource(R.string.home_symptom_title),
                 style = SemobanTypography.title3SemiBold,
             )
             Text(
                 text =
                     if (symptoms.isEmpty()) {
-                        "이상 징후 기록이 없습니다"
+                        stringResource(R.string.home_symptom_not_exist)
                     } else {
-                        "오늘 이상 징후가 발견되었어요"
+                        stringResource(R.string.home_symptom_exist)
                     },
                 style = SemobanTypography.body3Regular,
                 color = Gray5,
@@ -434,20 +435,20 @@ private fun HomeExcretaCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "대소변",
+                text = stringResource(R.string.home_excreta_title),
                 style = SemobanTypography.title3SemiBold,
             )
             Spacer(modifier = Modifier.weight(1f))
             HomeExcretaCountChip(
                 iconRes = R.drawable.home_feces,
-                label = "대변",
+                label = stringResource(R.string.home_excreta_feces),
                 count = fecesCount,
                 containerColor = Main1,
                 contentColor = Main4,
             )
             HomeExcretaCountChip(
                 iconRes = R.drawable.home_urine,
-                label = "소변",
+                label = stringResource(R.string.home_excreta_urine),
                 count = urineCount,
                 containerColor = Sub2,
                 contentColor = Sub3,
@@ -484,7 +485,7 @@ private fun HomeExcretaCountChip(
                     .padding(3.dp),
         )
         Text(
-            text = "$label ${count}회",
+            text = stringResource(R.string.home_excreta_count_format, label, count),
             style = SemobanTypography.body3Medium,
             color = contentColor,
             modifier = Modifier.padding(start = 8.dp),
@@ -511,7 +512,7 @@ private fun HomeSupplementCard(
                         .padding(start = 16.dp, top = 12.dp, bottom = 20.dp),
             ) {
                 Text(
-                    text = "영양제",
+                    text = stringResource(R.string.home_supplement_title),
                     style = SemobanTypography.title3SemiBold,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -578,7 +579,7 @@ private fun HomeWeightCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "체중",
+                text = stringResource(R.string.home_weight_title),
                 style = SemobanTypography.title3SemiBold,
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -611,12 +612,12 @@ private fun HomeFeedCard(
         ) {
             Column {
                 Text(
-                    text = "하루 섭취량",
+                    text = stringResource(R.string.home_feed_daily_intake),
                     style = SemobanTypography.body3Regular,
                     color = Gray4,
                 )
                 Text(
-                    text = "사료",
+                    text = stringResource(R.string.home_feed_title),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.padding(top = 4.dp),
                 )

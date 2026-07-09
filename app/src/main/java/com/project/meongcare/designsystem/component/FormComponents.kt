@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ internal fun GenderChip(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = if (gender == Gender.FEMALE) "여아" else "남아",
+            text = stringResource(if (gender == Gender.FEMALE) R.string.petadd_female else R.string.petadd_male),
             style = SemobanTypography.body1Medium,
             color = if (isSelected) Main4 else Gray4,
         )
@@ -97,7 +98,7 @@ internal fun FormTextField(
             ) {
                 if (value.isEmpty()) {
                     Text(
-                        text = if (showError) "필수 입력 값입니다" else hint,
+                        text = if (showError) stringResource(R.string.designsystem_required_input) else hint,
                         style = SemobanTypography.body2Medium,
                         color = if (showError) Sub1 else Gray4,
                     )
@@ -133,7 +134,7 @@ internal fun FormClickBox(
     ) {
         val text =
             when {
-                showError && value.isEmpty() -> "필수 입력 값입니다"
+                showError && value.isEmpty() -> stringResource(R.string.designsystem_required_input)
                 value.isEmpty() -> hint
                 else -> value
             }
@@ -185,7 +186,7 @@ internal fun FormNumberField(
                 Box(contentAlignment = Alignment.CenterEnd) {
                     if (value.isEmpty()) {
                         Text(
-                            text = if (showError) "필수 입력 값입니다" else hint,
+                            text = if (showError) stringResource(R.string.designsystem_required_input) else hint,
                             style = SemobanTypography.body2Medium,
                             color = if (showError) Sub1 else Gray4,
                             textAlign = TextAlign.End,
@@ -224,11 +225,11 @@ internal fun NeuterCheckbox(
                 painterResource(
                     if (checked) R.drawable.all_check_24dp else R.drawable.all_un_check_16dp,
                 ),
-            contentDescription = if (checked) "중성화 함" else "중성화 안 함",
+            contentDescription = stringResource(if (checked) R.string.designsystem_neuter_checked else R.string.designsystem_neuter_unchecked),
             modifier = Modifier.size(16.dp),
         )
         Text(
-            text = "중성화\n여부",
+            text = stringResource(R.string.petadd_neuter_status),
             style = SemobanTypography.body1Medium,
             color = Color(0xFF4B4A4A),
             modifier = Modifier.padding(start = 7.dp),

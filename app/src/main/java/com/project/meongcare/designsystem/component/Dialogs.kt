@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Black30
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
@@ -83,7 +85,7 @@ internal fun ConfirmDialog(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "취소",
+                            text = stringResource(R.string.all_cancel),
                             style = SemobanTypography.bottom2SemiBold,
                             color = Gray5,
                         )
@@ -135,12 +137,12 @@ internal fun DeleteDialogOverlay(
         ) {
             Column(modifier = Modifier.padding(vertical = 20.dp)) {
                 Text(
-                    text = "삭제하시겠습니까?",
+                    text = stringResource(R.string.designsystem_delete_dialog_title),
                     style = SemobanTypography.body1Medium,
                     modifier = Modifier.padding(start = 25.dp),
                 )
                 Text(
-                    text = "삭제를 누르면 복구할 수 없습니다.",
+                    text = stringResource(R.string.designsystem_delete_dialog_subtitle),
                     style = SemobanTypography.body2Regular,
                     color = Gray4,
                     modifier = Modifier.padding(start = 25.dp, top = 4.dp),
@@ -161,7 +163,7 @@ internal fun DeleteDialogOverlay(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "취소",
+                            text = stringResource(R.string.all_cancel),
                             style = SemobanTypography.bottom2SemiBold,
                             color = Gray5,
                         )
@@ -177,7 +179,7 @@ internal fun DeleteDialogOverlay(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "삭제",
+                            text = stringResource(R.string.all_delete),
                             style = SemobanTypography.bottom2SemiBold,
                             color = White,
                         )
