@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.FEED_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
@@ -20,7 +21,6 @@ import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentFeedAddEditBinding
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.feed.model.data.local.FeedPhotoListener
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedPutRequest
 import com.project.meongcare.feed.model.utils.FEED_PUT_FAILURE
@@ -30,13 +30,14 @@ import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.FeedPutViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
+import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
-class FeedEditFragment : Fragment(), FeedPhotoListener {
+class FeedEditFragment : Fragment(), PhotoMenuListener {
     private var _binding: FragmentFeedAddEditBinding? = null
     private val binding get() = _binding!!
 
@@ -107,11 +108,11 @@ class FeedEditFragment : Fragment(), FeedPhotoListener {
     }
 
     private fun showPhotoAttachModalBottomSheet() {
-        val photoAttachModalBottomSheet = FeedPhotoAttachModalBottomSheetFragment()
-        photoAttachModalBottomSheet.setPhotoListener(this@FeedEditFragment)
+        val photoAttachModalBottomSheet = PhotoSelectBottomSheetFragment()
+        photoAttachModalBottomSheet.setPhotoMenuListener(this@FeedEditFragment)
         photoAttachModalBottomSheet.show(
             requireActivity().supportFragmentManager,
-            FeedPhotoAttachModalBottomSheetFragment.TAG,
+            PhotoSelectBottomSheetFragment.TAG,
         )
     }
 

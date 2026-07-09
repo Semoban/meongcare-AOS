@@ -1,5 +1,4 @@
 package com.project.meongcare.info.view
-
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.DOG_FOLDER_PATH
@@ -30,7 +30,6 @@ import com.project.meongcare.info.viewmodel.ProfileViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
-import com.project.meongcare.onboarding.view.PhotoSelectBottomSheetFragment
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import com.project.meongcare.weight.model.entities.WeightPostRequest
@@ -39,26 +38,21 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
-
 @AndroidEntryPoint
 class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
     private var _binding: FragmentPetEditBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var dogInfo: GetDogInfoResponse
     private lateinit var filePath: String
     private lateinit var imageFile: File
-
     private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val petEditViewModel: ProfileViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
-
     private var accessToken = ""
     private var refreshToken = ""
     private var isImageUpdated = false
     private var pendingForm: PetEditFormResult? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dogInfo = getDogInfo()
@@ -66,7 +60,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             initDogInfo(dogInfo)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,7 +68,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         _binding = FragmentPetEditBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -87,7 +79,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         observeImageUpload()
         observeReissueResponse()
     }
-
     private fun initComposeView() {
         binding.composeViewPetEdit.run {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
@@ -96,7 +87,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                     val imageUri by petEditViewModel.dogProfile.observeAsState()
                     val dogType by dogTypeSharedViewModel.selectedDogType.observeAsState()
                     val birthDate by petEditViewModel.dogBirth.observeAsState()
-
                     PetEditScreen(
                         initialDogInfo = dogInfo,
                         imageModel = imageUri,
@@ -114,7 +104,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
         }
     }
-
     private fun fetchUserInfo() {
         userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
             if (accessToken != null) {
@@ -127,7 +116,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
         }
     }
-
     private fun observePutResponses() {
         petEditViewModel.dogPutResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
@@ -156,7 +144,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 }
             }
         }
-
         petEditViewModel.postDogWeightResponse.observe(viewLifecycleOwner) { postResponse ->
             if (postResponse != null) {
                 when (postResponse) {
@@ -189,7 +176,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 ).show()
             }
         }
-
         petEditViewModel.patchDogWeightResponse.observe(viewLifecycleOwner) { patchResponse ->
             if (patchResponse != null) {
                 when (patchResponse) {
@@ -223,7 +209,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
         }
     }
-
     private fun observeImageUpload() {
         awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
             if (response != null) {
@@ -238,7 +223,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
         }
     }
-
     private fun observeReissueResponse() {
         userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
@@ -263,14 +247,12 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             }
         }
     }
-
     private fun showPhotoSelectBottomSheet() {
         val modalBottomSheet = PhotoSelectBottomSheetFragment()
         modalBottomSheet.setPhotoMenuListener(this@PetEditFragment)
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
         modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
     }
-
     private fun showBirthdayBottomSheet() {
         val birthdayBottomSheet =
             BirthdayBottomSheetFragment(
@@ -281,7 +263,6 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
         birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
     }
-
     private fun submitDogInfo(form: PetEditFormResult) {
         pendingForm = form
         if (isImageUpdated) {
@@ -290,20 +271,17 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
             putDogInfo(dogInfo.imageUrl)
         }
     }
-
     private fun getPreSignedURL(uri: Uri) {
         imageFile = convertUriToFile(requireContext(), uri)
         filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${imageFile.name}"
         awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
     }
-
     private fun uploadImage(
         preSignedURL: String,
         requestBody: RequestBody,
     ) {
         awsS3ViewModel.uploadImageToS3(preSignedURL, requestBody)
     }
-
     private fun putDogInfo(imageURL: String?) {
         val form = pendingForm ?: return
         val dogPutRequest =
@@ -319,17 +297,14 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
                 form.chestRound,
                 imageURL,
             )
-
         petEditViewModel.putDogInfo(dogInfo.dogId, accessToken, dogPutRequest)
     }
-
     private fun getDogInfo() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("dogInfo", GetDogInfoResponse::class.java)!!
         } else {
             arguments?.getParcelable("dogInfo")!!
         }
-
     private fun initDogInfo(dogInfo: GetDogInfoResponse) {
         if (dogInfo.imageUrl != null) {
             petEditViewModel.setDogProfile(Uri.parse(dogInfo.imageUrl))
@@ -337,16 +312,13 @@ class PetEditFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
         dogTypeSharedViewModel.setDogType(dogInfo.type)
         petEditViewModel.setDogBirth(dogInfo.birthDate)
     }
-
     override fun onUriPassed(uri: Uri) {
         petEditViewModel.setDogProfile(uri)
         isImageUpdated = true
     }
-
     override fun onDateSubmit(str: String) {
         petEditViewModel.setDogBirth(str)
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.DOG_FOLDER_PATH

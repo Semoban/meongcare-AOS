@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
@@ -21,12 +22,11 @@ import com.project.meongcare.databinding.FragmentSupplementAddBinding
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
+import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.snackbar.view.CustomSnackBar
-import com.project.meongcare.supplement.model.data.local.OnPictureChangedListener
 import com.project.meongcare.supplement.model.entities.SupplementPostRequest
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showCycleBottomSheet
 import com.project.meongcare.supplement.utils.SupplementUtils.Companion.showTimeBottomSheet
-import com.project.meongcare.supplement.view.bottomSheet.SupplementPictureBottomSheetDialogFragment
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -35,7 +35,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
-class SupplementAddFragment : Fragment(), OnPictureChangedListener {
+class SupplementAddFragment : Fragment(), PhotoMenuListener {
     private var _binding: FragmentSupplementAddBinding? = null
     private val binding get() = _binding!!
 
@@ -181,13 +181,13 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
     }
 
     private fun showPictureBottomSheet() {
-        val bottomSheetFragment = SupplementPictureBottomSheetDialogFragment()
+        val bottomSheetFragment = PhotoSelectBottomSheetFragment()
 
-        bottomSheetFragment.setOnPictureChangedListener(this)
+        bottomSheetFragment.setPhotoMenuListener(this)
 
         bottomSheetFragment.show(
             parentFragmentManager,
-            "SupplementPictureBottomSheetDialogFragment",
+            PhotoSelectBottomSheetFragment.TAG,
         )
     }
 
@@ -207,7 +207,7 @@ class SupplementAddFragment : Fragment(), OnPictureChangedListener {
         ).show()
     }
 
-    override fun onPictureChanged(uri: Uri) {
+    override fun onUriPassed(uri: Uri) {
         supplementViewModel.supplementAddImg.value = uri
     }
 

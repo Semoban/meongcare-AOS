@@ -14,12 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.CalendarBottomSheetFragment
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.EXCRETA_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.designsystem.theme.SemobanTheme
-import com.project.meongcare.excreta.model.data.local.PhotoListener
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.utils.EXCRETA_POST_FAILURE
 import com.project.meongcare.excreta.utils.EXCRETA_POST_SUCCESS
@@ -33,13 +33,14 @@ import com.project.meongcare.excreta.viewmodel.ExcretaAddViewModel
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
+import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
-class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
+class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoMenuListener {
     private val excretaAddViewModel: ExcretaAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
@@ -151,11 +152,11 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoListener {
     }
 
     private fun showPhotoAttachModalBottomSheet() {
-        val photoAttachModalBottomSheet = PhotoAttachModalBottomSheetFragment()
-        photoAttachModalBottomSheet.setPhotoListener(this@ExcretaAddFragment)
+        val photoAttachModalBottomSheet = PhotoSelectBottomSheetFragment()
+        photoAttachModalBottomSheet.setPhotoMenuListener(this@ExcretaAddFragment)
         photoAttachModalBottomSheet.show(
             requireActivity().supportFragmentManager,
-            PhotoAttachModalBottomSheetFragment.TAG,
+            PhotoSelectBottomSheetFragment.TAG,
         )
     }
 

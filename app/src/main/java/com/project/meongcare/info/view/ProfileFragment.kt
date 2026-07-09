@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.MEMBER_FOLDER_PATH
@@ -249,8 +250,9 @@ class ProfileFragment : Fragment(), PhotoMenuListener {
     }
 
     private fun showPhotoSelectBottomSheet() {
-        val modalBottomSheet = UserProfileSelectBottomSheetFragment()
+        val modalBottomSheet = PhotoSelectBottomSheetFragment()
         modalBottomSheet.setPhotoMenuListener(this@ProfileFragment)
+        modalBottomSheet.setDefaultImageRes(R.drawable.profile_default_image)
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
         modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
     }
