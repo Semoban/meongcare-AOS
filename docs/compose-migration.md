@@ -46,7 +46,7 @@
 | 8 | `supplement` (메인/Add/Info/RoutineEdit — 주기·시간·사진 바텀시트는 기존 Fragment 유지, static Retrofit → Hilt `SupplementRetrofitClient` 전환, 미사용 SearchFragment 삭제) | 4 | ✅ 완료 |
 | 9 | `info` / `login` / `onboarding` (Profile/Setting/PetInfo/PetEdit/Login/OnBoarding 페이저/Complete/DogAdd/DogVarietySearch — 사진·생일 바텀시트는 기존 Fragment 유지, 온보딩 ViewPager2 → `HorizontalPager`, PetEdit·DogAdd 폼 필드는 `InfoComponents.kt` 공유) | 10 | ✅ 완료 |
 | 10 | `home` (dog selector·주간 달력·요약 카드 → `HomeScreen` 단일 화면, 주간 스와이프는 `detectHorizontalDragGestures`, 어댑터 3종·클릭 리스너 인터페이스 삭제) | 1 | ✅ 완료 |
-| 11 | `toolbar` 공유 Fragment → 공용 컴포저블 전환 | 1 | |
+| 11 | `toolbar` 공유 Fragment → `ToolbarCalendarWeek` 공용 컴포저블 전환 (주간 스트립 `CalendarWeekRow`는 home과 공유, 날짜 선택·주 이동 로직은 `ToolbarViewModel`로 이동, 호스트 4개 화면 `FragmentContainerView` 제거) | 1 | ✅ 완료 |
 | 12 | 다이얼로그·바텀시트·스낵바(`CustomSnackBar`) 공용 컴포넌트화 | - | |
 | 13 | 정리: 미사용 XML 레이아웃/drawable 삭제, dataBinding 플래그 제거 검토 | - | |
 

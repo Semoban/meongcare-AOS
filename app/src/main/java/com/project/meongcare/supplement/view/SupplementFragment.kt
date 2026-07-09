@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -17,6 +18,8 @@ import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.medicalRecord.viewmodel.DogViewModel
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.supplement.viewmodel.SupplementViewModel
+import com.project.meongcare.toolbar.view.CalendarBottomSheetDialogFragment
+import com.project.meongcare.toolbar.view.ToolbarCalendarWeek
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Date
@@ -58,21 +61,33 @@ class SupplementFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 SemobanTheme {
+                    val selectedDate by toolbarViewModel.selectedDate.observeAsState()
+                    val dateList by toolbarViewModel.dateList.observeAsState()
+                    val selectedDatePos by toolbarViewModel.selectDatePosition.observeAsState()
                     val dogName by dogViewModel.dogNamePreferencesLiveData.observeAsState()
                     val supplements by supplementViewModel.supplementList.observeAsState()
-                    val selectedDate by toolbarViewModel.selectedDate.observeAsState()
 
-                    SupplementScreen(
-                        dogName = dogName,
-                        supplements = supplements.orEmpty(),
-                        showCheck = selectedDate?.after(Date()) != true,
-                        onAddClick = ::navigateToSupplementAdd,
-                        onEditClick = ::navigateToSupplementRoutineEdit,
-                        onItemClick = ::navigateToSupplementInfo,
-                        onCheckClick = { supplementsRecordId ->
-                            supplementViewModel.checkSupplement(accessToken, supplementsRecordId)
-                        },
-                    )
+                    Column {
+                        ToolbarCalendarWeek(
+                            selectedDate = selectedDate,
+                            dateList = dateList.orEmpty(),
+                            selectedDatePos = selectedDatePos,
+                            onTitleClick = ::showCalendarBottomSheet,
+                            onDateClick = toolbarViewModel::selectDateAt,
+                            onWeekSwipe = toolbarViewModel::moveWeek,
+                        )
+                        SupplementScreen(
+                            dogName = dogName,
+                            supplements = supplements.orEmpty(),
+                            showCheck = selectedDate?.after(Date()) != true,
+                            onAddClick = ::navigateToSupplementAdd,
+                            onEditClick = ::navigateToSupplementRoutineEdit,
+                            onItemClick = ::navigateToSupplementInfo,
+                            onCheckClick = { supplementsRecordId ->
+                                supplementViewModel.checkSupplement(accessToken, supplementsRecordId)
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -104,6 +119,10 @@ class SupplementFragment : Fragment() {
         if (accessToken.isEmpty() || dogId == 0L) return
 
         supplementViewModel.getSupplements(accessToken, dogId, date)
+    }
+
+    private fun showCalendarBottomSheet() {
+        CalendarBottomSheetDialogFragment.show(parentFragmentManager, toolbarViewModel)
     }
 
     private fun navigateToSupplementAdd() {

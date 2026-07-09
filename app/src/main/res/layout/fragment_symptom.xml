@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.compose.ui.platform.ComposeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/compose_view_symptom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray2"
-    android:orientation="vertical"
-    tools:context=".symptom.view.SymptomFragment">
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/toolbar_symptom"
-        android:name="com.project.meongcare.toolbar.view.ToolbarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/compose_view_symptom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+    tools:context=".symptom.view.SymptomFragment" />

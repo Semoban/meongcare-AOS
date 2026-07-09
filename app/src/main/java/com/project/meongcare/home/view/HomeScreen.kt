@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,12 +54,8 @@ import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.Symptom
 import com.project.meongcare.info.view.InfoCircleImage
 import com.project.meongcare.symptom.model.entities.SymptomType
-import com.project.meongcare.toolbar.view.getDate
-import com.project.meongcare.toolbar.view.getDay
+import com.project.meongcare.toolbar.view.CalendarWeekRow
 import java.util.Date
-
-private const val WEEK_SWIPE_DISTANCE_THRESHOLD = 100f
-private const val DAYS_IN_WEEK = 7
 
 @Composable
 fun HomeScreen(
@@ -109,11 +103,12 @@ fun HomeScreen(
             onDogClick = onDogClick,
             onAddDogClick = onAddDogClick,
         )
-        HomeHorizonCalendar(
+        CalendarWeekRow(
             dateList = dateList,
             selectedDatePos = selectedDatePos,
             onDateClick = onDateClick,
             onWeekSwipe = onWeekSwipe,
+            modifier = Modifier.background(White, RoundedCornerShape(bottomStart = 11.dp, bottomEnd = 11.dp)),
         )
         if (showDogNotExist) {
             HomeDogNotExist(
@@ -299,75 +294,6 @@ private fun HomeDogProfileItem(
             color = Black,
             maxLines = 1,
             modifier = Modifier.padding(top = 4.dp),
-        )
-    }
-}
-
-@Composable
-private fun HomeHorizonCalendar(
-    dateList: List<Date>,
-    selectedDatePos: Int?,
-    onDateClick: (Int) -> Unit,
-    onWeekSwipe: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(White, RoundedCornerShape(bottomStart = 11.dp, bottomEnd = 11.dp))
-                .pointerInput(Unit) {
-                    var totalDrag = 0f
-                    detectHorizontalDragGestures(
-                        onDragStart = { totalDrag = 0f },
-                        onDragEnd = {
-                            if (totalDrag <= -WEEK_SWIPE_DISTANCE_THRESHOLD) {
-                                onWeekSwipe(DAYS_IN_WEEK)
-                            } else if (totalDrag >= WEEK_SWIPE_DISTANCE_THRESHOLD) {
-                                onWeekSwipe(-DAYS_IN_WEEK)
-                            }
-                        },
-                    ) { _, dragAmount -> totalDrag += dragAmount }
-                }
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-    ) {
-        dateList.forEachIndexed { index, date ->
-            HomeCalendarDayItem(
-                date = date,
-                isSelected = index == selectedDatePos,
-                onClick = { onDateClick(index) },
-                modifier = Modifier.weight(1f),
-            )
-        }
-    }
-}
-
-@Composable
-private fun HomeCalendarDayItem(
-    date: Date,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val textColor = if (isSelected) Main4 else Black
-    Column(
-        modifier =
-            modifier
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (isSelected) Main1 else White)
-                .clickable { onClick() }
-                .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = getDay(date),
-            style = SemobanTypography.body1Medium,
-            color = textColor,
-        )
-        Text(
-            text = getDate(date),
-            style = SemobanTypography.body1Medium,
-            color = textColor,
         )
     }
 }

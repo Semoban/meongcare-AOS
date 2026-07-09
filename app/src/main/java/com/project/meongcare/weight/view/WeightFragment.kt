@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,8 @@ import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.viewmodel.DogViewModel
 import com.project.meongcare.feed.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
+import com.project.meongcare.toolbar.view.CalendarBottomSheetDialogFragment
+import com.project.meongcare.toolbar.view.ToolbarCalendarWeek
 import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import com.project.meongcare.weight.model.entities.WeightGetRequest
 import com.project.meongcare.weight.model.entities.WeightPatchRequest
@@ -72,23 +75,35 @@ class WeightFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 SemobanTheme {
+                    val selectedDate by toolbarViewModel.selectedDate.observeAsState()
+                    val dateList by toolbarViewModel.dateList.observeAsState()
+                    val selectedDatePos by toolbarViewModel.selectDatePosition.observeAsState()
                     val dogName by dogViewModel.dogName.observeAsState()
                     val dayWeight by weightViewModel.dayWeightGet.observeAsState()
                     val weeklyWeights by weightViewModel.weeklyWeightGet.observeAsState()
                     val monthlyWeight by weightViewModel.monthlyWeightGet.observeAsState()
-                    val selectedDate by toolbarViewModel.selectedDate.observeAsState()
 
                     var showEditDialog by rememberSaveable { mutableStateOf(false) }
 
-                    WeightScreen(
-                        dogName = dogName,
-                        dailyWeight = dayWeight?.weight,
-                        weeklyWeights = weeklyWeights,
-                        monthlyWeight = monthlyWeight,
-                        thisMonth = selectedDate?.let { convertThisMonth(it) } ?: 0F,
-                        isEditable = selectedDate?.let { !isFutureDate(it) } ?: false,
-                        onEditClick = { showEditDialog = true },
-                    )
+                    Column {
+                        ToolbarCalendarWeek(
+                            selectedDate = selectedDate,
+                            dateList = dateList.orEmpty(),
+                            selectedDatePos = selectedDatePos,
+                            onTitleClick = ::showCalendarBottomSheet,
+                            onDateClick = toolbarViewModel::selectDateAt,
+                            onWeekSwipe = toolbarViewModel::moveWeek,
+                        )
+                        WeightScreen(
+                            dogName = dogName,
+                            dailyWeight = dayWeight?.weight,
+                            weeklyWeights = weeklyWeights,
+                            monthlyWeight = monthlyWeight,
+                            thisMonth = selectedDate?.let { convertThisMonth(it) } ?: 0F,
+                            isEditable = selectedDate?.let { !isFutureDate(it) } ?: false,
+                            onEditClick = { showEditDialog = true },
+                        )
+                    }
 
                     if (showEditDialog) {
                         WeightEditDialog(
@@ -167,6 +182,10 @@ class WeightFragment : Fragment() {
                 date,
             )
         weightViewModel.patchWeight(accessToken, weightPatchRequest)
+    }
+
+    private fun showCalendarBottomSheet() {
+        CalendarBottomSheetDialogFragment.show(parentFragmentManager, toolbarViewModel)
     }
 
     private fun isFutureDate(selectedDate: Date): Boolean = LocalDate.parse(convertSelectedDate(selectedDate)).isAfter(LocalDate.now())
