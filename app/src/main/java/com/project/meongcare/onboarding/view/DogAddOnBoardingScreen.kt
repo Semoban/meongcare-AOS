@@ -29,6 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.FormClickBox
+import com.project.meongcare.designsystem.component.FormNumberField
+import com.project.meongcare.designsystem.component.FormTextField
+import com.project.meongcare.designsystem.component.GenderChip
+import com.project.meongcare.designsystem.component.GlideImage
+import com.project.meongcare.designsystem.component.NeuterCheckbox
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Gray4
@@ -37,12 +43,6 @@ import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
-import com.project.meongcare.info.view.GenderChip
-import com.project.meongcare.info.view.InfoFormClickBox
-import com.project.meongcare.info.view.InfoFormNumberField
-import com.project.meongcare.info.view.InfoFormTextField
-import com.project.meongcare.info.view.InfoGlideImage
-import com.project.meongcare.info.view.NeuterCheckbox
 import com.project.meongcare.onboarding.model.entities.Gender
 import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
 
@@ -117,15 +117,16 @@ fun DogAddOnBoardingScreen(
                     )
                 }
             } else {
-                InfoGlideImage(
+                GlideImage(
                     model = imageModel,
                     errorRes = R.drawable.dog_profile_default,
+                    centerCrop = true,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
         }
         DogAddFormLabel(text = "이름", modifier = Modifier.padding(top = 24.dp))
-        InfoFormTextField(
+        FormTextField(
             value = name,
             onValueChange = { name = it },
             hint = "이름을 입력해주세요",
@@ -133,7 +134,7 @@ fun DogAddOnBoardingScreen(
             modifier = Modifier.padding(top = 8.dp),
         )
         DogAddFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
-        InfoFormClickBox(
+        FormClickBox(
             value = dogType.orEmpty(),
             hint = "품종을 입력해주세요",
             showError = submitAttempted && dogType.isNullOrEmpty(),
@@ -163,7 +164,7 @@ fun DogAddOnBoardingScreen(
             )
         }
         DogAddFormLabel(text = "생일을 알려주세요", modifier = Modifier.padding(top = 24.dp))
-        InfoFormClickBox(
+        FormClickBox(
             value = birthDate?.let { dateFormat(it) }.orEmpty(),
             hint = "날짜를 선택해주세요",
             showError = submitAttempted && birthDate.isNullOrEmpty(),
@@ -177,7 +178,7 @@ fun DogAddOnBoardingScreen(
             modifier = Modifier.padding(top = 4.dp),
         )
         DogAddFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
-        InfoFormNumberField(
+        FormNumberField(
             value = weight,
             onValueChange = { weight = it },
             hint = "",
@@ -194,7 +195,7 @@ fun DogAddOnBoardingScreen(
             modifier = Modifier.padding(top = 24.dp),
         )
         Row(modifier = Modifier.padding(top = 8.dp)) {
-            InfoFormNumberField(
+            FormNumberField(
                 value = backRound,
                 onValueChange = { backRound = it },
                 hint = "등",
@@ -202,7 +203,7 @@ fun DogAddOnBoardingScreen(
                 showError = false,
                 modifier = Modifier.weight(1f),
             )
-            InfoFormNumberField(
+            FormNumberField(
                 value = chestRound,
                 onValueChange = { chestRound = it },
                 hint = "가슴둘레",
@@ -213,7 +214,7 @@ fun DogAddOnBoardingScreen(
                         .padding(start = 8.dp)
                         .width(117.dp),
             )
-            InfoFormNumberField(
+            FormNumberField(
                 value = neckRound,
                 onValueChange = { neckRound = it },
                 hint = "목둘레",

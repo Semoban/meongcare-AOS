@@ -1,7 +1,6 @@
 package com.project.meongcare.excreta.view
 
 import android.view.LayoutInflater
-import android.widget.ImageView
 import android.widget.TimePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,8 +31,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.bumptech.glide.Glide
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
@@ -310,22 +309,6 @@ internal fun ExcretaImageCard(
         }
         overlay?.let { it() }
     }
-}
-
-@Composable
-internal fun GlideImage(
-    model: Any,
-    modifier: Modifier = Modifier,
-) {
-    AndroidView(
-        modifier = modifier,
-        factory = { context -> ImageView(context) },
-        update = { imageView ->
-            Glide.with(imageView)
-                .load(model)
-                .into(imageView)
-        },
-    )
 }
 
 @Composable

@@ -1,6 +1,5 @@
 package com.project.meongcare.feed.view
 
-import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,10 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import com.bumptech.glide.Glide
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Gray4
@@ -34,22 +32,6 @@ import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.feed.model.entities.FeedPartRecord
-
-@Composable
-internal fun FeedGlideImage(
-    model: Any,
-    modifier: Modifier = Modifier,
-) {
-    AndroidView(
-        modifier = modifier,
-        factory = { context -> ImageView(context) },
-        update = { imageView ->
-            Glide.with(imageView)
-                .load(model)
-                .into(imageView)
-        },
-    )
-}
 
 @Composable
 internal fun FeedPartItem(
@@ -82,7 +64,7 @@ internal fun FeedPartItem(
                 modifier = imageModifier,
             )
         } else {
-            FeedGlideImage(
+            GlideImage(
                 model = feedPartRecord.feedImageURL,
                 modifier = imageModifier,
             )

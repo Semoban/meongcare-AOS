@@ -29,6 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.DeleteDialogOverlay
+import com.project.meongcare.designsystem.component.GenderChip
+import com.project.meongcare.designsystem.component.GlideImage
+import com.project.meongcare.designsystem.component.NeuterCheckbox
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray4
@@ -85,9 +89,10 @@ fun PetInfoScreen(
                     )
                 }
             }
-            InfoGlideImage(
+            GlideImage(
                 model = dogInfo?.imageUrl,
                 errorRes = R.drawable.dog_profile_default,
+                centerCrop = true,
                 modifier =
                     Modifier
                         .padding(top = 42.dp)

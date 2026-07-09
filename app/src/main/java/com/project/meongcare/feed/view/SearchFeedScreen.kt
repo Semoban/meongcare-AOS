@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Gray4
@@ -169,7 +170,7 @@ private fun SearchFeedItem(
                 modifier = imageModifier,
             )
         } else {
-            FeedGlideImage(
+            GlideImage(
                 model = feed.imageURL,
                 modifier = imageModifier,
             )

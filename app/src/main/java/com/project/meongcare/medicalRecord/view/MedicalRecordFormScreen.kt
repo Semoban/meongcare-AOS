@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray4
@@ -139,7 +140,7 @@ fun MedicalRecordFormScreen(
                         )
                     }
                 } else {
-                    MedicalRecordGlideImage(
+                    GlideImage(
                         model = imageModel,
                         modifier = Modifier.fillMaxSize(),
                     )

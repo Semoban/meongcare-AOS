@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.SemobanTheme
@@ -100,7 +101,7 @@ fun MedicalRecordInfoScreen(
                         contentDescription = null,
                     )
                 } else {
-                    MedicalRecordGlideImage(
+                    GlideImage(
                         model = record?.imageUrl!!,
                         modifier = Modifier.fillMaxSize(),
                     )

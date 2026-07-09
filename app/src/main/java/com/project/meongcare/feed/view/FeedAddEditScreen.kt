@@ -44,6 +44,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray2
@@ -404,7 +405,7 @@ private fun FeedImageCard(
                 )
             }
         } else {
-            FeedGlideImage(
+            GlideImage(
                 model = imageModel,
                 modifier = Modifier.fillMaxSize(),
             )

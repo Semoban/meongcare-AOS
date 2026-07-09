@@ -30,6 +30,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.FormClickBox
+import com.project.meongcare.designsystem.component.FormNumberField
+import com.project.meongcare.designsystem.component.FormTextField
+import com.project.meongcare.designsystem.component.GenderChip
+import com.project.meongcare.designsystem.component.GlideImage
+import com.project.meongcare.designsystem.component.NeuterCheckbox
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
@@ -94,9 +100,10 @@ fun PetEditScreen(
                 )
             }
         }
-        InfoGlideImage(
+        GlideImage(
             model = imageModel,
             errorRes = R.drawable.dog_profile_default,
+            centerCrop = true,
             modifier =
                 Modifier
                     .padding(top = 42.dp)
@@ -107,7 +114,7 @@ fun PetEditScreen(
                     .clickable { onImageClick() },
         )
         PetFormLabel(text = "이름", modifier = Modifier.padding(top = 32.dp))
-        InfoFormTextField(
+        FormTextField(
             value = name,
             onValueChange = { name = it },
             hint = "이름을 입력해주세요",
@@ -115,7 +122,7 @@ fun PetEditScreen(
             modifier = Modifier.padding(top = 8.dp),
         )
         PetFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
-        InfoFormClickBox(
+        FormClickBox(
             value = dogType.orEmpty(),
             hint = "품종을 입력해주세요",
             showError = dogType.isNullOrEmpty(),
@@ -145,7 +152,7 @@ fun PetEditScreen(
             )
         }
         PetFormLabel(text = "생일을 알려주세요", modifier = Modifier.padding(top = 24.dp))
-        InfoFormClickBox(
+        FormClickBox(
             value = birthDate?.let { dateFormat(it) }.orEmpty(),
             hint = "날짜를 선택해주세요",
             showError = birthDate.isNullOrEmpty(),
@@ -159,7 +166,7 @@ fun PetEditScreen(
             modifier = Modifier.padding(top = 4.dp),
         )
         PetFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
-        InfoFormNumberField(
+        FormNumberField(
             value = weight,
             onValueChange = { weight = it },
             hint = "",
@@ -172,7 +179,7 @@ fun PetEditScreen(
         )
         PetFormLabel(text = "치수", modifier = Modifier.padding(top = 24.dp))
         Row(modifier = Modifier.padding(top = 8.dp)) {
-            InfoFormNumberField(
+            FormNumberField(
                 value = backRound,
                 onValueChange = { backRound = it },
                 hint = "등",
@@ -180,7 +187,7 @@ fun PetEditScreen(
                 showError = false,
                 modifier = Modifier.weight(1f),
             )
-            InfoFormNumberField(
+            FormNumberField(
                 value = chestRound,
                 onValueChange = { chestRound = it },
                 hint = "가슴둘레",
@@ -191,7 +198,7 @@ fun PetEditScreen(
                         .padding(start = 8.dp)
                         .width(117.dp),
             )
-            InfoFormNumberField(
+            FormNumberField(
                 value = neckRound,
                 onValueChange = { neckRound = it },
                 hint = "목둘레",

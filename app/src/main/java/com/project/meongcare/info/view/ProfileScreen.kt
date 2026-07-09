@@ -32,6 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.CircleGlideImage
+import com.project.meongcare.designsystem.component.ConfirmDialog
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Black30
 import com.project.meongcare.designsystem.theme.Gray1
@@ -69,7 +71,7 @@ fun ProfileScreen(
                 title = "나의 정보",
                 onBack = onBackClick,
             )
-            InfoCircleImage(
+            CircleGlideImage(
                 model = profileImageUrl,
                 errorRes = R.drawable.profile_default_image,
                 size = 89.dp,
@@ -136,7 +138,7 @@ fun ProfileScreen(
             ProfileMenuRow(text = "로그아웃", onClick = { showLogoutDialog = true })
         }
         if (showLogoutDialog) {
-            InfoConfirmDialog(
+            ConfirmDialog(
                 title = "로그아웃 하시겠습니까?",
                 confirmText = "로그아웃",
                 onCancel = { showLogoutDialog = false },
@@ -195,7 +197,7 @@ private fun ProfileDogItem(
         shape = RoundedCornerShape(11.dp),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            InfoCircleImage(
+            CircleGlideImage(
                 model = dog.imageUrl,
                 errorRes = R.drawable.home_dog_default,
                 size = 45.dp,

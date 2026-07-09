@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.designsystem.component.ConfirmDialog
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTheme
@@ -95,7 +96,7 @@ fun SettingScreen(
             )
         }
         if (showDeleteAccountDialog) {
-            InfoConfirmDialog(
+            ConfirmDialog(
                 title = "정말 회원 탈퇴하시겠습니까?",
                 subtitle = "탈퇴하시면 계정은 삭제됩니다.",
                 confirmText = "탈퇴하기",

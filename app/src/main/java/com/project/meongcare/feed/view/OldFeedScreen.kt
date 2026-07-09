@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
@@ -145,7 +146,7 @@ private fun OldFeedItem(
                     modifier = imageModifier,
                 )
             } else {
-                FeedGlideImage(
+                GlideImage(
                     model = feedRecord.imageURL,
                     modifier = imageModifier,
                 )

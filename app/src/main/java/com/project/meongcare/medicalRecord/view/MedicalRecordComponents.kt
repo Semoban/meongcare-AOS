@@ -1,6 +1,5 @@
 package com.project.meongcare.medicalRecord.view
 
-import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,31 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import com.bumptech.glide.Glide
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
 import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
-
-@Composable
-internal fun MedicalRecordGlideImage(
-    model: Any,
-    modifier: Modifier = Modifier,
-) {
-    AndroidView(
-        modifier = modifier,
-        factory = { context -> ImageView(context) },
-        update = { imageView ->
-            Glide.with(imageView)
-                .load(model)
-                .into(imageView)
-        },
-    )
-}
 
 @Composable
 internal fun MedicalRecordDeleteDialog(

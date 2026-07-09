@@ -37,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
+import com.project.meongcare.designsystem.component.CircleGlideImage
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray2
@@ -52,7 +53,6 @@ import com.project.meongcare.designsystem.theme.Sub3
 import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.Symptom
-import com.project.meongcare.info.view.InfoCircleImage
 import com.project.meongcare.symptom.model.entities.SymptomType
 import com.project.meongcare.toolbar.view.CalendarWeekRow
 import java.util.Date
@@ -212,7 +212,7 @@ private fun HomeTopBar(
                     .size(18.dp)
                     .clickable { onAlarmClick() },
         )
-        InfoCircleImage(
+        CircleGlideImage(
             model = profileImageUrl,
             errorRes = R.drawable.home_profile_default_image,
             size = 30.dp,
@@ -289,7 +289,7 @@ private fun HomeDogProfileItem(
                     .then(borderModifier),
             contentAlignment = Alignment.Center,
         ) {
-            InfoCircleImage(
+            CircleGlideImage(
                 model = dog.imageUrl,
                 errorRes = R.drawable.home_dog_default,
                 size = 45.dp,
