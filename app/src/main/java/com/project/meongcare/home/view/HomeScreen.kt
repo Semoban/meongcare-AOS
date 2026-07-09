@@ -189,13 +189,19 @@ private fun HomeTopBar(
         Image(
             painter = painterResource(R.drawable.semoban_logo),
             contentDescription = null,
-            modifier = Modifier.padding(start = 16.dp),
+            modifier =
+                Modifier
+                    .padding(start = 16.dp)
+                    .size(width = 59.dp, height = 21.dp),
         )
         Spacer(modifier = Modifier.weight(1f))
         Image(
             painter = painterResource(R.drawable.all_calendar),
             contentDescription = null,
-            modifier = Modifier.clickable { onCalendarClick() },
+            modifier =
+                Modifier
+                    .size(width = 19.dp, height = 18.dp)
+                    .clickable { onCalendarClick() },
         )
         Image(
             painter = painterResource(R.drawable.all_notification_18dp),
@@ -203,6 +209,7 @@ private fun HomeTopBar(
             modifier =
                 Modifier
                     .padding(start = 20.dp)
+                    .size(18.dp)
                     .clickable { onAlarmClick() },
         )
         InfoCircleImage(
