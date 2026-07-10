@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,8 +19,6 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.feed.model.utils.FEED_DELETE_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_DELETE_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
@@ -79,9 +78,9 @@ class FeedInfoFragment : Fragment() {
 
                     if (showDeleteDialog) {
                         FeedConfirmDialog(
-                            title = "삭제하시겠습니까?",
-                            description = "삭제를 누르면 복구할 수 없습니다.",
-                            confirmText = "삭제",
+                            title = stringResource(R.string.designsystem_delete_dialog_title),
+                            description = stringResource(R.string.designsystem_delete_dialog_subtitle),
+                            confirmText = stringResource(R.string.all_delete),
                             onCancel = { showDeleteDialog = false },
                             onConfirm = {
                                 showDeleteDialog = false
@@ -131,12 +130,12 @@ class FeedInfoFragment : Fragment() {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    FEED_DELETE_SUCCESS,
+                    getString(R.string.feed_delete_success),
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    FEED_DELETE_FAILURE,
+                    getString(R.string.feed_delete_failure),
                 )
             }
         }

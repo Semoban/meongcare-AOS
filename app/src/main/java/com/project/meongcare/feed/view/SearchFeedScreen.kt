@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -68,7 +69,7 @@ fun SearchFeedScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(
                         painter = painterResource(R.drawable.all_arrow_back_18dp),
-                        contentDescription = "뒤로가기",
+                        contentDescription = stringResource(R.string.all_back),
                     )
                 }
                 SearchFeedTextField(
@@ -128,7 +129,7 @@ private fun SearchFeedTextField(
                 Box(modifier = Modifier.weight(1f)) {
                     if (value.isEmpty()) {
                         Text(
-                            text = "검색어를 입력해주세요",
+                            text = stringResource(R.string.feed_search_hint),
                             style = SemobanTypography.body1Medium,
                             color = Gray4,
                         )
@@ -212,7 +213,7 @@ private fun DirectInputButton(
                 modifier = Modifier.size(18.dp),
             )
             Text(
-                text = "직접 입력하기",
+                text = stringResource(R.string.feed_direct_input),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 8.dp),
             )

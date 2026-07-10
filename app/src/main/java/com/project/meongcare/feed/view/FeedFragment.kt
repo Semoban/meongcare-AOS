@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,8 +18,6 @@ import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedBinding
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.feed.model.utils.FEED_STOP_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_STOP_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -92,9 +91,9 @@ class FeedFragment : Fragment() {
 
                     if (showStopDialog) {
                         FeedConfirmDialog(
-                            title = "사료를 중단하시겠습니까?",
-                            description = "사료는 즉시 중단됩니다.",
-                            confirmText = "확인",
+                            title = stringResource(R.string.feed_stop_dialog_title),
+                            description = stringResource(R.string.feed_stop_dialog_description),
+                            confirmText = stringResource(R.string.all_confirm),
                             onCancel = { showStopDialog = false },
                             onConfirm = {
                                 showStopDialog = false
@@ -131,10 +130,10 @@ class FeedFragment : Fragment() {
         feedStopViewModel.feedStopped.observe(viewLifecycleOwner) { code ->
             if (code == null) return@observe
             if (code == SUCCESS) {
-                showSuccessSnackBar(requireView(), FEED_STOP_SUCCESS)
+                showSuccessSnackBar(requireView(), getString(R.string.feed_stop_success))
                 feedGetViewModel.getFeed(accessToken, dogId)
             } else {
-                showFailureSnackBar(requireView(), FEED_STOP_FAILURE)
+                showFailureSnackBar(requireView(), getString(R.string.feed_stop_failure))
             }
         }
     }

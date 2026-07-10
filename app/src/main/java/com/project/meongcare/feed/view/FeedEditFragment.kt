@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.PhotoSelectBottomSheetFragment
+import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.FEED_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
@@ -23,8 +24,6 @@ import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.entities.FeedPutRequest
-import com.project.meongcare.feed.model.utils.FEED_PUT_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_PUT_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -155,12 +154,12 @@ class FeedEditFragment : Fragment(), PhotoMenuListener {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    FEED_PUT_SUCCESS,
+                    getString(R.string.feed_put_success),
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    FEED_PUT_FAILURE,
+                    getString(R.string.feed_put_failure),
                 )
             }
         }

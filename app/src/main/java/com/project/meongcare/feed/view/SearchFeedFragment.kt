@@ -15,8 +15,6 @@ import com.project.meongcare.databinding.FragmentSearchFeedBinding
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
-import com.project.meongcare.feed.model.utils.FEED_CHANGE_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_CHANGE_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -112,12 +110,12 @@ class SearchFeedFragment : Fragment() {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    FEED_CHANGE_SUCCESS,
+                    getString(R.string.feed_change_success),
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    FEED_CHANGE_FAILURE,
+                    getString(R.string.feed_change_failure),
                 )
             }
         }

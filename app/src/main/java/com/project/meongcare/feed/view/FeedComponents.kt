@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -40,7 +41,7 @@ internal fun FeedPartItem(
 ) {
     val period =
         if (feedPartRecord.endDate == null) {
-            "${feedPartRecord.startDate}~ 모름"
+            stringResource(R.string.feed_period_unknown_format, feedPartRecord.startDate)
         } else {
             "${feedPartRecord.startDate}~ ${feedPartRecord.endDate}"
         }
@@ -150,7 +151,7 @@ internal fun FeedConfirmDialog(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     FeedDialogButton(
-                        text = "취소",
+                        text = stringResource(R.string.all_cancel),
                         backgroundColor = Gray2,
                         textColor = Gray5,
                         onClick = onCancel,

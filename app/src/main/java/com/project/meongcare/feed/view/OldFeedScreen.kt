@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -58,11 +59,11 @@ fun OldFeedScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
             Text(
-                text = "전에 먹던 사료 리스트",
+                text = stringResource(R.string.feed_previous_list_title),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 8.dp),
             )
@@ -94,7 +95,7 @@ private fun OldFeedEmptyContent(modifier: Modifier = Modifier) {
                 contentDescription = null,
             )
             Text(
-                text = "아직 사료가 기록되지 않았습니다",
+                text = stringResource(R.string.feed_records_empty),
                 style = SemobanTypography.body1Medium,
                 color = Gray4,
                 modifier = Modifier.padding(top = 24.dp),
@@ -111,7 +112,7 @@ private fun OldFeedItem(
 ) {
     val period =
         if (feedRecord.endDate == null) {
-            "${feedRecord.startDate}~ 모름"
+            stringResource(R.string.feed_period_unknown_format, feedRecord.startDate)
         } else {
             "${feedRecord.startDate}~ ${feedRecord.endDate}"
         }

@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,7 +81,7 @@ fun FeedScreen(
                         .padding(top = 79.dp),
             )
             FeedGuideButton(
-                text = if (previousFeeds.isEmpty()) "사료를 입력해주세요" else "사료를 선택해주세요",
+                text = stringResource(if (previousFeeds.isEmpty()) R.string.feed_input_guide else R.string.feed_select_guide),
                 onClick = onInputGuideClick,
                 modifier = Modifier.padding(start = 36.dp, top = 24.dp, end = 36.dp),
             )
@@ -122,7 +123,7 @@ fun FeedScreen(
         )
         if (hasFeed) {
             Text(
-                text = "사료를 중단하고 싶어요",
+                text = stringResource(R.string.feed_stop_guide),
                 style = SemobanTypography.body3Medium,
                 color = Gray4,
                 textDecoration = TextDecoration.Underline,
@@ -140,12 +141,12 @@ fun FeedScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "전에 먹던 사료 리스트",
+                text = stringResource(R.string.feed_previous_list_title),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = "더보기",
+                text = stringResource(R.string.feed_see_more),
                 style = SemobanTypography.body3Medium,
                 color = Gray4,
                 modifier =
@@ -167,7 +168,7 @@ fun FeedScreen(
         }
         if (hasFeed) {
             FeedGuideButton(
-                text = "다른 사료로 변경하기",
+                text = stringResource(R.string.feed_change_guide),
                 onClick = onChangeClick,
                 modifier = Modifier.padding(start = 36.dp, top = 32.dp, end = 36.dp),
                 backgroundColor = White,
@@ -187,11 +188,11 @@ private fun NutrientTable(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        NutrientRow(labelColor = Main3, type = "조단백", percentage = feed?.protein ?: 0.0)
-        NutrientRow(labelColor = Sub7, type = "조지방", percentage = feed?.fat ?: 0.0)
-        NutrientRow(labelColor = Sub6, type = "조회분", percentage = feed?.crudeAsh ?: 0.0)
-        NutrientRow(labelColor = Sub8, type = "수분", percentage = feed?.moisture ?: 0.0)
-        NutrientRow(labelColor = Sub5, type = "기타", percentage = feed?.etc ?: 0.0)
+        NutrientRow(labelColor = Main3, type = stringResource(R.string.feed_crude_protein_short), percentage = feed?.protein ?: 0.0)
+        NutrientRow(labelColor = Sub7, type = stringResource(R.string.feed_crude_fat), percentage = feed?.fat ?: 0.0)
+        NutrientRow(labelColor = Sub6, type = stringResource(R.string.feed_crude_ash), percentage = feed?.crudeAsh ?: 0.0)
+        NutrientRow(labelColor = Sub8, type = stringResource(R.string.feed_moisture), percentage = feed?.moisture ?: 0.0)
+        NutrientRow(labelColor = Sub5, type = stringResource(R.string.feed_etc), percentage = feed?.etc ?: 0.0)
     }
 }
 
@@ -246,8 +247,8 @@ private fun IntakeInfoCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IntakeInfoItem(
-            content = "${days}일",
-            title = "섭취일수",
+            content = stringResource(R.string.feed_days_format, days),
+            title = stringResource(R.string.feed_intake_days_title),
             modifier = Modifier.weight(1f),
         )
         Box(
@@ -258,7 +259,7 @@ private fun IntakeInfoCard(
         )
         IntakeInfoItem(
             content = "${recommendIntake}g",
-            title = "하루 섭취량",
+            title = stringResource(R.string.feed_daily_intake_title),
             modifier = Modifier.weight(1f),
         )
     }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -62,12 +63,12 @@ fun FeedInfoScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "수정",
+                text = stringResource(R.string.all_modify),
                 style = SemobanTypography.body1Medium,
                 modifier =
                     Modifier
@@ -75,7 +76,7 @@ fun FeedInfoScreen(
                         .padding(8.dp),
             )
             Text(
-                text = "삭제",
+                text = stringResource(R.string.all_delete),
                 style = SemobanTypography.body1Medium,
                 modifier =
                     Modifier
@@ -106,11 +107,11 @@ fun FeedInfoScreen(
                     modifier = imageModifier,
                 )
             }
-            FeedInfoLabel(text = "브랜드명", modifier = Modifier.padding(top = 32.dp))
+            FeedInfoLabel(text = stringResource(R.string.feed_brand_label), modifier = Modifier.padding(top = 32.dp))
             FeedInfoContentBox(text = feedInfo?.brand.orEmpty())
-            FeedInfoLabel(text = "제품명", modifier = Modifier.padding(top = 24.dp))
+            FeedInfoLabel(text = stringResource(R.string.feed_name_label), modifier = Modifier.padding(top = 24.dp))
             FeedInfoContentBox(text = feedInfo?.feedName.orEmpty())
-            FeedInfoLabel(text = "사료 성분 비율", modifier = Modifier.padding(top = 24.dp))
+            FeedInfoLabel(text = stringResource(R.string.feed_ingredient_label), modifier = Modifier.padding(top = 24.dp))
             IngredientTable(
                 feedInfo = feedInfo,
                 modifier = Modifier.padding(start = 24.dp, top = 15.dp, end = 24.dp),
@@ -123,7 +124,7 @@ fun FeedInfoScreen(
                 recommendIntake = feedInfo?.recommendIntake ?: 0L,
                 modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp),
             )
-            FeedInfoLabel(text = "섭취 기간", modifier = Modifier.padding(top = 24.dp))
+            FeedInfoLabel(text = stringResource(R.string.feed_intake_period_label), modifier = Modifier.padding(top = 24.dp))
             Row(
                 modifier =
                     Modifier
@@ -135,7 +136,12 @@ fun FeedInfoScreen(
                     modifier = Modifier.weight(1f),
                 )
                 FeedInfoDateBox(
-                    text = if (feedInfo?.endDate != null) convertDateFormat(feedInfo.endDate) else "모름",
+                    text =
+                        if (feedInfo?.endDate != null) {
+                            convertDateFormat(feedInfo.endDate)
+                        } else {
+                            stringResource(R.string.feed_end_date_unknown)
+                        },
                     modifier =
                         Modifier
                             .weight(1f)
@@ -200,11 +206,11 @@ private fun IngredientTable(
 ) {
     val ingredients =
         listOf(
-            "조단백질" to (feedInfo?.protein ?: 0.0),
-            "조지방" to (feedInfo?.fat ?: 0.0),
-            "조회분" to (feedInfo?.crudeAsh ?: 0.0),
-            "수분" to (feedInfo?.moisture ?: 0.0),
-            "기타" to (feedInfo?.etc ?: 0.0),
+            stringResource(R.string.feed_crude_protein) to (feedInfo?.protein ?: 0.0),
+            stringResource(R.string.feed_crude_fat) to (feedInfo?.fat ?: 0.0),
+            stringResource(R.string.feed_crude_ash) to (feedInfo?.crudeAsh ?: 0.0),
+            stringResource(R.string.feed_moisture) to (feedInfo?.moisture ?: 0.0),
+            stringResource(R.string.feed_etc) to (feedInfo?.etc ?: 0.0),
         )
 
     Column(
@@ -252,7 +258,7 @@ private fun KcalBar(
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "칼로리",
+            text = stringResource(R.string.feed_kcal_label),
             style = SemobanTypography.body2Medium,
         )
         Text(
@@ -286,7 +292,7 @@ private fun RecommendIntakeBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "추천하는 하루 섭취량:",
+            text = stringResource(R.string.feed_recommend_intake_label),
             style = SemobanTypography.body2Medium,
             color = Main4,
             modifier = Modifier.padding(start = 24.dp),

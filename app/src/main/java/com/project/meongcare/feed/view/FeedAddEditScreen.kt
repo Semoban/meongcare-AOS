@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -60,7 +61,6 @@ import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
 import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.calculateRecommendDailyIntake
-import com.project.meongcare.feed.model.utils.INTAKE_PERIOD_ERROR
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -106,8 +106,8 @@ fun FeedAddEditScreen(
 
     var brandError by remember { mutableStateOf(false) }
     var nameError by remember { mutableStateOf(false) }
-    var ingredientError by remember { mutableStateOf<String?>(null) }
-    var intakePeriodError by remember { mutableStateOf<String?>(null) }
+    var ingredientError by remember { mutableStateOf<Int?>(null) }
+    var intakePeriodError by remember { mutableStateOf<Int?>(null) }
 
     val etcValue = calculateEtc(protein, fat, crudeAsh, moisture)
     val recommendIntake = calculateRecommendIntake(dogWeight, kcal)
@@ -119,7 +119,7 @@ fun FeedAddEditScreen(
         apply(newValue)
         val newEtc = calculateEtc(protein, fat, crudeAsh, moisture)
         if (newEtc !in 0.0..100.0) {
-            ingredientError = "사료 성분 비율의 총합은 100%를 초과할 수 없습니다."
+            ingredientError = R.string.feed_ingredient_total_error
             apply("")
         }
     }
@@ -140,7 +140,7 @@ fun FeedAddEditScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
         }
@@ -156,23 +156,23 @@ fun FeedAddEditScreen(
                 onClick = onImageClick,
                 modifier = Modifier.padding(top = 16.dp),
             )
-            FeedFormLabel(text = "브랜드명", modifier = Modifier.padding(top = 32.dp))
+            FeedFormLabel(text = stringResource(R.string.feed_brand_label), modifier = Modifier.padding(top = 32.dp))
             FeedFormTextField(
                 value = brand,
                 onValueChange = { brand = it },
-                hint = "브랜드를 입력해주세요",
+                hint = stringResource(R.string.feed_brand_hint),
                 showError = brandError,
                 onErrorClick = { brandError = false },
             )
-            FeedFormLabel(text = "제품명", modifier = Modifier.padding(top = 24.dp))
+            FeedFormLabel(text = stringResource(R.string.feed_name_label), modifier = Modifier.padding(top = 24.dp))
             FeedFormTextField(
                 value = feedName,
                 onValueChange = { feedName = it },
-                hint = "제품명을 입력해주세요",
+                hint = stringResource(R.string.feed_name_hint),
                 showError = nameError,
                 onErrorClick = { nameError = false },
             )
-            FeedFormLabel(text = "사료 성분 비율", modifier = Modifier.padding(top = 24.dp))
+            FeedFormLabel(text = stringResource(R.string.feed_ingredient_label), modifier = Modifier.padding(top = 24.dp))
             Column(
                 modifier =
                     Modifier
@@ -181,31 +181,31 @@ fun FeedAddEditScreen(
                         .border(1.dp, Gray3, RoundedCornerShape(5.dp)),
             ) {
                 IngredientInputRow(
-                    type = "조단백질",
+                    type = stringResource(R.string.feed_crude_protein),
                     value = protein,
                     onValueChange = { input -> updateIngredient(input) { protein = it } },
                 )
                 HorizontalDivider(thickness = 1.dp, color = Gray3)
                 IngredientInputRow(
-                    type = "조지방",
+                    type = stringResource(R.string.feed_crude_fat),
                     value = fat,
                     onValueChange = { input -> updateIngredient(input) { fat = it } },
                 )
                 HorizontalDivider(thickness = 1.dp, color = Gray3)
                 IngredientInputRow(
-                    type = "조회분",
+                    type = stringResource(R.string.feed_crude_ash),
                     value = crudeAsh,
                     onValueChange = { input -> updateIngredient(input) { crudeAsh = it } },
                 )
                 HorizontalDivider(thickness = 1.dp, color = Gray3)
                 IngredientInputRow(
-                    type = "수분",
+                    type = stringResource(R.string.feed_moisture),
                     value = moisture,
                     onValueChange = { input -> updateIngredient(input) { moisture = it } },
                 )
                 HorizontalDivider(thickness = 1.dp, color = Gray3)
                 IngredientInputRow(
-                    type = "기타",
+                    type = stringResource(R.string.feed_etc),
                     value = formatIngredient(etcValue),
                     onValueChange = {},
                     readOnly = true,
@@ -218,7 +218,7 @@ fun FeedAddEditScreen(
             )
             if (ingredientError != null) {
                 FeedFormErrorText(
-                    text = ingredientError!!,
+                    text = stringResource(ingredientError!!),
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }
@@ -226,7 +226,7 @@ fun FeedAddEditScreen(
                 recommendIntake = recommendIntake,
                 modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp),
             )
-            FeedFormLabel(text = "섭취 기간", modifier = Modifier.padding(top = 24.dp))
+            FeedFormLabel(text = stringResource(R.string.feed_intake_period_label), modifier = Modifier.padding(top = 24.dp))
             Row(
                 modifier =
                     Modifier
@@ -234,7 +234,7 @@ fun FeedAddEditScreen(
                         .padding(start = 24.dp, top = 8.dp, end = 24.dp),
             ) {
                 IntakePeriodBox(
-                    text = startDate?.let { convertDateFormat(it) } ?: "시작 일자",
+                    text = startDate?.let { convertDateFormat(it) } ?: stringResource(R.string.feed_start_date),
                     isSelected = startDate != null,
                     isActive = calendarMode == CALENDAR_START,
                     onClick = { calendarMode = CALENDAR_START },
@@ -243,9 +243,9 @@ fun FeedAddEditScreen(
                 IntakePeriodBox(
                     text =
                         when {
-                            endDateUnknown -> "모름"
+                            endDateUnknown -> stringResource(R.string.feed_end_date_unknown)
                             endDate != null -> convertDateFormat(endDate)
-                            else -> "종료 일자"
+                            else -> stringResource(R.string.feed_end_date)
                         },
                     isSelected = endDate != null || endDateUnknown,
                     isActive = calendarMode == CALENDAR_END,
@@ -258,7 +258,7 @@ fun FeedAddEditScreen(
             }
             if (intakePeriodError != null) {
                 FeedFormErrorText(
-                    text = intakePeriodError!!,
+                    text = stringResource(intakePeriodError!!),
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }
@@ -305,7 +305,7 @@ fun FeedAddEditScreen(
                                 },
                     )
                     Text(
-                        text = "모름",
+                        text = stringResource(R.string.feed_end_date_unknown),
                         style = SemobanTypography.body1Medium,
                         color = Gray4,
                         modifier = Modifier.padding(start = 9.dp),
@@ -313,7 +313,7 @@ fun FeedAddEditScreen(
                 }
             }
             Text(
-                text = "완료",
+                text = stringResource(R.string.all_completion),
                 style = SemobanTypography.bottom1SemiBold,
                 color = White,
                 textAlign = TextAlign.Center,
@@ -336,19 +336,19 @@ fun FeedAddEditScreen(
                             if (protein.isEmpty() || fat.isEmpty() || crudeAsh.isEmpty() ||
                                 moisture.isEmpty() || kcal.isEmpty()
                             ) {
-                                ingredientError = "사료 성분 비율과 칼로리는 필수 항목입니다."
+                                ingredientError = R.string.feed_ingredient_kcal_required_error
                                 isValid = false
                             } else if (etcValue !in 0.0..100.0) {
-                                ingredientError = "사료 성분 비율의 총합은 100%를 초과할 수 없습니다."
+                                ingredientError = R.string.feed_ingredient_total_error
                                 isValid = false
                             }
                             if (startDate == null || (endDate == null && !endDateUnknown)) {
-                                intakePeriodError = "섭취 기간은 필수 항목입니다."
+                                intakePeriodError = R.string.feed_intake_period_required_error
                                 isValid = false
                             } else if (endDate != null &&
                                 startDate!!.replace("-", "").toInt() > endDate!!.replace("-", "").toInt()
                             ) {
-                                intakePeriodError = INTAKE_PERIOD_ERROR
+                                intakePeriodError = R.string.feed_intake_period_order_error
                                 isValid = false
                             }
 
@@ -398,7 +398,7 @@ private fun FeedImageCard(
                     contentDescription = null,
                 )
                 Text(
-                    text = "사진을 첨부해주세요",
+                    text = stringResource(R.string.feed_image_hint),
                     style = SemobanTypography.body3Regular,
                     color = Gray5,
                     modifier = Modifier.padding(top = 8.dp),
@@ -431,7 +431,7 @@ private fun FeedFormLabel(
         )
         Image(
             painter = painterResource(R.drawable.essential_input_element_icon),
-            contentDescription = "필수 입력",
+            contentDescription = stringResource(R.string.feed_required_input_description),
             modifier = Modifier.padding(start = 8.dp),
         )
     }
@@ -454,7 +454,7 @@ private fun FeedFormTextField(
     ) {
         if (showError) {
             Text(
-                text = "필수 입력 값입니다",
+                text = stringResource(R.string.designsystem_required_input),
                 style = SemobanTypography.body1Medium,
                 color = Sub1,
                 modifier =
@@ -589,7 +589,7 @@ private fun KcalInputBar(
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "칼로리",
+            text = stringResource(R.string.feed_kcal_label),
             style = SemobanTypography.body2Medium,
         )
         Box(
@@ -628,7 +628,7 @@ private fun RecommendIntakeBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "추천하는 하루 섭취량:",
+            text = stringResource(R.string.feed_recommend_intake_label),
             style = SemobanTypography.body2Medium,
             color = Main4,
             modifier = Modifier.padding(start = 24.dp),
