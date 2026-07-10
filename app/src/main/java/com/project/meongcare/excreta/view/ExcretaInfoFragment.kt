@@ -16,8 +16,6 @@ import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaDetailGetResponse
-import com.project.meongcare.excreta.utils.EXCRETA_DELETE_FAILURE
-import com.project.meongcare.excreta.utils.EXCRETA_DELETE_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaInfoUtils.showFailureSnackBar
@@ -84,13 +82,13 @@ class ExcretaInfoFragment : Fragment() {
             if (response == SUCCESS) {
                 showSuccessSnackBar(
                     requireView(),
-                    EXCRETA_DELETE_SUCCESS,
+                    getString(R.string.excreta_delete_success),
                 )
                 findNavController().popBackStack()
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    EXCRETA_DELETE_FAILURE,
+                    getString(R.string.excreta_delete_failure),
                 )
             }
         }

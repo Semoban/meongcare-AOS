@@ -17,8 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
@@ -66,7 +68,7 @@ fun ExcretaAddEditScreen(
             ExcretaImageCard(
                 imageModel = imageModel,
                 contentPadding = PaddingValues(horizontal = 76.dp, vertical = 46.dp),
-                placeholderText = "사진을 첨부해주세요",
+                placeholderText = stringResource(R.string.all_attach_photo_hint),
                 onClick = onImageClick,
                 modifier =
                     Modifier
@@ -74,7 +76,7 @@ fun ExcretaAddEditScreen(
                         .padding(top = 16.dp),
             )
             EssentialLabel(
-                text = "날짜",
+                text = stringResource(R.string.excreta_date_label),
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )
             ExcretaDateBox(
@@ -92,7 +94,7 @@ fun ExcretaAddEditScreen(
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )
             EssentialLabel(
-                text = "시각",
+                text = stringResource(R.string.excreta_time_label),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )

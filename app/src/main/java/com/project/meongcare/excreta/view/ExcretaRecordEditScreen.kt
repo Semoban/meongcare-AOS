@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -49,7 +50,7 @@ fun ExcretaRecordEditScreen(
                 .background(White),
     ) {
         ExcretaTopBar(
-            title = "${dogName.orEmpty()}님의 기록",
+            title = stringResource(R.string.excreta_title_format, dogName.orEmpty()),
             onBack = onBack,
         )
         Row(
@@ -64,11 +65,11 @@ fun ExcretaRecordEditScreen(
                     painterResource(
                         if (allChecked) R.drawable.all_check_16dp else R.drawable.all_circle_line_16dp,
                     ),
-                contentDescription = if (allChecked) "전체 선택됨" else "전체 선택 안 됨",
+                contentDescription = stringResource(if (allChecked) R.string.excreta_select_all_checked else R.string.excreta_select_all_unchecked),
                 modifier = Modifier.size(16.dp),
             )
             Text(
-                text = "전체 선택",
+                text = stringResource(R.string.excreta_select_all),
                 style = SemobanTypography.body1Medium,
                 color = Gray4,
                 modifier = Modifier.padding(start = 8.dp),
@@ -120,7 +121,7 @@ private fun ExcretaRecordEditItem(
         )
         Box(modifier = Modifier.weight(1f)) {
             ExcretaRecordItem(
-                typeText = Excreta.valueOf(record.excretaType).type,
+                typeText = stringResource(Excreta.valueOf(record.excretaType).labelRes),
                 timeText = convertToTimeFormat(record.time),
                 modifier = Modifier.padding(start = 7.dp),
             )

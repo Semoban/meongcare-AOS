@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,7 @@ internal fun ExcretaTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
         }
@@ -94,7 +95,7 @@ internal fun EssentialLabel(
         Text(text = text, style = style)
         Image(
             painter = painterResource(R.drawable.essential_input_element_icon),
-            contentDescription = "필수 입력",
+            contentDescription = stringResource(R.string.all_required_input_description),
             modifier = Modifier.padding(start = 8.dp),
         )
     }
@@ -111,7 +112,7 @@ internal fun ExcretaCheckIcon(
             painterResource(
                 if (checked) R.drawable.all_check_24dp else R.drawable.all_un_check_16dp,
             ),
-        contentDescription = if (checked) "선택됨" else "선택 안 됨",
+        contentDescription = stringResource(if (checked) R.string.all_checked else R.string.all_unchecked),
         modifier = modifier.size(size),
     )
 }
@@ -127,22 +128,22 @@ internal fun ExcretaTypeSelector(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = "종류", style = SemobanTypography.title3SemiBold)
+        Text(text = stringResource(R.string.excreta_type_label), style = SemobanTypography.title3SemiBold)
         if (showEssential) {
             Image(
                 painter = painterResource(R.drawable.essential_input_element_icon),
-                contentDescription = "필수 입력",
+                contentDescription = stringResource(R.string.all_required_input_description),
                 modifier = Modifier.padding(start = 8.dp),
             )
         }
         ExcretaTypeItem(
-            label = Excreta.URINE.type,
+            label = stringResource(Excreta.URINE.labelRes),
             checked = excretaType == Excreta.URINE,
             onClick = onTypeChange?.let { { it(Excreta.URINE) } },
             modifier = Modifier.padding(start = if (showEssential) 13.dp else 24.dp),
         )
         ExcretaTypeItem(
-            label = Excreta.FECES.type,
+            label = stringResource(Excreta.FECES.labelRes),
             checked = excretaType == Excreta.FECES,
             onClick = onTypeChange?.let { { it(Excreta.FECES) } },
             modifier = Modifier.padding(start = 24.dp),
@@ -213,9 +214,9 @@ internal fun ExcretaDateBox(
     ) {
         val (text, style, color) =
             when {
-                isError -> Triple("필수 입력 값입니다", SemobanTypography.body1Regular, Sub1)
+                isError -> Triple(stringResource(R.string.designsystem_required_input), SemobanTypography.body1Regular, Sub1)
                 dateText != null -> Triple(dateText, SemobanTypography.body1Medium, SemobanTypography.body1Medium.color)
-                else -> Triple("날짜를 선택해주세요", SemobanTypography.body1Regular, Gray4)
+                else -> Triple(stringResource(R.string.all_select_date), SemobanTypography.body1Regular, Gray4)
             }
         Text(
             text = text,
@@ -326,7 +327,7 @@ internal fun ExcretaCompleteButton(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "완료",
+            text = stringResource(R.string.all_completion),
             style = SemobanTypography.bottom1SemiBold,
             color = White,
         )
@@ -351,7 +352,7 @@ internal fun ExcretaCancelDeleteButtons(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "취소",
+                text = stringResource(R.string.all_cancel),
                 style = SemobanTypography.bottom1SemiBold,
                 color = Gray5,
             )
@@ -367,7 +368,7 @@ internal fun ExcretaCancelDeleteButtons(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "삭제",
+                text = stringResource(R.string.all_delete),
                 style = SemobanTypography.bottom1SemiBold,
                 color = White,
             )

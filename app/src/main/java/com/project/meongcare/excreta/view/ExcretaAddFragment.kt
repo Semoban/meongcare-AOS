@@ -15,14 +15,13 @@ import androidx.navigation.fragment.findNavController
 import com.project.meongcare.BuildConfig
 import com.project.meongcare.CalendarBottomSheetFragment
 import com.project.meongcare.PhotoSelectBottomSheetFragment
+import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.EXCRETA_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.model.entities.Excreta
-import com.project.meongcare.excreta.utils.EXCRETA_POST_FAILURE
-import com.project.meongcare.excreta.utils.EXCRETA_POST_SUCCESS
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertDateFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertTimeFormat
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.plusDay
@@ -139,13 +138,13 @@ class ExcretaAddFragment : Fragment(), DateSubmitListener, PhotoMenuListener {
             if (response == SUCCESS) {
                 showSuccessSnackBar(
                     requireView(),
-                    EXCRETA_POST_SUCCESS,
+                    getString(R.string.excreta_post_success),
                 )
                 findNavController().popBackStack()
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    EXCRETA_POST_FAILURE,
+                    getString(R.string.excreta_post_failure),
                 )
             }
         }

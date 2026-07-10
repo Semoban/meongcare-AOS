@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,13 +62,13 @@ fun ExcretaInfoScreen(
                 IconButton(onClick = onEdit) {
                     Image(
                         painter = painterResource(R.drawable.all_edit),
-                        contentDescription = "수정",
+                        contentDescription = stringResource(R.string.all_modify),
                     )
                 }
                 IconButton(onClick = onDelete) {
                     Image(
                         painter = painterResource(R.drawable.all_delete),
-                        contentDescription = "삭제",
+                        contentDescription = stringResource(R.string.all_delete),
                     )
                 }
             },
@@ -98,7 +99,7 @@ fun ExcretaInfoScreen(
                         .padding(top = 16.dp),
             )
             Text(
-                text = "날짜",
+                text = stringResource(R.string.excreta_date_label),
                 style = SemobanTypography.body1SemiBold,
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )
@@ -112,7 +113,7 @@ fun ExcretaInfoScreen(
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )
             Text(
-                text = "시각",
+                text = stringResource(R.string.excreta_time_label),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 8.dp, top = 24.dp),
             )
@@ -148,7 +149,7 @@ private fun BoxScope.ExcretaPrivacyOverlay(
             contentDescription = null,
         )
         Text(
-            text = "본 사진은 대소변에 대한\n정보를 담고 있습니다",
+            text = stringResource(R.string.excreta_photo_info),
             style = SemobanTypography.body3Regular,
             color = White,
             textAlign = TextAlign.Center,

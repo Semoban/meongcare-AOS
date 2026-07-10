@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray5
 import com.project.meongcare.designsystem.theme.Main1
@@ -30,7 +32,6 @@ import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.excreta.model.entities.Excreta
 import com.project.meongcare.excreta.model.entities.ExcretaRecord
 import com.project.meongcare.excreta.utils.ExcretaDateTimeUtils.convertToTimeFormat
-import com.project.meongcare.excreta.utils.TIME
 
 @Composable
 fun ExcretaScreen(
@@ -58,19 +59,19 @@ fun ExcretaScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${dogName.orEmpty()}님의 기록",
+                text = stringResource(R.string.excreta_title_format, dogName.orEmpty()),
                 style = SemobanTypography.title2Bold,
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = "추가",
+                text = stringResource(R.string.all_add),
                 style = SemobanTypography.body1Medium,
                 color = Gray5,
                 modifier = Modifier.clickable { onAddClick() },
             )
             if (excretaRecords.isNotEmpty()) {
                 Text(
-                    text = "편집",
+                    text = stringResource(R.string.all_edit),
                     style = SemobanTypography.body1Medium,
                     color = Gray5,
                     modifier =
@@ -97,12 +98,12 @@ fun ExcretaScreen(
             ) {
                 Row {
                     ExcretaCountChip(
-                        text = formatExcretaCount(Excreta.FECES.type, fecesCount),
+                        text = stringResource(R.string.excreta_count_format, stringResource(Excreta.FECES.labelRes), fecesCount),
                         backgroundColor = Main1,
                         textColor = Main4,
                     )
                     ExcretaCountChip(
-                        text = formatExcretaCount(Excreta.URINE.type, urineCount),
+                        text = stringResource(R.string.excreta_count_format, stringResource(Excreta.URINE.labelRes), urineCount),
                         backgroundColor = Sub2,
                         textColor = Sub3,
                         modifier = Modifier.padding(start = 8.dp),
@@ -110,7 +111,7 @@ fun ExcretaScreen(
                 }
                 excretaRecords.forEach { record ->
                     ExcretaRecordItem(
-                        typeText = Excreta.valueOf(record.excretaType).type,
+                        typeText = stringResource(Excreta.valueOf(record.excretaType).labelRes),
                         timeText = convertToTimeFormat(record.time),
                         onClick = { onItemClick(record.excretaId) },
                         modifier = Modifier.padding(top = 16.dp),
@@ -138,11 +139,6 @@ private fun ExcretaCountChip(
                 .padding(8.dp),
     )
 }
-
-private fun formatExcretaCount(
-    type: String,
-    count: Int,
-) = "$type $count$TIME"
 
 @Preview(showBackground = true)
 @Composable
