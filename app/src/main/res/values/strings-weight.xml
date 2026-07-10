@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 일별/주별 카드 -->
+    <string name="weight_daily_desc_format">현재 %1$s님의 체중입니다.</string>
+    <string name="weight_weekly_title_format">%1$s님의 체중변화를 기록했어요!</string>
+    <string name="weight_weekly_desc_format">%1$s님의 주 별 체중변화</string>
+
+    <!-- 월별 카드 -->
+    <string name="weight_monthly_increase_title">이번달은 지난달 대비 증가했어요!</string>
+    <string name="weight_monthly_decrease_title">이번달은 지난달 대비 감소했어요!</string>
+    <string name="weight_monthly_same_title">이번달과 지난달의 체중이 동일해요!</string>
+    <string name="weight_monthly_increase_format">지난달 대비 %1$.2fkg가 증가했어요!</string>
+    <string name="weight_monthly_decrease_format">지난달 대비 %1$.2fkg가 감소했어요!</string>
+    <string name="weight_monthly_same_desc">지난달 대비 변화가 없어요!</string>
+
+    <!-- 차트 축 라벨 (DecimalFormat 패턴) -->
+    <string name="weight_chart_week_pattern">#주</string>
+    <string name="weight_chart_month_pattern">#월</string>
+    <string name="weight_chart_december">12월</string>
+
+    <!-- 편집 다이얼로그·스낵바 -->
+    <string name="weight_edit_dialog_title">체중을 입력해주세요</string>
+    <string name="weight_patch_success">체중이 수정되었습니다!</string>
+    <string name="weight_patch_failure">서버가 불안정 하여 체중 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.</string>
+</resources>

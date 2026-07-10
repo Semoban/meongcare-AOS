@@ -163,12 +163,12 @@ class WeightFragment : Fragment() {
             if (response == null) return@observe
             if (response == SUCCESS) {
                 fetchAllWeights()
-                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, "체중이 수정되었습니다!").show()
+                CustomSnackBar.make(requireView(), R.drawable.snackbar_success_16dp, getString(R.string.weight_patch_success)).show()
             } else {
                 CustomSnackBar.make(
                     requireView(),
                     R.drawable.snackbar_error_16dp,
-                    "서버가 불안정 하여 체중 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                    getString(R.string.weight_patch_failure),
                 ).show()
             }
         }

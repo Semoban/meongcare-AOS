@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -84,7 +85,7 @@ fun WeightScreen(
     ) {
         // 미래 날짜에서는 편집 버튼을 숨기되 자리는 유지해 카드 위치가 흔들리지 않게 한다
         Text(
-            text = "편집",
+            text = stringResource(R.string.all_edit),
             style = SemobanTypography.body1Medium,
             color = Gray4,
             modifier =
@@ -134,11 +135,11 @@ private fun DailyWeightCard(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "체중",
+                    text = stringResource(R.string.petadd_weight),
                     style = SemobanTypography.title3SemiBold,
                 )
                 Text(
-                    text = "현재 ${dogName.orEmpty()}님의 체중입니다.",
+                    text = stringResource(R.string.weight_daily_desc_format, dogName.orEmpty()),
                     style = SemobanTypography.body3Regular,
                     color = Gray4,
                     modifier = Modifier.padding(top = 4.dp),
@@ -166,11 +167,11 @@ private fun WeeklyWeightCard(
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
-                text = "${dogName.orEmpty()}님의 체중변화를 기록했어요!",
+                text = stringResource(R.string.weight_weekly_title_format, dogName.orEmpty()),
                 style = SemobanTypography.title3SemiBold,
             )
             Text(
-                text = "${dogName.orEmpty()}님의 주 별 체중변화",
+                text = stringResource(R.string.weight_weekly_desc_format, dogName.orEmpty()),
                 style = SemobanTypography.body2Regular,
                 color = Gray5,
                 modifier = Modifier.padding(top = 8.dp),
@@ -202,15 +203,15 @@ private fun MonthlyWeightCard(
         if (monthlyWeight != null) monthlyWeight.thisMonthWeight - monthlyWeight.lastMonthWeight else 0.0
     val title =
         when {
-            monthlyWeightChange > 0 -> "이번달은 지난달 대비 증가했어요!"
-            monthlyWeightChange < 0 -> "이번달은 지난달 대비 감소했어요!"
-            else -> "이번달과 지난달의 체중이 동일해요!"
+            monthlyWeightChange > 0 -> stringResource(R.string.weight_monthly_increase_title)
+            monthlyWeightChange < 0 -> stringResource(R.string.weight_monthly_decrease_title)
+            else -> stringResource(R.string.weight_monthly_same_title)
         }
     val content =
         when {
-            monthlyWeightChange > 0 -> "지난달 대비 ${String.format("%.2f", monthlyWeightChange)}kg가 증가했어요!"
-            monthlyWeightChange < 0 -> "지난달 대비 ${String.format("%.2f", abs(monthlyWeightChange))}kg가 감소했어요!"
-            else -> "지난달 대비 변화가 없어요!"
+            monthlyWeightChange > 0 -> stringResource(R.string.weight_monthly_increase_format, monthlyWeightChange)
+            monthlyWeightChange < 0 -> stringResource(R.string.weight_monthly_decrease_format, abs(monthlyWeightChange))
+            else -> stringResource(R.string.weight_monthly_same_desc)
         }
 
     Surface(
@@ -264,7 +265,7 @@ internal fun WeightEditDialog(
         ) {
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
                 Text(
-                    text = "체중을 입력해주세요",
+                    text = stringResource(R.string.weight_edit_dialog_title),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.padding(start = 25.dp),
                 )
@@ -276,7 +277,7 @@ internal fun WeightEditDialog(
                 ) {
                     if (showError) {
                         Text(
-                            text = "필수 입력 값입니다",
+                            text = stringResource(R.string.designsystem_required_input),
                             style = SemobanTypography.body1Medium,
                             color = Sub1,
                             modifier =
@@ -313,13 +314,13 @@ internal fun WeightEditDialog(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     WeightDialogButton(
-                        text = "취소",
+                        text = stringResource(R.string.all_cancel),
                         backgroundColor = Gray2,
                         textColor = Gray5,
                         onClick = onCancel,
                     )
                     WeightDialogButton(
-                        text = "확인",
+                        text = stringResource(R.string.all_confirm),
                         backgroundColor = Main4,
                         textColor = White,
                         onClick = {
@@ -399,7 +400,7 @@ private fun bindWeeklyChart(
             typeface = typo
             textColor = Gray4.toArgb()
             position = XAxis.XAxisPosition.BOTTOM
-            valueFormatter = WeekFormatter()
+            valueFormatter = WeekFormatter(context.getString(R.string.weight_chart_week_pattern))
             spaceMin = 0.2F
             spaceMax = 0.2F
             setDrawGridLines(false)
@@ -469,7 +470,11 @@ private fun bindMonthlyChart(
             position = XAxis.XAxisPosition.BOTTOM
             textSize = 14F
             typeface = typo
-            valueFormatter = MonthFormatter()
+            valueFormatter =
+                MonthFormatter(
+                    context.getString(R.string.weight_chart_month_pattern),
+                    context.getString(R.string.weight_chart_december),
+                )
             setDrawGridLines(false)
         }
 
@@ -497,20 +502,20 @@ private fun bindMonthlyChart(
     }
 }
 
-private class WeekFormatter : ValueFormatter() {
-    private val format = DecimalFormat("#주")
+private class WeekFormatter(pattern: String) : ValueFormatter() {
+    private val format = DecimalFormat(pattern)
 
     override fun getFormattedValue(value: Float): String {
         return format.format(value)
     }
 }
 
-private class MonthFormatter : ValueFormatter() {
-    private val format = DecimalFormat("#월")
+private class MonthFormatter(pattern: String, private val decemberLabel: String) : ValueFormatter() {
+    private val format = DecimalFormat(pattern)
 
     override fun getFormattedValue(value: Float): String {
         return if (value == 0F) {
-            "12월"
+            decemberLabel
         } else {
             format.format(value)
         }
