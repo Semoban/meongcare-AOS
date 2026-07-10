@@ -1,6 +1,5 @@
 package com.project.meongcare.toolbar.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.text.SimpleDateFormat
@@ -38,6 +37,23 @@ class ToolbarViewModel : ViewModel() {
         dateList.value = ArrayList(weekDates)
     }
 
-    fun getMonthDateDay(date: Date): String = SimpleDateFormat("MM.dd EE", Locale.getDefault()).format(date)
-}
+    // 주간 스트립에서 날짜 클릭 시 호출 — 이미 선택된 날짜와 같은 날이면 무시한다
+    fun selectDateAt(position: Int) {
+        val newDate = dateList.value?.getOrNull(position) ?: return
+        val currentDate = selectedDate.value
+        if (currentDate != null && toDayString(currentDate) == toDayString(newDate)) return
 
+        selectDatePosition.value = position
+        selectedDate.value = newDate
+    }
+
+    fun moveWeek(days: Int) {
+        val baseDate = selectedDate.value ?: return
+        val calendar = Calendar.getInstance()
+        calendar.time = baseDate
+        calendar.add(Calendar.DAY_OF_YEAR, days)
+        updateDateList(calendar.time)
+    }
+
+    private fun toDayString(date: Date): String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
+}

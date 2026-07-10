@@ -5,51 +5,43 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSettingBinding
-import com.project.meongcare.databinding.LayoutDeleteAccountDialogBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.info.viewmodel.ProfileViewModel
-import com.project.meongcare.login.model.data.local.UserPreferences
-import com.project.meongcare.login.model.data.repository.LoginRepository
+import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
-    private lateinit var binding: FragmentSettingBinding
-    private lateinit var currentAccessToken: String
+    private var _binding: FragmentSettingBinding? = null
+    private val binding get() = _binding!!
 
     private val settingViewModel: ProfileViewModel by viewModels()
-    private val deleteAccountCoroutineJob = Job()
-    private var pushAgreement = false
+    private val userViewModel: UserViewModel by viewModels()
 
-    @Inject
-    lateinit var userPreferences: UserPreferences
-
-    @Inject
-    lateinit var loginRepository: LoginRepository
+    private val pushAgreementLiveData = MutableLiveData(false)
+    private var currentAccessToken = ""
+    private var currentRefreshToken = ""
+    private var currentProvider = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        pushAgreement = arguments?.getBoolean("pushAgreement")!!
-        getAccessToken()
+        pushAgreementLiveData.value = arguments?.getBoolean("pushAgreement") ?: false
     }
 
     override fun onCreateView(
@@ -57,50 +49,78 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSettingBinding.inflate(inflater)
+        _binding = FragmentSettingBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        initComposeView()
+        fetchUserInfo()
+        observeSettingResponses()
+        observeReissueResponse()
+    }
+
+    private fun initComposeView() {
+        binding.composeViewSetting.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val pushAgreement by pushAgreementLiveData.observeAsState()
+
+                    SettingScreen(
+                        pushAgreement = pushAgreement == true,
+                        onBackClick = { findNavController().popBackStack() },
+                        onPushToggle = { isChecked ->
+                            pushAgreementLiveData.value = isChecked
+                            settingViewModel.patchPushAgreement(isChecked, currentAccessToken)
+                        },
+                        onDeleteAccountConfirm = ::deleteAccount,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun fetchUserInfo() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                currentAccessToken = accessToken
+            }
+        }
+        userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
+            if (refreshToken != null) {
+                currentRefreshToken = refreshToken
+            }
+        }
+        userViewModel.providerPreferencesLiveData.observe(viewLifecycleOwner) { provider ->
+            if (provider != null) {
+                currentProvider = provider
+            }
+        }
+    }
+
+    private fun observeSettingResponses() {
         settingViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                when (response) {
-                    200 -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_success_16dp,
-                            getString(R.string.snack_bar_user_delete_complete),
-                        ).show()
-                        userPreferences.setProvider(null)
-                        userPreferences.setEmail(null)
-                        userPreferences.setAccessToken(null)
-                        userPreferences.setRefreshToken(null)
-                        findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
-                    }
-                    401 -> {
-                        lifecycleScope.launch {
-                            val refreshToken = userPreferences.getRefreshToken()
-                            if (refreshToken.isNotEmpty()) {
-                                val response = loginRepository.getNewAccessToken(refreshToken)
-                                if (response != null) {
-                                    when (response.code()) {
-                                        200 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_user_delete_failure),
-                                            ).show()
-                                            userPreferences.setAccessToken(response.body()?.accessToken!!)
-                                        }
-                                        401 -> {
-                                            CustomSnackBar.make(
-                                                requireView(),
-                                                R.drawable.snackbar_error_16dp,
-                                                getString(R.string.snack_bar_refresh_expire),
-                                            ).show()
-                                            findNavController().navigate(R.id.action_petEditFragment_to_loginFragment)
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            when (response) {
+                200 -> {
+                    CustomSnackBar.make(
+                        requireView(),
+                        R.drawable.snackbar_success_16dp,
+                        getString(R.string.snack_bar_user_delete_complete),
+                    ).show()
+                    userViewModel.setProvider(null)
+                    userViewModel.setEmail(null)
+                    userViewModel.setAccessToken(null)
+                    userViewModel.setRefreshToken(null)
+                    findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+                }
+                401 -> {
+                    if (currentRefreshToken.isNotEmpty()) {
+                        userViewModel.getNewAccessToken(currentRefreshToken)
                     }
                 }
             }
@@ -108,22 +128,17 @@ class SettingFragment : Fragment() {
 
         settingViewModel.patchPushResponse.observe(viewLifecycleOwner) { response ->
             if (response == 200) {
-                when (binding.switchSettingNotification.isChecked) {
-                    true -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_success_16dp,
-                            getString(R.string.snack_bar_notification_on),
-                        ).show()
+                val messageRes =
+                    if (pushAgreementLiveData.value == true) {
+                        R.string.snack_bar_notification_on
+                    } else {
+                        R.string.snack_bar_notification_off
                     }
-                    false -> {
-                        CustomSnackBar.make(
-                            requireView(),
-                            R.drawable.snackbar_success_16dp,
-                            getString(R.string.snack_bar_notification_off),
-                        ).show()
-                    }
-                }
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_success_16dp,
+                    getString(messageRes),
+                ).show()
             } else {
                 CustomSnackBar.make(
                     requireView(),
@@ -132,71 +147,38 @@ class SettingFragment : Fragment() {
                 ).show()
             }
         }
-
-        binding.run {
-            switchSettingNotification.run {
-                isChecked = pushAgreement
-            }
-
-            imagebuttonSettingBack.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            textviewSettingMembershipWithdrawal.setOnClickListener {
-                showDeleteAccountDialog()
-            }
-
-            buttonSettingNotification.setOnClickListener {
-                switchSettingNotification.isChecked = !switchSettingNotification.isChecked
-            }
-
-            switchSettingNotification.setOnCheckedChangeListener { buttonView, isChecked ->
-                settingViewModel.patchPushAgreement(isChecked, currentAccessToken)
-            }
-        }
-
-        return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        deleteAccountCoroutineJob.cancel()
-    }
-
-    private fun showDeleteAccountDialog() {
-        val builder = MaterialAlertDialogBuilder(requireContext())
-        val dialogBinding = LayoutDeleteAccountDialogBinding.inflate(layoutInflater)
-
-        builder.setView(dialogBinding.root)
-        builder.setCancelable(true)
-        builder.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.all_rect_white_r10))
-
-        val dialog = builder.create()
-
-        dialogBinding.buttonDeleteAccountDialogCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialogBinding.buttonDeleteAccountDialogDelete.setOnClickListener {
-            lifecycleScope.launch(deleteAccountCoroutineJob) {
-                val currentProvider = userPreferences.getProvider()
-                when (currentProvider) {
-                    "kakao" -> deleteKakaoAccount()
-                    "naver" -> deleteNaverAccount()
-                    "google" -> deleteGoogleAccount()
+    private fun observeReissueResponse() {
+        userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                when (response.code()) {
+                    200 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_user_delete_failure),
+                        ).show()
+                        userViewModel.setAccessToken(response.body()?.accessToken)
+                    }
+                    401 -> {
+                        CustomSnackBar.make(
+                            requireView(),
+                            R.drawable.snackbar_error_16dp,
+                            getString(R.string.snack_bar_refresh_expire),
+                        ).show()
+                        findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
+                    }
                 }
             }
         }
-
-        dialog.show()
     }
 
-    private fun getAccessToken() {
-        lifecycleScope.launch {
-            userPreferences.accessToken.collectLatest { accessToken ->
-                if (accessToken != null) {
-                    currentAccessToken = accessToken
-                }
-            }
+    private fun deleteAccount() {
+        when (currentProvider) {
+            "kakao" -> deleteKakaoAccount()
+            "naver" -> deleteNaverAccount()
+            "google" -> deleteGoogleAccount()
         }
     }
 
@@ -255,5 +237,10 @@ class SettingFragment : Fragment() {
                     Log.e("Delete-google", "회원 탈퇴 실패 ${task.result}")
                 }
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

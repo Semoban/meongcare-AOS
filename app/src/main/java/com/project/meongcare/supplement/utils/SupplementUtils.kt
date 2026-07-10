@@ -1,8 +1,5 @@
 package com.project.meongcare.supplement.utils
 
-import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.view.bottomSheet.SupplementCycleBottomSheetDialogFragment
@@ -28,12 +25,6 @@ class SupplementUtils {
             }
         }
 
-        fun hideKeyboard(view: View) {
-            val inputMethodManager =
-                view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-
         fun convertToDateToDate(date: Date): String {
             val instant: Instant = date.toInstant()
             val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
@@ -50,11 +41,7 @@ class SupplementUtils {
             bottomSheetFragment.onNumberCycleChangedListener =
                 object : SupplementCycleBottomSheetDialogFragment.OnNumberCycleChangedListener {
                     override fun onNumberCycleChanged(number: Int) {
-                        if (supplementViewModel != null) {
-                            supplementViewModel.supplementCycle.value = number
-                        } else {
-                            return
-                        }
+                        supplementViewModel.updateSupplementCycle(number)
                     }
                 }
 

@@ -4,77 +4,54 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.Tab
-import com.google.android.material.tabs.TabLayoutMediator
-import com.project.meongcare.MainActivity
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentOnBoardingBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 
 class OnBoardingFragment : Fragment() {
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
-    lateinit var mainActivity: MainActivity
+    private var _binding: FragmentOnBoardingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val fragmentOnBoardingBinding = FragmentOnBoardingBinding.inflate(inflater)
+        _binding = FragmentOnBoardingBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewPagerAdapter = ViewPagerAdapter(this)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        initComposeView()
+    }
 
-        fragmentOnBoardingBinding.run {
-            viewpagerOnboarding.adapter = viewPagerAdapter
-
-            TabLayoutMediator(tablayoutOnboarding, viewpagerOnboarding) { tab: Tab, _ ->
-                viewpagerOnboarding.currentItem = tab.position
-            }.attach()
-
-            tablayoutOnboarding.addOnTabSelectedListener(
-                object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: Tab?) {
-                        buttonOnboardingStart.visibility =
-                            when (tab!!.position) {
-                                2 -> View.VISIBLE
-                                else -> View.INVISIBLE
-                            }
-                    }
-
-                    override fun onTabUnselected(tab: Tab?) {}
-
-                    override fun onTabReselected(tab: Tab?) {}
-                },
-            )
-
-            textviewOnboardingSkip.setOnClickListener {
-                moveToLogin()
-            }
-
-            buttonOnboardingStart.setOnClickListener {
-                moveToLogin()
+    private fun initComposeView() {
+        binding.composeViewOnBoarding.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    OnBoardingScreen(
+                        onSkipClick = ::moveToLogin,
+                        onStartClick = ::moveToLogin,
+                    )
+                }
             }
         }
-
-        return fragmentOnBoardingBinding.root
     }
 
     private fun moveToLogin() {
         findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)
     }
-}
 
-class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 3
-
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> FirstOnBoardingFragment()
-            1 -> SecondOnBoardingFragment()
-            else -> ThirdOnBoardingFragment()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

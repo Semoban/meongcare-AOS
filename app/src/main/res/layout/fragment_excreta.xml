@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.compose.ui.platform.ComposeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/compose_view_excreta"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical"
-    tools:context=".excreta.view.ExcretaFragment">
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/toolbar_excreta"
-        android:name="com.project.meongcare.toolbar.view.ToolbarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/compose_view_excreta"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+    tools:context=".excreta.view.ExcretaFragment" />

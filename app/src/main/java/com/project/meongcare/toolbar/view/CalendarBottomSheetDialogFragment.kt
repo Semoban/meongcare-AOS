@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.meongcare.databinding.BottomsheetCalendarBinding
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertToLocalDateToDate
+import com.project.meongcare.toolbar.viewmodel.ToolbarViewModel
 import java.time.LocalDate
 
 class CalendarBottomSheetDialogFragment : BottomSheetDialogFragment() {
@@ -66,6 +69,23 @@ class CalendarBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     .resources.getIdentifier("date_picker_header", "id", "android")
             fragmentCalendarBottomSheetBinding.root.findViewById<View>(datePickerHeaderId).visibility =
                 View.GONE
+        }
+    }
+
+    companion object {
+        // 주간 달력 툴바 제목 클릭 시 날짜 선택 바텀시트를 띄운다
+        fun show(
+            fragmentManager: FragmentManager,
+            toolbarViewModel: ToolbarViewModel,
+        ) {
+            CalendarBottomSheetDialogFragment().apply {
+                onDateSelectedListener =
+                    object : OnDateSelectedListener {
+                        override fun onDateSelected(date: LocalDate) {
+                            toolbarViewModel.updateDateList(convertToLocalDateToDate(date))
+                        }
+                    }
+            }.show(fragmentManager, "CalendarBottomSheetDialogFragment")
         }
     }
 }

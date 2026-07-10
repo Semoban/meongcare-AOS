@@ -5,27 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.project.meongcare.BirthdayBottomSheetFragment
 import com.project.meongcare.BuildConfig
+import com.project.meongcare.PhotoSelectBottomSheetFragment
 import com.project.meongcare.R
 import com.project.meongcare.aws.util.AWSS3ImageUtils.convertUriToFile
 import com.project.meongcare.aws.util.DOG_FOLDER_PATH
 import com.project.meongcare.aws.util.PARENT_FOLDER_PATH
 import com.project.meongcare.aws.viewmodel.AWSS3ViewModel
 import com.project.meongcare.databinding.FragmentDogAddOnBoardingBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.medicalRecord.viewmodel.UserViewModel
 import com.project.meongcare.onboarding.model.data.local.DateSubmitListener
 import com.project.meongcare.onboarding.model.data.local.PhotoMenuListener
 import com.project.meongcare.onboarding.model.entities.DogPostRequest
-import com.project.meongcare.onboarding.util.DogAddOnBoardingDateUtils.dateFormat
-import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.bodySizeCheck
-import com.project.meongcare.onboarding.util.DogAddOnBoardingInfoUtils.getCheckedGender
 import com.project.meongcare.onboarding.viewmodel.DogAddViewModel
 import com.project.meongcare.onboarding.viewmodel.DogTypeSharedViewModel
 import com.project.meongcare.snackbar.view.CustomSnackBar
@@ -36,18 +37,19 @@ import java.io.File
 
 @AndroidEntryPoint
 class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListener {
-    lateinit var binding: FragmentDogAddOnBoardingBinding
+    private var _binding: FragmentDogAddOnBoardingBinding? = null
+    private val binding get() = _binding!!
 
     private val dogAddViewModel: DogAddViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val awsS3ViewModel: AWSS3ViewModel by viewModels()
     private val dogTypeSharedViewModel: DogTypeSharedViewModel by activityViewModels()
 
-    private var isCbxChecked = false
     private var isFirstRegister: Boolean? = null
+    private var pendingForm: DogAddFormResult? = null
 
-    private lateinit var accessToken: String
-    private lateinit var refreshToken: String
+    private var accessToken = ""
+    private var refreshToken = ""
     private lateinit var imageFile: File
     private lateinit var filePath: String
 
@@ -60,8 +62,8 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        binding = FragmentDogAddOnBoardingBinding.inflate(inflater)
+    ): View {
+        _binding = FragmentDogAddOnBoardingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -70,22 +72,46 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        getAccessToken()
-        initObserves()
-        initViews()
+        initComposeView()
+        fetchUserInfo()
+        observeDogAddResponse()
+        observeImageUpload()
+        observeReissueResponse()
     }
 
-    private fun getAccessToken() {
-        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
-            if (accessToken != null) {
-                this.accessToken = accessToken
-                getRefreshToken()
+    private fun initComposeView() {
+        binding.composeViewDogAddOnBoarding.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val imageUri by dogAddViewModel.dogProfileImage.observeAsState()
+                    val dogType by dogTypeSharedViewModel.selectedDogType.observeAsState()
+                    val birthDate by dogAddViewModel.dogBirthDate.observeAsState()
+
+                    DogAddOnBoardingScreen(
+                        imageModel = imageUri,
+                        dogType = dogType,
+                        birthDate = birthDate,
+                        showCancelButton = isFirstRegister != true,
+                        onImageClick = ::showPhotoSelectBottomSheet,
+                        onTypeClick = {
+                            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
+                        },
+                        onBirthdayClick = ::showBirthdayBottomSheet,
+                        onCancelClick = { findNavController().popBackStack() },
+                        onComplete = ::submitDogInfo,
+                    )
+                }
             }
         }
     }
 
-    private fun getRefreshToken() {
+    private fun fetchUserInfo() {
+        userViewModel.accessTokenPreferencesLiveData.observe(viewLifecycleOwner) { accessToken ->
+            if (accessToken != null) {
+                this.accessToken = accessToken
+            }
+        }
         userViewModel.refreshTokenPreferencesLiveData.observe(viewLifecycleOwner) { refreshToken ->
             if (refreshToken != null) {
                 this.refreshToken = refreshToken
@@ -93,8 +119,47 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
     }
 
-    private fun reissueAccessToken() {
-        userViewModel.getNewAccessToken(refreshToken)
+    private fun observeDogAddResponse() {
+        dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_success_16dp,
+                    getString(R.string.snack_bar_dog_create_complete),
+                ).show()
+                userViewModel.setIsFirstLogin(false)
+                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
+            } else if (response == 401) {
+                if (refreshToken.isNotEmpty()) {
+                    userViewModel.getNewAccessToken(refreshToken)
+                }
+            } else {
+                CustomSnackBar.make(
+                    requireView(),
+                    R.drawable.snackbar_error_16dp,
+                    getString(R.string.snack_bar_failure),
+                ).show()
+            }
+        }
+    }
+
+    private fun observeImageUpload() {
+        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, requestBody)
+            }
+        }
+
+        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
+            if (response == 200) {
+                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
+                postDogInfo(imageURL)
+            }
+        }
+    }
+
+    private fun observeReissueResponse() {
         userViewModel.reissueResponse.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 when (response.code()) {
@@ -119,163 +184,49 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
     }
 
-    override fun onUriPassed(uri: Uri) {
-        dogAddViewModel.getDogProfileImage(uri)
+    private fun showPhotoSelectBottomSheet() {
+        val modalBottomSheet = PhotoSelectBottomSheetFragment()
+        modalBottomSheet.setPhotoMenuListener(this@DogAddOnBoardingFragment)
+        modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
+        modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
     }
 
-    override fun onDateSubmit(str: String) {
-        dogAddViewModel.getDogBirthDate(str)
+    private fun showBirthdayBottomSheet() {
+        val birthdayBottomSheet =
+            BirthdayBottomSheetFragment(
+                binding.root,
+                dogAddViewModel.dogBirthDate.value,
+            )
+        birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
+        birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
+        birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
     }
 
-    private fun initViews() {
-        // 사진 등록
-        binding.cardviewPetaddImage.setOnClickListener {
-            val modalBottomSheet = PhotoSelectBottomSheetFragment()
-            modalBottomSheet.setPhotoMenuListener(this@DogAddOnBoardingFragment)
-            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerPhotoDialogTheme)
-            modalBottomSheet.show(requireActivity().supportFragmentManager, modalBottomSheet.tag)
-        }
-
-        // 품종 등록
-        binding.viewPetaddType.setOnClickListener {
-            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
-        }
-
-        // 날짜 등록
-        binding.textviewPetaddSelectBirthday.setOnClickListener {
-            val birthdayBottomSheet =
-                BirthdayBottomSheetFragment(
-                    binding.root,
-                    dogAddViewModel.dogBirthDate.value,
-                )
-            birthdayBottomSheet.setDateSubmitListener(this@DogAddOnBoardingFragment)
-            birthdayBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBirthdayDialogTheme)
-            birthdayBottomSheet.show(requireActivity().supportFragmentManager, birthdayBottomSheet.tag)
-        }
-
-        binding.checkboxPetaddNeuterStatus.setOnCheckedChangeListener { buttonView, isChecked ->
-            isCbxChecked = isChecked
-        }
-
-        // 중성화 여부 텍스트 클릭 시 체크박스 반전
-        binding.textviewPetaddNeuterStatus.setOnClickListener {
-            binding.checkboxPetaddNeuterStatus.isChecked = !isCbxChecked
-        }
-
-        binding.edittextPetaddNameError.setOnClickListener {
-            it.visibility = View.INVISIBLE
-            binding.edittextPetaddName.requestFocus()
-        }
-
-        binding.edittextPetaddWeightError.setOnClickListener {
-            it.visibility = View.INVISIBLE
-            binding.edittextPetaddWeight.requestFocus()
-        }
-
-        binding.edittextPetaddSelectTypeError.setOnClickListener {
-            findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_dogVarietySearchFragment)
-        }
-
-        binding.buttonCancel.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        initCancelButtonVisibility()
-        initCompleteButton()
-    }
-
-    private fun initObserves() {
-        dogAddViewModel.dogProfileImage.observe(viewLifecycleOwner) { uri ->
-            if (uri != null) {
-                binding.run {
-                    Glide.with(this@DogAddOnBoardingFragment)
-                        .load(uri)
-                        .into(imageviewPetaddImage)
-                    imageviewPetaddDog.visibility = View.GONE
-                    textviewPetaddImageDescription.visibility = View.GONE
-                }
-            }
-        }
-
-        dogAddViewModel.dogBirthDate.observe(viewLifecycleOwner) { date ->
-            if (date != null) {
-                binding.textviewPetaddSelectBirthday.run {
-                    binding.edittextPetaddSelectBirthdayError.visibility = View.INVISIBLE
-                    text = dateFormat(date)
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
-            }
-        }
-
-        dogTypeSharedViewModel.selectedDogType.observe(viewLifecycleOwner) { dogType ->
-            if (dogType != null) {
-                binding.edittextPetaddSelectType.run {
-                    binding.edittextPetaddSelectTypeError.visibility = View.GONE
-                    text = dogType
-                    setTextAppearance(R.style.Typography_Body1_Medium)
-                }
-            }
-        }
-
-        dogAddViewModel.dogAddResponse.observe(viewLifecycleOwner) { response ->
-            if (response == 200) {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_success_16dp,
-                    getString(R.string.snack_bar_dog_create_complete),
-                ).show()
-                userViewModel.setIsFirstLogin(false)
-                findNavController().navigate(R.id.action_dogAddOnBoardingFragment_to_completeOnBoardingFragment)
-            } else if (response == 401) {
-                if (refreshToken.isNotEmpty()) {
-                    reissueAccessToken()
-                }
-            } else {
-                CustomSnackBar.make(
-                    requireView(),
-                    R.drawable.snackbar_error_16dp,
-                    getString(R.string.snack_bar_failure),
-                ).show()
-            }
-        }
-
-        awsS3ViewModel.preSignedUrl.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-                awsS3ViewModel.uploadImageToS3(response.preSignedUrl, requestBody)
-            }
-        }
-
-        awsS3ViewModel.uploadImageResponse.observe(viewLifecycleOwner) { response ->
-            if (response == 200) {
-                val imageURL = BuildConfig.AWS_S3_BASE_URL + filePath
-                postDogInfo(imageURL)
-            }
+    private fun submitDogInfo(form: DogAddFormResult) {
+        pendingForm = form
+        val uri = dogAddViewModel.dogProfileImage.value
+        if (uri == null) {
+            postDogInfo(null)
+        } else {
+            imageFile = convertUriToFile(requireContext(), uri)
+            filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${imageFile.name}"
+            awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
         }
     }
 
     private fun postDogInfo(imageURL: String?) {
-        val name = binding.edittextPetaddName.text.toString()
-        val type = binding.edittextPetaddSelectType.text.toString()
-        val sex = getCheckedGender(binding.root, binding.chipgroupPetaddGroupGender.checkedChipId)
-        val birthDate = dogAddViewModel.dogBirthDate.value!!
-        val castrate = binding.checkboxPetaddNeuterStatus.isChecked
-        val weight: Double = binding.edittextPetaddWeight.text.toString().toDouble()
-        val backRound: Double? = bodySizeCheck(binding.edittextPetaddBackLength.text.toString())
-        val neckRound: Double? = bodySizeCheck(binding.edittextPetaddNeckCircumference.text.toString())
-        val chestRound: Double? = bodySizeCheck(binding.edittextPetaddChestCircumference.text.toString())
-
+        val form = pendingForm ?: return
         val dogPostRequest =
             DogPostRequest(
-                name,
-                type,
-                sex,
-                birthDate,
-                castrate,
-                weight,
-                backRound,
-                neckRound,
-                chestRound,
+                form.name,
+                dogTypeSharedViewModel.selectedDogType.value!!,
+                form.gender,
+                dogAddViewModel.dogBirthDate.value!!,
+                form.castrate,
+                form.weight,
+                form.backRound,
+                form.neckRound,
+                form.chestRound,
                 imageURL,
             )
 
@@ -287,47 +238,16 @@ class DogAddOnBoardingFragment : Fragment(), PhotoMenuListener, DateSubmitListen
         }
     }
 
-    private fun initCancelButtonVisibility() {
-        when (isFirstRegister) {
-            true -> binding.buttonCancel.visibility = View.GONE
-            false, null -> binding.buttonCancel.visibility = View.VISIBLE
-        }
+    override fun onUriPassed(uri: Uri) {
+        dogAddViewModel.getDogProfileImage(uri)
     }
 
-    private fun initCompleteButton() {
-        binding.buttonComplete.setOnClickListener {
-            // 입력 검사
-            if (binding.edittextPetaddName.text.isEmpty()) {
-                binding.edittextPetaddNameError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
+    override fun onDateSubmit(str: String) {
+        dogAddViewModel.getDogBirthDate(str)
+    }
 
-            if (binding.edittextPetaddSelectType.text.isEmpty()) {
-                binding.edittextPetaddSelectTypeError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (binding.chipgroupPetaddGroupGender.checkedChipId == View.NO_ID) {
-                return@setOnClickListener
-            }
-
-            if (binding.textviewPetaddSelectBirthday.text.isEmpty()) {
-                binding.edittextPetaddSelectBirthdayError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (binding.edittextPetaddWeight.text.isEmpty()) {
-                binding.edittextPetaddWeightError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
-
-            if (dogAddViewModel.dogProfileImage.value == null) {
-                postDogInfo(null)
-            } else {
-                imageFile = convertUriToFile(requireContext(), dogAddViewModel.dogProfileImage.value!!)
-                filePath = "$PARENT_FOLDER_PATH$DOG_FOLDER_PATH${imageFile.name}"
-                awsS3ViewModel.getPreSignedUrl(accessToken, filePath)
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

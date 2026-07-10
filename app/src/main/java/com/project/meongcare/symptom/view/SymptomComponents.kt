@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.project.meongcare.R
-import com.project.meongcare.designsystem.theme.Black30
 import com.project.meongcare.designsystem.theme.Gray1
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
@@ -264,82 +262,6 @@ internal fun CancelCompleteButtons(
                 style = SemobanTypography.bottom1SemiBold,
                 color = White,
             )
-        }
-    }
-}
-
-@Composable
-internal fun DeleteDialogOverlay(
-    onCancel: () -> Unit,
-    onDelete: () -> Unit,
-) {
-    Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Black30)
-                .clickable(enabled = false) {},
-        contentAlignment = Alignment.Center,
-    ) {
-        Surface(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            color = White,
-            shape = RoundedCornerShape(10.dp),
-        ) {
-            Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                Text(
-                    text = "삭제하시겠습니까?",
-                    style = SemobanTypography.body1Medium,
-                    modifier = Modifier.padding(start = 25.dp),
-                )
-                Text(
-                    text = "삭제를 누르면 복구할 수 없습니다.",
-                    style = SemobanTypography.body2Regular,
-                    color = Gray4,
-                    modifier = Modifier.padding(start = 25.dp, top = 4.dp),
-                )
-                Row(
-                    modifier =
-                        Modifier
-                            .align(Alignment.End)
-                            .padding(top = 30.dp, end = 25.dp),
-                ) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .height(38.dp)
-                                .background(Gray2, RoundedCornerShape(5.dp))
-                                .clickable { onCancel() }
-                                .padding(horizontal = 32.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "취소",
-                            style = SemobanTypography.bottom2SemiBold,
-                            color = Gray5,
-                        )
-                    }
-                    Box(
-                        modifier =
-                            Modifier
-                                .padding(start = 8.dp)
-                                .height(38.dp)
-                                .background(Main4, RoundedCornerShape(5.dp))
-                                .clickable { onDelete() }
-                                .padding(horizontal = 32.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "삭제",
-                            style = SemobanTypography.bottom2SemiBold,
-                            color = White,
-                        )
-                    }
-                }
-            }
         }
     }
 }
