@@ -103,7 +103,7 @@ fun MedicalRecordFormScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
         }
@@ -305,7 +305,7 @@ private fun MedicalRecordDateBox(
         Text(
             text =
                 when {
-                    showError -> "필수 입력 값입니다."
+                    showError -> stringResource(R.string.designsystem_required_input)
                     selectedDate != null -> convertToDisplayFormDate(selectedDate)
                     else -> stringResource(R.string.medicalrecord_date)
                 },
@@ -362,7 +362,7 @@ private fun MedicalRecordFormTextField(
                 ) {
                     if (value.isEmpty()) {
                         Text(
-                            text = if (showError) "필수 입력 값입니다" else hint,
+                            text = if (showError) stringResource(R.string.designsystem_required_input) else hint,
                             style = SemobanTypography.body1Regular,
                             color = if (showError) Sub1 else Gray4,
                         )
@@ -424,7 +424,7 @@ private fun MedicalRecordFormScreenPreview() {
             initialRecord = null,
             imageModel = null,
             selectedDate = null,
-            completeText = "기록하기",
+            completeText = stringResource(R.string.medicalrecord_record),
             onBackClick = {},
             onImageClick = {},
             onDateClick = {},

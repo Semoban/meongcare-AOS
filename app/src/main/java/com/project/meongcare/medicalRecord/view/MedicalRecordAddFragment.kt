@@ -165,13 +165,13 @@ class MedicalRecordAddFragment :
                 CustomSnackBar.make(
                     activity?.findViewById(android.R.id.content)!!,
                     R.drawable.snackbar_success_16dp,
-                    "추가가 완료되었습니다",
+                    getString(R.string.medicalrecord_add_success),
                 ).show()
             } else {
                 CustomSnackBar.make(
                     activity?.findViewById(android.R.id.content)!!,
                     R.drawable.snackbar_error_16dp,
-                    "추가에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+                    getString(R.string.medicalrecord_add_failure),
                 ).show()
             }
         }

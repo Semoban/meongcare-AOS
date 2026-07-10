@@ -97,7 +97,7 @@ fun MedicalRecordScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "${dogName.orEmpty()}님의 진료 기록",
+                    text = stringResource(R.string.medicalrecord_pet, dogName.orEmpty()),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.weight(1f),
                 )

@@ -60,20 +60,20 @@ fun MedicalRecordInfoScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = onEditClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_edit),
-                    contentDescription = "수정",
+                    contentDescription = stringResource(R.string.all_modify),
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_delete),
-                    contentDescription = "삭제",
+                    contentDescription = stringResource(R.string.all_delete),
                 )
             }
         }

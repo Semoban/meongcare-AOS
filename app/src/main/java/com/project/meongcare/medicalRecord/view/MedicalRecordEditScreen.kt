@@ -68,11 +68,11 @@ fun MedicalRecordEditScreen(
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(R.drawable.all_arrow_back_18dp),
-                    contentDescription = "뒤로가기",
+                    contentDescription = stringResource(R.string.all_back),
                 )
             }
             Text(
-                text = "${dogName.orEmpty()}님의 진료 기록",
+                text = stringResource(R.string.medicalrecord_pet, dogName.orEmpty()),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 8.dp),
             )
@@ -129,7 +129,7 @@ fun MedicalRecordEditScreen(
                         .padding(vertical = 12.dp),
             )
             Text(
-                text = "삭제",
+                text = stringResource(R.string.all_delete),
                 style = SemobanTypography.bottom1SemiBold,
                 color = White,
                 textAlign = TextAlign.Center,

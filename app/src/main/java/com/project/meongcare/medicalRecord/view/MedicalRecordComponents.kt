@@ -12,9 +12,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray4
 import com.project.meongcare.designsystem.theme.Gray5
@@ -35,12 +37,12 @@ internal fun MedicalRecordDeleteDialog(
         ) {
             Column(modifier = Modifier.padding(vertical = 20.dp)) {
                 Text(
-                    text = "삭제하시겠습니까?",
+                    text = stringResource(R.string.designsystem_delete_dialog_title),
                     style = SemobanTypography.body1Medium,
                     modifier = Modifier.padding(start = 25.dp),
                 )
                 Text(
-                    text = "삭제를 누르면 복구할 수 없습니다.",
+                    text = stringResource(R.string.designsystem_delete_dialog_subtitle),
                     style = SemobanTypography.body2Regular,
                     color = Gray4,
                     modifier = Modifier.padding(start = 25.dp, top = 4.dp, end = 25.dp),
@@ -53,13 +55,13 @@ internal fun MedicalRecordDeleteDialog(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     MedicalRecordDialogButton(
-                        text = "취소",
+                        text = stringResource(R.string.all_cancel),
                         backgroundColor = Gray2,
                         textColor = Gray5,
                         onClick = onCancel,
                     )
                     MedicalRecordDialogButton(
-                        text = "삭제",
+                        text = stringResource(R.string.all_delete),
                         backgroundColor = Main4,
                         textColor = White,
                         onClick = onConfirm,
