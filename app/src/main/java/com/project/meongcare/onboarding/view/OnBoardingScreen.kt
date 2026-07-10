@@ -1,5 +1,7 @@
 package com.project.meongcare.onboarding.view
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,15 +41,15 @@ import com.project.meongcare.designsystem.theme.SemobanTypography
 import com.project.meongcare.designsystem.theme.White
 
 private data class OnBoardingPage(
-    val title: String,
-    val imageRes: Int,
+    @StringRes val titleRes: Int,
+    @DrawableRes val imageRes: Int,
 )
 
 private val onBoardingPages =
     listOf(
-        OnBoardingPage("반려견의 건강을\n기록하고 관리해보세요!", R.drawable.onboarding_one),
-        OnBoardingPage("기록을 통해\n변화를 알 수 있어요!", R.drawable.onboarding_two),
-        OnBoardingPage("그럼 나만의\n세모반을 시작해볼까요?", R.drawable.onboarding_three),
+        OnBoardingPage(R.string.onboarding_page_one, R.drawable.onboarding_one),
+        OnBoardingPage(R.string.onboarding_page_two, R.drawable.onboarding_two),
+        OnBoardingPage(R.string.onboarding_page_three, R.drawable.onboarding_three),
     )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -65,7 +68,7 @@ fun OnBoardingScreen(
                 .background(White),
     ) {
         Text(
-            text = "건너뛰기",
+            text = stringResource(R.string.onboarding_skip),
             style = SemobanTypography.body2Regular,
             color = Gray4,
             modifier =
@@ -112,7 +115,7 @@ fun OnBoardingScreen(
         ) {
             if (pagerState.currentPage == onBoardingPages.lastIndex) {
                 Text(
-                    text = "시작하기",
+                    text = stringResource(R.string.onboarding_start),
                     style = SemobanTypography.bottom1SemiBold,
                     color = White,
                     textAlign = TextAlign.Center,
@@ -135,7 +138,7 @@ private fun OnBoardingPageContent(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = page.title,
+            text = stringResource(page.titleRes),
             style = SemobanTypography.title1SemiBold.copy(fontSize = 24.sp),
             color = Black,
             modifier = Modifier.padding(start = 32.dp),

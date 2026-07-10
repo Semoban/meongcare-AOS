@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -87,7 +88,7 @@ fun DogAddOnBoardingScreen(
                 .padding(horizontal = 32.dp),
     ) {
         Text(
-            text = "반려견에 대해 알려주세요",
+            text = stringResource(R.string.petadd_dog_info),
             style = SemobanTypography.title2SemiBold,
             modifier = Modifier.padding(top = 32.dp),
         )
@@ -110,7 +111,7 @@ fun DogAddOnBoardingScreen(
                         contentDescription = null,
                     )
                     Text(
-                        text = "사진을 첨부해주세요",
+                        text = stringResource(R.string.all_attach_photo_hint),
                         style = SemobanTypography.body3Regular,
                         color = Gray5,
                         modifier = Modifier.padding(top = 8.dp),
@@ -125,23 +126,23 @@ fun DogAddOnBoardingScreen(
                 )
             }
         }
-        DogAddFormLabel(text = "이름", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = stringResource(R.string.petadd_name), modifier = Modifier.padding(top = 24.dp))
         FormTextField(
             value = name,
             onValueChange = { name = it },
-            hint = "이름을 입력해주세요",
+            hint = stringResource(R.string.petadd_input_name),
             showError = submitAttempted && name.isEmpty(),
             modifier = Modifier.padding(top = 8.dp),
         )
-        DogAddFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = stringResource(R.string.petadd_breed), modifier = Modifier.padding(top = 24.dp))
         FormClickBox(
             value = dogType.orEmpty(),
-            hint = "품종을 입력해주세요",
+            hint = stringResource(R.string.petadd_select_breed),
             showError = submitAttempted && dogType.isNullOrEmpty(),
             onClick = onTypeClick,
             modifier = Modifier.padding(top = 8.dp),
         )
-        DogAddFormLabel(text = "성별", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = stringResource(R.string.petadd_gender), modifier = Modifier.padding(top = 24.dp))
         Row(
             modifier = Modifier.padding(top = 8.dp),
             verticalAlignment = Alignment.Top,
@@ -163,21 +164,21 @@ fun DogAddOnBoardingScreen(
                 modifier = Modifier.padding(start = 8.dp, top = 7.dp),
             )
         }
-        DogAddFormLabel(text = "생일을 알려주세요", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = stringResource(R.string.petadd_birthday), modifier = Modifier.padding(top = 24.dp))
         FormClickBox(
             value = birthDate?.let { dateFormat(it) }.orEmpty(),
-            hint = "날짜를 선택해주세요",
+            hint = stringResource(R.string.all_select_date),
             showError = submitAttempted && birthDate.isNullOrEmpty(),
             onClick = onBirthdayClick,
             modifier = Modifier.padding(top = 4.dp),
         )
         Text(
-            text = "강아지의 생일을 모를 경우, 처음 만난 날을 입력 해주세요",
+            text = stringResource(R.string.petadd_input_first_day),
             style = SemobanTypography.body3Regular,
             color = Gray5,
             modifier = Modifier.padding(top = 4.dp),
         )
-        DogAddFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
+        DogAddFormLabel(text = stringResource(R.string.petadd_weight), modifier = Modifier.padding(top = 24.dp))
         FormNumberField(
             value = weight,
             onValueChange = { weight = it },
@@ -190,7 +191,7 @@ fun DogAddOnBoardingScreen(
                     .width(148.dp),
         )
         Text(
-            text = "치수",
+            text = stringResource(R.string.petadd_size),
             style = SemobanTypography.body1SemiBold,
             modifier = Modifier.padding(top = 24.dp),
         )
@@ -198,7 +199,7 @@ fun DogAddOnBoardingScreen(
             FormNumberField(
                 value = backRound,
                 onValueChange = { backRound = it },
-                hint = "등",
+                hint = stringResource(R.string.petadd_back_length),
                 unit = "cm",
                 showError = false,
                 modifier = Modifier.weight(1f),
@@ -206,7 +207,7 @@ fun DogAddOnBoardingScreen(
             FormNumberField(
                 value = chestRound,
                 onValueChange = { chestRound = it },
-                hint = "가슴둘레",
+                hint = stringResource(R.string.petadd_chest_circumference),
                 unit = "cm",
                 showError = false,
                 modifier =
@@ -217,7 +218,7 @@ fun DogAddOnBoardingScreen(
             FormNumberField(
                 value = neckRound,
                 onValueChange = { neckRound = it },
-                hint = "목둘레",
+                hint = stringResource(R.string.petadd_neck_circumference),
                 unit = "cm",
                 showError = false,
                 modifier =
@@ -245,7 +246,7 @@ fun DogAddOnBoardingScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "취소",
+                        text = stringResource(R.string.all_cancel),
                         style = SemobanTypography.bottom1SemiBold,
                         color = Gray4,
                     )
@@ -282,7 +283,7 @@ fun DogAddOnBoardingScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "완료",
+                    text = stringResource(R.string.all_completion),
                     style = SemobanTypography.bottom1SemiBold,
                     color = White,
                 )
@@ -303,7 +304,7 @@ private fun DogAddFormLabel(
         Text(text = text, style = SemobanTypography.body1SemiBold)
         Image(
             painter = painterResource(R.drawable.essential_input_element_icon),
-            contentDescription = "필수 입력",
+            contentDescription = stringResource(R.string.all_required_input_description),
             modifier = Modifier.padding(start = 8.dp),
         )
     }

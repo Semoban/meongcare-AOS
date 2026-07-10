@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,20 +45,20 @@ fun CompleteOnBoardingScreen(
             modifier = Modifier.padding(top = 134.dp),
         )
         Text(
-            text = "입력을 완료했어요!",
+            text = stringResource(R.string.onboarding_complete_title),
             style = SemobanTypography.title2SemiBold,
             color = Black,
             modifier = Modifier.padding(top = 32.dp),
         )
         Text(
-            text = "이제 멍케어와 함께 같이 시작해볼까요?",
+            text = stringResource(R.string.onboarding_complete_subtitle),
             style = SemobanTypography.body2Regular,
             color = Gray5,
             modifier = Modifier.padding(top = 8.dp),
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "시작하기",
+            text = stringResource(R.string.onboarding_start),
             style = SemobanTypography.bottom1SemiBold,
             color = White,
             textAlign = TextAlign.Center,

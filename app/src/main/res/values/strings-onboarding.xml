@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 안내 페이저 -->
+    <string name="onboarding_page_one">반려견의 건강을\n기록하고 관리해보세요!</string>
+    <string name="onboarding_page_two">기록을 통해\n변화를 알 수 있어요!</string>
+    <string name="onboarding_page_three">그럼 나만의\n세모반을 시작해볼까요?</string>
+    <string name="onboarding_skip">건너뛰기</string>
+    <string name="onboarding_start">시작하기</string>
+
+    <!-- 입력 완료 -->
+    <string name="onboarding_complete_title">입력을 완료했어요!</string>
+    <string name="onboarding_complete_subtitle">이제 멍케어와 함께 같이 시작해볼까요?</string>
+
+    <!-- 품종 검색 -->
+    <string name="onboarding_clear_search">검색어 지우기</string>
+    <string name="onboarding_clear_input">입력 지우기</string>
+    <string name="onboarding_direct_input">직접 입력하기</string>
+    <string name="onboarding_breed_input_hint">강아지 품종을 입력해주세요</string>
+    <string name="onboarding_breed_input_error">강아지 품종을 입력해주세요 !</string>
+</resources>

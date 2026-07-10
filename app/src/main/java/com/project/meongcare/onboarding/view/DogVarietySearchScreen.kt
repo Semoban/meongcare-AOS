@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -73,7 +74,7 @@ fun DogVarietySearchScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(
                         painter = painterResource(R.drawable.all_arrow_back_18dp),
-                        contentDescription = "뒤로가기",
+                        contentDescription = stringResource(R.string.all_back),
                     )
                 }
                 Row(
@@ -105,7 +106,7 @@ fun DogVarietySearchScreen(
                             Box {
                                 if (query.isEmpty()) {
                                     Text(
-                                        text = "품종을 입력해주세요",
+                                        text = stringResource(R.string.petadd_select_breed),
                                         style = SemobanTypography.body1Regular,
                                         color = Gray4,
                                     )
@@ -117,7 +118,7 @@ fun DogVarietySearchScreen(
                     if (query.isNotEmpty()) {
                         Image(
                             painter = painterResource(R.drawable.pet_food_search),
-                            contentDescription = "검색어 지우기",
+                            contentDescription = stringResource(R.string.onboarding_clear_search),
                             modifier =
                                 Modifier
                                     .padding(start = 16.dp)
@@ -182,7 +183,7 @@ fun DogVarietySearchScreen(
                     modifier = Modifier.size(18.dp),
                 )
                 Text(
-                    text = "직접 입력하기",
+                    text = stringResource(R.string.onboarding_direct_input),
                     style = SemobanTypography.bottom2SemiBold,
                     color = Black,
                     modifier = Modifier.padding(start = 8.dp),
@@ -228,7 +229,7 @@ private fun DogTypeInputDialog(
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
-                    text = "품종을 입력해주세요",
+                    text = stringResource(R.string.petadd_select_breed),
                     style = SemobanTypography.title3SemiBold,
                 )
                 var fieldModifier =
@@ -262,7 +263,10 @@ private fun DogTypeInputDialog(
                             Box {
                                 if (dogType.isEmpty()) {
                                     Text(
-                                        text = if (showError) "강아지 품종을 입력해주세요 !" else "강아지 품종을 입력해주세요",
+                                        text =
+                                            stringResource(
+                                                if (showError) R.string.onboarding_breed_input_error else R.string.onboarding_breed_input_hint,
+                                            ),
                                         style = SemobanTypography.body1Regular,
                                         color = if (showError) Sub1 else Gray4,
                                     )
@@ -274,7 +278,7 @@ private fun DogTypeInputDialog(
                     if (dogType.isNotEmpty()) {
                         Image(
                             painter = painterResource(R.drawable.pet_food_search),
-                            contentDescription = "입력 지우기",
+                            contentDescription = stringResource(R.string.onboarding_clear_input),
                             modifier =
                                 Modifier
                                     .padding(start = 8.dp)
@@ -298,7 +302,7 @@ private fun DogTypeInputDialog(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "취소",
+                            text = stringResource(R.string.all_cancel),
                             style = SemobanTypography.bottom2SemiBold,
                             color = Gray5,
                         )
@@ -320,7 +324,7 @@ private fun DogTypeInputDialog(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "확인",
+                            text = stringResource(R.string.all_confirm),
                             style = SemobanTypography.bottom2SemiBold,
                             color = White,
                         )
