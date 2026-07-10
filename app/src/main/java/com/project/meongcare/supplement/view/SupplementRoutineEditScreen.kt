@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -82,7 +83,7 @@ fun SupplementRoutineEditScreen(
                             checked = checkedIds.isNotEmpty() && checkedIds.size == supplements.size,
                         )
                         Text(
-                            text = "전체 삭제",
+                            text = stringResource(R.string.all_deleteall),
                             style = SemobanTypography.body1Medium,
                             color = Gray5,
                             modifier = Modifier.padding(start = 8.dp),
@@ -101,7 +102,7 @@ fun SupplementRoutineEditScreen(
                 }
             }
             CancelCompleteButtons(
-                completeText = "삭제",
+                completeText = stringResource(R.string.all_delete),
                 onCancel = onBackClick,
                 onComplete = { showDeleteDialog = true },
                 modifier = Modifier.padding(start = 27.dp, end = 27.dp, bottom = 32.dp),
@@ -161,7 +162,7 @@ private fun SupplementRoutineEditItem(
                             R.drawable.all_notification_inactivate_18dp
                         },
                     ),
-                contentDescription = if (supplement.pushAgreement) "알림 켜짐" else "알림 꺼짐",
+                contentDescription = stringResource(if (supplement.pushAgreement) R.string.supplement_alarm_on else R.string.supplement_alarm_off),
                 modifier =
                     Modifier
                         .padding(start = 12.dp)

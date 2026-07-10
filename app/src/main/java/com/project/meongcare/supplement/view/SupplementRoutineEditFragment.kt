@@ -130,7 +130,7 @@ class SupplementRoutineEditFragment : Fragment() {
         CustomSnackBar.make(
             requireView(),
             R.drawable.snackbar_success_16dp,
-            "삭제가 완료되었습니다.",
+            getString(R.string.supplement_delete_success),
         ).show()
     }
 
@@ -138,7 +138,7 @@ class SupplementRoutineEditFragment : Fragment() {
         CustomSnackBar.make(
             requireView(),
             R.drawable.snackbar_error_16dp,
-            "삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요",
+            getString(R.string.supplement_delete_failure),
         ).show()
     }
 

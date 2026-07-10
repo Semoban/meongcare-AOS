@@ -20,8 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Black
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray3
@@ -69,19 +71,19 @@ fun SupplementScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${dogName.orEmpty()}님의 섭취 루틴",
+                text = stringResource(R.string.supplement_title_format, dogName.orEmpty()),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = "추가",
+                text = stringResource(R.string.all_add),
                 style = SemobanTypography.body1Regular,
                 color = Gray5,
                 modifier = Modifier.clickable { onAddClick() },
             )
             if (supplements.isNotEmpty()) {
                 Text(
-                    text = "편집",
+                    text = stringResource(R.string.all_edit),
                     style = SemobanTypography.body1Regular,
                     color = Gray5,
                     modifier =
@@ -129,7 +131,7 @@ private fun SupplementProgressCard(
         Column(modifier = Modifier.padding(15.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "섭취 완료율",
+                    text = stringResource(R.string.supplement_completion_rate),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.weight(1f),
                 )
@@ -164,7 +166,7 @@ private fun SupplementProgressCard(
                 }
             }
             Text(
-                text = "${remainingCount}개의 루틴이 남았습니다",
+                text = stringResource(R.string.supplement_remaining_format, remainingCount),
                 style = SemobanTypography.body3Regular,
                 color = Gray5,
                 modifier = Modifier.align(Alignment.End),

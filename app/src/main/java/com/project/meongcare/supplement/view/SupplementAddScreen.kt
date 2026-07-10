@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,11 +81,11 @@ fun SupplementAddScreen(
         ) {
             SupplementImageCard(
                 imageModel = imageModel,
-                description = "사진을 첨부해주세요",
+                description = stringResource(R.string.all_attach_photo_hint),
                 onClick = onImageClick,
             )
             EssentialLabel(
-                text = "브랜드명",
+                text = stringResource(R.string.supplement_brand_label),
                 modifier = Modifier.padding(top = 31.dp),
             )
             SupplementTextField(
@@ -93,12 +94,12 @@ fun SupplementAddScreen(
                     brandError = false
                     brand = it
                 },
-                hint = "브랜드를 입력해주세요",
+                hint = stringResource(R.string.supplement_brand_hint),
                 showError = brandError,
                 modifier = Modifier.padding(top = 8.dp),
             )
             EssentialLabel(
-                text = "제품명",
+                text = stringResource(R.string.supplement_name_label),
                 modifier = Modifier.padding(top = 23.dp),
             )
             SupplementTextField(
@@ -107,7 +108,7 @@ fun SupplementAddScreen(
                     nameError = false
                     name = it
                 },
-                hint = "제품명을 입력해주세요",
+                hint = stringResource(R.string.supplement_name_hint),
                 showError = nameError,
                 modifier = Modifier.padding(top = 8.dp),
             )
@@ -119,7 +120,7 @@ fun SupplementAddScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 EssentialLabel(
-                    text = "섭취 주기",
+                    text = stringResource(R.string.supplement_intake_cycle_label),
                     modifier = Modifier.weight(1f),
                 )
                 Row(
@@ -132,7 +133,7 @@ fun SupplementAddScreen(
                 ) {
                     if (cycle != null) {
                         Text(
-                            text = "${cycle}일 마다",
+                            text = stringResource(R.string.supplement_cycle_days_format, cycle),
                             style = SemobanTypography.body2Regular,
                             color = Gray5,
                             modifier = Modifier.padding(end = 10.dp),
@@ -153,7 +154,7 @@ fun SupplementAddScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 EssentialLabel(
-                    text = "섭취 단위",
+                    text = stringResource(R.string.supplement_intake_unit_label),
                     modifier = Modifier.weight(1f),
                 )
                 SupplementUnitSelector(
@@ -167,9 +168,9 @@ fun SupplementAddScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (intakeTimeList.isEmpty()) {
-                    EssentialLabel(text = "섭취 시간")
+                    EssentialLabel(text = stringResource(R.string.supplement_intake_time_label))
                 } else {
-                    Text(text = "섭취 시간", style = SemobanTypography.body1SemiBold)
+                    Text(text = stringResource(R.string.supplement_intake_time_label), style = SemobanTypography.body1SemiBold)
                     SupplementIntakeCountBadge(
                         count = intakeTimeList.size,
                         modifier = Modifier.padding(start = 9.dp),
@@ -181,7 +182,7 @@ fun SupplementAddScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "추가",
+                        text = stringResource(R.string.all_add),
                         style = SemobanTypography.body2Regular,
                         color = Gray4,
                         modifier =
@@ -192,7 +193,7 @@ fun SupplementAddScreen(
                     )
                     if (intakeTimeList.isNotEmpty()) {
                         Text(
-                            text = "편집",
+                            text = stringResource(R.string.all_edit),
                             style = SemobanTypography.body2Regular,
                             color = Gray4,
                             modifier =
@@ -219,7 +220,7 @@ fun SupplementAddScreen(
             }
         }
         Text(
-            text = "완료",
+            text = stringResource(R.string.all_completion),
             style = SemobanTypography.bottom1SemiBold,
             color = White,
             textAlign = TextAlign.Center,
@@ -290,7 +291,7 @@ private fun SupplementTextField(
             ) {
                 if (value.isEmpty()) {
                     Text(
-                        text = if (showError) "필수 입력 값입니다" else hint,
+                        text = if (showError) stringResource(R.string.designsystem_required_input) else hint,
                         style = SemobanTypography.body1Regular,
                         color = if (showError) Sub1 else Gray4,
                     )
@@ -304,7 +305,7 @@ private fun SupplementTextField(
 @Composable
 private fun SupplementErrorText(modifier: Modifier = Modifier) {
     Text(
-        text = "필수 입력 값입니다.",
+        text = stringResource(R.string.designsystem_required_input),
         style = SemobanTypography.body3Regular,
         color = Sub1,
         modifier = modifier,

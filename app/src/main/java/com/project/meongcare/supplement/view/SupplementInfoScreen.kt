@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -64,7 +65,7 @@ fun SupplementInfoScreen(
                     IconButton(onClick = { showDeleteDialog = true }) {
                         Icon(
                             painter = painterResource(R.drawable.all_delete),
-                            contentDescription = "삭제",
+                            contentDescription = stringResource(R.string.all_delete),
                         )
                     }
                 },
@@ -78,7 +79,7 @@ fun SupplementInfoScreen(
             ) {
                 SupplementImageCard(imageModel = detail?.imageUrl?.takeIf { it.isNotBlank() })
                 Text(
-                    text = "브랜드명",
+                    text = stringResource(R.string.supplement_brand_label),
                     style = SemobanTypography.body1SemiBold,
                     modifier = Modifier.padding(top = 31.dp),
                 )
@@ -87,7 +88,7 @@ fun SupplementInfoScreen(
                     modifier = Modifier.padding(top = 8.dp),
                 )
                 Text(
-                    text = "제품명",
+                    text = stringResource(R.string.supplement_name_label),
                     style = SemobanTypography.body1SemiBold,
                     modifier = Modifier.padding(top = 23.dp),
                 )
@@ -103,12 +104,12 @@ fun SupplementInfoScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "섭취 주기",
+                        text = stringResource(R.string.supplement_intake_cycle_label),
                         style = SemobanTypography.body1SemiBold,
                         modifier = Modifier.weight(1f),
                     )
                     Text(
-                        text = "${detail?.intakeCycle ?: 0}일 마다",
+                        text = stringResource(R.string.supplement_cycle_days_format, detail?.intakeCycle ?: 0),
                         style = SemobanTypography.body2Regular,
                         color = Gray5,
                     )
@@ -119,7 +120,7 @@ fun SupplementInfoScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "섭취 단위",
+                        text = stringResource(R.string.supplement_intake_unit_label),
                         style = SemobanTypography.body1SemiBold,
                         modifier = Modifier.weight(1f),
                     )
@@ -127,7 +128,7 @@ fun SupplementInfoScreen(
                 }
                 SupplementSectionDivider()
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "섭취 시간", style = SemobanTypography.body1SemiBold)
+                    Text(text = stringResource(R.string.supplement_intake_time_label), style = SemobanTypography.body1SemiBold)
                     SupplementIntakeCountBadge(
                         count = detail?.intakeInfos?.size ?: 0,
                         modifier = Modifier.padding(start = 9.dp),
@@ -203,7 +204,10 @@ private fun SupplementRoutineButton(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = if (isRoutineActive) "루틴 중단" else "루틴 시작하기",
+            text =
+                stringResource(
+                    if (isRoutineActive) R.string.supplement_routine_stop else R.string.supplement_routine_start,
+                ),
             style = SemobanTypography.bottom1SemiBold,
             color = if (isRoutineActive) Gray4 else White,
         )

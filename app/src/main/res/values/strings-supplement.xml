@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 메인 -->
+    <string name="supplement_title_format">%1$s님의 섭취 루틴</string>
+    <string name="supplement_completion_rate">섭취 완료율</string>
+    <string name="supplement_remaining_format">%1$d개의 루틴이 남았습니다</string>
+    <string name="supplement_empty">생성된 루틴이 없습니다!</string>
+    <string name="supplement_count_format">%1$d회</string>
+
+    <!-- 등록/상세 -->
+    <string name="supplement_brand_label">브랜드명</string>
+    <string name="supplement_brand_hint">브랜드를 입력해주세요</string>
+    <string name="supplement_name_label">제품명</string>
+    <string name="supplement_name_hint">제품명을 입력해주세요</string>
+    <string name="supplement_intake_cycle_label">섭취 주기</string>
+    <string name="supplement_cycle_days_format">%1$d일 마다</string>
+    <string name="supplement_intake_unit_label">섭취 단위</string>
+    <string name="supplement_intake_time_label">섭취 시간</string>
+    <string name="supplement_routine_start">루틴 시작하기</string>
+    <string name="supplement_routine_stop">루틴 중단</string>
+    <string name="supplement_alarm_on">알림 켜짐</string>
+    <string name="supplement_alarm_off">알림 꺼짐</string>
+
+    <!-- 스낵바 메시지 -->
+    <string name="supplement_add_success">추가가 완료되었습니다</string>
+    <string name="supplement_add_failure">추가에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+    <string name="supplement_delete_success">삭제가 완료되었습니다.</string>
+    <string name="supplement_delete_failure">삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+</resources>

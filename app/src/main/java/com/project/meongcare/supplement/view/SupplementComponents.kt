@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
 import com.project.meongcare.designsystem.component.GlideImage
@@ -55,7 +56,7 @@ internal fun SupplementTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 painter = painterResource(R.drawable.all_arrow_back_18dp),
-                contentDescription = "뒤로가기",
+                contentDescription = stringResource(R.string.all_back),
             )
         }
         Row(
@@ -79,7 +80,7 @@ internal fun EssentialLabel(
         Text(text = text, style = SemobanTypography.body1SemiBold)
         Image(
             painter = painterResource(R.drawable.essential_input_element_icon),
-            contentDescription = "필수 입력",
+            contentDescription = stringResource(R.string.all_required_input_description),
             modifier = Modifier.padding(start = 8.dp),
         )
     }
@@ -196,7 +197,7 @@ internal fun SupplementIntakeCountBadge(
                 .padding(horizontal = 9.dp),
     ) {
         Text(
-            text = "${count}회",
+            text = stringResource(R.string.supplement_count_format, count),
             style = SemobanTypography.body1Medium,
             color = Main4,
         )
@@ -218,7 +219,7 @@ internal fun SupplementIntakeTimeItem(
         if (showMinus) {
             Image(
                 painter = painterResource(R.drawable.nutrition_filled_minus),
-                contentDescription = "삭제",
+                contentDescription = stringResource(R.string.all_delete),
                 modifier =
                     Modifier
                         .padding(end = 6.dp)
@@ -271,7 +272,7 @@ internal fun CheckToggleIcon(
             painterResource(
                 if (checked) R.drawable.all_check_20dp else R.drawable.all_un_check_20dp,
             ),
-        contentDescription = if (checked) "선택됨" else "선택 안 됨",
+        contentDescription = stringResource(if (checked) R.string.all_checked else R.string.all_unchecked),
         modifier = modifier.size(20.dp),
     )
 }
@@ -288,7 +289,7 @@ internal fun SupplementNoData(modifier: Modifier = Modifier) {
                 contentDescription = null,
             )
             Text(
-                text = "생성된 루틴이 없습니다!",
+                text = stringResource(R.string.supplement_empty),
                 style = SemobanTypography.body1Medium,
                 color = Gray5,
                 modifier = Modifier.padding(top = 16.dp),
@@ -321,7 +322,7 @@ internal fun CancelCompleteButtons(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "취소",
+                text = stringResource(R.string.all_cancel),
                 style = SemobanTypography.bottom1SemiBold,
                 color = Gray5,
             )
@@ -345,4 +346,6 @@ internal fun CancelCompleteButtons(
     }
 }
 
+// 섭취 단위는 서버에 intakeUnit으로 그대로 전송·조회되므로
+// 백엔드 협의(i18n ④단계) 전까지 리소스로 추출하지 않는다
 internal val SUPPLEMENT_UNITS = listOf("mg", "스쿱", "정")

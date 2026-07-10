@@ -17,4 +17,5 @@
     <string name="all_checked">선택됨</string>
     <string name="all_unchecked">선택 안 됨</string>
     <string name="all_required_input_description">필수 입력</string>
+    <string name="all_attach_photo_hint">사진을 첨부해주세요</string>
 </resources>
