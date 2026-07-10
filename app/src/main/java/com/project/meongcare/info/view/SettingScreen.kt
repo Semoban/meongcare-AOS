@@ -19,8 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.component.ConfirmDialog
 import com.project.meongcare.designsystem.theme.Gray3
 import com.project.meongcare.designsystem.theme.Main4
@@ -46,7 +48,7 @@ fun SettingScreen(
                     .background(White),
         ) {
             InfoTopBar(
-                title = "설정",
+                title = stringResource(R.string.all_setting),
                 onBack = onBackClick,
             )
             Row(
@@ -60,7 +62,7 @@ fun SettingScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "알림 설정",
+                    text = stringResource(R.string.setting_notification),
                     style = SemobanTypography.body1Medium,
                     modifier = Modifier.weight(1f),
                 )
@@ -86,7 +88,7 @@ fun SettingScreen(
                         .background(Gray3),
             )
             Text(
-                text = "회원탈퇴",
+                text = stringResource(R.string.setting_membership_withdrawal),
                 style = SemobanTypography.body1Medium,
                 modifier =
                     Modifier
@@ -97,9 +99,9 @@ fun SettingScreen(
         }
         if (showDeleteAccountDialog) {
             ConfirmDialog(
-                title = "정말 회원 탈퇴하시겠습니까?",
-                subtitle = "탈퇴하시면 계정은 삭제됩니다.",
-                confirmText = "탈퇴하기",
+                title = stringResource(R.string.setting_withdrawal_dialog_title),
+                subtitle = stringResource(R.string.setting_withdrawal_dialog_subtitle),
+                confirmText = stringResource(R.string.setting_withdrawal_confirm),
                 onCancel = { showDeleteAccountDialog = false },
                 onConfirm = {
                     showDeleteAccountDialog = false

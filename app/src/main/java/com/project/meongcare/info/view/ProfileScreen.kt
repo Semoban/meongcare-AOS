@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun ProfileScreen(
                     .background(White),
         ) {
             InfoTopBar(
-                title = "나의 정보",
+                title = stringResource(R.string.profile_header),
                 onBack = onBackClick,
             )
             CircleGlideImage(
@@ -90,13 +91,13 @@ fun ProfileScreen(
                         .align(Alignment.CenterHorizontally),
             )
             Text(
-                text = "나의 반려동물 목록",
+                text = stringResource(R.string.profile_pet_list),
                 style = SemobanTypography.title3SemiBold,
                 modifier = Modifier.padding(start = 16.dp, top = 32.dp),
             )
             if (dogs.isEmpty()) {
                 Text(
-                    text = "등록된 반려동물이 없습니다",
+                    text = stringResource(R.string.profile_pet_list_empty),
                     style = SemobanTypography.body2Medium,
                     color = Black,
                     textAlign = TextAlign.Center,
@@ -133,14 +134,14 @@ fun ProfileScreen(
                         .height(4.dp)
                         .background(Color(0xFFF8F8F8)),
             )
-            ProfileMenuRow(text = "공유", onClick = { showShareDialog = true })
-            ProfileMenuRow(text = "설정", onClick = onSettingClick)
-            ProfileMenuRow(text = "로그아웃", onClick = { showLogoutDialog = true })
+            ProfileMenuRow(text = stringResource(R.string.all_share), onClick = { showShareDialog = true })
+            ProfileMenuRow(text = stringResource(R.string.all_setting), onClick = onSettingClick)
+            ProfileMenuRow(text = stringResource(R.string.profile_logout), onClick = { showLogoutDialog = true })
         }
         if (showLogoutDialog) {
             ConfirmDialog(
-                title = "로그아웃 하시겠습니까?",
-                confirmText = "로그아웃",
+                title = stringResource(R.string.profile_logout_dialog_title),
+                confirmText = stringResource(R.string.profile_logout),
                 onCancel = { showLogoutDialog = false },
                 onConfirm = {
                     showLogoutDialog = false
@@ -233,7 +234,7 @@ private fun ProfileUpdateExpectedDialog(onConfirm: () -> Unit) {
         ) {
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
                 Text(
-                    text = "업데이트 예정 기능입니다",
+                    text = stringResource(R.string.profile_share_coming_soon),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.padding(start = 25.dp),
                 )
@@ -248,7 +249,7 @@ private fun ProfileUpdateExpectedDialog(onConfirm: () -> Unit) {
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "확인",
+                        text = stringResource(R.string.all_confirm),
                         style = SemobanTypography.bottom2SemiBold,
                         color = White,
                     )

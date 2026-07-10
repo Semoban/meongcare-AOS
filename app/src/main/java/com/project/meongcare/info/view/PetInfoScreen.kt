@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,20 +73,20 @@ fun PetInfoScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(
                         painter = painterResource(R.drawable.all_arrow_back_18dp),
-                        contentDescription = "뒤로가기",
+                        contentDescription = stringResource(R.string.all_back),
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = onEditClick) {
                     Icon(
                         painter = painterResource(R.drawable.all_edit),
-                        contentDescription = "수정",
+                        contentDescription = stringResource(R.string.all_modify),
                     )
                 }
                 IconButton(onClick = { showDeleteDialog = true }) {
                     Icon(
                         painter = painterResource(R.drawable.all_delete),
-                        contentDescription = "삭제",
+                        contentDescription = stringResource(R.string.all_delete),
                     )
                 }
             }
@@ -101,17 +102,17 @@ fun PetInfoScreen(
                         .height(151.dp)
                         .clip(RoundedCornerShape(30.dp)),
             )
-            PetFormLabel(text = "이름", modifier = Modifier.padding(top = 32.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_name), modifier = Modifier.padding(top = 32.dp))
             PetFormValueBox(
                 value = dogInfo?.name.orEmpty(),
                 modifier = Modifier.padding(top = 8.dp),
             )
-            PetFormLabel(text = "품종", modifier = Modifier.padding(top = 24.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_breed), modifier = Modifier.padding(top = 24.dp))
             PetFormValueBox(
                 value = dogInfo?.type.orEmpty(),
                 modifier = Modifier.padding(top = 8.dp),
             )
-            PetFormLabel(text = "성별", modifier = Modifier.padding(top = 24.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_gender), modifier = Modifier.padding(top = 24.dp))
             Row(
                 modifier = Modifier.padding(top = 8.dp),
                 verticalAlignment = Alignment.Top,
@@ -130,12 +131,12 @@ fun PetInfoScreen(
                     modifier = Modifier.padding(start = 8.dp, top = 7.dp),
                 )
             }
-            PetFormLabel(text = "생일", modifier = Modifier.padding(top = 24.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_birthday_label), modifier = Modifier.padding(top = 24.dp))
             PetFormValueBox(
                 value = dogInfo?.birthDate?.let { dateFormat(it) }.orEmpty(),
                 modifier = Modifier.padding(top = 4.dp),
             )
-            PetFormLabel(text = "체중", modifier = Modifier.padding(top = 24.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_weight), modifier = Modifier.padding(top = 24.dp))
             Row(
                 modifier =
                     Modifier
@@ -160,16 +161,16 @@ fun PetInfoScreen(
                     modifier = Modifier.padding(start = 4.dp),
                 )
             }
-            PetFormLabel(text = "치수", modifier = Modifier.padding(top = 24.dp))
+            PetFormLabel(text = stringResource(R.string.petadd_size), modifier = Modifier.padding(top = 24.dp))
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 53.dp)) {
                 PetSizeValueBox(
                     value = formatBodySize(dogInfo?.backRound),
-                    hint = "등",
+                    hint = stringResource(R.string.petadd_back_length),
                     modifier = Modifier.weight(1f),
                 )
                 PetSizeValueBox(
                     value = formatBodySize(dogInfo?.chestRound),
-                    hint = "가슴둘레",
+                    hint = stringResource(R.string.petadd_chest_circumference),
                     modifier =
                         Modifier
                             .padding(start = 8.dp)
@@ -177,7 +178,7 @@ fun PetInfoScreen(
                 )
                 PetSizeValueBox(
                     value = formatBodySize(dogInfo?.neckRound),
-                    hint = "목둘레",
+                    hint = stringResource(R.string.petadd_neck_circumference),
                     modifier =
                         Modifier
                             .padding(start = 8.dp)

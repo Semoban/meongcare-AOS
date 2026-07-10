@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.SemobanTypography
@@ -33,7 +34,7 @@ internal fun InfoTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 painter = painterResource(R.drawable.all_arrow_back_18dp),
-                contentDescription = "뒤로가기",
+                contentDescription = stringResource(R.string.all_back),
             )
         }
         if (title != null) {
