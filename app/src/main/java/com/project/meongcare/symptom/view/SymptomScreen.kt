@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -100,19 +101,19 @@ private fun SymptomHeader(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "${dogName}님의 이상증상",
+            text = stringResource(R.string.symptom_title_format, dogName),
             style = SemobanTypography.title3SemiBold,
             modifier = Modifier.weight(1f),
         )
         Text(
-            text = "추가",
+            text = stringResource(R.string.all_add),
             style = SemobanTypography.body1Regular,
             color = Gray4,
             modifier = Modifier.clickable { onAddClick() },
         )
         if (showEdit) {
             Text(
-                text = "편집",
+                text = stringResource(R.string.all_edit),
                 style = SemobanTypography.body1Regular,
                 color = Gray4,
                 modifier =

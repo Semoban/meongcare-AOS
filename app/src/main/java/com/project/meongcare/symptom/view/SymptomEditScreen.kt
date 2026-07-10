@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -77,7 +78,7 @@ fun SymptomEditScreen(
                 .background(White),
     ) {
         SymptomTopBar(
-            title = if (dogName.isNullOrBlank()) "" else "${dogName}님의 이상증상",
+            title = if (dogName.isNullOrBlank()) "" else stringResource(R.string.symptom_title_format, dogName),
         )
         Column(
             modifier =
@@ -87,7 +88,7 @@ fun SymptomEditScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(24.dp),
         ) {
-            Text(text = "증상 날짜", style = SemobanTypography.body1SemiBold)
+            Text(text = stringResource(R.string.symptom_date_label), style = SemobanTypography.body1SemiBold)
             SymptomDateBox(
                 dateText = dateText,
                 isError = dateError,
@@ -95,7 +96,7 @@ fun SymptomEditScreen(
                 modifier = Modifier.padding(top = 10.dp),
             )
             Text(
-                text = "증상 시각",
+                text = stringResource(R.string.symptom_time_label),
                 style = SemobanTypography.body1SemiBold,
                 modifier = Modifier.padding(top = 25.dp),
             )
@@ -119,7 +120,7 @@ fun SymptomEditScreen(
                 )
             }
             Text(
-                text = "증상",
+                text = stringResource(R.string.symptom_label),
                 style = SemobanTypography.body1SemiBold,
                 modifier = Modifier.padding(top = 25.dp),
             )
@@ -149,7 +150,7 @@ fun SymptomEditScreen(
             }
         }
         CancelCompleteButtons(
-            completeText = "완료",
+            completeText = stringResource(R.string.all_completion),
             onCancel = onCancel,
             onComplete = {
                 dateError = dateText == null
@@ -192,7 +193,7 @@ private fun CustomSymptomTextField(
             ) {
                 if (value.isEmpty()) {
                     Text(
-                        text = "항목에 없는 증상을 적어주세요",
+                        text = stringResource(R.string.symptom_custom_edit_hint),
                         style = SemobanTypography.body2Medium.copy(textAlign = TextAlign.Center),
                         color = Gray4,
                         modifier = Modifier.fillMaxWidth(),

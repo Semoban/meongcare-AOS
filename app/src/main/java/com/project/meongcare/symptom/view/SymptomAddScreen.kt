@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.theme.Main4
 import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.designsystem.theme.SemobanTypography
@@ -71,7 +73,7 @@ fun SymptomAddScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(32.dp),
         ) {
-            EssentialLabel(text = "증상 날짜")
+            EssentialLabel(text = stringResource(R.string.symptom_date_label))
             SymptomDateBox(
                 dateText = dateText,
                 isError = dateError,
@@ -80,7 +82,7 @@ fun SymptomAddScreen(
                 modifier = Modifier.padding(top = 8.dp),
             )
             EssentialLabel(
-                text = "증상 시각",
+                text = stringResource(R.string.symptom_time_label),
                 modifier = Modifier.padding(top = 22.dp),
             )
             SpinnerTimePicker(
@@ -93,7 +95,7 @@ fun SymptomAddScreen(
                 },
             )
             EssentialLabel(
-                text = "증상",
+                text = stringResource(R.string.symptom_label),
                 modifier = Modifier.padding(top = 8.dp),
             )
             SelectSymptomBox(
@@ -126,7 +128,7 @@ fun SymptomAddScreen(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "완료",
+                text = stringResource(R.string.all_completion),
                 style = SemobanTypography.bottom1SemiBold,
                 color = White,
             )

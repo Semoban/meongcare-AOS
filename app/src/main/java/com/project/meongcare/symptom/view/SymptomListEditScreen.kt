@@ -23,8 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.meongcare.R
 import com.project.meongcare.designsystem.component.DeleteDialogOverlay
 import com.project.meongcare.designsystem.theme.Gray2
 import com.project.meongcare.designsystem.theme.Gray5
@@ -58,7 +60,7 @@ fun SymptomListEditScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             SymptomTopBar(
-                title = if (dogName.isNullOrBlank()) "" else "${dogName}님의 이상증상",
+                title = if (dogName.isNullOrBlank()) "" else stringResource(R.string.symptom_title_format, dogName),
                 onBack = onBack,
             )
             if (symptomList.isEmpty()) {
@@ -87,7 +89,7 @@ fun SymptomListEditScreen(
                             checked = checkedIds.isNotEmpty() && checkedIds.size == symptomList.size,
                         )
                         Text(
-                            text = "전체 삭제",
+                            text = stringResource(R.string.all_deleteall),
                             style = SemobanTypography.body1Medium,
                             color = Gray5,
                             modifier = Modifier.padding(start = 8.dp),
@@ -112,7 +114,7 @@ fun SymptomListEditScreen(
                     }
                 }
                 CancelCompleteButtons(
-                    completeText = "삭제",
+                    completeText = stringResource(R.string.all_delete),
                     onCancel = onCancel,
                     onComplete = {
                         if (checkedIds.isEmpty()) {

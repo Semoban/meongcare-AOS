@@ -14,4 +14,7 @@
     <string name="all_confirm">확인</string>
     <string name="all_modify">수정</string>
     <string name="all_back">뒤로가기</string>
+    <string name="all_checked">선택됨</string>
+    <string name="all_unchecked">선택 안 됨</string>
+    <string name="all_required_input_description">필수 입력</string>
 </resources>

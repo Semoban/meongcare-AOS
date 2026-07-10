@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 공통 -->
+    <string name="symptom_title_format">%1$s님의 이상증상</string>
+    <string name="symptom_date_label">증상 날짜</string>
+    <string name="symptom_time_label">증상 시각</string>
+    <string name="symptom_label">증상</string>
+    <string name="symptom_empty">이상증상을 발견하지 못했어요!</string>
+
+    <!-- 증상 선택 -->
+    <string name="symptom_select_hint">증상을 선택해주세요</string>
+    <string name="symptom_select_required">증상을 선택해주세요.</string>
+    <string name="symptom_custom_input_hint">항목에 없는 증상을 입력해주세요</string>
+    <string name="symptom_custom_edit_hint">항목에 없는 증상을 적어주세요</string>
+
+    <!-- 스낵바 메시지 -->
+    <string name="symptom_add_success">추가가 완료되었습니다</string>
+    <string name="symptom_add_failure">추가에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+    <string name="symptom_edit_success">수정이 완료되었습니다</string>
+    <string name="symptom_edit_failure">수정에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+    <string name="symptom_delete_success">삭제가 완료되었습니다.</string>
+    <string name="symptom_delete_failure">삭제에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+</resources>

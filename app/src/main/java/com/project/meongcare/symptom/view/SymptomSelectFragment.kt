@@ -54,7 +54,7 @@ class SymptomSelectFragment : Fragment() {
         CustomSnackBar.make(
             activity?.findViewById(android.R.id.content)!!,
             R.drawable.snackbar_error_16dp,
-            "증상을 선택해주세요.",
+            getString(R.string.symptom_select_required),
         ).show()
     }
 }

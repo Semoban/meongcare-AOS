@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -48,19 +49,19 @@ fun SymptomInfoScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             SymptomTopBar(
-                title = if (dogName.isNullOrBlank()) "" else "${dogName}님의 이상증상",
+                title = if (dogName.isNullOrBlank()) "" else stringResource(R.string.symptom_title_format, dogName),
                 onBack = onBack,
             ) {
                 IconButton(onClick = onEdit) {
                     Icon(
                         painter = painterResource(R.drawable.all_edit),
-                        contentDescription = "수정",
+                        contentDescription = stringResource(R.string.all_modify),
                     )
                 }
                 IconButton(onClick = { showDeleteDialog = true }) {
                     Icon(
                         painter = painterResource(R.drawable.all_delete),
-                        contentDescription = "삭제",
+                        contentDescription = stringResource(R.string.all_delete),
                     )
                 }
             }
@@ -71,14 +72,14 @@ fun SymptomInfoScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(24.dp),
             ) {
-                Text(text = "증상 날짜", style = SemobanTypography.body1SemiBold)
+                Text(text = stringResource(R.string.symptom_date_label), style = SemobanTypography.body1SemiBold)
                 SymptomDateBox(
                     dateText = dateText,
                     isError = false,
                     modifier = Modifier.padding(top = 10.dp),
                 )
                 Text(
-                    text = "증상 시각",
+                    text = stringResource(R.string.symptom_time_label),
                     style = SemobanTypography.body1SemiBold,
                     modifier = Modifier.padding(top = 25.dp),
                 )
@@ -88,7 +89,7 @@ fun SymptomInfoScreen(
                     modifier = Modifier.padding(top = 10.dp),
                 )
                 Text(
-                    text = "증상",
+                    text = stringResource(R.string.symptom_label),
                     style = SemobanTypography.body1SemiBold,
                     modifier = Modifier.padding(top = 25.dp),
                 )

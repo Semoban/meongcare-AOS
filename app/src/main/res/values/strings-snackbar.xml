@@ -18,4 +18,5 @@
     <string name="snack_bar_notification_on">알림 수신 처리되었습니다.</string>
     <string name="snack_bar_notification_off">알림 거부 처리되었습니다.</string>
     <string name="snack_bar_future_date">유효하지 않은 날짜입니다. 다시 설정해주세요.</string>
+    <string name="snack_bar_delete_none_selected">선택된 항목이 없습니다.\n항목을 선택하고 삭제해주세요.</string>
 </resources>

@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -42,6 +43,8 @@ internal data class SymptomSelectOption(
     val subtitle: String,
 )
 
+// 증상 제목은 서버에 symptomString으로 그대로 전송되어 아이콘 매핑에도 쓰이므로
+// 백엔드 협의(i18n ④단계) 전까지 리소스로 추출하지 않는다
 internal val symptomSelectOptions =
     listOf(
         SymptomSelectOption(
@@ -146,7 +149,7 @@ fun SymptomSelectScreen(
                         decorationBox = { innerTextField ->
                             if (customText.isEmpty()) {
                                 Text(
-                                    text = "항목에 없는 증상을 입력해주세요",
+                                    text = stringResource(R.string.symptom_custom_input_hint),
                                     style = SemobanTypography.body2Medium,
                                     color = Gray4,
                                 )
@@ -158,7 +161,7 @@ fun SymptomSelectScreen(
             }
         }
         CancelCompleteButtons(
-            completeText = "완료",
+            completeText = stringResource(R.string.all_completion),
             onCancel = onCancel,
             onComplete = {
                 when (selectedIndex) {
