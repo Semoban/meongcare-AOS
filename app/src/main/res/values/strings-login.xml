@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_logo_description">세모반 로고</string>
+    <string name="login_kakao">카카오로 시작하기</string>
+    <string name="login_naver">네이버로 시작하기</string>
+</resources>

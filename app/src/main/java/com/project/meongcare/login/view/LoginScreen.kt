@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.meongcare.R
@@ -45,7 +46,7 @@ fun LoginScreen(
     ) {
         Image(
             painter = painterResource(R.drawable.semoban_logo),
-            contentDescription = "세모반 로고",
+            contentDescription = stringResource(R.string.login_logo_description),
             modifier =
                 Modifier
                     .padding(top = 156.dp)
@@ -54,14 +55,14 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         LoginButton(
-            text = "카카오로 시작하기",
+            text = stringResource(R.string.login_kakao),
             iconRes = R.drawable.login_kakao_talk,
             backgroundColor = KakaoYellow,
             textColor = Black,
             onClick = onKakaoLoginClick,
         )
         LoginButton(
-            text = "네이버로 시작하기",
+            text = stringResource(R.string.login_naver),
             iconRes = R.drawable.login_naver,
             backgroundColor = NaverGreen,
             textColor = White,
