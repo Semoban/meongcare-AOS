@@ -1,23 +1,23 @@
 package com.project.meongcare.excreta.utils
 
+import com.project.meongcare.LocaleDateTimeFormats
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 object ExcretaDateTimeUtils {
     fun convertDateTimeFormat(dateTime: String): String {
         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 
         val parsedDate = LocalDate.parse(dateTime, inputFormat)
-        return outputFormat.format(parsedDate)
+        return LocaleDateTimeFormats.datePadded().format(parsedDate)
     }
 
     fun convertDateFormat(date: String): String {
         val inputFormat = plusDay(date)
-        val outputFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
 
         val parsedDate = LocalDate.parse(inputFormat)
-        return outputFormat.format(parsedDate)
+        return LocaleDateTimeFormats.datePadded().format(parsedDate)
     }
 
     fun plusDay(date: String): String {
@@ -37,8 +37,6 @@ object ExcretaDateTimeUtils {
         val hour = date.substring(HOUR_START, HOUR_END).toInt()
         val minute = date.substring(MINUTE_START, MINUTE_END).toInt()
 
-        if (hour == NOON) return String.format("$AFTERNOON $TIME_FORM", hour, minute)
-        if (hour > NOON) return String.format("$AFTERNOON $TIME_FORM", hour - NOON, minute)
-        return String.format("$MORNING $TIME_FORM", hour, minute)
+        return LocaleDateTimeFormats.time12h().format(LocalTime.of(hour, minute))
     }
 }

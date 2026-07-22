@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
@@ -23,16 +24,14 @@ class SymptomUtils {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.time12hShort())
         }
 
         fun convertDateToMonthDate(localMili: String): String {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.datePadded())
         }
 
         fun convertSimpleDateToMonthDate(localMili: String): String {

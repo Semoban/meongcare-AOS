@@ -1,13 +1,11 @@
 package com.project.meongcare.onboarding.util
 
-import java.text.SimpleDateFormat
+import com.project.meongcare.LocaleDateTimeFormats
+import java.time.LocalDate
 
 object DogAddOnBoardingDateUtils {
     fun dateFormat(str: String): String {
-        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val outputDateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        val parsedDate = inputDateFormat.parse(str)
-        return outputDateFormat.format(parsedDate)
+        val parsedDate = LocalDate.parse(str)
+        return LocaleDateTimeFormats.datePadded().format(parsedDate)
     }
 }

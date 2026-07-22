@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 화면 표시용 날짜/시간 패턴 (DateTimeFormatter). 로케일별로 values-en에서 재정의 -->
+    <string name="datetime_pattern_date_padded">yyyy년 MM월 dd일</string>
+    <string name="datetime_pattern_date">yyyy년 M월 d일</string>
+    <string name="datetime_pattern_month_day">MM월 dd일</string>
+    <string name="datetime_pattern_time_12h">a hh:mm</string>
+    <string name="datetime_pattern_time_12h_short">a h:mm</string>
+    <string name="datetime_time_error">시간 형식 오류</string>
+</resources>

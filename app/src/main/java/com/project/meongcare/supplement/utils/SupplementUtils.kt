@@ -1,6 +1,9 @@
 package com.project.meongcare.supplement.utils
 
 import androidx.fragment.app.FragmentManager
+import com.project.meongcare.LocaleDateTimeFormats
+import com.project.meongcare.R
+import com.project.meongcare.login.view.GlobalApplication
 import com.project.meongcare.supplement.model.entities.IntakeInfo
 import com.project.meongcare.supplement.view.bottomSheet.SupplementCycleBottomSheetDialogFragment
 import com.project.meongcare.supplement.view.bottomSheet.SupplementTimeBottomSheetDialogFragment
@@ -17,11 +20,10 @@ class SupplementUtils {
         fun convertDateToTime(inputTime: String): String {
             try {
                 val inputFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                val outputFormatter = DateTimeFormatter.ofPattern("a hh:mm")
                 val time = LocalTime.parse(inputTime, inputFormatter)
-                return time.format(outputFormatter)
+                return time.format(LocaleDateTimeFormats.time12h())
             } catch (e: DateTimeParseException) {
-                return "시간 형식 오류"
+                return GlobalApplication.applicationContext().getString(R.string.datetime_time_error)
             }
         }
 

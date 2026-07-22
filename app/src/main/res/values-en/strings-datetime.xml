@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="datetime_pattern_date_padded">MMM dd, yyyy</string>
+    <string name="datetime_pattern_date">MMM d, yyyy</string>
+    <string name="datetime_pattern_month_day">MMM dd</string>
+    <string name="datetime_pattern_time_12h">hh:mm a</string>
+    <string name="datetime_pattern_time_12h_short">h:mm a</string>
+    <string name="datetime_time_error">Invalid time</string>
+</resources>

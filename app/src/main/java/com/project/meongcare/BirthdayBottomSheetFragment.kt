@@ -19,7 +19,7 @@ class BirthdayBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBirthdayBottomSheetBinding
 
-    private val years = (2024 downTo 2010).toList() + (1999 downTo 1990).toList()
+    private val years = (LocalDate.now().year downTo OLDEST_BIRTH_YEAR).toList()
     private val months = (1..12).toList()
     private val days = (1..31).toList()
 
@@ -82,7 +82,7 @@ class BirthdayBottomSheetFragment(
                 minValue = 0
                 maxValue = years.size - 1
                 displayedValues = years.map { getString(R.string.all_year_format, it) }.toTypedArray()
-                value = years.indexOf(selectedYear ?: 2024)
+                value = years.indexOf(selectedYear ?: years.first())
             }
             numberpickerMonth.run {
                 wrapSelectorWheel = false
@@ -137,5 +137,9 @@ class BirthdayBottomSheetFragment(
             }
 
         return "$year-$birthMonth-$birthDay"
+    }
+
+    companion object {
+        private const val OLDEST_BIRTH_YEAR = 1990
     }
 }

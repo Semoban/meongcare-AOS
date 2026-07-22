@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.R
 import com.project.meongcare.designsystem.component.GlideImage
 import com.project.meongcare.designsystem.theme.Black
@@ -409,7 +410,7 @@ private fun MedicalRecordTimePicker(
 
 private fun convertToDisplayFormDate(date: String): String {
     val parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-    return parsedDate.format(DateTimeFormatter.ofPattern("yyyy년 M월 d일"))
+    return parsedDate.format(LocaleDateTimeFormats.date())
 }
 
 private const val HOSPITAL_NAME_MAX_LENGTH = 50

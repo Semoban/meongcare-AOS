@@ -1,6 +1,7 @@
 package com.project.meongcare.notice.utils
 
 import android.content.Context
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.R
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -15,14 +16,13 @@ object NoticeDateTimeUtils {
     ): String {
         val dateTime = parseLocalDateTime(lastUpdateTime)
         val hoursDiff = getHoursDifference(dateTime)
-        val formattedTime = dateTime.format(DateTimeFormatter.ofPattern("a hh:mm"))
+        val formattedTime = dateTime.format(LocaleDateTimeFormats.time12h())
 
-        // 날짜 패턴("a hh:mm", "MM월 dd일" 등)의 로케일 대응은 ③ 단계에서 처리
         return when {
             hoursDiff < HOURS_OF_DAY -> context.getString(R.string.notice_today_format, formattedTime)
             hoursDiff < HOURS_OF_DAY * 2 -> context.getString(R.string.notice_yesterday_format, formattedTime)
-            dateTime.year == LocalDateTime.now().year -> dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일"))
-            else -> dateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
+            dateTime.year == LocalDateTime.now().year -> dateTime.format(LocaleDateTimeFormats.monthDay())
+            else -> dateTime.format(LocaleDateTimeFormats.datePadded())
         }
     }
 
