@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notice_title">알림</string>
+    <string name="notice_tab_event">이벤트</string>
+    <string name="notice_empty">아직 알림이 없습니다!</string>
+    <string name="notice_today_format">오늘 %1$s</string>
+    <string name="notice_yesterday_format">어제 %1$s</string>
+</resources>

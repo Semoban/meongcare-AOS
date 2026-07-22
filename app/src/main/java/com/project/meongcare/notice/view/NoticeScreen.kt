@@ -33,7 +33,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,7 +53,7 @@ import com.project.meongcare.notice.model.entities.Notice
 import com.project.meongcare.notice.utils.NoticeDateTimeUtils
 import kotlinx.coroutines.launch
 
-private val noticeTabTitles = listOf("공지사항", "이벤트")
+private val noticeTabTitleResIds = listOf(R.string.all_announcement, R.string.notice_tab_event)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -61,7 +63,7 @@ fun NoticeScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState { noticeTabTitles.size }
+    val pagerState = rememberPagerState { noticeTabTitleResIds.size }
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -79,7 +81,7 @@ fun NoticeScreen(
         ) {
             Image(
                 painter = painterResource(R.drawable.all_arrow_back_18dp),
-                contentDescription = "뒤로가기",
+                contentDescription = stringResource(R.string.all_back),
                 modifier =
                     Modifier
                         .padding(start = 16.dp)
@@ -87,7 +89,7 @@ fun NoticeScreen(
                         .clickable { onBackClick() },
             )
             Text(
-                text = "알림",
+                text = stringResource(R.string.notice_title),
                 style = SemobanTypography.title2SemiBold,
                 modifier = Modifier.padding(start = 16.dp),
             )
@@ -104,13 +106,13 @@ fun NoticeScreen(
                 )
             },
         ) {
-            noticeTabTitles.forEachIndexed { index, title ->
+            noticeTabTitleResIds.forEachIndexed { index, titleResId ->
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
                         Text(
-                            text = title,
+                            text = stringResource(titleResId),
                             style = SemobanTypography.body1Medium,
                             color = Black,
                         )
@@ -187,7 +189,7 @@ private fun NoticeItem(
                     }
                 }
                 Text(
-                    text = NoticeDateTimeUtils.formatLastUpdateTime(notice.lastUpdateTime),
+                    text = NoticeDateTimeUtils.formatLastUpdateTime(LocalContext.current, notice.lastUpdateTime),
                     style = SemobanTypography.body2Light,
                     color = Gray4,
                     modifier = Modifier.padding(top = 4.dp),
@@ -245,7 +247,7 @@ private fun NoticeEmptyContent(modifier: Modifier = Modifier) {
             modifier = Modifier.size(width = 42.dp, height = 35.dp),
         )
         Text(
-            text = "아직 알림이 없습니다!",
+            text = stringResource(R.string.notice_empty),
             style = SemobanTypography.body1Medium,
             color = Gray4,
             modifier = Modifier.padding(top = 16.dp),
