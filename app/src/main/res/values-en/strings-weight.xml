@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 일별/주별 카드 -->
+    <string name="weight_daily_desc_format">%1$s\'s current weight.</string>
+    <string name="weight_weekly_title_format">%1$s\'s weight change was recorded!</string>
+    <string name="weight_weekly_desc_format">%1$s\'s weekly weight change</string>
+
+    <!-- 월별 카드 -->
+    <string name="weight_monthly_increase_title">This month is up from last month!</string>
+    <string name="weight_monthly_decrease_title">This month is down from last month!</string>
+    <string name="weight_monthly_same_title">Same weight as last month!</string>
+    <string name="weight_monthly_increase_format">Up %1$.2fkg from last month!</string>
+    <string name="weight_monthly_decrease_format">Down %1$.2fkg from last month!</string>
+    <string name="weight_monthly_same_desc">No change from last month!</string>
+
+    <!-- 차트 축 라벨 (DecimalFormat 패턴) -->
+    <string name="weight_chart_week_pattern">\'W\'#</string>
+    <string name="weight_chart_month_pattern">#</string>
+    <string name="weight_chart_december">12</string>
+
+    <!-- 편집 다이얼로그·스낵바 -->
+    <string name="weight_edit_dialog_title">Please enter the weight</string>
+    <string name="weight_patch_success">Weight updated!</string>
+    <string name="weight_patch_failure">Failed to update the weight due to a server issue.\nPlease try again later.</string>
+</resources>

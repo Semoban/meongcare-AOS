@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 안내 페이저 -->
+    <string name="onboarding_page_one">Record and manage\nyour dog\'s health!</string>
+    <string name="onboarding_page_two">Records help you\nnotice the changes!</string>
+    <string name="onboarding_page_three">Then shall we start\nyour own Semoban?</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_start">Get started</string>
+
+    <!-- 입력 완료 -->
+    <string name="onboarding_complete_title">All done!</string>
+    <string name="onboarding_complete_subtitle">Now let\'s get started with Semoban!</string>
+
+    <!-- 품종 검색 -->
+    <string name="onboarding_clear_search">Clear search</string>
+    <string name="onboarding_clear_input">Clear input</string>
+    <string name="onboarding_direct_input">Enter manually</string>
+    <string name="onboarding_breed_input_hint">Please enter your dog\'s breed</string>
+    <string name="onboarding_breed_input_error">Please enter your dog\'s breed!</string>
+</resources>

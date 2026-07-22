@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_notification">Notification settings</string>
+    <string name="setting_urine_feces_image">Show potty photos</string>
+    <string name="setting_membership_withdrawal">Delete account</string>
+    <string name="setting_withdrawal_dialog_title">Really delete your account?</string>
+    <string name="setting_withdrawal_dialog_subtitle">Your account will be deleted.</string>
+    <string name="setting_withdrawal_confirm">Delete account</string>
+</resources>

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">세모반</string>
     <string name="splash_slogan">세상 모든 반려동물을 위해</string>
-    <string name="week_calendar">Week Calendar</string>
-    <string name="text_selected_date">Selected Date</string>
-    <string name="push_notification_channel_id">SemobanNotificationChannel</string>
-    <string name="push_notification_channel_name">SemobanNotificationChannel</string>
+    <string name="week_calendar" translatable="false">Week Calendar</string>
+    <string name="text_selected_date" translatable="false">Selected Date</string>
+    <string name="push_notification_channel_id" translatable="false">SemobanNotificationChannel</string>
+    <string name="push_notification_channel_name" translatable="false">SemobanNotificationChannel</string>
 </resources>

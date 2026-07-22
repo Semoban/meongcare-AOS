@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FeedScreen -->
+    <string name="feed_input_guide">Please enter a food</string>
+    <string name="feed_select_guide">Please select a food</string>
+    <string name="feed_stop_guide">I want to stop this food</string>
+    <string name="feed_previous_list_title">Previous foods</string>
+    <string name="feed_see_more">See more</string>
+    <string name="feed_change_guide">Switch to another food</string>
+    <string name="feed_crude_protein_short">Protein</string>
+    <string name="feed_crude_fat">Fat</string>
+    <string name="feed_crude_ash">Ash</string>
+    <string name="feed_moisture">Moisture</string>
+    <string name="feed_etc">Other</string>
+    <string name="feed_days_format">%1$d days</string>
+    <string name="feed_intake_days_title">Days fed</string>
+    <string name="feed_daily_intake_title">Daily intake</string>
+    <string name="feed_period_unknown_format">%1$s~ unknown</string>
+
+    <!-- FeedAddEditScreen / FeedInfoScreen -->
+    <string name="feed_crude_protein">Crude protein</string>
+    <string name="feed_brand_label">Brand</string>
+    <string name="feed_brand_hint">Please enter the brand</string>
+    <string name="feed_name_label">Product name</string>
+    <string name="feed_name_hint">Please enter the product name</string>
+    <string name="feed_ingredient_label">Nutrient composition</string>
+    <string name="feed_kcal_label">Calories</string>
+    <string name="feed_recommend_intake_label">Recommended daily intake:</string>
+    <string name="feed_intake_period_label">Feeding period</string>
+    <string name="feed_start_date">Start date</string>
+    <string name="feed_end_date">End date</string>
+    <string name="feed_end_date_unknown">Unknown</string>
+    <string name="feed_image_hint">Please attach a photo</string>
+    <string name="feed_required_input_description">Required</string>
+    <string name="feed_ingredient_kcal_required_error">Nutrient composition and calories are required.</string>
+    <string name="feed_ingredient_total_error" formatted="false">The nutrient composition total cannot exceed 100%.</string>
+    <string name="feed_intake_period_required_error">The feeding period is required.</string>
+    <string name="feed_intake_period_order_error">The start date cannot be after the end date.</string>
+
+    <!-- OldFeedScreen / SearchFeedScreen -->
+    <string name="feed_records_empty">No food recorded yet</string>
+    <string name="feed_search_hint">Please enter a search term</string>
+    <string name="feed_direct_input">Enter manually</string>
+
+    <!-- 사료 중단 다이얼로그 -->
+    <string name="feed_stop_dialog_title">Stop this food?</string>
+    <string name="feed_stop_dialog_description">The food will be stopped immediately.</string>
+
+    <!-- 스낵바 메시지 -->
+    <string name="feed_stop_success">Stopped feeding this food!</string>
+    <string name="feed_stop_failure">Failed to stop the food due to a server issue.\nPlease try again later.</string>
+    <string name="feed_post_success">Food registered!</string>
+    <string name="feed_post_failure">Failed to register the food due to a server issue.\nPlease try again later.</string>
+    <string name="feed_put_success">Food info updated!</string>
+    <string name="feed_put_failure">Failed to update the food info due to a server issue.\nPlease try again later.</string>
+    <string name="feed_delete_success">Food info deleted!</string>
+    <string name="feed_delete_failure">Failed to delete the food info due to a server issue.\nPlease try again later.</string>
+    <string name="feed_change_success">Food changed!</string>
+    <string name="feed_change_failure">Failed to change the food due to a server issue.\nPlease try again later.</string>
+</resources>

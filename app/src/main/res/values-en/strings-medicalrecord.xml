@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="medicalrecord_header">Medical Records</string>
+    <string name="medicalrecord_pet">%s\'s medical records</string>
+    <string name="medicalrecord_record">Add record</string>
+    <string name="medicalrecord_image_description">Please attach a photo</string>
+    <string name="medicalrecord_date">Visit date</string>
+    <string name="medicalrecord_time">Visit time</string>
+    <string name="medicalrecord_hospital">Veterinary clinic</string>
+    <string name="medicalrecord_hospital_name">Clinic name</string>
+    <string name="medicalrecord_veterinarian">Veterinarian</string>
+    <string name="medicalrecord_veterinarian_name">Veterinarian name</string>
+    <string name="medicalrecord_note">Notes</string>
+    <string name="medicalrecord_no_list">No medical records yet.</string>
+    <string name="medicalrecord_select_all">Select all</string>
+    <string name="medicalrecord_delete_success">Medical record deleted.</string>
+    <string name="medicalrecrod_empty_date">Please select a date.</string>
+    <string name="medicalrecord_cancel">Cancel</string>
+    <string name="medicalrecord_complete">Done</string>
+    <string name="medicalrecord_add_success">Added successfully</string>
+    <string name="medicalrecord_add_failure">Failed to add.\nPlease try again later</string>
+    <string name="medicalrecord_edit_success">Updated successfully</string>
+    <string name="medicalrecord_edit_failure">Failed to update.\nPlease try again later</string>
+</resources>

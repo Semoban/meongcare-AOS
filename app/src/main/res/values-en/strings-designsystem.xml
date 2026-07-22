@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_required_input">This field is required</string>
+    <string name="designsystem_delete_dialog_title">Delete?</string>
+    <string name="designsystem_delete_dialog_subtitle">This cannot be undone.</string>
+    <string name="designsystem_neuter_checked">Neutered</string>
+    <string name="designsystem_neuter_unchecked">Not neutered</string>
+</resources>

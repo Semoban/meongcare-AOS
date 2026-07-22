@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 공통 -->
+    <string name="symptom_title_format">%1$s\'s symptoms</string>
+    <string name="symptom_date_label">Symptom date</string>
+    <string name="symptom_time_label">Symptom time</string>
+    <string name="symptom_label">Symptom</string>
+    <string name="symptom_empty">No symptoms found!</string>
+
+    <!-- 증상 선택 -->
+    <string name="symptom_select_hint">Please select a symptom</string>
+    <string name="symptom_select_required">Please select a symptom.</string>
+    <string name="symptom_custom_input_hint">Enter a symptom not in the list</string>
+    <string name="symptom_custom_edit_hint">Write a symptom not in the list</string>
+
+    <!-- 스낵바 메시지 -->
+    <string name="symptom_add_success">Added successfully</string>
+    <string name="symptom_add_failure">Failed to add.\nPlease try again later</string>
+    <string name="symptom_edit_success">Updated successfully</string>
+    <string name="symptom_edit_failure">Failed to update.\nPlease try again later</string>
+    <string name="symptom_delete_success">Deleted successfully.</string>
+    <string name="symptom_delete_failure">Failed to delete.\nPlease try again later</string>
+</resources>

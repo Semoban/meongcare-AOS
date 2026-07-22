@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_symptom_exist">Unusual signs were found today</string>
+    <string name="home_symptom_not_exist">No unusual signs recorded</string>
+    <string name="home_symptom_title">Symptoms</string>
+    <string name="home_excreta_title">Potty</string>
+    <string name="home_excreta_feces">Poop</string>
+    <string name="home_excreta_urine">Pee</string>
+    <string name="home_excreta_count_format">%1$s ×%2$d</string>
+    <string name="home_supplement_title">Supplements</string>
+    <string name="home_weight_title">Weight</string>
+    <string name="home_feed_title">Food</string>
+    <string name="home_feed_daily_intake">Daily intake</string>
+    <string name="home_dog_not_exist">No dog registered yet. Please register your dog.</string>
+</resources>
