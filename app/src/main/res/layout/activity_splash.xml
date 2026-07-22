@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:letterSpacing="-0.02"
-        android:text="세상 모든 반려동물을 위해"
+        android:text="@string/splash_slogan"
         android:textAppearance="@style/Typography.Body1.Medium"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/imageView17"

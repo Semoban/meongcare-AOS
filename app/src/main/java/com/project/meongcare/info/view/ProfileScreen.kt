@@ -234,7 +234,7 @@ private fun ProfileUpdateExpectedDialog(onConfirm: () -> Unit) {
         ) {
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
                 Text(
-                    text = stringResource(R.string.profile_share_coming_soon),
+                    text = stringResource(R.string.all_coming_soon),
                     style = SemobanTypography.title3SemiBold,
                     modifier = Modifier.padding(start = 25.dp),
                 )

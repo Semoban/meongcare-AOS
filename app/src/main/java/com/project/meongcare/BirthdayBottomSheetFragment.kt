@@ -19,28 +19,14 @@ class BirthdayBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBirthdayBottomSheetBinding
 
-    private val yearArray =
-        arrayOf(
-            "2024년", "2023년", "2022년", "2021년", "2020년",
-            "2019년", "2018년", "2017년", "2016년", "2015년", "2014년", "2013년", "2012년", "2011년", "2010년",
-            "1999년", "1998년", "1997년", "1996년", "1995년", "1994년", "1993년", "1992년", "1991년", "1990년",
-        )
-    private val monthArray =
-        arrayOf(
-            "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",
-        )
-    private val dayArray =
-        arrayOf(
-            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일",
-            "11일", "12일", "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일",
-            "21일", "22일", "23일", "24일", "25일", "26일", "27일", "28일", "29일", "30일",
-            "31일",
-        )
+    private val years = (2024 downTo 2010).toList() + (1999 downTo 1990).toList()
+    private val months = (1..12).toList()
+    private val days = (1..31).toList()
 
     private var dateSubmitListener: DateSubmitListener? = null
-    private var selectedYear: String? = null
-    private var selectedMonth: String? = null
-    private var selectedDay: String? = null
+    private var selectedYear: Int? = null
+    private var selectedMonth: Int? = null
+    private var selectedDay: Int? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
@@ -65,9 +51,9 @@ class BirthdayBottomSheetFragment(
 
         binding.run {
             buttonBirthdaySubmit.setOnClickListener {
-                val birthYear = getDateSubString(yearArray[numberpickerYear.value])
-                val birthMonth = getDateSubString(monthArray[numberpickerMonth.value])
-                val birthDay = getDateSubString(dayArray[numberpickerDay.value])
+                val birthYear = years[numberpickerYear.value]
+                val birthMonth = months[numberpickerMonth.value]
+                val birthDay = days[numberpickerDay.value]
 
                 val currentDate = LocalDate.now()
                 val currentYear = currentDate.year
@@ -94,23 +80,23 @@ class BirthdayBottomSheetFragment(
             numberpickerYear.run {
                 wrapSelectorWheel = false
                 minValue = 0
-                maxValue = yearArray.size - 1
-                displayedValues = yearArray
-                value = yearArray.indexOf(selectedYear ?: "2024년")
+                maxValue = years.size - 1
+                displayedValues = years.map { getString(R.string.all_year_format, it) }.toTypedArray()
+                value = years.indexOf(selectedYear ?: 2024)
             }
             numberpickerMonth.run {
                 wrapSelectorWheel = false
                 minValue = 0
-                maxValue = monthArray.size - 1
-                displayedValues = monthArray
-                value = monthArray.indexOf(selectedMonth ?: "1월")
+                maxValue = months.size - 1
+                displayedValues = months.map { getString(R.string.all_month_format, it) }.toTypedArray()
+                value = months.indexOf(selectedMonth ?: 1)
             }
             numberpickerDay.run {
                 wrapSelectorWheel = false
                 minValue = 0
-                maxValue = dayArray.size - 1
-                displayedValues = dayArray
-                value = dayArray.indexOf(selectedDay ?: "1일")
+                maxValue = days.size - 1
+                displayedValues = days.map { getString(R.string.all_day_format, it) }.toTypedArray()
+                value = days.indexOf(selectedDay ?: 1)
             }
         }
 
@@ -121,17 +107,13 @@ class BirthdayBottomSheetFragment(
         this.dateSubmitListener = dateSubmitListener
     }
 
-    private fun getDateSubString(str: String): Int {
-        return str.substring(0 until str.length - 1).toInt()
-    }
-
     private fun formatSelectedDate(str: String?) {
         if (str != null) {
-            val (year, month, day) = str.split("-").map { it }
+            val (year, month, day) = str.split("-").map { it.toInt() }
 
-            selectedYear = year + "년"
-            selectedMonth = month + "월"
-            selectedDay = day + "일"
+            selectedYear = year
+            selectedMonth = month
+            selectedDay = day
         }
     }
 

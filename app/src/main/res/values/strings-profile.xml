@@ -5,5 +5,4 @@
     <string name="profile_header">나의 정보</string>
     <string name="profile_pet_list_empty">등록된 반려동물이 없습니다</string>
     <string name="profile_logout_dialog_title">로그아웃 하시겠습니까?</string>
-    <string name="profile_share_coming_soon">업데이트 예정 기능입니다</string>
 </resources>

@@ -33,7 +33,7 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/white"
                 android:textAppearance="@style/Typography.Body2.Medium"
-                android:text="오류가 발생하였습니다"/>
+                android:text="@string/snack_bar_failure"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
