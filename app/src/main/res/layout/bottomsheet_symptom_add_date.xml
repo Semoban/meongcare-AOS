@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/pretendard_semi_bold"
             android:gravity="center"
-            android:text="확인"
+            android:text="@string/all_confirm"
             android:textColor="@color/white"
             android:textSize="18sp" />
 

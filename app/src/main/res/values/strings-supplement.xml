@@ -14,6 +14,7 @@
     <string name="supplement_name_hint">제품명을 입력해주세요</string>
     <string name="supplement_intake_cycle_label">섭취 주기</string>
     <string name="supplement_cycle_days_format">%1$d일 마다</string>
+    <string name="supplement_intake_amount_label">섭취 량</string>
     <string name="supplement_intake_unit_label">섭취 단위</string>
     <string name="supplement_intake_time_label">섭취 시간</string>
     <string name="supplement_routine_start">루틴 시작하기</string>

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="섭취 량"
+            android:text="@string/supplement_intake_amount_label"
             android:textAppearance="@style/Typography.Title3.SemiBold" />
 
         <LinearLayout
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="섭취 시간"
+            android:text="@string/supplement_intake_time_label"
             android:textAppearance="@style/Typography.Title3.SemiBold" />
 
         <TimePicker
@@ -102,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="확인"
+            android:text="@string/all_confirm"
             android:textAppearance="@style/Typography.Bottom1.SemiBold"
             android:textColor="@color/white" />
 
