@@ -4,8 +4,6 @@
         <item name="colorPrimary">@color/main4</item>
         <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- targetSdk 35의 Android 15+ 엣지 투 엣지 강제 적용 해제 (상태바 겹침, FAB 크래들 어긋남 방지) -->
-        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorAccent">@color/main4</item>
     </style>

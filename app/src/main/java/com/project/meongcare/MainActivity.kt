@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -48,10 +47,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        // targetSdk 36부터 엣지 투 엣지가 강제(옵트아웃 불가)되므로 시스템 바·IME 인셋을
+        // 루트 패딩으로 직접 반영한다. IME 인셋은 기존 adjustResize 동작을 유지하기 위한 것
+        ViewCompat.setOnApplyWindowInsetsListener(activityMainBinding.root) { view, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            view.setPadding(0, bars.top, 0, maxOf(bars.bottom, ime.bottom))
+            WindowInsetsCompat.CONSUMED
+        }
 
         requestPermissions(permissionList, 0)
         initNavController()
