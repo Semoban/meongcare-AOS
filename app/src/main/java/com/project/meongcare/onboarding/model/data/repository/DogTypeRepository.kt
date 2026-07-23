@@ -1,7 +1,10 @@
 package com.project.meongcare.onboarding.model.data.repository
 
 import android.content.Context
-import org.json.JSONObject
+import android.content.res.Configuration
+import com.project.meongcare.R
+import java.text.Collator
+import java.util.Locale
 import javax.inject.Inject
 
 class DogTypeRepository
@@ -9,29 +12,29 @@ class DogTypeRepository
     constructor(
         private val context: Context,
     ) {
-        private val dogTypes: List<String> by lazy {
-            loadDogTypes()
-        }
+        // dog_types 배열은 로케일 간 인덱스가 정렬되어 있어 같은 위치의 한/영 이름이 같은 품종이다.
+        private val koreanTypes: List<String> by lazy { loadDogTypes(Locale.KOREAN) }
+        private val englishTypes: List<String> by lazy { loadDogTypes(Locale.ENGLISH) }
 
-        fun loadDogTypes(): List<String> {
-            val jsonData =
-                context.assets.open("dog_types.json").bufferedReader().use {
-                    it.readText()
+        private fun loadDogTypes(locale: Locale): List<String> {
+            val configuration =
+                Configuration(context.resources.configuration).apply {
+                    setLocale(locale)
                 }
-
-            val jsonRoot = JSONObject(jsonData)
-            val jsonArray = jsonRoot.getJSONArray("dogTypes")
-            val typeList = mutableListOf<String>()
-
-            for (i in 0 until jsonArray.length()) {
-                val type = jsonArray.getString(i)
-                typeList.add(type)
-            }
-
-            return typeList
+            return context.createConfigurationContext(configuration)
+                .resources
+                .getStringArray(R.array.dog_types)
+                .toList()
         }
 
         fun searchTypes(query: String): List<String> {
-            return dogTypes.filter { it.contains(query) }
+            val trimmedQuery = query.trim()
+            val displayTypes = context.resources.getStringArray(R.array.dog_types)
+            return displayTypes
+                .filterIndexed { index, _ ->
+                    koreanTypes[index].contains(trimmedQuery, ignoreCase = true) ||
+                        englishTypes[index].contains(trimmedQuery, ignoreCase = true)
+                }
+                .sortedWith(Collator.getInstance(context.resources.configuration.locales[0]))
         }
     }
