@@ -5,4 +5,10 @@
     <string name="text_selected_date" translatable="false">Selected Date</string>
     <string name="push_notification_channel_id" translatable="false">SemobanNotificationChannel</string>
     <string name="push_notification_channel_name" translatable="false">SemobanNotificationChannel</string>
+    <!-- FCM 푸시 문구 — 서버 data 페이로드의 구조화 키(FcmNotificationContent)로
+         클라이언트가 로케일에 맞게 조립한다. %1$s: 시각(12시간제), %2$s: 영양제 이름 -->
+    <string name="push_supplements_title">%1$s %2$s</string>
+    <string name="push_supplements_body">%1$s에게 영양제를 챙겨주세요!</string>
+    <string name="push_share_dog_title">%1$s님의 강아지 공유 요청</string>
+    <string name="push_share_dog_body">%1$s의 주인이 되어주세요!</string>
 </resources>
