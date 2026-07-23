@@ -249,7 +249,12 @@ private fun SupplementItemCard(
                     color = Black,
                 )
                 Text(
-                    text = "${supplement.intakeCount}${supplement.intakeUnit}",
+                    text =
+                        stringResource(
+                            R.string.supplement_amount_format,
+                            supplement.intakeCount,
+                            intakeUnitText(supplement.intakeUnit),
+                        ),
                     style = SemobanTypography.body3Light,
                 )
             }

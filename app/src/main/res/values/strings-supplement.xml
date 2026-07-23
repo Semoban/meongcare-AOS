@@ -16,6 +16,11 @@
     <string name="supplement_cycle_days_format">%1$d일 마다</string>
     <string name="supplement_intake_amount_label">섭취 량</string>
     <string name="supplement_intake_unit_label">섭취 단위</string>
+    <!-- 섭취 단위 — 서버에는 한국어 값("스쿱"/"정")이 그대로 저장되고,
+         표시할 때만 SupplementComponents.getIntakeUnitRes로 로케일 변환한다 -->
+    <string name="supplement_unit_scoop">스쿱</string>
+    <string name="supplement_unit_tablet">정</string>
+    <string name="supplement_amount_format">%1$d%2$s</string>
     <string name="supplement_intake_time_label">섭취 시간</string>
     <string name="supplement_routine_start">루틴 시작하기</string>
     <string name="supplement_routine_stop">루틴 중단</string>

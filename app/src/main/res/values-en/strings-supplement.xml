@@ -16,6 +16,10 @@
     <string name="supplement_cycle_days_format">Every %1$d days</string>
     <string name="supplement_intake_amount_label">Intake amount</string>
     <string name="supplement_intake_unit_label">Intake unit</string>
+    <!-- 섭취 단위 -->
+    <string name="supplement_unit_scoop">scoop</string>
+    <string name="supplement_unit_tablet">tablet</string>
+    <string name="supplement_amount_format">%1$d %2$s</string>
     <string name="supplement_intake_time_label">Intake time</string>
     <string name="supplement_routine_start">Start routine</string>
     <string name="supplement_routine_stop">Stop routine</string>

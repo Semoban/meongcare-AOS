@@ -1,5 +1,6 @@
 package com.project.meongcare.supplement.view
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -141,7 +142,7 @@ internal fun SupplementUnitSelector(
     Row(modifier = modifier) {
         SUPPLEMENT_UNITS.forEach { unit ->
             SupplementUnitButton(
-                text = unit,
+                text = intakeUnitText(unit),
                 isSelected = unit == selectedUnit,
                 onClick = onUnitSelect?.let { { it(unit) } },
                 modifier = Modifier.padding(start = 4.dp),
@@ -157,9 +158,10 @@ private fun SupplementUnitButton(
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    // 영어 단위("tablet" 등)는 한국어보다 길어 고정 폭을 넘을 수 있으므로 최소 폭만 보장한다
     var boxModifier =
         modifier
-            .width(47.dp)
+            .widthIn(min = 47.dp)
             .height(31.dp)
             .background(
                 if (isSelected) Main1 else White,
@@ -181,6 +183,7 @@ private fun SupplementUnitButton(
             text = text,
             style = SemobanTypography.body2Medium,
             color = if (isSelected) Main4 else Gray4,
+            modifier = Modifier.padding(horizontal = 8.dp),
         )
     }
 }
@@ -242,7 +245,12 @@ internal fun SupplementIntakeTimeItem(
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = "${intakeInfo.intakeCount}$intakeUnit",
+                text =
+                    stringResource(
+                        R.string.supplement_amount_format,
+                        intakeInfo.intakeCount,
+                        intakeUnitText(intakeUnit),
+                    ),
                 style = SemobanTypography.body2Regular,
                 color = Gray5,
             )
@@ -346,6 +354,20 @@ internal fun CancelCompleteButtons(
     }
 }
 
-// 섭취 단위는 서버에 intakeUnit으로 그대로 전송·조회되므로
-// 백엔드 협의(i18n ④단계) 전까지 리소스로 추출하지 않는다
+// 서버에는 한국어 단위 값이 그대로 저장·조회되므로(과거 데이터 호환)
+// 이 리스트는 전송용 원본 값으로 유지하고, 표시할 때만 getIntakeUnitRes로 로케일 변환한다
 internal val SUPPLEMENT_UNITS = listOf("mg", "스쿱", "정")
+
+@StringRes
+internal fun getIntakeUnitRes(intakeUnit: String): Int? {
+    return when (intakeUnit) {
+        "스쿱" -> R.string.supplement_unit_scoop
+        "정" -> R.string.supplement_unit_tablet
+        else -> null
+    }
+}
+
+@Composable
+internal fun intakeUnitText(intakeUnit: String): String {
+    return getIntakeUnitRes(intakeUnit)?.let { stringResource(it) } ?: intakeUnit
+}
