@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snack_bar_profile_update_complete">Profile photo updated!</string>
+    <string name="snack_bar_dog_create_complete">Dog registered!</string>
+    <string name="snack_bar_dog_edit_complete">Dog info updated!</string>
+    <string name="snack_bar_user_delete_complete">Your account has been deleted.</string>
+    <string name="snack_bar_refresh_expire">Your session has expired. Please log in again.</string>
+    <string name="snack_bar_failure">Something went wrong.</string>
+    <string name="snack_bar_info_add_failure">Failed to register due to a server issue. Please try again.</string>
+    <string name="snack_bar_info_edit_failure">Failed to update due to a server issue. Please try again.</string>
+    <string name="snack_bar_user_delete_failure">Failed to delete your account due to a server issue. Please try again.</string>
+    <string name="snack_bar_get_dog_list_failure">Failed to load the dog list.</string>
+    <string name="snack_bar_get_dog_failure">Failed to load the dog info.</string>
+    <string name="snack_bar_get_profile_failure">Failed to load the profile info.</string>
+    <string name="snack_bar_dog_weight_failure">Failed to update the dog info.</string>
+    <string name="snack_bar_login_failure">Login failed.</string>
+    <string name="snack_bar_login_failure_deleted">Deleted users cannot sign up again for 90 days. Please use another account.</string>
+    <string name="snack_bar_notification_on">Notifications turned on.</string>
+    <string name="snack_bar_notification_off">Notifications turned off.</string>
+    <string name="snack_bar_future_date">Invalid date. Please set it again.</string>
+    <string name="snack_bar_delete_none_selected">No items selected.\nPlease select items to delete.</string>
+</resources>

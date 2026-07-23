@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recordshare_header">Share Records</string>
+    <string name="recordshare_input_email">Please enter an account</string>
+    <string name="recordshare_check_email">Verify account</string>
+    <string name="recordshare_select_pet">Select a pet</string>
+    <string name="recordshare_select_pet_description">Tap a pet icon to choose the pet whose records you want to share</string>
+    <string name="recordshare_share">Share records</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Semoban</string>
+    <string name="splash_slogan">For every pet in the world</string>
+    <!-- FCM 푸시 문구 -->
+    <string name="push_supplements_title">%2$s at %1$s</string>
+    <string name="push_supplements_body">Time to give %1$s their supplement!</string>
+    <string name="push_share_dog_title">Dog sharing request from %1$s</string>
+    <string name="push_share_dog_body">Become %1$s\'s owner!</string>
+</resources>

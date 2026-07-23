@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notice_title">Notifications</string>
+    <string name="notice_tab_event">Events</string>
+    <string name="notice_empty">No notifications yet!</string>
+    <string name="notice_today_format">Today %1$s</string>
+    <string name="notice_yesterday_format">Yesterday %1$s</string>
+</resources>

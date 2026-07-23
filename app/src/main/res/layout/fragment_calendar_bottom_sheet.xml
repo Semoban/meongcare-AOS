@@ -48,7 +48,7 @@
         android:layout_marginBottom="23dp"
         android:backgroundTint="@color/main4"
         android:letterSpacing="-0.02"
-        android:text="완료"
+        android:text="@string/all_completion"
         android:textAppearance="@style/Typography.Bottom1.SemiBold"
         android:textColor="@color/white"
         custom:cornerRadius="5dp"

@@ -4,10 +4,10 @@
     <item
         android:id="@+id/menuMainBottomNavHome"
         android:icon="@drawable/main_home_20dp"
-        android:title="홈" />
+        android:title="@string/all_home" />
     <item android:id="@+id/menuMainBottomNavPlaceHolder" />
     <item
         android:id="@+id/menuMainBottomNavMedicalRecord"
         android:icon="@drawable/main_medical_record_20dp"
-        android:title="진료기록" />
+        android:title="@string/medicalrecord_header" />
 </menu>

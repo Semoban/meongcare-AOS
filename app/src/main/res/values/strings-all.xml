@@ -9,6 +9,25 @@
     <string name="all_announcement">공지사항</string>
     <string name="all_deleteall">전체 삭제</string>
     <string name="all_delete_selected">선택 삭제</string>
-    <string name="all_delete">식제</string>
+    <string name="all_delete">삭제</string>
     <string name="all_cancel">취소</string>
+    <string name="all_confirm">확인</string>
+    <string name="all_modify">수정</string>
+    <string name="all_back">뒤로가기</string>
+    <string name="all_checked">선택됨</string>
+    <string name="all_unchecked">선택 안 됨</string>
+    <string name="all_required_input_description">필수 입력</string>
+    <string name="all_attach_photo_hint">사진을 첨부해주세요</string>
+    <string name="all_home">홈</string>
+    <string name="all_symptom">이상증상</string>
+    <string name="all_coming_soon">업데이트 예정 기능입니다</string>
+    <string name="all_loading_description">데이터 로딩중입니다.\n잠시만 기다려주세요.</string>
+    <string name="all_select_dog_date">반려견의 날짜를 선택해주세요</string>
+    <string name="all_year_format">%1$d년</string>
+    <string name="all_month_format">%1$d월</string>
+    <string name="all_day_format">%1$d일</string>
+    <string name="all_photo_select_title">사진을 설정해주세요</string>
+    <string name="all_photo_camera">카메라 선택</string>
+    <string name="all_photo_album">앨범 선택</string>
+    <string name="all_photo_default">기본 이미지로 변경</string>
 </resources>

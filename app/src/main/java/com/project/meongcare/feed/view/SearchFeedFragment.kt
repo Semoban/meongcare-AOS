@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentSearchFeedBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.feed.model.data.local.FeedItemSelectionListener
 import com.project.meongcare.feed.model.entities.FeedPatchRequest
-import com.project.meongcare.feed.model.utils.FEED_CHANGE_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_CHANGE_SUCCESS
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.DogViewModel
@@ -27,13 +26,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchFeedFragment : Fragment() {
     private var _binding: FragmentSearchFeedBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
     private val feedPatchViewModel: FeedPatchViewModel by viewModels()
     private val dogViewModel: DogViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
-    private lateinit var feedsAdapter: FeedsAdapter
 
     private var dogId = 0L
     private var accessToken = ""
@@ -52,6 +50,33 @@ class SearchFeedFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initComposeView()
+        fetchFeeds()
+        observeFeedPatched()
+    }
+
+    private fun initComposeView() {
+        binding.composeViewSearchFeed.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val feeds by feedsGetViewModel.feedsGet.observeAsState()
+
+                    SearchFeedScreen(
+                        feeds = feeds?.feeds.orEmpty(),
+                        onBackClick = { findNavController().popBackStack() },
+                        onSearchChange = { searchText -> feedsGetViewModel.filterFeeds(searchText) },
+                        onFeedClick = ::patchFeed,
+                        onDirectInputClick = {
+                            findNavController().navigate(R.id.action_searchFeedFragment_to_feedAddFragment)
+                        },
+                    )
+                }
+            }
+        }
+    }
+
+    private fun fetchFeeds() {
         dogViewModel.fetchDogId()
         userViewModel.fetchAccessToken()
         dogViewModel.dogId.observe(viewLifecycleOwner) { response ->
@@ -63,42 +88,6 @@ class SearchFeedFragment : Fragment() {
                 accessToken,
                 dogId,
             )
-        }
-        feedsAdapter =
-            FeedsAdapter(
-                object : FeedItemSelectionListener {
-                    override fun onItemSelection(feedId: Long) {
-                        patchFeed(feedId)
-                    }
-                },
-            )
-
-        initToolbar()
-        initFeedsRecyclerView()
-        initDirectInputButton()
-        updateSearchResult()
-        feedsGetViewModel.feedsGet.observe(viewLifecycleOwner) { response ->
-            feedsAdapter.submitList(response.feeds)
-        }
-    }
-
-    private fun initToolbar() {
-        binding.toolbarSearchfeed.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun updateSearchResult() {
-        binding.edittextSearchfeedSearch.doAfterTextChanged {
-            val searchText = it.toString()
-            feedsGetViewModel.filterFeeds(searchText)
-        }
-    }
-
-    private fun initFeedsRecyclerView() {
-        binding.recyclerviewSearchfeedResult.apply {
-            adapter = feedsAdapter
-            layoutManager = LinearLayoutManager(context)
         }
     }
 
@@ -112,25 +101,23 @@ class SearchFeedFragment : Fragment() {
             accessToken,
             feedPatchRequest,
         )
+    }
+
+    private fun observeFeedPatched() {
         feedPatchViewModel.feedPatched.observe(viewLifecycleOwner) { response ->
+            if (response == null) return@observe
             if (response == SUCCESS) {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    FEED_CHANGE_SUCCESS,
+                    getString(R.string.feed_change_success),
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    FEED_CHANGE_FAILURE,
+                    getString(R.string.feed_change_failure),
                 )
             }
-        }
-    }
-
-    private fun initDirectInputButton() {
-        binding.extendedfloatingbuttonSearchfeedDirectInput.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFeedFragment_to_feedAddFragment)
         }
     }
 

@@ -5,17 +5,18 @@ import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.gson.Gson
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordDto
 import com.project.meongcare.medicalRecord.model.entities.MedicalRecordPutDto
+import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 class MedicalRecordUtils {
     companion object {
@@ -23,16 +24,14 @@ class MedicalRecordUtils {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.date())
         }
 
         fun convertMDateToSimpleTime(localMili: String): String {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.time12h())
         }
 
         fun convertMDateToDBDate(localMili: String): String {

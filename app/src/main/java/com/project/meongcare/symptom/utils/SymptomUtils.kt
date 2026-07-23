@@ -3,7 +3,9 @@ package com.project.meongcare.symptom.utils
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.R
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
@@ -23,16 +25,14 @@ class SymptomUtils {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.time12hShort())
         }
 
         fun convertDateToMonthDate(localMili: String): String {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
             val dateTime = LocalDateTime.parse(localMili, inputFormatter)
 
-            val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.getDefault())
-            return dateTime.format(outputFormatter)
+            return dateTime.format(LocaleDateTimeFormats.datePadded())
         }
 
         fun convertSimpleDateToMonthDate(localMili: String): String {
@@ -87,6 +87,30 @@ class SymptomUtils {
                 R.drawable.symptom_amount_activity -> SymptomType.ACTIVITY_DECREASE.symptomName
                 else -> SymptomType.ETC.symptomName
             }
+        }
+
+        // 프리셋 증상은 서버에 로케일 무관 키(symptomString)로 저장되므로
+        // 표시 제목은 현재 로케일 리소스로 변환하고, etc(직접 입력)만 note를 그대로 쓴다
+        @StringRes
+        fun getSymptomTitleRes(symptomString: String): Int? {
+            return when (symptomString) {
+                SymptomType.WEIGHT_LOSS.symptomName -> R.string.symptom_type_weight_loss
+                SymptomType.HIGH_FEVER.symptomName -> R.string.symptom_type_high_fever
+                SymptomType.COUGH.symptomName -> R.string.symptom_type_cough
+                SymptomType.DIARRHEA.symptomName -> R.string.symptom_type_diarrhea
+                SymptomType.LOSS_OF_APPETITE.symptomName -> R.string.symptom_type_loss_of_appetite
+                SymptomType.ACTIVITY_DECREASE.symptomName -> R.string.symptom_type_activity_decrease
+                else -> null
+            }
+        }
+
+        fun getSymptomTitle(
+            context: Context,
+            symptomString: String,
+            note: String,
+        ): String {
+            val titleRes = getSymptomTitleRes(symptomString) ?: return note
+            return context.getString(titleRes)
         }
 
         fun hideKeyboard(view: View) {

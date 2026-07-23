@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 공통 -->
+    <string name="excreta_feces">Poop</string>
+    <string name="excreta_urine">Pee</string>
+    <string name="excreta_title_format">%1$s\'s records</string>
+    <string name="excreta_count_format">%1$s ×%2$d</string>
+    <string name="excreta_date_label">Date</string>
+    <string name="excreta_time_label">Time</string>
+    <string name="excreta_type_label">Type</string>
+    <string name="excreta_photo_info">This photo contains\npotty-related information</string>
+
+    <!-- 기록 편집 -->
+    <string name="excreta_select_all">Select all</string>
+    <string name="excreta_select_all_checked">All selected</string>
+    <string name="excreta_select_all_unchecked">Not all selected</string>
+
+    <!-- 스낵바 메시지 -->
+    <string name="excreta_post_success">Potty record saved!</string>
+    <string name="excreta_post_failure">Failed to save the potty record due to a server issue.\nPlease try again later.</string>
+    <string name="excreta_patch_success">Potty record updated!</string>
+    <string name="excreta_patch_failure">Failed to update the potty record due to a server issue.\nPlease try again later.</string>
+    <string name="excreta_delete_success">Potty record deleted!</string>
+    <string name="excreta_delete_failure">Failed to delete the potty record due to a server issue.\nPlease try again later.</string>
+</resources>

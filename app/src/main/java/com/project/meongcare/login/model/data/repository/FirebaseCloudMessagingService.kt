@@ -2,8 +2,6 @@ package com.project.meongcare.login.model.data.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -11,8 +9,9 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.project.meongcare.MainActivity
+import com.project.meongcare.LocaleDateTimeFormats
 import com.project.meongcare.R
+import com.project.meongcare.login.model.entities.FcmNotificationContent
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -69,13 +68,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
     }
 
     fun sendNotification(messageData: Map<String, String>) {
-        val messageBody = messageData["body"]
-        val messageTitle = messageData["title"]
-        val messageLogoImageUrl = messageData["logoImageUrl"]!!
-
-        val intent = Intent(this@FirebaseCloudMessagingService, MainActivity::class.java)
-        intent.putExtra("moveFragment", "NoticeFragment")
-        intent.addFlags(FLAG_ACTIVITY_SINGLE_TOP)
+        val (title, body) = composeNotificationText(messageData)
 
         val pendingIntent =
             NavDeepLinkBuilder(this@FirebaseCloudMessagingService)
@@ -87,8 +80,8 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
             getNotificationBuilder(getString(R.string.push_notification_channel_id))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentText(messageBody)
-                .setContentTitle(messageTitle)
+                .setContentText(body)
+                .setContentTitle(title)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.semoban_notification_icon)
 
@@ -97,5 +90,24 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
             getString(R.string.push_notification_channel_name),
             notificationBuilder,
         )
+    }
+
+    // 서버는 구조화 키(notificationType, dogName 등)와 함께 폴백용 한국어 완성 문구(title/body)를
+    // 보낸다. 구조화 키가 온전할 때만 클라이언트 로케일로 조립하고, 아니면 폴백을 그대로 쓴다.
+    private fun composeNotificationText(messageData: Map<String, String>): Pair<String?, String?> {
+        return when (val content = FcmNotificationContent.from(messageData)) {
+            is FcmNotificationContent.Supplements ->
+                getString(
+                    R.string.push_supplements_title,
+                    content.intakeTime.format(LocaleDateTimeFormats.time12h()),
+                    content.supplementsName,
+                ) to getString(R.string.push_supplements_body, content.dogName)
+
+            is FcmNotificationContent.ShareDog ->
+                getString(R.string.push_share_dog_title, content.requesterEmail) to
+                    getString(R.string.push_share_dog_body, content.dogName)
+
+            is FcmNotificationContent.Fallback -> content.title to content.body
+        }
     }
 }

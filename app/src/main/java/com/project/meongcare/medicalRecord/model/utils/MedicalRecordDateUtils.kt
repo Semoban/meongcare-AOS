@@ -1,17 +1,16 @@
 package com.project.meongcare.medicalRecord.model.utils
 
+import com.project.meongcare.LocaleDateTimeFormats
+import java.time.LocalTime
+
 object MedicalRecordDateUtils {
     fun showFormattedTime(dateTime: String): String {
         val time = dateTime.substringAfterLast("T")
         val hourMinute = time.substringBeforeLast(":")
 
-        val hour = hourMinute.substringBeforeLast(":")
-        val minute = hourMinute.substringAfterLast(":")
+        val hour = hourMinute.substringBeforeLast(":").toInt()
+        val minute = hourMinute.substringAfterLast(":").toInt()
 
-        return if (hour.toInt() < 12) {
-            "오전 $hour:$minute"
-        } else {
-            "오후 $hour:$minute"
-        }
+        return LocaleDateTimeFormats.time12hShort().format(LocalTime.of(hour, minute))
     }
 }

@@ -20,4 +20,5 @@
     <string name="petadd_back_length">등</string>
     <string name="petadd_chest_circumference">가슴둘레</string>
     <string name="petadd_neck_circumference">목둘레</string>
+    <string name="petadd_birthday_label">생일</string>
 </resources>

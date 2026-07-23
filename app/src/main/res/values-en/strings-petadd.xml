@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="petadd_dog_info">Tell us about your dog</string>
+    <string name="petadd_name">Name</string>
+    <string name="petadd_input_name">Please enter a name</string>
+    <string name="petadd_pet">Tell us about your dog</string>
+    <string name="petadd_breed">Breed</string>
+    <string name="petadd_select_breed">Please enter the breed</string>
+    <string name="petadd_gender">Sex</string>
+    <string name="petadd_female">Girl</string>
+    <string name="petadd_male">Boy</string>
+    <string name="petadd_neuter_status">Neutered</string>
+    <string name="petadd_birthday">When is the birthday?</string>
+    <string name="petadd_input_first_day">If you don\'t know the birthday, enter the day you first met</string>
+    <string name="petadd_first_day">When did you first meet?</string>
+    <string name="petadd_weight">Weight</string>
+    <string name="petadd_kg">Kg</string>
+    <string name="petadd_cm">cm</string>
+    <string name="petadd_size">Measurements</string>
+    <string name="petadd_back_length">Back</string>
+    <string name="petadd_chest_circumference">Chest</string>
+    <string name="petadd_neck_circumference">Neck</string>
+    <string name="petadd_birthday_label">Birthday</string>
+</resources>

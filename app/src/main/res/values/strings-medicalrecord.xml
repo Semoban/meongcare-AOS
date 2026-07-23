@@ -11,13 +11,17 @@
     <string name="medicalrecord_veterinarian">담당의</string>
     <string name="medicalrecord_veterinarian_name">담당의 성함</string>
     <string name="medicalrecord_note">내용</string>
-    <string name="medicalrecord_hospital_name_length">%d/50</string>
-    <string name="medicalrecord_veterinarian_name_length">%d/10</string>
-    <string name="medicalrecord_note_length">%d/500</string>
+    <string name="medicalrecord_hospital_name_length" translatable="false">%d/50</string>
+    <string name="medicalrecord_veterinarian_name_length" translatable="false">%d/10</string>
+    <string name="medicalrecord_note_length" translatable="false">%d/500</string>
     <string name="medicalrecord_no_list">생성된 진료기록이 없습니다.</string>
     <string name="medicalrecord_select_all">전체 선택</string>
     <string name="medicalrecord_delete_success">진료기록이 삭제되었습니다.</string>
     <string name="medicalrecrod_empty_date">날짜를 선택해주세요.</string>
     <string name="medicalrecord_cancel">취소</string>
     <string name="medicalrecord_complete">완료</string>
+    <string name="medicalrecord_add_success">추가가 완료되었습니다</string>
+    <string name="medicalrecord_add_failure">추가에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
+    <string name="medicalrecord_edit_success">수정이 완료되었습니다</string>
+    <string name="medicalrecord_edit_failure">수정에 실패하였습니다.\n잠시 후 다시 시도해주세요</string>
 </resources>

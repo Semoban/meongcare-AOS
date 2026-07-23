@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.project.meongcare.R
 import com.project.meongcare.databinding.FragmentFeedInfoBinding
+import com.project.meongcare.designsystem.theme.SemobanTheme
 import com.project.meongcare.excreta.utils.SUCCESS
-import com.project.meongcare.feed.model.entities.FeedDetailGetResponse
-import com.project.meongcare.feed.model.utils.FEED_DELETE_FAILURE
-import com.project.meongcare.feed.model.utils.FEED_DELETE_SUCCESS
-import com.project.meongcare.feed.model.utils.FeedDateUtils.convertDateFormat
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showFailureSnackBar
 import com.project.meongcare.feed.model.utils.FeedInfoUtils.showSuccessSnackBar
 import com.project.meongcare.feed.viewmodel.FeedDeleteViewModel
@@ -26,15 +29,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FeedInfoFragment : Fragment() {
     private var _binding: FragmentFeedInfoBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
-    private val feedInfoFeedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
+    private val feedDetailGetViewModel: FeedDetailGetViewModel by viewModels()
     private val feedDeleteViewModel: FeedDeleteViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
 
     private var feedId = 0L
     private var feedRecordId = 0L
-    private lateinit var feedInfo: FeedDetailGetResponse
     private var accessToken = ""
 
     override fun onCreateView(
@@ -53,94 +55,65 @@ class FeedInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         feedId = getFeedId()
         feedRecordId = getFeedRecordId()
+        initComposeView()
+        fetchFeedInfo()
+        observeFeedDeleted()
+    }
+
+    private fun initComposeView() {
+        binding.composeViewFeedInfo.run {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SemobanTheme {
+                    val feedInfo by feedDetailGetViewModel.feedDetailGet.observeAsState()
+
+                    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+
+                    FeedInfoScreen(
+                        feedInfo = feedInfo,
+                        onBackClick = { findNavController().popBackStack() },
+                        onEditClick = { navigateToFeedEdit() },
+                        onDeleteClick = { showDeleteDialog = true },
+                    )
+
+                    if (showDeleteDialog) {
+                        FeedConfirmDialog(
+                            title = stringResource(R.string.designsystem_delete_dialog_title),
+                            description = stringResource(R.string.designsystem_delete_dialog_subtitle),
+                            confirmText = stringResource(R.string.all_delete),
+                            onCancel = { showDeleteDialog = false },
+                            onConfirm = {
+                                showDeleteDialog = false
+                                deleteFeedInfo()
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchFeedInfo() {
         userViewModel.fetchAccessToken()
         userViewModel.accessToken.observe(viewLifecycleOwner) { response ->
             accessToken = response
-            feedInfoFeedDetailGetViewModel.getFeedDetail(
+            feedDetailGetViewModel.getFeedDetail(
                 accessToken,
                 feedId,
                 feedRecordId,
             )
         }
-        initToolbar()
-        fetchFeedInfo()
     }
 
-    private fun fetchFeedInfo() {
-        feedInfoFeedDetailGetViewModel.feedDetailGet.observe(viewLifecycleOwner) { response ->
-            binding.apply {
-                feedInfo =
-                    FeedDetailGetResponse(
-                        response.brand,
-                        response.feedName,
-                        response.protein,
-                        response.fat,
-                        response.crudeAsh,
-                        response.moisture,
-                        response.etc,
-                        response.kcal,
-                        response.recommendIntake,
-                        response.imageURL,
-                        response.startDate,
-                        response.endDate,
-                    )
-                if (!response.imageURL.isNullOrEmpty()) {
-                    Glide.with(this@FeedInfoFragment)
-                        .load(response.imageURL)
-                        .into(imageviewFeedinfo)
-                }
-                textviewFeedinfoBrandContent.text = feedInfo.brand
-                textviewFeedinfoNameContent.text = feedInfo.feedName
-                textviewFeedinfoCrudeProteinRatio.text = feedInfo.protein.toString()
-                textviewFeedinfoCrudeFatRatio.text = feedInfo.fat.toString()
-                textviewFeedinfoMoistureRatio.text = feedInfo.moisture.toString()
-                textviewFeedinfoCrudeAshRatio.text = feedInfo.crudeAsh.toString()
-                textviewFeedinfoEtcRatio.text = feedInfo.etc.toString()
-                textviewFeedinfoKcalContent.text = feedInfo.kcal.toString()
-                textviewFeedinfoDailyIntakeContent.text = feedInfo.recommendIntake.toString()
-                textviewFeedinfoIntakePeriodStart.text = convertDateFormat(feedInfo.startDate)
-                if (feedInfo.endDate != null) {
-                    textviewFeedinfoIntakePeriodEnd.text = convertDateFormat(feedInfo.endDate)
-                } else {
-                    textviewFeedinfoIntakePeriodEnd.text = "모름"
-                }
-            }
-        }
-    }
-
-    private fun initToolbar() {
-        binding.toolbarFeedinfo.apply {
-            setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
-            setOnMenuItemClickListener { menu ->
-                when (menu.itemId) {
-                    R.id.menu_info_edit -> {
-                        val bundle =
-                            bundleOf(
-                                "feedId" to feedId,
-                                "feedRecordId" to feedRecordId,
-                                "feedInfo" to feedInfo,
-                            )
-                        findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment, bundle)
-                    }
-                    R.id.menu_info_delete -> {
-                        binding.apply {
-                            includeFeedInfoDeleteDialog.root.visibility = View.VISIBLE
-                            includeFeedInfoDeleteDialog.apply {
-                                buttonDeleteDialogCancel.setOnClickListener {
-                                    includeFeedInfoDeleteDialog.root.visibility = View.GONE
-                                }
-                                buttonDeleteDialogDelete.setOnClickListener {
-                                    deleteFeedInfo()
-                                }
-                            }
-                        }
-                    }
-                }
-                false
-            }
-        }
+    private fun navigateToFeedEdit() {
+        val feedInfo = feedDetailGetViewModel.feedDetailGet.value ?: return
+        val bundle =
+            bundleOf(
+                "feedId" to feedId,
+                "feedRecordId" to feedRecordId,
+                "feedInfo" to feedInfo,
+            )
+        findNavController().navigate(R.id.action_feedInfoFragment_to_feedEditFragment, bundle)
     }
 
     private fun deleteFeedInfo() {
@@ -148,17 +121,21 @@ class FeedInfoFragment : Fragment() {
             accessToken,
             feedRecordId,
         )
+    }
+
+    private fun observeFeedDeleted() {
         feedDeleteViewModel.feedDeleted.observe(viewLifecycleOwner) { response ->
+            if (response == null) return@observe
             if (response == SUCCESS) {
                 findNavController().popBackStack()
                 showSuccessSnackBar(
                     requireView(),
-                    FEED_DELETE_SUCCESS,
+                    getString(R.string.feed_delete_success),
                 )
             } else {
                 showFailureSnackBar(
                     requireView(),
-                    FEED_DELETE_FAILURE,
+                    getString(R.string.feed_delete_failure),
                 )
             }
         }

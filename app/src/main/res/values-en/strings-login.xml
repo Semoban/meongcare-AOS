@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_logo_description">Semoban logo</string>
+    <string name="login_kakao">Continue with Kakao</string>
+    <string name="login_naver">Continue with Naver</string>
+</resources>

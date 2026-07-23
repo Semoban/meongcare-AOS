@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all_select_date">Please select a date</string>
+    <string name="all_completion">Done</string>
+    <string name="all_setting">Settings</string>
+    <string name="all_add">Add</string>
+    <string name="all_edit">Edit</string>
+    <string name="all_share">Share</string>
+    <string name="all_announcement">Notices</string>
+    <string name="all_deleteall">Delete all</string>
+    <string name="all_delete_selected">Delete selected</string>
+    <string name="all_delete">Delete</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="all_confirm">OK</string>
+    <string name="all_modify">Edit</string>
+    <string name="all_back">Back</string>
+    <string name="all_checked">Selected</string>
+    <string name="all_unchecked">Not selected</string>
+    <string name="all_required_input_description">Required</string>
+    <string name="all_attach_photo_hint">Please attach a photo</string>
+    <string name="all_home">Home</string>
+    <string name="all_symptom">Symptoms</string>
+    <string name="all_coming_soon">This feature is coming soon</string>
+    <string name="all_loading_description">Loading data.\nPlease wait a moment.</string>
+    <string name="all_select_dog_date">Please select your dog\'s date</string>
+    <string name="all_year_format">%1$d</string>
+    <string name="all_month_format">%1$d</string>
+    <string name="all_day_format">%1$d</string>
+    <string name="all_photo_select_title">Please set a photo</string>
+    <string name="all_photo_camera">Take a photo</string>
+    <string name="all_photo_album">Choose from album</string>
+    <string name="all_photo_default">Use default image</string>
+</resources>
