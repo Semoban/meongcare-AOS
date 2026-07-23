@@ -21,6 +21,7 @@ import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToMonthDate
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomTitle
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
 import com.project.meongcare.symptom.viewmodel.SymptomViewModelFactory
 
@@ -62,7 +63,7 @@ class SymptomInfoFragment : Fragment() {
                         dateText = convertDateToMonthDate(symptomData.dateTime),
                         timeText = convertDateToTime(symptomData.dateTime),
                         symptomImgRes = getSymptomImg(symptomData),
-                        symptomTitle = symptomData.note,
+                        symptomTitle = getSymptomTitle(requireContext(), symptomData.symptomString, symptomData.note),
                         onBack = { findNavController().popBackStack() },
                         onEdit = { navigateToSymptomEdit(symptomData) },
                         onDelete = {

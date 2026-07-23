@@ -55,6 +55,7 @@ import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.home.model.entities.DogProfile
 import com.project.meongcare.home.model.entities.Symptom
 import com.project.meongcare.symptom.model.entities.SymptomType
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomTitleRes
 import com.project.meongcare.toolbar.view.CalendarWeekRow
 import java.util.Date
 
@@ -394,7 +395,7 @@ private fun HomeSymptomChip(
                     .padding(3.dp),
         )
         Text(
-            text = symptom.note,
+            text = getSymptomTitleRes(symptom.symptomString)?.let { stringResource(it) } ?: symptom.note,
             style = SemobanTypography.body2Medium,
             color = Color(0xFF2B2B2B),
             maxLines = 1,

@@ -7,6 +7,21 @@
     <string name="symptom_label">증상</string>
     <string name="symptom_empty">이상증상을 발견하지 못했어요!</string>
 
+    <!-- 증상 종류 — 서버에 저장되는 symptomString 키(weightLoss 등)와
+         SymptomUtils.getSymptomTitleRes로 매핑되어 표시 제목으로 쓰인다 -->
+    <string name="symptom_type_weight_loss">체중이 감소한다</string>
+    <string name="symptom_type_weight_loss_desc">갑작스럽게 체중이 감소하는 증상이 나타난다</string>
+    <string name="symptom_type_high_fever">고열이 난다</string>
+    <string name="symptom_type_high_fever_desc">체온이 41도 이상인 상태가 오랫동안 지속된다</string>
+    <string name="symptom_type_cough">기침을 한다</string>
+    <string name="symptom_type_cough_desc">갑자기 켁켁거리며 기침이 많아진다</string>
+    <string name="symptom_type_diarrhea">설사를 한다</string>
+    <string name="symptom_type_diarrhea_desc">갑자기 설사를 한다</string>
+    <string name="symptom_type_loss_of_appetite">식욕부진이 나타난다</string>
+    <string name="symptom_type_loss_of_appetite_desc">사료를 먹지 않는 행동을 보인다</string>
+    <string name="symptom_type_activity_decrease">활동량이 감소한다</string>
+    <string name="symptom_type_activity_decrease_desc">평소에 비해 활동량이 적어진다</string>
+
     <!-- 증상 선택 -->
     <string name="symptom_select_hint">증상을 선택해주세요</string>
     <string name="symptom_select_required">증상을 선택해주세요.</string>

@@ -1,5 +1,6 @@
 package com.project.meongcare.symptom.view
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,43 +41,41 @@ import com.project.meongcare.designsystem.theme.White
 
 internal data class SymptomSelectOption(
     val imgRes: Int,
-    val title: String,
-    val subtitle: String,
+    @StringRes val titleRes: Int,
+    @StringRes val subtitleRes: Int,
 )
 
-// 증상 제목은 서버에 symptomString으로 그대로 전송되어 아이콘 매핑에도 쓰이므로
-// 백엔드 협의(i18n ④단계) 전까지 리소스로 추출하지 않는다
 internal val symptomSelectOptions =
     listOf(
         SymptomSelectOption(
             R.drawable.all_weighing_machine,
-            "체중이 감소한다",
-            "갑작스럽게 체중이 감소하는 증상이 나타난다",
+            R.string.symptom_type_weight_loss,
+            R.string.symptom_type_weight_loss_desc,
         ),
         SymptomSelectOption(
             R.drawable.all_temperature_measurement,
-            "고열이 난다",
-            "체온이 41도 이상인 상태가 오랫동안 지속된다",
+            R.string.symptom_type_high_fever,
+            R.string.symptom_type_high_fever_desc,
         ),
         SymptomSelectOption(
             R.drawable.symptom_cough,
-            "기침을 한다",
-            "갑자기 켁켁거리며 기침이 많아진다",
+            R.string.symptom_type_cough,
+            R.string.symptom_type_cough_desc,
         ),
         SymptomSelectOption(
             R.drawable.symptom_diarrhea,
-            "설사를 한다",
-            "갑자기 설사를 한다",
+            R.string.symptom_type_diarrhea,
+            R.string.symptom_type_diarrhea_desc,
         ),
         SymptomSelectOption(
             R.drawable.symptom_loss_appetite,
-            "식욕부진이 나타난다",
-            "사료를 먹지 않는 행동을 보인다",
+            R.string.symptom_type_loss_of_appetite,
+            R.string.symptom_type_loss_of_appetite_desc,
         ),
         SymptomSelectOption(
             R.drawable.symptom_amount_activity,
-            "활동량이 감소한다",
-            "평소에 비해 활동량이 적어진다",
+            R.string.symptom_type_activity_decrease,
+            R.string.symptom_type_activity_decrease_desc,
         ),
     )
 
@@ -91,6 +91,7 @@ fun SymptomSelectScreen(
 ) {
     var selectedIndex by remember { mutableStateOf(NONE_INDEX) }
     var customText by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier =
@@ -170,7 +171,7 @@ fun SymptomSelectScreen(
                     else ->
                         onSelected(
                             symptomSelectOptions[selectedIndex].imgRes,
-                            symptomSelectOptions[selectedIndex].title,
+                            context.getString(symptomSelectOptions[selectedIndex].titleRes),
                         )
                 }
             },
@@ -209,8 +210,8 @@ private fun SymptomSelectRow(
                 modifier = Modifier.size(32.dp),
             )
             Column(modifier = Modifier.padding(start = 13.dp)) {
-                Text(text = option.title, style = SemobanTypography.body2Medium)
-                Text(text = option.subtitle, style = SemobanTypography.body3Regular)
+                Text(text = stringResource(option.titleRes), style = SemobanTypography.body2Medium)
+                Text(text = stringResource(option.subtitleRes), style = SemobanTypography.body3Regular)
             }
         }
     }

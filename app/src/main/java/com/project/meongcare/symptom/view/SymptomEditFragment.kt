@@ -24,6 +24,7 @@ import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToT
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertSimpleDateToMonthDate
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomName
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomTitle
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.showCalendarBottomSheet
 import com.project.meongcare.symptom.view.bottomSheet.SymptomBottomSheetDialogFragment
 import com.project.meongcare.symptom.viewmodel.SymptomViewModel
@@ -100,7 +101,10 @@ class SymptomEditFragment : Fragment(), SymptomBottomSheetDialogFragment.OnDateS
                 convertSimpleDateToMonthDate(symptomViewModel.infoSymptomData.value!!.dateTime)
             symptomViewModel.symptomItemImgId.value =
                 getSymptomImg(symptomViewModel.infoSymptomData.value!!)
-            symptomViewModel.symptomItemTitle.value = symptomViewModel.infoSymptomData.value!!.note
+            symptomViewModel.symptomItemTitle.value =
+                symptomViewModel.infoSymptomData.value!!.let {
+                    getSymptomTitle(requireContext(), it.symptomString, it.note)
+                }
         }
     }
 

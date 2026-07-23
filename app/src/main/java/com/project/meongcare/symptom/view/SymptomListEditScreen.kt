@@ -36,6 +36,7 @@ import com.project.meongcare.designsystem.theme.White
 import com.project.meongcare.symptom.model.entities.Symptom
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.convertDateToTime
 import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomImg
+import com.project.meongcare.symptom.utils.SymptomUtils.Companion.getSymptomTitleRes
 
 @Composable
 fun SymptomListEditScreen(
@@ -180,7 +181,7 @@ private fun SymptomListEditItem(
                         modifier = Modifier.size(24.dp),
                     )
                     Text(
-                        text = symptom.note,
+                        text = getSymptomTitleRes(symptom.symptomString)?.let { stringResource(it) } ?: symptom.note,
                         style = SemobanTypography.body1Medium,
                         modifier = Modifier.padding(start = 13.dp),
                     )

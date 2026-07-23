@@ -7,6 +7,20 @@
     <string name="symptom_label">Symptom</string>
     <string name="symptom_empty">No symptoms found!</string>
 
+    <!-- 증상 종류 -->
+    <string name="symptom_type_weight_loss">Losing weight</string>
+    <string name="symptom_type_weight_loss_desc">Sudden, unexpected weight loss</string>
+    <string name="symptom_type_high_fever">Has a high fever</string>
+    <string name="symptom_type_high_fever_desc">Body temperature stays above 41°C for a long time</string>
+    <string name="symptom_type_cough">Coughing</string>
+    <string name="symptom_type_cough_desc">Suddenly hacking and coughing a lot</string>
+    <string name="symptom_type_diarrhea">Has diarrhea</string>
+    <string name="symptom_type_diarrhea_desc">Sudden diarrhea</string>
+    <string name="symptom_type_loss_of_appetite">Loss of appetite</string>
+    <string name="symptom_type_loss_of_appetite_desc">Won\'t eat their food</string>
+    <string name="symptom_type_activity_decrease">Less active</string>
+    <string name="symptom_type_activity_decrease_desc">Less active than usual</string>
+
     <!-- 증상 선택 -->
     <string name="symptom_select_hint">Please select a symptom</string>
     <string name="symptom_select_required">Please select a symptom.</string>
